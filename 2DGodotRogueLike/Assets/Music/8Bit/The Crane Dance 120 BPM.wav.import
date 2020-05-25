@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/The Crane Dance 120 BPM.wav-bb030212035f10eb479f55273c055253.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/The Crane Dance 120 BPM.wav"
+dest_files=[ "res://.import/The Crane Dance 120 BPM.wav-bb030212035f10eb479f55273c055253.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

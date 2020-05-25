@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/8bit Stage4 Loop.wav-174af2e69de851eeca250fae5af99f25.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/8bit Stage4 Loop.wav"
+dest_files=[ "res://.import/8bit Stage4 Loop.wav-174af2e69de851eeca250fae5af99f25.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

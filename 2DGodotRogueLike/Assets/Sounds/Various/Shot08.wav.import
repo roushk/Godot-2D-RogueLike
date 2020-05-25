@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Shot08.wav-0d8ff29807bbeda37f6f68dcf613f1b6.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Various/Shot08.wav"
+dest_files=[ "res://.import/Shot08.wav-0d8ff29807bbeda37f6f68dcf613f1b6.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

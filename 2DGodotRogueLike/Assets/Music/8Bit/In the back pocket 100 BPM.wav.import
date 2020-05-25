@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/In the back pocket 100 BPM.wav-d1a5be37d3ade900d3b4eab5035719ec.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/In the back pocket 100 BPM.wav"
+dest_files=[ "res://.import/In the back pocket 100 BPM.wav-d1a5be37d3ade900d3b4eab5035719ec.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

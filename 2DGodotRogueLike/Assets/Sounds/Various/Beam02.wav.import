@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Beam02.wav-87ff3d0623c86af6c87e195f02b6585f.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/Various/Beam02.wav"
+dest_files=[ "res://.import/Beam02.wav-87ff3d0623c86af6c87e195f02b6585f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

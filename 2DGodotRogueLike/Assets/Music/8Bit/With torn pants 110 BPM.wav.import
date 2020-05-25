@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/With torn pants 110 BPM.wav-2afe1ad1b6c6239621a33cf7cad814d2.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/With torn pants 110 BPM.wav"
+dest_files=[ "res://.import/With torn pants 110 BPM.wav-2afe1ad1b6c6239621a33cf7cad814d2.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

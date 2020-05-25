@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Around the Bend 100 BPM.wav-8eeb28185a3b525f999fc0a013f31dcf.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/Around the Bend 100 BPM.wav"
+dest_files=[ "res://.import/Around the Bend 100 BPM.wav-8eeb28185a3b525f999fc0a013f31dcf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

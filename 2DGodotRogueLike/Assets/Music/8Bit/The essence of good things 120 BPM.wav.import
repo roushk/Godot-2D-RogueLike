@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/The essence of good things 120 BPM.wav-a859927b73b51c684e6f551afe962fd0.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/The essence of good things 120 BPM.wav"
+dest_files=[ "res://.import/The essence of good things 120 BPM.wav-a859927b73b51c684e6f551afe962fd0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

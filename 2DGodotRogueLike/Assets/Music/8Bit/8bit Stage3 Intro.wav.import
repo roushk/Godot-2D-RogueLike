@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/8bit Stage3 Intro.wav-545e8baa227f9a41be8b70dd06c11ebf.sample"
+
+[deps]
+
+source_file="res://Assets/Music/8Bit/8bit Stage3 Intro.wav"
+dest_files=[ "res://.import/8bit Stage3 Intro.wav-545e8baa227f9a41be8b70dd06c11ebf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
