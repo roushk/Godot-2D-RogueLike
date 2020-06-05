@@ -1,15 +1,28 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/TestLevelGeneration.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=2]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
+initialDeadChance = 45
+deathLimit = 3
+birthLimit = 4
+maxIterations = 100
+TopTile = 4
+BottomTile = 13
+tileMapSize = Vector2( 64, 64 )
+
+[node name="FloodFillMap" type="TileMap" parent="."]
+visible = false
+format = 1
 
 [node name="ForegroundMap" type="TileMap" parent="."]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
 format = 1
-
-[node name="BackgroundMap" type="TileMap" parent="."]
-format = 1
+tile_data = PoolIntArray( -327686, 13, 0, -327685, 13, 0, -327684, 13, 0, -327683, 13, 0, -327682, 13, 0, -327681, 13, 0, -393216, 13, 0, -393215, 13, 0, -262152, 13, 0, -262151, 13, 0, -327678, 13, 0, -327677, 13, 0, -196616, 13, 0, -262141, 13, 0, -262140, 13, 0, -131080, 13, 0, -196604, 13, 0, -65544, 13, 0, -131067, 13, 0, -8, 13, 0, -65531, 13, 0, 65528, 13, 0, 5, 13, 0, 131064, 13, 0, 65540, 13, 0, 196600, 13, 0, 196601, 13, 0, 131075, 13, 0, 131076, 13, 0, 262137, 13, 0, 262139, 13, 0, 262140, 13, 0, 196610, 13, 0, 196611, 13, 0, 327676, 13, 0, 327677, 13, 0, 327678, 13, 0, 327679, 13, 0, 262144, 13, 0, 262145, 13, 0, 262146, 13, 0 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
+current = true
 zoom = Vector2( 4, 4 )

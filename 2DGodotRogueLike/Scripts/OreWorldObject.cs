@@ -22,7 +22,7 @@ public class OreWorldObject : Node2D
 
   //GD.Load()
   
-  private PackedScene _inventoryObjectScene = (PackedScene)GD.Load("res://InventoryObject.tscn");
+  private PackedScene _inventoryObjectScene = (PackedScene)GD.Load("res://Scenes/InventoryObject.tscn");
 
   //const inventoryObject = Godot.ResourcePreloader. ("res://Bullet.tscn")
   public override void _Ready()
