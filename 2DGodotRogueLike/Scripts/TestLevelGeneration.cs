@@ -1,12 +1,16 @@
 using Godot;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
 public class TestLevelGeneration : Node2D
 {
-  // Declare member variables here. Examples:
-  // private int a = 2;
-  // private string b = "text";
 
+
+  //Map is 
+  //Top Tile = 1 = Stone Ground
+  //Bottom Tile = 0 = Grass Wall
+  //8,9,10,11,12 for quadrants
+  //0,2,3 for extra quadrants
 
   //declare Foreground and Background map variables
   public Godot.TileMap ForegroundMap;
@@ -161,25 +165,155 @@ public class TestLevelGeneration : Node2D
     //Create a flood fill map 
 
 
+    //create a flood fill map the same size as the actual map
+    int [,] floodFillMap = new int[width, height];
+
+    //Going from top left to bottom right
+    //from an arbitary pixel p
+    //get the pixel to the left and to the top of p
+    // ? X ? 
+    // X p ?
+    // ? ? ?
+    //loop over terrain map
+   
+    //This long line is a dictionary from Id's to a hashset (unique list) of integer x,y coords as a keypair
+    Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
+
+    List<HashSet<int>> AdjacentSets = new List<HashSet<int>>();
+
+
+    int currentID = 0;
+    for(int y = 0; y < height; ++y)
+    {
+      for(int x = 0; x < width; ++x)
+      {  
+        if(terrainMap[x,y] != 1)
+          continue;
+        int IDA;
+        int IDB;
+        bool IDAExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out IDA);
+        bool IDBExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x, y - 1), out IDB);
+        
+        
+        //try to get left key
+        if(IDAExists && IDBExists)
+        {
+          //add pair of ID's to the adjacent sets list to show that these sets are adjacent
+          HashSet<int> ids = new HashSet<int>();
+
+          ids.Add(IDA);
+          ids.Add(IDB);
+          AdjacentSets.Add(ids);
+        }
+
+        //now we decide to add to IDA first if possible
+        if(IDAExists)
+        {
+          //if left key than set to left key
+          dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDA);
+        }
+        //If cannot get left key than check up key
+        else if(IDBExists)
+        {
+          //if up key than set to up key
+          dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDB);
+        }
+        //if cannot get left OR up key than create new key
+        else
+        {
+          dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), currentID++);
+        }
+      }
+    }
+    Console.WriteLine("Max ID = " +  currentID.ToString());
+
+    bool changed = true;
+    while(changed)
+    {
+      changed = false;
+      for(int i = 0; i < AdjacentSets.Count; ++i)
+      {
+        if(changed)
+          break;
+
+        for(int j = 0; j < AdjacentSets.Count; ++j)
+        {
+          if(i == j)
+            continue;
+          
+          //If the intersect contains any overlap than combine the sets
+          if(AdjacentSets.ElementAt(i).Intersect(AdjacentSets.ElementAt(j)).Any())
+          {
+            Console.WriteLine("Merging Sets");
+
+            //combine sets
+            AdjacentSets.ElementAt(i).UnionWith(AdjacentSets.ElementAt(j));
+
+            Console.WriteLine("I is" + i.ToString());
+            Console.WriteLine("J is" + j.ToString());
+
+            //remove other set
+            AdjacentSets.RemoveAt(j);
+            changed = true;
+            break;
+          }
+        }      
+      }
+    }
+    
+    for(int i = 0; i < dictIDToListofCoords.Count; ++i)
+    {
+      var element = dictIDToListofCoords.ElementAt(i);
+      var key = element.Key;
+      var value = element.Value;
+      for(int j = 0; j < AdjacentSets.Count; ++j)
+      {
+        
+        if(AdjacentSets.ElementAt(j).Contains(value))
+        {
+          //set the value to the color + 1 cause color 0 is dark af
+          value = j + 1;
+          break;
+        }
+      }
+      FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, value);
+      
+    }
+
+
+    //set the flood fill map according to the data 
+    for(int i = 0; i < dictIDToListofCoords.Count; ++i)
+    {
+      var element = dictIDToListofCoords.ElementAt(i);
+      var key = element.Key;
+      var value = element.Value;
+      //FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, value);
+      
+    }
+
+    //Update the cells
     for(int x = 0; x < width; ++x)
     {
       for(int y = 0; y < height; ++y)
       {
+
+
+        //Top Tile = 1 = Stone Ground
         if(terrainMap[x,y] == 1)
         {
           //range of -x to x amd -y to y to center the tile map;
           //set to the top tile
           ForegroundMap.SetCell(-x + width / 2, -y + width / 2, TopTile);
         }
-        //create a border of walkable terrain around the entire map
+        //create a border of walkable Stone Ground terrain around the entire map
         else if(x == 0 || y == 0 || x == width || y == height)
         {
-          ForegroundMap.SetCell(-x + width / 2, -y + width / 2, TopTile);
+          ForegroundMap.SetCell(-x + width / 2, -y + height / 2, TopTile);
 
         }
-        else
+        else  //Bottom Tile = 0 = Grass Wall
         {
-          ForegroundMap.SetCell(-x + width / 2, -y + width / 2, BottomTile);
+          ForegroundMap.SetCell(-x + width / 2, -y + height / 2, BottomTile);
 
         }
 
@@ -188,10 +322,15 @@ public class TestLevelGeneration : Node2D
       }
     }
 
+    //ForegroundMap.SetCell(-width / 2, -height / 2, 0);
+    //oregroundMap.SetCell(0, 0, 1);
+    //ForegroundMap.SetCell( width / 2, -(width - 1)  + height / 2, 0);
+
+
     //update bitmask for auto tile
     ForegroundMap.UpdateBitmaskRegion(new Vector2(-width/2, -height/2), new Vector2(width/2, height/2));
 
-      
+    
 
   }
 
