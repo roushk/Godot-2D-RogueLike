@@ -193,40 +193,88 @@ public class TestLevelGeneration : Node2D
 
     List<HashSet<int>> AdjacentSets = new List<HashSet<int>>();
 
+    //dictionary of int ID of set to ID of parent set 
+    //key = ID of node, value = ID of parent
+    Dictionary<int,int> IDToParent = new Dictionary<int, int>();
 
-    int currentID = 0;
+
+    //ID to size for the first iteration
+    int [] sizesIT1 = new int [1000];
+
+
+    //starting ID is 1 so any with id zero have no parent
+    int currentID = 1;
     for(int y = 0; y < height; ++y)
     {
       for(int x = 0; x < width; ++x)
       {  
         if(terrainMap[x,y] != 1)
           continue;
-        int IDA;
-        int IDB;
+        int IDA = 0;
+        int IDB = 0;
         bool IDAExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out IDA);
         bool IDBExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x, y - 1), out IDB);
         
+        int AcurrentParentID = 0;
+        bool AhasParent = IDToParent.TryGetValue(IDA, out AcurrentParentID);
         
-        //try to get left key
+        int BcurrentParentID = 0;
+        bool BhasParent = IDToParent.TryGetValue(IDB, out BcurrentParentID);
+
         if(IDAExists && IDBExists)
         {
-          //add pair of ID's to the adjacent sets list to show that these sets are adjacent
-          HashSet<int> ids = new HashSet<int>();
+          //if
+          if(hasParent)
+          {
 
-          ids.Add(IDA);
-          ids.Add(IDB);
-          AdjacentSets.Add(ids);
+          }
+
+          //IDA size > IDB size
+          if(sizesIT1[IDA] > sizesIT1[IDB])
+          {
+
+            //if IDA has a parent already then see if IDB or old parent is larger
+            if(! || sizesIT1[currentParentID] < sizesIT1[IDB])
+            {
+              //if no parent or parent is smaller than IDA
+              //add or replace dictionary
+              if(IDA != IDB)
+                IDToParent[IDB] = IDA;
+            }   
+
+            //Add to the larger set
+            sizesIT1[IDB]++;
+            dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDB);
+          }
+          else //IDA size <= IDB size
+          {
+
+            int currentParentID = 0;
+            //if IDA has a parent already then see if IDB or old parent is larger
+            if(!IDToParent.TryGetValue(IDA, out currentParentID) || sizesIT1[currentParentID] < sizesIT1[IDA])
+            {
+              //if no parent or parent is smaller than IDA
+              //add or replace dictionary
+              if(IDA != IDB)
+                IDToParent[IDA] = IDB;
+            }        
+
+            //Add to the larger Set
+            sizesIT1[IDA]++;
+            dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDA);
+          }
         }
-
         //now we decide to add to IDA first if possible
-        if(IDAExists)
+        else if(IDAExists && !IDBExists) //redundant !IDBExists for clarity
         {
+          sizesIT1[IDA]++;
           //if left key than set to left key
           dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDA);
         }
         //If cannot get left key than check up key
-        else if(IDBExists)
+        else if(IDBExists && !IDAExists)  //redundant !IDAExists for clarity
         {
+          sizesIT1[IDB]++;
           //if up key than set to up key
           dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDB);
         }
@@ -234,11 +282,14 @@ public class TestLevelGeneration : Node2D
         else
         {
           dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), currentID++);
+          sizesIT1[currentID]++;
         }
       }
     }
     Console.WriteLine("Max ID = " +  currentID.ToString());
 
+
+    /*
     bool changed = true;
     while(changed)
     {
@@ -272,28 +323,47 @@ public class TestLevelGeneration : Node2D
         }      
       }
     }
-    
+    */
+
+    //put all the pixels into this new map so that we have the links between each pixel and each set still
+    Dictionary<KeyValuePair<int, int>, int> listOfCoords = new Dictionary<KeyValuePair<int, int>, int>();
+
+    //for every pixel
     for(int i = 0; i < dictIDToListofCoords.Count; ++i)
     {
+      Console.WriteLine("Checking Coord");
       var element = dictIDToListofCoords.ElementAt(i);
       var key = element.Key;
       var value = element.Value;
-      for(int j = 0; j < AdjacentSets.Count; ++j)
+
+
+      int initialID = element.Value;
+      int ID = element.Value;
+      int IDout = 0;
+      //while we can get parents follow the path
+      while(IDToParent.TryGetValue(ID, out IDout))
       {
-        
-        if(AdjacentSets.ElementAt(j).Contains(value))
-        {
-          //set the value to the color + 1 cause color 0 is dark af
-          value = j + 1;
-          break;
-        }
+        Console.WriteLine("Following Tree " + ID.ToString() + " ->" + IDout.ToString() );
+
+        //follow tree up
+        ID = IDout;
       }
-      FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, value);
+
+      //move this 1 pixel to its parent size
+      sizesIT1[ID]++;
+      sizesIT1[initialID]--;
+
+      //add the sets together
+      listOfCoords.Add(key,ID);
+      //here when this set has no parent
+      
+      FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, ID);
       
     }
 
 
     //set the flood fill map according to the data 
+    /*
     for(int i = 0; i < dictIDToListofCoords.Count; ++i)
     {
       var element = dictIDToListofCoords.ElementAt(i);
@@ -302,6 +372,7 @@ public class TestLevelGeneration : Node2D
       //FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, value);
       
     }
+    */
 
     //Update the cells
     for(int x = 0; x < width; ++x)
