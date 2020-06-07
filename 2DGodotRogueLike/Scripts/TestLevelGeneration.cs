@@ -161,6 +161,18 @@ public class TestLevelGeneration : Node2D
 
     //We now have a generated level
 
+    //add border
+    //create a border of walkable Stone Ground terrain around the entire map
+    for(int y = 0; y < height; ++y)
+    {
+      for(int x = 0; x < width; ++x)
+      {  
+        if(x == 0 || y == 0 || x == width || y == height)
+        {
+          terrainMap[x,y] = 1;
+        }
+      }
+    }
 
     //Create a flood fill map 
 
@@ -304,12 +316,6 @@ public class TestLevelGeneration : Node2D
           //range of -x to x amd -y to y to center the tile map;
           //set to the top tile
           ForegroundMap.SetCell(-x + width / 2, -y + width / 2, TopTile);
-        }
-        //create a border of walkable Stone Ground terrain around the entire map
-        else if(x == 0 || y == 0 || x == width || y == height)
-        {
-          ForegroundMap.SetCell(-x + width / 2, -y + height / 2, TopTile);
-
         }
         else  //Bottom Tile = 0 = Grass Wall
         {
