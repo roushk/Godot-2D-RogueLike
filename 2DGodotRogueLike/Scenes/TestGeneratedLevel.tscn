@@ -1582,7 +1582,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 15
 BottomTile = 13
-tileMapSize = Vector2( 64, 64 )
+tileMapSize = Vector2( 128, 128 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -1598,4 +1598,4 @@ format = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 4, 4 )
+zoom = Vector2( 10, 10 )
