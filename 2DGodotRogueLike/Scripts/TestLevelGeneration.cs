@@ -208,8 +208,10 @@ public class TestLevelGeneration : Node2D
     {
       for(int x = 0; x < width; ++x)
       {  
+        //ignore walls
         if(terrainMap[x,y] != 1)
           continue;
+          
         int IDA = 0;
         int IDB = 0;
         bool IDAExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out IDA);
@@ -223,24 +225,28 @@ public class TestLevelGeneration : Node2D
 
         if(IDAExists && IDBExists)
         {
-          //if
-          if(hasParent)
+          //Parent is always smaller than child
+          if(IDA < IDB)
           {
-
+            //it doesnt have the parent or it has 
+            if(!BhasParent || (BhasParent && IDA < BcurrentParentID))
+            {
+              IDToParent[IDB] = IDA;
+            }
           }
+          else if(IDB > IDA)
+          {
+            if(!AhasParent || (AhasParent && IDB < AcurrentParentID))
+            {
+              IDToParent[IDA] = IDB;
+            }
+            
+          }
+          //else dont set same ID to child of itself
 
           //IDA size > IDB size
           if(sizesIT1[IDA] > sizesIT1[IDB])
           {
-
-            //if IDA has a parent already then see if IDB or old parent is larger
-            if(! || sizesIT1[currentParentID] < sizesIT1[IDB])
-            {
-              //if no parent or parent is smaller than IDA
-              //add or replace dictionary
-              if(IDA != IDB)
-                IDToParent[IDB] = IDA;
-            }   
 
             //Add to the larger set
             sizesIT1[IDB]++;
@@ -248,17 +254,6 @@ public class TestLevelGeneration : Node2D
           }
           else //IDA size <= IDB size
           {
-
-            int currentParentID = 0;
-            //if IDA has a parent already then see if IDB or old parent is larger
-            if(!IDToParent.TryGetValue(IDA, out currentParentID) || sizesIT1[currentParentID] < sizesIT1[IDA])
-            {
-              //if no parent or parent is smaller than IDA
-              //add or replace dictionary
-              if(IDA != IDB)
-                IDToParent[IDA] = IDB;
-            }        
-
             //Add to the larger Set
             sizesIT1[IDA]++;
             dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), IDA);
@@ -282,7 +277,7 @@ public class TestLevelGeneration : Node2D
         else
         {
           dictIDToListofCoords.Add(new KeyValuePair<int, int>(x,y), currentID++);
-          sizesIT1[currentID]++;
+          sizesIT1[currentID] = 1;
         }
       }
     }
@@ -331,7 +326,7 @@ public class TestLevelGeneration : Node2D
     //for every pixel
     for(int i = 0; i < dictIDToListofCoords.Count; ++i)
     {
-      Console.WriteLine("Checking Coord");
+      
       var element = dictIDToListofCoords.ElementAt(i);
       var key = element.Key;
       var value = element.Value;
@@ -341,14 +336,15 @@ public class TestLevelGeneration : Node2D
       int ID = element.Value;
       int IDout = 0;
       //while we can get parents follow the path
+      //Get Root
       while(IDToParent.TryGetValue(ID, out IDout))
       {
-        Console.WriteLine("Following Tree " + ID.ToString() + " ->" + IDout.ToString() );
-
+        //Console.WriteLine("Following Tree " + ID.ToString() + " ->" + IDout.ToString());
         //follow tree up
         ID = IDout;
       }
 
+      //Console.WriteLine("Final ID = " + ID.ToString());
       //move this 1 pixel to its parent size
       sizesIT1[ID]++;
       sizesIT1[initialID]--;
@@ -359,6 +355,14 @@ public class TestLevelGeneration : Node2D
       
       FloodFillMap.SetCell(-key.Key + width / 2, -key.Value + width / 2, ID);
       
+    }
+
+    for(int i = 0; i < 1000; ++i)
+    {
+      if(sizesIT1[i] > 0)
+      {
+        Console.WriteLine("Size of ID " + i.ToString() + " Is " + sizesIT1[i].ToString());
+      }
     }
 
 
