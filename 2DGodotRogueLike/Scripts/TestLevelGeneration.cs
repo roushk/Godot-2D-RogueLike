@@ -5,6 +5,9 @@ using System.Linq;
 public class TestLevelGeneration : Node2D
 {
 
+	//!!!!!!!!!!!!!!!!!!!!!!!!
+	//map  0,0 = bottom right
+	//!!!!!!!!!!!!!!!!!!!!!!!!
 
   //Map is 
   //Top Tile = 1 = Stone Ground
@@ -124,8 +127,6 @@ public class TestLevelGeneration : Node2D
 			initPositions();
 		}
 
-
-
 		//run for set number of iterations
 		for(int i = 0; i < iterations; ++i)  
 		{
@@ -146,9 +147,6 @@ public class TestLevelGeneration : Node2D
 				}
 			}
 		}
-
-		//Create a flood fill map 
-
 	}
 
   //seeds the terrain map with random dead or alive values
@@ -164,7 +162,6 @@ public class TestLevelGeneration : Node2D
 				{
 					//alive
 					terrainMap[x,y] = 1;
-
 				}
 				else
 				{
@@ -179,11 +176,6 @@ public class TestLevelGeneration : Node2D
   //runs simulation
   public void runSimulation()
   {
-		
-
-		//create a flood fill map the same size as the actual map
-		int [,] floodFillMap = new int[width, height];
-
 		//Going from top left to bottom right
 		//from an arbitary pixel p
 		//get the pixel to the left and to the top of p
@@ -195,8 +187,6 @@ public class TestLevelGeneration : Node2D
 		//This long line is a dictionary from Id's to a hashset (unique list) of integer x,y coords as a keypair
 		Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
 
-		List<HashSet<int>> AdjacentSets = new List<HashSet<int>>();
-
 		//dictionary of int ID of set to ID of parent set 
 		//key = ID of node, value = ID of parent
 		Dictionary<int,int> IDToParent = new Dictionary<int, int>();
@@ -204,13 +194,12 @@ public class TestLevelGeneration : Node2D
 		const int maxNumGroups = 1000;
 		//ID to size for the first iteration
 		int [] sizeOfPixelGroup = new int [maxNumGroups];
-		int newKey = 0;
 
 		//********************************************************************//
 		//Connected Component Labeling
 		//First Pass
 		//starting ID is 1 so any with id zero have no parent
-		int currentID = 1;
+		int nextNewPixelID = 1;
 
 		for(int y = 0; y < height; ++y)
 		{
@@ -251,7 +240,7 @@ public class TestLevelGeneration : Node2D
 							IDToParent[abovePixelID] = leftPixelID;
 						}
 					}
-					else if(abovePixelID > leftPixelID)
+					else if(leftPixelID > abovePixelID)
 					{
 						if(!leftHasParent || (leftHasParent && abovePixelID < leftPixelCurrentParentID))
 						{
@@ -263,16 +252,15 @@ public class TestLevelGeneration : Node2D
 					//leftPixelID size > abovePixelID size
 					if(sizeOfPixelGroup[leftPixelID] > sizeOfPixelGroup[abovePixelID])
 					{
-
 						//Add to the larger set
-						sizeOfPixelGroup[abovePixelID]++;
-						dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
+						sizeOfPixelGroup[leftPixelID]++;
+						dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
 					}
 					else //leftPixelID size <= abovePixelID size
 					{
-						//Add to the larger Set
-						sizeOfPixelGroup[leftPixelID]++;
-						dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
+						//Add to either set
+						sizeOfPixelGroup[abovePixelID]++;
+						dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
 					}
 				}
 				//now we decide to add to leftPixelID first if possible
@@ -292,53 +280,16 @@ public class TestLevelGeneration : Node2D
 				//if cannot get left OR up key than create new key
 				else
 				{
-					dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] =  currentID++;
-					sizeOfPixelGroup[currentID] = newKey++;
+					dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = nextNewPixelID++;
+					sizeOfPixelGroup[nextNewPixelID] = 1;
 				}
 			}
 		}
 		
-		Console.WriteLine("Max ID = " +  currentID.ToString());
-
-
-		/*
-		bool changed = true;
-		while(changed)
-		{
-			changed = false;
-			for(int i = 0; i < AdjacentSets.Count; ++i)
-			{
-			if(changed)
-				break;
-
-			for(int j = 0; j < AdjacentSets.Count; ++j)
-			{
-				if(i == j)
-				continue;
-				
-				//If the intersect contains any overlap than combine the sets
-				if(AdjacentSets.ElementAt(i).Intersect(AdjacentSets.ElementAt(j)).Any())
-				{
-				Console.WriteLine("Merging Sets");
-
-				//combine sets
-				AdjacentSets.ElementAt(i).UnionWith(AdjacentSets.ElementAt(j));
-
-				Console.WriteLine("I is" + i.ToString());
-				Console.WriteLine("J is" + j.ToString());
-
-				//remove other set
-				AdjacentSets.RemoveAt(j);
-				changed = true;
-				break;
-				}
-			}      
-			}
-		}
-		*/
+		Console.WriteLine("Max ID = " +  nextNewPixelID.ToString());
 
 		//Print a tree of each current ID
-		for(int i = 0; i < currentID; i++)
+		for(int i = 0; i < nextNewPixelID; i++)
 		{
 			//Print the parent path
 			int initialID = i;
@@ -356,7 +307,6 @@ public class TestLevelGeneration : Node2D
 			}
 			GD.Print(treeRoot);
 		}
-		
 
 		//put all the pixels into this new map so that we have the links between each pixel and each set still
 		Dictionary<KeyValuePair<int, int>, int> listOfCoords = new Dictionary<KeyValuePair<int, int>, int>();
@@ -368,7 +318,6 @@ public class TestLevelGeneration : Node2D
 			var element = dictIDToListofCoords.ElementAt(i);
 			var key = element.Key;
 			var value = element.Value;
-
 
 			int initialID = element.Value;
 			int ID = element.Value;
@@ -400,7 +349,6 @@ public class TestLevelGeneration : Node2D
 				Console.WriteLine("Count of pixels with ID " + i.ToString() + " Is " + sizeOfPixelGroup[i].ToString());
 			}
 		}
-
 
 		//set the flood fill map according to the data 
 		/*
@@ -450,7 +398,7 @@ public class TestLevelGeneration : Node2D
 		//update bitmask for auto tile
 		ForegroundMap.UpdateBitmaskRegion(new Vector2(-width/2, -height/2), new Vector2(width/2, height/2));
 
-		ForegroundMap.SetCell(width / 2, width / 2,TestTile);
+		//ForegroundMap.SetCell(width / 2, width / 2,TestTile);
 	}
 
 	//Runs game of life a single iteration
