@@ -1,0 +1,9 @@
+﻿---
+BasedOnStyle: Microsoft
+AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: 'true'
+AlignConsecutiveDeclarations: 'false'
+BreakInheritanceList: AfterColon
+IndentWidth: '4'
+
+...
