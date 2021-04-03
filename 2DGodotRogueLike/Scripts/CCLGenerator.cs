@@ -27,6 +27,9 @@ public class CCLGenerator
 	//key = ID of node, value = ID of parent
 	Dictionary<int,int> IDToParent = new Dictionary<int, int>();
 	
+	//TODO it looks like the example uses a list of pairs and a list of roots
+	//a root is an ID that is the value of a pair but if its the key to a pair remove it
+	
 	const int maxNumGroups = 100000;
 	//ID to size for the first iteration
 	int [] sizeOfPixelGroup = new int [maxNumGroups];
