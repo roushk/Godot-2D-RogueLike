@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/ManyColors.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/CameraMovement.cs" type="Script" id=4]
+[ext_resource path="res://TemplateScenes/IDAndColorUIElement.tscn" type="PackedScene" id=5]
 
 [sub_resource type="TileSet" id=1]
 0/name = "ManyColors.png 0"
@@ -1575,7 +1576,7 @@
 111/shapes = [  ]
 111/z_index = 0
 
-[node name="Node2D" type="Node2D"]
+[node name="RootNode" type="Node2D"]
 script = ExtResource( 1 )
 initialDeadChance = 45
 deathLimit = 3
@@ -1601,3 +1602,75 @@ format = 1
 current = true
 zoom = Vector2( 5, 5 )
 script = ExtResource( 4 )
+
+[node name="GUI" type="MarginContainer" parent="."]
+margin_left = 364.682
+margin_top = -465.59
+margin_right = 664.682
+margin_bottom = 34.4101
+rect_rotation = 0.235454
+rect_scale = Vector2( 2.07961, 2.20048 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
+margin_right = 300.0
+margin_bottom = 500.0
+
+[node name="Button5" type="Button" parent="GUI/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 20.0
+text = "Generate Complete Map"
+
+[node name="Button" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 44.0
+text = "Generate New Tile Map"
+
+[node name="Button2" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 48.0
+margin_right = 300.0
+margin_bottom = 68.0
+text = "Iterate Simulation Once"
+
+[node name="Button3" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 72.0
+margin_right = 300.0
+margin_bottom = 92.0
+text = "Generate Cave Groups"
+
+[node name="Button4" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 96.0
+margin_right = 300.0
+margin_bottom = 116.0
+text = "Clear Map"
+
+[node name="MapGenColorList" type="MarginContainer" parent="."]
+margin_left = -859.961
+margin_top = -548.745
+margin_right = -559.961
+margin_bottom = -48.7447
+rect_rotation = 0.235454
+rect_scale = Vector2( 2.13898, 2.43508 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MapGenColorList"]
+margin_right = 300.0
+margin_bottom = 500.0
+
+[node name="Label" type="Label" parent="MapGenColorList/VBoxContainer2"]
+margin_right = 300.0
+margin_bottom = 14.0
+text = "Map Generation Cave Color to ID"
+
+[node name="HBoxContainer" parent="MapGenColorList/VBoxContainer2" instance=ExtResource( 5 )]
+margin_right = 300.0
+[connection signal="pressed" from="GUI/VBoxContainer/Button5" to="." method="GenerateCompleteMapButton_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button" to="." method="GenerateNewTileMapButton_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button2" to="." method="IterateSimulationOnce_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button3" to="." method="GenerateCaveGroups_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button4" to="." method="ClearMapButton_Callback"]

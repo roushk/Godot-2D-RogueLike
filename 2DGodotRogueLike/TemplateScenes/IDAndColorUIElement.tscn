@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="AnimatedTexture" id=1]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+margin_top = 18.0
+margin_right = 209.0
+margin_bottom = 32.0
+rect_pivot_offset = Vector2( -151.159, 145.572 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 31.0
+margin_bottom = 14.0
+text = "ID: X"
+
+[node name="Panel" type="Panel" parent="Label"]
+margin_left = 50.0
+margin_top = 2.0
+margin_right = 70.0
+margin_bottom = 22.0
+rect_scale = Vector2( 5.28381, 0.483846 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="Label/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.380392, 0.180392, 0.180392, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Label/Panel"]
+position = Vector2( 5.25389, 0 )
+scale = Vector2( 11.5078, 1 )
+texture = SubResource( 1 )

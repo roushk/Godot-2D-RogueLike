@@ -2,8 +2,55 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+
+
+
 public class TestLevelGeneration : Node2D
 {
+
+	//Signals
+	public void GenerateCompleteMapButton_Callback()
+	{
+		GenerateMap(maxIterations, true);
+		ContiguousCaveSort();
+		UpdateMapData();
+	}
+
+	//func called when GenerateNewTileMapButton is pressed
+	public void GenerateNewTileMapButton_Callback()
+	{
+		GD.Print("Clicked Generate New Tile Map Button");
+		GenerateMap(maxIterations, true);
+		UpdateMapData();
+
+	}
+
+		//func called when PruneTileMap is pressed
+	public void IterateSimulationOnce_Callback()
+	{
+		GD.Print("Clicked Prune Tile Map Button");
+		GenerateMap(1, false);
+		UpdateMapData();
+	}
+
+
+	//func called when GenerateCaveGroups is pressed
+	public void GenerateCaveGroups_Callback()
+	{
+		GD.Print("Generate Cave Groups Button");
+		ContiguousCaveSort();
+		UpdateMapData();
+	}
+
+	  public void ClearMapButton_Callback()
+  {
+		GD.Print("Clicked Clear Map Button");
+		ClearMap();
+	}
+
+	public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
+	Node MapGenColorListNode;
 
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	//map  0,0 = bottom right
@@ -54,16 +101,16 @@ public class TestLevelGeneration : Node2D
 
   Random random;
 
-
   //bounds of cell for neighbor check
   Vector2[] neighborsToCheck;
 
   int [,] terrainMap;
 
-
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
+		MapGenColorListNode = GetTree().Root.GetNode("RootNode/GUI/MapGenColorList/VBoxContainer2");
+
 		//link forground and background map variables to the nodes
 
 		random = new Random();
@@ -87,28 +134,18 @@ public class TestLevelGeneration : Node2D
 		FloodFillMap = GetNode("FloodFillMap") as TileMap;
 
 		GenerateMap(maxIterations, true);
-		runSimulation();
+		ContiguousCaveSort();
+		UpdateMapData();
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
   {
-	  if(Input.IsActionJustPressed("GenerateMap"))
-	  {
-			GenerateMap(maxIterations, true);
-			runSimulation();
-	  }
 
-	  if(Input.IsActionJustPressed("IterateMap"))
-	  {
-			runSimulation();
-	  }
-		
   }
 
-
   //clears the map
-  public void clearMap()
+  public void ClearMap()
   {
 		ForegroundMap.Clear();
 		FloodFillMap.Clear();
@@ -122,7 +159,7 @@ public class TestLevelGeneration : Node2D
 
 		if(newMap)
 		{
-			clearMap();
+			ClearMap();
 			terrainMap = new int[width, height];
 			initPositions();
 		}
@@ -172,9 +209,8 @@ public class TestLevelGeneration : Node2D
 		}
   }
 
-
   //runs simulation
-  public void runSimulation()
+  public void ContiguousCaveSort()
   {
 		//Going from top left to bottom right
 		//from an arbitary pixel p
@@ -305,6 +341,14 @@ public class TestLevelGeneration : Node2D
 				//follow tree up
 				ID = IDout;
 			}
+
+			//Node newNode = IDColorMapScene.Instance();
+			//MapGenColorListNode.AddChild(newNode);
+			//newNode.Owner = MapGenColorListNode;
+
+			//(newNode.FindNode("Label", true, true) as Label).Text = "ID: " + ID;
+			//(newNode.FindNode("ColorRect", true, true) as ColorRect).Color = ;
+
 			GD.Print(treeRoot);
 		}
 
@@ -361,8 +405,6 @@ public class TestLevelGeneration : Node2D
 			
 		}
 		*/
-
-		UpdateMapData();
   }
 
 	private void UpdateMapData()
