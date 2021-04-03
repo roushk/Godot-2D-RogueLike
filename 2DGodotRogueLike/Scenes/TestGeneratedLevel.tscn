@@ -1575,6 +1575,20 @@
 111/shape_one_way_margin = 0.0
 111/shapes = [  ]
 111/z_index = 0
+112/name = "ManyColors.png 112"
+112/texture = ExtResource( 3 )
+112/tex_offset = Vector2( 0, 0 )
+112/modulate = Color( 1, 1, 1, 1 )
+112/region = Rect2( 16, 0, 16, 16 )
+112/tile_mode = 0
+112/occluder_offset = Vector2( 0, 0 )
+112/navigation_offset = Vector2( 0, 0 )
+112/shape_offset = Vector2( 0, 0 )
+112/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+112/shape_one_way = false
+112/shape_one_way_margin = 0.0
+112/shapes = [  ]
+112/z_index = 0
 
 [node name="RootNode" type="Node2D"]
 script = ExtResource( 1 )
@@ -1584,7 +1598,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 15
 BottomTile = 13
-tileMapSize = Vector2( 32, 32 )
+tileMapSize = Vector2( 128, 128 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -1641,10 +1655,22 @@ margin_right = 300.0
 margin_bottom = 92.0
 text = "Generate Cave Groups"
 
-[node name="Button4" type="Button" parent="GUI/VBoxContainer"]
+[node name="Button6" type="Button" parent="GUI/VBoxContainer"]
 margin_top = 96.0
 margin_right = 300.0
 margin_bottom = 116.0
+text = "View Root Groups"
+
+[node name="Button7" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 120.0
+margin_right = 300.0
+margin_bottom = 140.0
+text = "View Individual Groups"
+
+[node name="Button4" type="Button" parent="GUI/VBoxContainer"]
+margin_top = 144.0
+margin_right = 300.0
+margin_bottom = 164.0
 text = "Clear Map"
 
 [node name="MapGenColorList" type="MarginContainer" parent="."]
@@ -1673,4 +1699,6 @@ margin_right = 300.0
 [connection signal="pressed" from="GUI/VBoxContainer/Button" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Button2" to="." method="IterateSimulationOnce_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Button3" to="." method="GenerateCaveGroups_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button6" to="." method="ViewRootGroups_Callback"]
+[connection signal="pressed" from="GUI/VBoxContainer/Button7" to="." method="ViewIndividualGroups_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Button4" to="." method="ClearMapButton_Callback"]
