@@ -18,6 +18,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\AnimatedTilesetTileSettings.cs" />
+    <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />
     <Compile Include="Scripts\CCLGenerator.cs" />
     <Compile Include="Scripts\CraftingMaterial.cs" />
