@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-//ConnectedComponentLabelingGenerator
+//Connected Component Labeling Generator using the Game of Life as the basis for initial level gen
 public class CCLGenerator
 {
 	public enum VisualizeMode

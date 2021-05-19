@@ -26,6 +26,8 @@
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\PlayerTopDown.cs" />
     <Compile Include="Scripts\TestLevelGeneration.cs" />
+    <Compile Include="Scripts\WFC Simple Tile Model\WFC2DTile.cs" />
+    <Compile Include="Scripts\WFC Simple Tile Model\WFCSimpleTiledModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scenes\" />
