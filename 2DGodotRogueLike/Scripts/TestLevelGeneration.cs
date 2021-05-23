@@ -7,40 +7,15 @@ public class TestLevelGeneration : Node2D
 {
 
 	public CCLGenerator CCLGen = new CCLGenerator();
-	//Signals
-	public void GenerateCompleteMapButton_Callback()
-	{
-		GenerateMap(maxIterations, true);
-		CCLGen.UpdateMap(width, height, ref terrainMap);
-		CCLGen.CCLAlgorithm();
-		UpdateMapData();
-	}
+	public WFCSimpleTiledModel WFCSTM = new WFCSimpleTiledModel();
 
-	//func called when GenerateNewTileMapButton is pressed
+	//General Signals
 	public void GenerateNewTileMapButton_Callback()
 	{
 		GD.Print("Clicked Generate New Tile Map Button");
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateMap(width, height, ref terrainMap);
-		UpdateMapData();
-
-	}
-
-		//func called when PruneTileMap is pressed
-	public void IterateSimulationOnce_Callback()
-	{
-		GD.Print("Clicked Prune Tile Map Button");
-		GenerateMap(1, false);
-		CCLGen.UpdateMap(width, height, ref terrainMap);
-		UpdateMapData();
-	}
-
-
-	//func called when GenerateCaveGroups is pressed
-	public void GenerateCaveGroups_Callback()
-	{
-		GD.Print("Generate Cave Groups Button");
-		CCLGen.CCLAlgorithm();
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
 
@@ -50,16 +25,57 @@ public class TestLevelGeneration : Node2D
 		ClearMap();
 	}
 
-	public void ViewRootGroups_Callback()
+	//CCL Signals
+	public void CCL_GenerateCompleteMapButton_Callback()
+	{
+		GenerateMap(maxIterations, true);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.CCLAlgorithm();
+		UpdateMapData();
+	}
+
+	public void CCL_IterateSimulationOnce_Callback()
+	{
+		GD.Print("Clicked Prune Tile Map Button");
+		GenerateMap(1, false);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		UpdateMapData();
+	}
+
+	public void CCL_GenerateCaveGroups_Callback()
+	{
+		GD.Print("Generate Cave Groups Button");
+		CCLGen.CCLAlgorithm();
+		UpdateMapData();
+	}
+
+	public void CCL_ViewRootGroups_Callback()
 	{
 		GD.Print("Clicked ViewRootGroups_Callback Button");
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Root);
 	}
 
-	public void ViewIndividualGroups_Callback()
+	public void CCL_ViewIndividualGroups_Callback()
 	{
 		GD.Print("Clicked ViewRootGroups_Callback Button");
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Individual);
+	}
+
+	//WFC Signals
+	public void WFC_GenerateCompleteMapButton_Callback()
+	{
+		GenerateMap(maxIterations, true);
+		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.CCLAlgorithm();
+		UpdateMapData();
+	}
+
+	public void WFC_IterateSimulationOnce_Callback()
+	{
+		GD.Print("Clicked Prune Tile Map Button");
+		GenerateMap(1, false);
+		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
+		UpdateMapData();
 	}
 
 	public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
@@ -150,7 +166,7 @@ public class TestLevelGeneration : Node2D
 
 		CCLGen.SetVisualizationMap(ref mapIDVisualizationRef);
 		
-		CCLGen.UpdateMap(width, height, ref terrainMap);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 
 		CCLGen.CCLAlgorithm();
 		UpdateMapData();
