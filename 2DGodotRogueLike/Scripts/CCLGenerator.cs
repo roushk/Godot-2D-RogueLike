@@ -39,7 +39,7 @@ public class CCLGenerator
 		mapIDVisualization = _mapIDVisualization;
 	}
 
-	public void UpdateCCLInternalMap(int _width, int _height, ref int [,] _terrainMap)
+	public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
 	{
 		width = _width;
 		height = _height;

@@ -14,7 +14,7 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked Generate New Tile Map Button");
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
@@ -29,7 +29,7 @@ public class TestLevelGeneration : Node2D
 	public void CCL_GenerateCompleteMapButton_Callback()
 	{
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		UpdateMapData();
 	}
@@ -38,7 +38,7 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked Prune Tile Map Button");
 		GenerateMap(1, false);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
 
@@ -66,7 +66,7 @@ public class TestLevelGeneration : Node2D
 	{
 		GenerateMap(maxIterations, true);
 		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
-		CCLGen.CCLAlgorithm();
+		//WFCSTM.CCLAlgorithm();
 		UpdateMapData();
 	}
 
@@ -166,7 +166,7 @@ public class TestLevelGeneration : Node2D
 
 		CCLGen.SetVisualizationMap(ref mapIDVisualizationRef);
 		
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 
 		CCLGen.CCLAlgorithm();
 		UpdateMapData();
