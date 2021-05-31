@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="2D Godot Rogue Like"
-run/main_scene="res://Scenes/TestScene.tscn"
+run/main_scene="res://Scenes/CraftingTestingArea.tscn"
 config/icon="res://icon.png"
 
 [display]
