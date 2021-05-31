@@ -1,5 +1,43 @@
 using Godot;
 using System;
+using Godot.Collections;
+
+public class BaseCraftingMaterials : Resource
+{
+    [Export]
+    public string name { get; private set; } = "BaseCraftingMaterial";
+
+    [Export]
+    public int ingotCost { get; private set; } = 5;
+
+    [Export]
+    public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
+
+    [Export]
+    public Color tint = new Color(0,0,0,0);
+
+    public TextureRect sprite = new TextureRect();
+
+    [Export(PropertyHint.Enum)]
+    public Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>> materialProperties;
+    
+    public BaseCraftingMaterials()
+    {
+        materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
+        materialProperties[Pieces.PieceType.SwordBlade] = new Array<Materials.MaterialStatData>();
+        materialProperties[Pieces.PieceType.SwordBlade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
+    }
+
+    public BaseCraftingMaterials(string _name, int _ingotCost, Materials.MaterialType _materialType, Color _tint) 
+    {
+        materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
+        
+        name = _name;
+        ingotCost = _ingotCost;
+        materialType = materialType;
+        tint = _tint;
+    }
+}
 
 namespace Materials
 {
@@ -27,24 +65,54 @@ namespace Materials
         Metal,
         Wood,
         String,
-    } 
+    }
 
-    public class BaseCraftingMaterial
+    public enum MaterialStatType
     {
-        public string name { get; private set; } = "BaseCraftingMaterial";
-        public int ingotCost { get; private set; } = 5;
-        public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
-        public Material material { get; private set; } = Material.Undefined;
-        public Color tint = new Color(0,0,0,0);
+        Undefined,
+        Damage,
+        CritChange,
+        CritDamage,
+        AttackSpeed,
+        Health,
+    }
 
-        public BaseCraftingMaterial(string _name, int _ingotCost, Materials.MaterialType _materialType, Materials.Material _material, Color _tint) 
-        {
-            name = _name;
-            ingotCost = _ingotCost;
-            materialType = materialType;
-            material = _material;
-            tint = _tint;
-        }
+    //Material Stat Data Piece
+    public class MaterialStatData : Resource
+    {
+        public MaterialStatData(MaterialStatType _statType, int _statData){statType = _statType;statData = _statData;}
+
+        [Export]
+        public MaterialStatType statType = MaterialStatType.Undefined;
+
+        [Export]
+        public int statData = 0;
     }
 }
+
+namespace Pieces
+{
+    //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
+    public enum PieceType
+    {
+        Undefined,
+        LargeHandle,
+        ToolCrossing,
+        PickaxeHead,
+        AxeHead,
+        MediumBlade,
+        MediumGuard,
+        SmallBlade,
+        SmallGuard,
+        SmallHandle,
+        Pommel,
+    }
+
+    //Pickaxe is {LargeHandle, ToolCrossing, PickaxeHead}
+    //Axe is {LargeHandle, ToolCrossing, AxeHead}
+    //Dagger is {Pommel, Small Handle, Small Guard, Small Blade}
+    //Sword is a {Pommel, Small Handle, Medium Guard, Medium Blade}
+
+}
+
 

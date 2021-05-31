@@ -38,9 +38,9 @@ __meta__ = {
 
 [node name="SwordBlade" type="TextureRect" parent="CenterContainer"]
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 3.0
 margin_right = 36.0
-margin_bottom = 36.0
+margin_bottom = 35.0
 texture = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -48,9 +48,9 @@ __meta__ = {
 
 [node name="SwordGuard" type="TextureRect" parent="CenterContainer"]
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 3.0
 margin_right = 36.0
-margin_bottom = 36.0
+margin_bottom = 35.0
 texture = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -58,9 +58,9 @@ __meta__ = {
 
 [node name="SwordHandle" type="TextureRect" parent="CenterContainer"]
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 3.0
 margin_right = 36.0
-margin_bottom = 36.0
+margin_bottom = 35.0
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -68,9 +68,9 @@ __meta__ = {
 
 [node name="SwordPommel" type="TextureRect" parent="CenterContainer"]
 margin_left = 4.0
-margin_top = 4.0
+margin_top = 3.0
 margin_right = 36.0
-margin_bottom = 36.0
+margin_bottom = 35.0
 texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false

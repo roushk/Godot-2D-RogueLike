@@ -3,15 +3,17 @@ using System;
 using Godot.Collections;
 using System.Collections.Generic;
 
-public class BaseBlueprint 
+public class BaseBlueprint : Resource
 {
+    [Export]
     public string name { get; private set; } = "BaseBlueprint";
 
     //A blueprint is made up of a list of required pieces
-    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType> {Pieces.PieceType.WeaponPommel, Pieces.PieceType.WeaponHandle, Pieces.PieceType.SwordBlade, Pieces.PieceType.SwordGuard};
+    [Export]
+    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>();
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
-    public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.Piece> existingPieces)
+    public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.BasePiece> existingPieces)
     {
         //create copies
         List<long> usedPieces = new List<long>();

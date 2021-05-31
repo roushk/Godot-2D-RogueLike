@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/ModularWeapons/BaseCraftingMaterials.cs" type="Script" id=1]
+
+[sub_resource type="CSharpScript" id=1]
+
+[sub_resource type="Resource" id=2]
+script = SubResource( 1 )
+
+[resource]
+script = ExtResource( 1 )
+name = "BaseCraftingMaterial"
+ingotCost = 5
+materialType = 0
+tint = Color( 0, 0, 0, 0 )
+materialProperties = {
+5: [ SubResource( 2 ) ]
+}

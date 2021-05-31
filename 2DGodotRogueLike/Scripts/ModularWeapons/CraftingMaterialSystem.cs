@@ -26,14 +26,11 @@ public class CraftingMaterialSystem : Node
         ingot.Modulate = materialTints[Materials.Material.Adamantite];
     }
 
-
-
-
     //Dict of material tints to lookup of pieces
     Dictionary<Materials.Material, Color> materialTints = new Dictionary<Materials.Material, Color>();
 
     //Dict of type to list of pieces
-    Dictionary<Pieces.PieceType, Array<Pieces.Piece>> pieces = new Dictionary<Pieces.PieceType, Array<Pieces.Piece>>();
+    Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>> pieces = new Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>>();
     
     TextureRect ingot;
 
@@ -46,7 +43,7 @@ public class CraftingMaterialSystem : Node
         //For each Piece type generate an array in the pieces dict
         foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
         { 
-            pieces[type] = new Array<Pieces.Piece>();
+            pieces[type] = new Array<Pieces.BasePiece>();
         }
 
         Color ironBaseColor = new Color("e8e8e8");
