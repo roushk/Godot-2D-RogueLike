@@ -22,6 +22,7 @@
     <Compile Include="Scripts\ModularWeapons\BaseBlueprint.cs" />
     <Compile Include="Scripts\ModularWeapons\BasePiece.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseCraftingMaterials.cs" />
+    <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
     <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />
     <Compile Include="Scripts\CCLGenerator.cs" />
