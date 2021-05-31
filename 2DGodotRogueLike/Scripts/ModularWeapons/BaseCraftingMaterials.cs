@@ -24,8 +24,8 @@ public class BaseCraftingMaterials : Resource
     public BaseCraftingMaterials()
     {
         materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
-        materialProperties[Pieces.PieceType.SwordBlade] = new Array<Materials.MaterialStatData>();
-        materialProperties[Pieces.PieceType.SwordBlade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
+        materialProperties[Pieces.PieceType.MediumBlade] = new Array<Materials.MaterialStatData>();
+        materialProperties[Pieces.PieceType.MediumBlade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
     }
 
     public BaseCraftingMaterials(string _name, int _ingotCost, Materials.MaterialType _materialType, Color _tint) 
@@ -97,9 +97,15 @@ namespace Pieces
     {
         Undefined,
         LargeHandle,
-        ToolCrossing,
+        MediumHandle,   //Art Todo
+        ToolBinding,
         PickaxeHead,
-        AxeHead,
+        AxeHead,    
+        MaceHead,       
+        HammerHead,     //Art Todo
+        BattleaxeHead,  //Art Todo
+        LargeBlade,     
+        LargeGuard,     //Art Todo
         MediumBlade,
         MediumGuard,
         SmallBlade,
@@ -108,8 +114,8 @@ namespace Pieces
         Pommel,
     }
 
-    //Pickaxe is {LargeHandle, ToolCrossing, PickaxeHead}
-    //Axe is {LargeHandle, ToolCrossing, AxeHead}
+    //Pickaxe is {LargeHandle, ToolBinding, PickaxeHead}
+    //Axe is {LargeHandle, ToolBinding, AxeHead}
     //Dagger is {Pommel, Small Handle, Small Guard, Small Blade}
     //Sword is a {Pommel, Small Handle, Medium Guard, Medium Blade}
 

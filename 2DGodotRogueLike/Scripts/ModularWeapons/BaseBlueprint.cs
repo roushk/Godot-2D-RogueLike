@@ -7,10 +7,13 @@ public class BaseBlueprint : Resource
 {
     [Export]
     public string name { get; private set; } = "BaseBlueprint";
+    
+    [Export]
+    public string iconSprite  { get; private set; } = "Medium_Sword";
 
     //A blueprint is made up of a list of required pieces
-    [Export]
-    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>();
+    [Export(PropertyHint.Enum)]
+    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>{Pieces.PieceType.MediumBlade};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
     public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.BasePiece> existingPieces)

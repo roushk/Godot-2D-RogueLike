@@ -148,6 +148,15 @@ margin_bottom = 260.0
 margin_top = 264.0
 margin_right = 117.0
 margin_bottom = 284.0
+
+[node name="Blueprints" type="GridContainer" parent="."]
+margin_left = 1.17838
+margin_top = 192.238
+margin_right = 107.178
+margin_bottom = 298.238
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="SwitchToIronOnButtonPressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="SwitchToCopperOnButtonPressed"]
 [connection signal="pressed" from="VBoxContainer/Button3" to="." method="SwitchToTinOnButtonPressed"]

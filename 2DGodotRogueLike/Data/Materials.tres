@@ -14,5 +14,5 @@ ingotCost = 5
 materialType = 0
 tint = Color( 0, 0, 0, 0 )
 materialProperties = {
-5: [ SubResource( 2 ) ]
+11: [ SubResource( 2 ) ]
 }

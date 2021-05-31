@@ -34,6 +34,9 @@ public class CraftingMaterialSystem : Node
     
     TextureRect ingot;
 
+    BaseBlueprint currentblueprint = (BaseBlueprint)GD.Load("res://Data/BigAssSwordBP.tres");
+
+    Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
     public override void _Ready()
     {
@@ -62,10 +65,76 @@ public class CraftingMaterialSystem : Node
         materialTints[Materials.Material.Cobalt] =      new Color("a2aee8");
         materialTints[Materials.Material.Darksteel] =   new Color("696969");
         materialTints[Materials.Material.Titanium] =    new Color("ffffff");
+
+        //For each BP in BP folder, load them
+        Directory blueprintDir = new Directory();
+        //Set dir to BP folder
+        const string FullBPDir = "res://Data/Blueprints/";
+
+        Directory spriteDir = new Directory();
+        const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
+
+
+        var bpNode = GetNode("Blueprints") as GridContainer;
+        
+        //Load sprites for bp's
+        if(spriteDir.Open(FullSpriteDir) != Error.Ok)
+        {
+            throw(new Exception("Yo shit broke loading BP sprite Icons"));
+        }
+
+        //Load blueprint resources 
+        if(blueprintDir.Open(FullBPDir) == Error.Ok)
+        {
+            blueprintDir.ListDirBegin(true, true);
+
+            //GetNext closes the Dir
+            string nextBlueprint = blueprintDir.GetNext();
+
+            //While not empty string
+            while(nextBlueprint != "")
+            {
+                Console.WriteLine("Loading Blueprint \"" + FullBPDir + nextBlueprint + "\"");
+                BaseBlueprint loadedBP = (BaseBlueprint)GD.Load(FullBPDir + nextBlueprint);
+
+                //Load the icon for the BP + generate new texture
+                Texture loadedBPIcon = (Texture)GD.Load(FullSpriteDir + loadedBP.iconSprite + ".png");
+
+                //Configure Button
+                TextureButton newTexRect = new TextureButton();
+                newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
+                newTexRect.TextureNormal = loadedBPIcon;
+
+                newTexRect.SetSize(new Vector2(10,10));
+                //Load the icons
+                bpNode.AddChild(newTexRect);
+                //Load the bp's
+                blueprints.Add(loadedBP.name, loadedBP);
+
+                //iterate next BP's
+                nextBlueprint = blueprintDir.GetNext();
+            }
+        }
+        else
+        {
+            throw(new Exception("Yo shit broke loading Blueprints"));
+        }
+        
+        
+
+        //For each blueprint
+        foreach (var bp in blueprints)
+        {
+            //Create new node inside of the blueprints 
+ 
+        }
     }
 
     public override void _Process(float delta)
     {
-
+        foreach (var bp in blueprints)
+        {
+            
+        }
     }
 }
