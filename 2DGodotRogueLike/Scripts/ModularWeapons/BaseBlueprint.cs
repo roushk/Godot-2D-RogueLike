@@ -11,10 +11,10 @@ public class BaseBlueprint
     public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType> {Pieces.PieceType.WeaponPommel, Pieces.PieceType.WeaponHandle, Pieces.PieceType.SwordBlade, Pieces.PieceType.SwordGuard};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
-    public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.Piece> materials)
+    public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.Piece> existingPieces)
     {
         //create copies
-        List<long> usedMaterials = new List<long>();
+        List<long> usedPieces = new List<long>();
 
         //List of missing pieces
         Array<Pieces.PieceType> missingPieces = new Array<Pieces.PieceType>();
@@ -22,22 +22,22 @@ public class BaseBlueprint
         //For every piece
         foreach (var requiredPiece in requiredPieces)
         {
-            bool foundMaterial = false;
+            bool foundPiece = false;
             //check through the existing materials
-            foreach (var existingMaterial in materials)
+            foreach (var existingPiece in existingPieces)
             {
                 //If we have the correct piece type and its not contained within the already used materials
-                if(existingMaterial.pieceType == requiredPiece && !usedMaterials.Contains(existingMaterial.uuid))
+                if(existingPiece.pieceType == requiredPiece && !usedPieces.Contains(existingPiece.uuid))
                 {
                     //add it to the list of used materials and break searching for the current piece
-                    usedMaterials.Add(existingMaterial.uuid);
-                    foundMaterial = true;
+                    usedPieces.Add(existingPiece.uuid);
+                    foundPiece = true;
                     break;
                 }
             }
 
             //If we get to the end of the materials and we have not found a material then add a missing material to the list
-            if(foundMaterial == false)
+            if(foundPiece == false)
             {
                 missingPieces.Add(requiredPiece);
             }

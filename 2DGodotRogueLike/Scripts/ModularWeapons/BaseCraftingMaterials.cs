@@ -1,21 +1,51 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public class Materials : Node
+namespace Materials
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    //Each material is linked to a tint
+    public enum Material
     {
-        
+        Undefined,
+        Iron,
+        Bronze,
+        Copper,
+        Tin,
+        Steel,
+        Gold,
+        Platinum,
+        Adamantite,
+        Mithril,
+        Cobalt,
+        Darksteel,
+        Titanium,
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public enum MaterialType
+    {
+        Undefined,
+        Metal,
+        Wood,
+        String,
+    } 
+
+    public class BaseCraftingMaterial
+    {
+        public string name { get; private set; } = "BaseCraftingMaterial";
+        public int ingotCost { get; private set; } = 5;
+        public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
+        public Material material { get; private set; } = Material.Undefined;
+        public Color tint = new Color(0,0,0,0);
+
+        public BaseCraftingMaterial(string _name, int _ingotCost, Materials.MaterialType _materialType, Materials.Material _material, Color _tint) 
+        {
+            name = _name;
+            ingotCost = _ingotCost;
+            materialType = materialType;
+            material = _material;
+            tint = _tint;
+        }
+    }
 }
+
