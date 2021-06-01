@@ -34,7 +34,8 @@ public class CraftingMaterialSystem : Node
     
     BPTextureButton ingot;
 
-    BaseBlueprint currentblueprint;
+    BaseBlueprint selectedBlueprint;
+    Pieces.BasePiece selectedPiece;
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
@@ -50,10 +51,63 @@ public class CraftingMaterialSystem : Node
     TextureRect blueprintIconUI;
     RichTextLabel currentBlueprintText;
 
-
     //TODO determine if we actually need these???
     Array<TextureButton> blueprintVisualPieces = new Array<TextureButton>();
     Array<HBoxContainer> blueprintDetailPieces = new Array<HBoxContainer>();
+
+
+    //Todo replace this with something significantly better..
+    //It will help to change the type from TextureButton to derived class like the other BP thing with callbacks
+    
+    public void UpdateCurrentlySelectedPieceNone()
+    {
+        if(blueprintVisualPieces.Count < 4)
+            return;
+        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);   
+    }
+
+    public void UpdateCurrentlySelectedPiece1()
+    {
+        if(blueprintVisualPieces.Count < 4)
+            return;
+        blueprintVisualPieces[0].Modulate = new Color(1,1,1,1);
+        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);   
+    }
+
+    public void UpdateCurrentlySelectedPiece2()
+    {
+        if(blueprintVisualPieces.Count < 4)
+            return;
+        blueprintVisualPieces[1].Modulate = new Color(1,1,1,1);
+        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);
+    }
+
+    public void UpdateCurrentlySelectedPiece3()
+    {
+        if(blueprintVisualPieces.Count < 4)
+            return;
+        blueprintVisualPieces[2].Modulate = new Color(1,1,1,1);
+        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);
+    }
+
+    public void UpdateCurrentlySelectedPiece4()
+    {
+        if(blueprintVisualPieces.Count < 4)
+            return;
+        blueprintVisualPieces[3].Modulate = new Color(1,1,1,1);
+        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
+        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
+    }
 
     public override void _Ready()
     {
@@ -137,10 +191,17 @@ public class CraftingMaterialSystem : Node
                 //Setup on pressed callback func
                 newTexRect.onButtonPressedCallback = () =>
                 { 
-                    currentblueprint = blueprints[newTexRect.blueprint]; 
-                    blueprintIconUI.Texture = currentblueprint.iconTex;
-                    currentBlueprintText.Text = currentblueprint.name;
+                    //if we are selecting the same BP that we already have selected then break early
+                    if(selectedBlueprint == blueprints[newTexRect.blueprint])
+                        return;
+
+                    selectedBlueprint = blueprints[newTexRect.blueprint]; 
+                    blueprintIconUI.Texture = selectedBlueprint.iconTex;
+                    currentBlueprintText.Text = selectedBlueprint.name;
                     
+                    blueprintDetailPieces.Clear();
+                    blueprintVisualPieces.Clear();
+
                     //Queue all current children to be deleted
                     foreach (Node child in partContainer.GetChildren())
                     {
@@ -156,7 +217,7 @@ public class CraftingMaterialSystem : Node
 
                     int partNum = 0;
                     //Add new piece icons
-                    foreach (var part in currentblueprint.requiredPieces)
+                    foreach (var part in selectedBlueprint.requiredPieces)
                     {
                         //Generate Shadow
                         TextureButton tex = new TextureButton();
@@ -171,7 +232,10 @@ public class CraftingMaterialSystem : Node
                         tex.StretchMode = TextureButton.StretchModeEnum.Scale;
                         tex.RectMinSize = tex.RectSize * tex.RectScale;
                         tex.TextureClickMask = pieceIconBitmasks[part];
-                        
+
+                        //This works
+                        tex.Connect("mouse_entered", this, "UpdateCurrentlySelectedPiece" + partNum.ToString());
+                        tex.Connect("mouse_exited",this,"UpdateCurrentlySelectedPieceNone");
                         //Modulate to 0.5 alpha
                         tex.Modulate = new Color(1,1,1,0.5f);
 
@@ -186,7 +250,7 @@ public class CraftingMaterialSystem : Node
 
                         TextureRect texDetail = hBox.GetChild(0) as TextureRect;
                         //Generate a unique name for the part
-                        texDetail.Name = "DetailPart_" + partNum++;
+                        texDetail.Name = "DetailPart_" + partNum;
                         texDetail.Texture = pieceIcons[part];
                         
                         //Set the size of the rect and need this stuff to get it to expand
@@ -198,6 +262,8 @@ public class CraftingMaterialSystem : Node
 
                         RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
                         detailText.Text = "Correctly Set Detail Text, Very Cool";
+
+                        tex.TextureHover = pieceIcons[part];
                     }
                 };
 

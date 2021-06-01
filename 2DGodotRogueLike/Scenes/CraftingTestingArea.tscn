@@ -45,14 +45,14 @@ __meta__ = {
 }
 
 [node name="CurrentBPVBox" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
-margin_right = 120.0
+margin_right = 110.0
 margin_bottom = 66.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff/CurrentBPVBox"]
-margin_right = 120.0
+margin_right = 110.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 110, 30 )
 text = "Selected Blueprint"
@@ -62,7 +62,7 @@ __meta__ = {
 
 [node name="CurrentBPHBox" type="HBoxContainer" parent="BlueprintBackground/BlueprintStuff/CurrentBPVBox"]
 margin_top = 34.0
-margin_right = 120.0
+margin_right = 110.0
 margin_bottom = 66.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -89,7 +89,7 @@ __meta__ = {
 
 [node name="ScrollContainer" type="ScrollContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 70.0
-margin_right = 120.0
+margin_right = 110.0
 margin_bottom = 102.0
 rect_min_size = Vector2( 32, 32 )
 scroll_horizontal_enabled = false
@@ -105,7 +105,7 @@ __meta__ = {
 
 [node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 106.0
-margin_right = 120.0
+margin_right = 110.0
 margin_bottom = 106.0
 __meta__ = {
 "_edit_use_anchors_": false
