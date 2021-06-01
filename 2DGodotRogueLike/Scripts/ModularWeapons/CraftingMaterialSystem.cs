@@ -32,16 +32,23 @@ public class CraftingMaterialSystem : Node
     //Dict of type to list of pieces
     Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>> pieces = new Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>>();
     
-    TextureRect ingot;
+    BPTextureButton ingot;
 
-    BaseBlueprint currentblueprint = (BaseBlueprint)GD.Load("res://Data/BigAssSwordBP.tres");
+    BaseBlueprint currentblueprint = (BaseBlueprint)GD.Load("res://Data/Blueprints/BigAssSwordBP.tres");
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
+    //Load the BP Icon scene
+    PackedScene BPiconScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BlueprintIcon.tscn");
+
+    TextureRect blueprintIconUI;
+
     public override void _Ready()
     {
-        ingot = GetNode("Ingot") as TextureRect;
-
+        ingot = GetNode("Ingot") as BPTextureButton;
+        blueprintIconUI = GetNode("PartsContainer/BlueprintIcon") as TextureRect;
+        blueprintIconUI.SetSize(new Vector2(10,10));
+        
         //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
         //For each Piece type generate an array in the pieces dict
         foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
@@ -97,20 +104,28 @@ public class CraftingMaterialSystem : Node
                 Console.WriteLine("Loading Blueprint \"" + FullBPDir + nextBlueprint + "\"");
                 BaseBlueprint loadedBP = (BaseBlueprint)GD.Load(FullBPDir + nextBlueprint);
 
+                
                 //Load the icon for the BP + generate new texture
-                Texture loadedBPIcon = (Texture)GD.Load(FullSpriteDir + loadedBP.iconSprite + ".png");
+                Texture loadedBPIcon = (Texture)GD.Load(FullSpriteDir + loadedBP.iconSpriteName + ".png");
+                loadedBP.iconTex = loadedBPIcon;
 
                 //Configure Button
-                TextureButton newTexRect = new TextureButton();
+                BPTextureButton newTexRect = BPiconScene.Instance() as BPTextureButton;
                 newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
                 newTexRect.TextureNormal = loadedBPIcon;
+                newTexRect.blueprint = loadedBP.name;
+                //Setup on pressed callback
+                newTexRect.onButtonPressedCallback = () =>{ currentblueprint = blueprints[newTexRect.blueprint];};
 
-                newTexRect.SetSize(new Vector2(10,10));
+                newTexRect.SetSize(new Vector2(5,5));
+
                 //Load the icons
                 bpNode.AddChild(newTexRect);
                 //Load the bp's
                 blueprints.Add(loadedBP.name, loadedBP);
 
+                
+                
                 //iterate next BP's
                 nextBlueprint = blueprintDir.GetNext();
             }
@@ -132,6 +147,8 @@ public class CraftingMaterialSystem : Node
 
     public override void _Process(float delta)
     {
+        blueprintIconUI.Texture = currentblueprint.iconTex;
+
         foreach (var bp in blueprints)
         {
             

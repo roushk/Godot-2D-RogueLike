@@ -9,8 +9,9 @@ public class BaseBlueprint : Resource
     public string name { get; private set; } = "BaseBlueprint";
     
     [Export]
-    public string iconSprite  { get; private set; } = "Medium_Sword";
+    public string iconSpriteName  { get; private set; } = "Medium_Sword";
 
+    public Texture iconTex { get; set; }
     //A blueprint is made up of a list of required pieces
     [Export(PropertyHint.Enum)]
     public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>{Pieces.PieceType.MediumBlade};

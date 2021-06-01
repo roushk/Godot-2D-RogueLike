@@ -24,7 +24,6 @@
     <Compile Include="Scripts\ModularWeapons\BaseCraftingMaterials.cs" />
     <Compile Include="Scripts\ModularWeapons\BPTextureButton.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
-    <Compile Include="Scripts\ModularWeapons\Test.cs" />
     <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />
     <Compile Include="Scripts\CCLGenerator.cs" />

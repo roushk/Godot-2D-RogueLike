@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Assets/Art/My_Art/Base_Ingot.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/ModularWeapons/CraftingMaterialSystem.cs" type="Script" id=2]
-[ext_resource path="res://Assets/Art/My_Art/Sword_Handle.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Art/My_Art/Sword_Pommel.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Art/My_Art/Sword_Blade.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Art/My_Art/Sword_Guard.png" type="Texture" id=6]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -26,7 +23,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="PartsContainer" type="CenterContainer" parent="."]
 margin_left = 55.7919
 margin_top = 49.2027
 margin_right = 95.7919
@@ -36,7 +33,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SwordBlade" type="TextureRect" parent="CenterContainer"]
+[node name="BlueprintIcon" type="TextureRect" parent="PartsContainer"]
 margin_left = 4.0
 margin_top = 3.0
 margin_right = 36.0
@@ -46,37 +43,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SwordGuard" type="TextureRect" parent="CenterContainer"]
-margin_left = 4.0
-margin_top = 3.0
-margin_right = 36.0
-margin_bottom = 35.0
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SwordHandle" type="TextureRect" parent="CenterContainer"]
-margin_left = 4.0
-margin_top = 3.0
-margin_right = 36.0
-margin_bottom = 35.0
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SwordPommel" type="TextureRect" parent="CenterContainer"]
-margin_left = 4.0
-margin_top = 3.0
-margin_right = 36.0
-margin_bottom = 35.0
-texture = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="InventoryContainer" type="VBoxContainer" parent="."]
 margin_left = 275.0
 margin_top = 10.0
 margin_right = 392.0
@@ -85,79 +52,79 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="Button" type="Button" parent="InventoryContainer"]
 margin_right = 117.0
 margin_bottom = 20.0
 text = "Iron"
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="Button2" type="Button" parent="InventoryContainer"]
 margin_top = 24.0
 margin_right = 117.0
 margin_bottom = 44.0
 text = "Copper"
 
-[node name="Button3" type="Button" parent="VBoxContainer"]
+[node name="Button3" type="Button" parent="InventoryContainer"]
 margin_top = 48.0
 margin_right = 117.0
 margin_bottom = 68.0
 text = "Tin"
 
-[node name="Button4" type="Button" parent="VBoxContainer"]
+[node name="Button4" type="Button" parent="InventoryContainer"]
 margin_top = 72.0
 margin_right = 117.0
 margin_bottom = 92.0
 text = "Adamantite"
 
-[node name="Button5" type="Button" parent="VBoxContainer"]
+[node name="Button5" type="Button" parent="InventoryContainer"]
 margin_top = 96.0
 margin_right = 117.0
 margin_bottom = 116.0
 text = "Steel"
 
-[node name="Button6" type="Button" parent="VBoxContainer"]
+[node name="Button6" type="Button" parent="InventoryContainer"]
 margin_top = 120.0
 margin_right = 117.0
 margin_bottom = 140.0
 
-[node name="Button7" type="Button" parent="VBoxContainer"]
+[node name="Button7" type="Button" parent="InventoryContainer"]
 margin_top = 144.0
 margin_right = 117.0
 margin_bottom = 164.0
 
-[node name="Button8" type="Button" parent="VBoxContainer"]
+[node name="Button8" type="Button" parent="InventoryContainer"]
 margin_top = 168.0
 margin_right = 117.0
 margin_bottom = 188.0
 
-[node name="Button9" type="Button" parent="VBoxContainer"]
+[node name="Button9" type="Button" parent="InventoryContainer"]
 margin_top = 192.0
 margin_right = 117.0
 margin_bottom = 212.0
 
-[node name="Button10" type="Button" parent="VBoxContainer"]
+[node name="Button10" type="Button" parent="InventoryContainer"]
 margin_top = 216.0
 margin_right = 117.0
 margin_bottom = 236.0
 
-[node name="Button11" type="Button" parent="VBoxContainer"]
+[node name="Button11" type="Button" parent="InventoryContainer"]
 margin_top = 240.0
 margin_right = 117.0
 margin_bottom = 260.0
 
-[node name="Button12" type="Button" parent="VBoxContainer"]
+[node name="Button12" type="Button" parent="InventoryContainer"]
 margin_top = 264.0
 margin_right = 117.0
 margin_bottom = 284.0
 
 [node name="Blueprints" type="GridContainer" parent="."]
-margin_left = 1.17838
-margin_top = 192.238
-margin_right = 107.178
-margin_bottom = 298.238
+margin_left = 1.0
+margin_top = 162.0
+margin_right = 138.0
+margin_bottom = 299.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="SwitchToIronOnButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="SwitchToCopperOnButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="SwitchToTinOnButtonPressed"]
-[connection signal="pressed" from="VBoxContainer/Button4" to="." method="SwitchToAdamantiteOnButtonPressed"]
+[connection signal="pressed" from="InventoryContainer/Button" to="." method="SwitchToIronOnButtonPressed"]
+[connection signal="pressed" from="InventoryContainer/Button2" to="." method="SwitchToCopperOnButtonPressed"]
+[connection signal="pressed" from="InventoryContainer/Button3" to="." method="SwitchToTinOnButtonPressed"]
+[connection signal="pressed" from="InventoryContainer/Button4" to="." method="SwitchToAdamantiteOnButtonPressed"]
