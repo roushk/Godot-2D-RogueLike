@@ -38,21 +38,32 @@ public class CraftingMaterialSystem : Node
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
-    Dictionary<Pieces.PieceType,Texture> pieceTextures = new  Dictionary<Pieces.PieceType,Texture>();
+    Dictionary<Pieces.PieceType,Texture> pieceIcons = new  Dictionary<Pieces.PieceType,Texture>();
 
-    //Load the BP Icon scene
-    PackedScene BPiconScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BlueprintIcon.tscn");
+    //Todo: Consider creating Bitmasks for each type of piece and use it when constructing the menu instead of using the basic types???
+    Dictionary<Pieces.PieceType,BitMap> pieceIconBitmasks = new  Dictionary<Pieces.PieceType,BitMap>();
+
+    //Load packed scenes 
+    PackedScene BPIconScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BlueprintIcon.tscn");
+    PackedScene BPPieceDataScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BPPieceDetail.tscn");
 
     TextureRect blueprintIconUI;
     RichTextLabel currentBlueprintText;
 
+
+    //TODO determine if we actually need these???
+    Array<TextureButton> blueprintVisualPieces = new Array<TextureButton>();
+    Array<HBoxContainer> blueprintDetailPieces = new Array<HBoxContainer>();
+
     public override void _Ready()
     {
+        //Setup UI links
         ingot = GetNode("Ingot") as BPTextureButton;
-        blueprintIconUI = GetNode("VSplitContainer/CurrentBlueprint/BlueprintIcon") as TextureRect;
+        
+        blueprintIconUI = FindNode("BlueprintIcon") as TextureRect;
         blueprintIconUI.SetSize(new Vector2(10,10));
-       
-        currentBlueprintText = GetNode("VSplitContainer/CurrentBlueprint/CurrentBPname") as RichTextLabel;
+        
+        currentBlueprintText = FindNode("CurrentBPname") as RichTextLabel;
 
         //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
         //For each Piece type generate an array in the pieces dict
@@ -88,8 +99,11 @@ public class CraftingMaterialSystem : Node
         Directory spriteDir = new Directory();
         const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
 
-        var bpNode = GetNode("Blueprints") as GridContainer;
+        var bpNode = FindNode("GridBlueprints") as GridContainer;
         
+        var partContainer = GetNode("PartsVisualizerContainer") as CenterContainer;
+        var partDetailContainer = FindNode("PartDetailContainer") as VBoxContainer;
+
         //Load sprites for bp's
         if(spriteDir.Open(FullSpriteDir) != Error.Ok)
         {
@@ -109,14 +123,13 @@ public class CraftingMaterialSystem : Node
             {
                 Console.WriteLine("Loading Blueprint \"" + FullBPDir + nextBlueprint + "\"");
                 BaseBlueprint loadedBP = (BaseBlueprint)GD.Load(FullBPDir + nextBlueprint);
-
                 
                 //Load the icon for the BP + generate new texture
                 Texture loadedBPIcon = (Texture)GD.Load(FullSpriteDir + loadedBP.iconSpriteName + ".png");
                 loadedBP.iconTex = loadedBPIcon;
 
                 //Configure Button
-                BPTextureButton newTexRect = BPiconScene.Instance() as BPTextureButton;
+                BPTextureButton newTexRect = BPIconScene.Instance() as BPTextureButton;
                 newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
                 newTexRect.TextureNormal = loadedBPIcon;
                 newTexRect.blueprint = loadedBP.name;
@@ -127,10 +140,64 @@ public class CraftingMaterialSystem : Node
                     currentblueprint = blueprints[newTexRect.blueprint]; 
                     blueprintIconUI.Texture = currentblueprint.iconTex;
                     currentBlueprintText.Text = currentblueprint.name;
+                    
+                    //Queue all current children to be deleted
+                    foreach (Node child in partContainer.GetChildren())
+                    {
+                        partContainer.RemoveChild(child);
+                        child.QueueFree();
+                    }
 
+                    foreach (Node child in partDetailContainer.GetChildren())
+                    {
+                        partDetailContainer.RemoveChild(child);
+                        child.QueueFree();
+                    }
+
+                    int partNum = 0;
+                    //Add new piece icons
                     foreach (var part in currentblueprint.requiredPieces)
                     {
+                        //Generate Shadow
+                        TextureButton tex = new TextureButton();
+                        //Generate a unique name for the part
+                        tex.Name = "Part_" + partNum++;
+                        tex.TextureNormal = pieceIcons[part];
                         
+                        //Set the size of the rect and need this stuff to get it to expand
+                        tex.RectSize = new Vector2(32,32);  //size of tex
+                        tex.RectScale = new Vector2(4,4);   //new scale
+                        tex.Expand = true;
+                        tex.StretchMode = TextureButton.StretchModeEnum.Scale;
+                        tex.RectMinSize = tex.RectSize * tex.RectScale;
+                        tex.TextureClickMask = pieceIconBitmasks[part];
+                        
+                        //Modulate to 0.5 alpha
+                        tex.Modulate = new Color(1,1,1,0.5f);
+
+                        partContainer.AddChild(tex);
+                        blueprintVisualPieces.Add(tex);
+
+                        //Generate Detail Sprites
+                        HBoxContainer hBox = BPPieceDataScene.Instance() as HBoxContainer;
+
+                        partDetailContainer.AddChild(hBox);
+                        blueprintDetailPieces.Add(hBox);
+
+                        TextureRect texDetail = hBox.GetChild(0) as TextureRect;
+                        //Generate a unique name for the part
+                        texDetail.Name = "DetailPart_" + partNum++;
+                        texDetail.Texture = pieceIcons[part];
+                        
+                        //Set the size of the rect and need this stuff to get it to expand
+                        texDetail.RectSize = new Vector2(32,32);  //size of tex
+                        //texDetail.RectScale = new Vector2(1,1);   //new scale
+                        //texDetail.Expand = true;
+                        texDetail.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+                        texDetail.RectMinSize = texDetail.RectSize * texDetail.RectScale;
+
+                        RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
+                        detailText.Text = "Correctly Set Detail Text, Very Cool";
                     }
                 };
 
@@ -147,13 +214,20 @@ public class CraftingMaterialSystem : Node
                 nextBlueprint = blueprintDir.GetNext();
             }
 
-            const string PartSpriteDir = "res://Assets/Art/My_Art/Parts/";
+            const string PartSpriteDir = "res://Assets/Art/My_Art/PartIcons/";
             foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
             { 
                 if(type == Pieces.PieceType.Undefined)
                     continue;
-                Texture newTex =  (Texture)GD.Load(PartSpriteDir + type.ToString() + ".png");
-                pieceTextures.Add(type,newTex);
+                //Standard is load tex from file, no easy way to load image to tex that I can see and docs suggest loading with the Load func instead of creating it with an Image
+                Texture newTex = (Texture)GD.Load(PartSpriteDir + type.ToString() + ".png");
+
+                //Generate bitmap from texture data
+                BitMap newBMP = new BitMap();
+                newBMP.CreateFromImageAlpha(newTex.GetData());
+
+                pieceIcons.Add(type,newTex);
+                pieceIconBitmasks.Add(type, newBMP);
             }
         }
         else

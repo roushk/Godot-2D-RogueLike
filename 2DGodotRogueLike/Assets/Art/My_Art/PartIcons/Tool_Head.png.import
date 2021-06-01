@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Medium_Guard_BigBlade.png-58c0811cb0bc1e76b0945569476ee772.stex"
+path="res://.import/Tool_Head.png-cf5bc114e278f764418477f5ca6256f2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Parts/Medium_Guard_BigBlade.png"
-dest_files=[ "res://.import/Medium_Guard_BigBlade.png-58c0811cb0bc1e76b0945569476ee772.stex" ]
+source_file="res://Assets/Art/My_Art/PartIcons/Tool_Head.png"
+dest_files=[ "res://.import/Tool_Head.png-cf5bc114e278f764418477f5ca6256f2.stex" ]
 
 [params]
 

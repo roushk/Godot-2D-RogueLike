@@ -1,0 +1,24 @@
+[gd_scene format=2]
+
+[node name="BPPieceInfo" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PieceIcon" type="TextureRect" parent="."]
+margin_right = 32.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 32, 32 )
+
+[node name="PieceData" type="RichTextLabel" parent="."]
+margin_left = 36.0
+margin_right = 106.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 70, 32 )
+focus_mode = 2
+text = "Stat 1: + 1 Dmg
+Stat 2: + 2 Speed
+"
+selection_enabled = true

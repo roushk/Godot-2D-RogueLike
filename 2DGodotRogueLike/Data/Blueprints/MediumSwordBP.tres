@@ -6,4 +6,4 @@
 script = ExtResource( 1 )
 name = "MediumSword"
 iconSpriteName = "Medium_Sword"
-requiredPieces = [ 11, 12, 15, 16 ]
+requiredPieces = [ 2, 5, 9, 10 ]
