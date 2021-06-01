@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Sword_Guard.png-0ce0adf850a38772138e90959bd124f5.stex"
+path="res://.import/Medium_Guard_BigBlade.png-58c0811cb0bc1e76b0945569476ee772.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Sword_Guard.png"
-dest_files=[ "res://.import/Sword_Guard.png-0ce0adf850a38772138e90959bd124f5.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Guard_BigBlade.png"
+dest_files=[ "res://.import/Medium_Guard_BigBlade.png-58c0811cb0bc1e76b0945569476ee772.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Sword_Pommel.png-70a8b92517a12f2a1fef32f90632e1a3.stex"
+path="res://.import/Tool_Axe.png-183ec11a284d80128443e26fa2b6566a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Sword_Pommel.png"
-dest_files=[ "res://.import/Sword_Pommel.png-70a8b92517a12f2a1fef32f90632e1a3.stex" ]
+source_file="res://Assets/Art/My_Art/BlueprintIcons/Tool_Axe.png"
+dest_files=[ "res://.import/Tool_Axe.png-183ec11a284d80128443e26fa2b6566a.stex" ]
 
 [params]
 

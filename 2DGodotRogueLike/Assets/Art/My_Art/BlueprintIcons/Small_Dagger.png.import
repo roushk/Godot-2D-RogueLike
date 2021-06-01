@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MediumGuard_Rapier.png-7c5f28cff18a3bfe2573bca9458cddb5.stex"
+path="res://.import/Small_Dagger.png-66fcd4b01c8691dcc39f974092d4c5ba.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/MediumGuard_Rapier.png"
-dest_files=[ "res://.import/MediumGuard_Rapier.png-7c5f28cff18a3bfe2573bca9458cddb5.stex" ]
+source_file="res://Assets/Art/My_Art/BlueprintIcons/Small_Dagger.png"
+dest_files=[ "res://.import/Small_Dagger.png-66fcd4b01c8691dcc39f974092d4c5ba.stex" ]
 
 [params]
 

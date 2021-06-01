@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Tool_Crossing_Wood.png-d9d5103d2d156bdc266607806dc4467d.stex"
+path="res://.import/Large_Blade_Falchion.png-02b1ea895bfb0a16742cddbb91aef371.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Tool_Crossing_Wood.png"
-dest_files=[ "res://.import/Tool_Crossing_Wood.png-d9d5103d2d156bdc266607806dc4467d.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Large_Blade_Falchion.png"
+dest_files=[ "res://.import/Large_Blade_Falchion.png-02b1ea895bfb0a16742cddbb91aef371.stex" ]
 
 [params]
 

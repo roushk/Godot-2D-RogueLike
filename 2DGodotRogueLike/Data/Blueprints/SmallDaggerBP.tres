@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "Pickaxe"
-iconSpriteName = "Tool_Pickaxe"
-requiredPieces = [ 4, 3, 1 ]
+name = "Dagger"
+iconSpriteName = "Small_Dagger"
+requiredPieces = [ 13, 14, 15, 16 ]

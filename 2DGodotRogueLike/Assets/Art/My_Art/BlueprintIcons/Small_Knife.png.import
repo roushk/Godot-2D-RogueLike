@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Axe_Head.png-8250b2cecd10da0b7f26f6bf4a9f8957.stex"
+path="res://.import/Small_Knife.png-100c6eb49ccfafbe556d408d9e7dc3a3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Axe_Head.png"
-dest_files=[ "res://.import/Axe_Head.png-8250b2cecd10da0b7f26f6bf4a9f8957.stex" ]
+source_file="res://Assets/Art/My_Art/BlueprintIcons/Small_Knife.png"
+dest_files=[ "res://.import/Small_Knife.png-100c6eb49ccfafbe556d408d9e7dc3a3.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/LargeBlade_BigBlade.png-732dd8d8b6e48a43876f1fbdef929f91.stex"
+path="res://.import/Small_Blade_Knife.png-83fd5e594a7beb7ca3b67612ad37094b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/LargeBlade_BigBlade.png"
-dest_files=[ "res://.import/LargeBlade_BigBlade.png-732dd8d8b6e48a43876f1fbdef929f91.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Small_Blade_Knife.png"
+dest_files=[ "res://.import/Small_Blade_Knife.png-83fd5e594a7beb7ca3b67612ad37094b.stex" ]
 
 [params]
 

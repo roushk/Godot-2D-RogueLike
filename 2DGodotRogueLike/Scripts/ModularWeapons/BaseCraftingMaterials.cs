@@ -24,8 +24,8 @@ public class BaseCraftingMaterials : Resource
     public BaseCraftingMaterials()
     {
         materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
-        materialProperties[Pieces.PieceType.MediumBlade] = new Array<Materials.MaterialStatData>();
-        materialProperties[Pieces.PieceType.MediumBlade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
+        materialProperties[Pieces.PieceType.Medium_Blade] = new Array<Materials.MaterialStatData>();
+        materialProperties[Pieces.PieceType.Medium_Blade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
     }
 
     public BaseCraftingMaterials(string _name, int _ingotCost, Materials.MaterialType _materialType, Color _tint) 
@@ -90,30 +90,33 @@ namespace Materials
     }
 }
 
+//TODO Move this to a PiecesEnum.cs and generate that code from a list of .png files inside of the My_Art/Parts folder 
 namespace Pieces
 {
     //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
     public enum PieceType
     {
         Undefined,
-        LargeHandle,
-        MediumHandle,   //Art Todo
-        ToolBinding,
-        PickaxeHead,
-        AxeHead,    
-        MaceHead,       
-        HammerHead,     //Art Todo
-        BattleaxeHead,  //Art Todo
-        LargeBlade,     
-        LargeGuard,     //Art Todo
-        MediumBlade,
-        MediumGuard,
-        SmallBlade,
-        SmallGuard,
-        SmallHandle,
+        Large_Blade,
+        Medium_Blade,
+        Small_Blade,
+        Large_Guard,    //Art Todo
+        Medium_Guard,          
+        Small_Guard,
+        Large_Handle,
+        Medium_Handle,
+        Small_Handle,
         Pommel,
-    }
+        Tool_Head,
+        Tool_Crossing,
+        Tool_Handle,
+    //    HammerHead,     //Art Todo
+    //    BattleaxeHead,  //Art Todo
+    //    LargeGuard,     //Art Todo
+    //    MediumHandle,   //Art Todo
+//        Medium_MaceHead,
 
+    }
     //Pickaxe is {LargeHandle, ToolBinding, PickaxeHead}
     //Axe is {LargeHandle, ToolBinding, AxeHead}
     //Dagger is {Pommel, Small Handle, Small Guard, Small Blade}

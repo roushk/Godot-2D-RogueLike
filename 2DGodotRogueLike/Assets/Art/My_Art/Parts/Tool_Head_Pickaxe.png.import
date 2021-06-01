@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Pickaxe_Head.png-9299a810723cf5efbb82e541d64e4e27.stex"
+path="res://.import/Tool_Head_Pickaxe.png-621a40372c192ed808072403428ff32f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Pickaxe_Head.png"
-dest_files=[ "res://.import/Pickaxe_Head.png-9299a810723cf5efbb82e541d64e4e27.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Tool_Head_Pickaxe.png"
+dest_files=[ "res://.import/Tool_Head_Pickaxe.png-621a40372c192ed808072403428ff32f.stex" ]
 
 [params]
 

@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource( 1 )
-name = "BigSword"
-iconSpriteName = "Large_BigBlade"
-requiredPieces = [ 9, 12, 2, 16 ]
+name = "LargeSword"
+iconSpriteName = "Large_Sword"
+requiredPieces = [ 4, 9, 15, 16 ]

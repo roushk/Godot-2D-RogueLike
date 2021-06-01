@@ -14,7 +14,7 @@ public class BaseBlueprint : Resource
     public Texture iconTex { get; set; }
     //A blueprint is made up of a list of required pieces
     [Export(PropertyHint.Enum)]
-    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>{Pieces.PieceType.MediumBlade};
+    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>{Pieces.PieceType.Medium_Blade};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
     public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.BasePiece> existingPieces)

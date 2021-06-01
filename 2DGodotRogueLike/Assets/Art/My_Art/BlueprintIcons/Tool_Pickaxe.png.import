@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MaceHead_BasicMace.png-1b13973d5e9cfc355ae6cf28dc96127b.stex"
+path="res://.import/Tool_Pickaxe.png-b02982f7ed1f5bd5bacca36824652d5d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/MaceHead_BasicMace.png"
-dest_files=[ "res://.import/MaceHead_BasicMace.png-1b13973d5e9cfc355ae6cf28dc96127b.stex" ]
+source_file="res://Assets/Art/My_Art/BlueprintIcons/Tool_Pickaxe.png"
+dest_files=[ "res://.import/Tool_Pickaxe.png-b02982f7ed1f5bd5bacca36824652d5d.stex" ]
 
 [params]
 

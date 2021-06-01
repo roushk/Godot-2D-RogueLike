@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Art/My_Art/Base_Ingot.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/ModularWeapons/CraftingMaterialSystem.cs" type="Script" id=2]
-[ext_resource path="res://Assets/Art/My_Art/Sword_Blade.png" type="Texture" id=5]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -17,110 +16,203 @@ margin_left = 5.94516
 margin_top = 4.54729
 margin_right = 37.9452
 margin_bottom = 36.5473
-rect_scale = Vector2( 4, 4 )
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+margin_left = 237.262
+margin_top = 239.024
+margin_right = 437.262
+margin_bottom = 309.024
+rect_scale = Vector2( 0.8, 0.8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrentBPTitle" type="RichTextLabel" parent="VSplitContainer"]
+margin_right = 200.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 80, 16 )
+text = "Current Blueprint"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrentBlueprint" type="HSplitContainer" parent="VSplitContainer"]
+margin_top = 28.0
+margin_right = 200.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 40 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrentBPname" type="RichTextLabel" parent="VSplitContainer/CurrentBlueprint"]
+margin_right = 100.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 100, 18 )
+text = "Ingot"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlueprintIcon" type="TextureRect" parent="VSplitContainer/CurrentBlueprint"]
+margin_left = 112.0
+margin_right = 200.0
+margin_bottom = 42.0
+rect_min_size = Vector2( 32, 32 )
 texture = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PartsContainer" type="CenterContainer" parent="."]
-margin_left = 55.7919
-margin_top = 49.2027
-margin_right = 95.7919
-margin_bottom = 89.2027
-rect_scale = Vector2( 5, 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="BlueprintIcon" type="TextureRect" parent="PartsContainer"]
-margin_left = 4.0
-margin_top = 3.0
-margin_right = 36.0
-margin_bottom = 35.0
-texture = ExtResource( 5 )
+margin_left = 70.0
+margin_top = 40.0
+margin_right = 270.0
+margin_bottom = 240.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="InventoryContainer" type="VBoxContainer" parent="."]
-margin_left = 275.0
-margin_top = 10.0
-margin_right = 392.0
-margin_bottom = 291.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 416.92
+margin_top = -19.5705
+margin_right = 494.92
+margin_bottom = 228.429
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="InventoryContainer"]
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 20.0
 text = "Iron"
 
 [node name="Button2" type="Button" parent="InventoryContainer"]
 margin_top = 24.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 44.0
 text = "Copper"
 
 [node name="Button3" type="Button" parent="InventoryContainer"]
 margin_top = 48.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 68.0
 text = "Tin"
 
 [node name="Button4" type="Button" parent="InventoryContainer"]
 margin_top = 72.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 92.0
 text = "Adamantite"
 
 [node name="Button5" type="Button" parent="InventoryContainer"]
 margin_top = 96.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 116.0
 text = "Steel"
 
 [node name="Button6" type="Button" parent="InventoryContainer"]
 margin_top = 120.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 140.0
 
 [node name="Button7" type="Button" parent="InventoryContainer"]
 margin_top = 144.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 164.0
 
 [node name="Button8" type="Button" parent="InventoryContainer"]
 margin_top = 168.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 188.0
 
 [node name="Button9" type="Button" parent="InventoryContainer"]
 margin_top = 192.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 212.0
 
 [node name="Button10" type="Button" parent="InventoryContainer"]
 margin_top = 216.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 236.0
 
 [node name="Button11" type="Button" parent="InventoryContainer"]
 margin_top = 240.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 260.0
 
 [node name="Button12" type="Button" parent="InventoryContainer"]
 margin_top = 264.0
-margin_right = 117.0
+margin_right = 478.0
 margin_bottom = 284.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 120.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/MarginContainer"]
+margin_right = 120.0
+margin_bottom = 15.0
+visible_characters = 10
+text = "Inventory"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryTabs" type="TabContainer" parent="VBoxContainer"]
+margin_top = 19.0
+margin_right = 120.0
+margin_bottom = 55.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page1" type="GridContainer" parent="VBoxContainer/InventoryTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 40.0
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Page2" type="GridContainer" parent="VBoxContainer/InventoryTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Blueprints" type="GridContainer" parent="."]
 margin_left = 1.0
-margin_top = 162.0
-margin_right = 138.0
+margin_top = 220.0
+margin_right = 80.0
 margin_bottom = 299.0
+columns = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }

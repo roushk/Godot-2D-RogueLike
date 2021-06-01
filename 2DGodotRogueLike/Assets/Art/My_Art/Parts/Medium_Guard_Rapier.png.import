@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Knife_Blade.png-7868896b8ba21ad002f18c1d08a50710.stex"
+path="res://.import/Medium_Guard_Rapier.png-19786b559cd3850b274be5d48fb2b487.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Knife_Blade.png"
-dest_files=[ "res://.import/Knife_Blade.png-7868896b8ba21ad002f18c1d08a50710.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Guard_Rapier.png"
+dest_files=[ "res://.import/Medium_Guard_Rapier.png-19786b559cd3850b274be5d48fb2b487.stex" ]
 
 [params]
 

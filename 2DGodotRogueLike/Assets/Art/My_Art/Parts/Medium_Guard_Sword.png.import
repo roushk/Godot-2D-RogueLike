@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MediumBlade_Rapier.png-ac8516f2f6f15d7326d6439db51c22eb.stex"
+path="res://.import/Medium_Guard_Sword.png-7e1bc994db8d3d50c1054c6499bd281b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/MediumBlade_Rapier.png"
-dest_files=[ "res://.import/MediumBlade_Rapier.png-ac8516f2f6f15d7326d6439db51c22eb.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Guard_Sword.png"
+dest_files=[ "res://.import/Medium_Guard_Sword.png-7e1bc994db8d3d50c1054c6499bd281b.stex" ]
 
 [params]
 

@@ -34,25 +34,32 @@ public class CraftingMaterialSystem : Node
     
     BPTextureButton ingot;
 
-    BaseBlueprint currentblueprint = (BaseBlueprint)GD.Load("res://Data/Blueprints/BigAssSwordBP.tres");
+    BaseBlueprint currentblueprint;
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
+
+    Dictionary<Pieces.PieceType,Texture> pieceTextures = new  Dictionary<Pieces.PieceType,Texture>();
 
     //Load the BP Icon scene
     PackedScene BPiconScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BlueprintIcon.tscn");
 
     TextureRect blueprintIconUI;
+    RichTextLabel currentBlueprintText;
 
     public override void _Ready()
     {
         ingot = GetNode("Ingot") as BPTextureButton;
-        blueprintIconUI = GetNode("PartsContainer/BlueprintIcon") as TextureRect;
+        blueprintIconUI = GetNode("VSplitContainer/CurrentBlueprint/BlueprintIcon") as TextureRect;
         blueprintIconUI.SetSize(new Vector2(10,10));
-        
+       
+        currentBlueprintText = GetNode("VSplitContainer/CurrentBlueprint/CurrentBPname") as RichTextLabel;
+
         //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
         //For each Piece type generate an array in the pieces dict
         foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
         { 
+            if(type == Pieces.PieceType.Undefined)
+                continue;
             pieces[type] = new Array<Pieces.BasePiece>();
         }
 
@@ -80,7 +87,6 @@ public class CraftingMaterialSystem : Node
 
         Directory spriteDir = new Directory();
         const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
-
 
         var bpNode = GetNode("Blueprints") as GridContainer;
         
@@ -114,8 +120,19 @@ public class CraftingMaterialSystem : Node
                 newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
                 newTexRect.TextureNormal = loadedBPIcon;
                 newTexRect.blueprint = loadedBP.name;
-                //Setup on pressed callback
-                newTexRect.onButtonPressedCallback = () =>{ currentblueprint = blueprints[newTexRect.blueprint];};
+
+                //Setup on pressed callback func
+                newTexRect.onButtonPressedCallback = () =>
+                { 
+                    currentblueprint = blueprints[newTexRect.blueprint]; 
+                    blueprintIconUI.Texture = currentblueprint.iconTex;
+                    currentBlueprintText.Text = currentblueprint.name;
+
+                    foreach (var part in currentblueprint.requiredPieces)
+                    {
+                        
+                    }
+                };
 
                 newTexRect.SetSize(new Vector2(5,5));
 
@@ -129,14 +146,20 @@ public class CraftingMaterialSystem : Node
                 //iterate next BP's
                 nextBlueprint = blueprintDir.GetNext();
             }
+
+            const string PartSpriteDir = "res://Assets/Art/My_Art/Parts/";
+            foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
+            { 
+                if(type == Pieces.PieceType.Undefined)
+                    continue;
+                Texture newTex =  (Texture)GD.Load(PartSpriteDir + type.ToString() + ".png");
+                pieceTextures.Add(type,newTex);
+            }
         }
         else
         {
-            throw(new Exception("Yo shit broke loading Blueprints"));
+            throw(new Exception("Loading Blueprints Broke Blueprints"));
         }
-        
-        
-
         //For each blueprint
         foreach (var bp in blueprints)
         {
@@ -146,8 +169,7 @@ public class CraftingMaterialSystem : Node
     }
 
     public override void _Process(float delta)
-    {
-        blueprintIconUI.Texture = currentblueprint.iconTex;
+    {            
 
         foreach (var bp in blueprints)
         {

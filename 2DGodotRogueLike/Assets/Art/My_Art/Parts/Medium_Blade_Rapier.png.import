@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/LargeBlade_Falchion.png-e7f4723db991aa4819735826749bd293.stex"
+path="res://.import/Medium_Blade_Rapier.png-805299bb81643e65cd91cfa6d613a932.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/LargeBlade_Falchion.png"
-dest_files=[ "res://.import/LargeBlade_Falchion.png-e7f4723db991aa4819735826749bd293.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Blade_Rapier.png"
+dest_files=[ "res://.import/Medium_Blade_Rapier.png-805299bb81643e65cd91cfa6d613a932.stex" ]
 
 [params]
 

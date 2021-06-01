@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MediumBlade_Sword.png-eb3c3dff66512213bc3fd942684a2064.stex"
+path="res://.import/Medium_Blade_Sword.png-0e404267caa6b0ca27676aca93870264.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/MediumBlade_Sword.png"
-dest_files=[ "res://.import/MediumBlade_Sword.png-eb3c3dff66512213bc3fd942684a2064.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Blade_Sword.png"
+dest_files=[ "res://.import/Medium_Blade_Sword.png-0e404267caa6b0ca27676aca93870264.stex" ]
 
 [params]
 

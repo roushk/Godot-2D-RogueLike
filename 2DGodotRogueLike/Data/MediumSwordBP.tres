@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource( 1 )
 name = "BaseBlueprint"
-iconSprite = "Medium_Sword"
+iconSpriteName = "Medium_Sword"
 requiredPieces = [ 11, 12, 2, 16 ]

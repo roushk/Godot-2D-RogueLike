@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Tool_Handle_Wood.png-7276b2ddadea5f0d7d8ac3717802f746.stex"
+path="res://.import/Medium_Sword_Guard.png-a3f2cff9529c21265ea2b295438c6c11.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Art/My_Art/Tool_Handle_Wood.png"
-dest_files=[ "res://.import/Tool_Handle_Wood.png-7276b2ddadea5f0d7d8ac3717802f746.stex" ]
+source_file="res://Assets/Art/My_Art/Parts/Medium_Sword_Guard.png"
+dest_files=[ "res://.import/Medium_Sword_Guard.png-a3f2cff9529c21265ea2b295438c6c11.stex" ]
 
 [params]
 
