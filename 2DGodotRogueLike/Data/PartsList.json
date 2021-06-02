@@ -44,7 +44,7 @@
 {
     "partName": "BasicMace",
     "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Mace_BasicMace.png",
-    "partType": "Medium_Mace",
+    "partType": "Mace_Head",
     "partCost": 5
 },
 {

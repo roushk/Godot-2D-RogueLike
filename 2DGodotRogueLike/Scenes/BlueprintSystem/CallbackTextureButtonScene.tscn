@@ -7,12 +7,13 @@
 margin_right = 40.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 1 )
+stretch_mode = 5
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="button_down" from="." to="." method="OnButtonPressedStart"]
 [connection signal="button_up" from="." to="." method="OnButtonPressedEnd"]
-[connection signal="mouse_entered" from="." to="." method="OnButtonHoveredStart"]
+[connection signal="mouse_entered" from="." to="." method="OnButtonDisabledStart"]
 [connection signal="mouse_exited" from="." to="." method="OnButtonHoveredEnd"]
 [connection signal="pressed" from="." to="." method="OnButtonPressed"]

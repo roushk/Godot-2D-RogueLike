@@ -30,13 +30,11 @@ public class CallbackTextureButton : TextureButton
     [Export]
     public Color defaultColor = new Color();
 
-    [Export]
     public bool changeColors = true;
     
     public override void _Ready()
     {
-        if(changeColors)
-            defaultColor = Modulate;
+        defaultColor = Modulate;
 
         if(Disabled)
         {
@@ -102,7 +100,7 @@ public class CallbackTextureButton : TextureButton
 
     public void OnButtonDisabledStart()
     {
-        Disabled = true;
+        //Disabled = true;
         if(changeColors)
             Modulate = disabledColor;
 
@@ -112,13 +110,11 @@ public class CallbackTextureButton : TextureButton
 
     public void OnButtonDisabledEnd()
     {
-        Disabled = false;
+        //Disabled = false;
         if(changeColors)
             Modulate = defaultColor;
             
         if(onButtonDisabledEndCallback != null)
             onButtonDisabledEndCallback();
     }
-
-
 }

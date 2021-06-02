@@ -52,7 +52,7 @@ public class CraftingMaterialSystem : Node
     RichTextLabel currentBlueprintText;
 
     //TODO determine if we actually need these???
-    Array<TextureButton> blueprintVisualParts = new Array<TextureButton>();
+    Array<CallbackTextureButton> blueprintVisualParts = new Array<CallbackTextureButton>();
     Array<HBoxContainer> blueprintDetailParts = new Array<HBoxContainer>();
 
     //Todo replace this with something significantly better..
@@ -73,26 +73,30 @@ public class CraftingMaterialSystem : Node
         Array<Parts.PartBlueprint> createdParts = new Array<Parts.PartBlueprint>();
 
         //Read json file into text
-        Godot.File files = new Godot.File();
-        files.Open("res://Data/PartsList.json", Godot.File.ModeFlags.Read);
-        string jsonText = files.GetAsText();
+        Godot.File file = new Godot.File();
+        file.Open("res://Data/PartsList.json", Godot.File.ModeFlags.Read);
+        string jsonText = file.GetAsText();
         
         //Construct dict of stuff
-        Godot.Collections.Dictionary<string,Godot.Collections.Array<string>> ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Dictionary<string,Godot.Collections.Array<string>>;
+        Godot.Collections.Array ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Array;
 
         //Parse data based on Resource
-        foreach (var data in ParsedData)
+        foreach (Godot.Collections.Dictionary data in ParsedData)
         {
             Parts.PartBlueprint partBP = new Parts.PartBlueprint();
-            partBP.name = data.Value[0];
-            partBP.texture = (Texture)GD.Load(data.Value[1]);
-            partBP.partType = (Parts.PartType)data.Value[2].ToInt();
-            partBP.materialCost = data.Value[3].ToInt();
+            partBP.name = data["partName"] as string;
+            partBP.texture = (Texture)GD.Load(data["partTextureDir"] as string);
+            partBP.partType = Parts.PartTypeConversion.FromString(data["partType"] as string);
+            
+            //Don't ask
+            partBP.materialCost = (int)(float)data["partCost"];
+
+            //Ok, its because json uses floats only so object -> float -> int
 
             //Add to the GRAND parts dictionary
             parts[partBP.partType].Add(partBP);
-        }   
-        
+        }
+        file.Close();
     }
 
     public override void _Ready()
@@ -105,7 +109,7 @@ public class CraftingMaterialSystem : Node
         
         currentBlueprintText = FindNode("CurrentBPname") as RichTextLabel;
 
-        LoadAllParts();
+        //LoadAllParts();
 
         Color ironBaseColor = new Color("e8e8e8");
         //materialTints = data from file
@@ -217,15 +221,19 @@ public class CraftingMaterialSystem : Node
                         //Set textures and bitmasks
                         BPPieceButton.TextureNormal = pieceIcons[part];
                         BPPieceButton.TextureClickMask = pieceIconBitmasks[part];
+                        
+                        
+                        //Added this recently?
+                        BPPieceButton.TextureHover = pieceIcons[part];
 
                         BPPieceButton.onButtonPressedCallback = () => 
                         {
                             //On select of blueprint piece.
-                            LoadPartSelection(part, BPPieceButton.Name);
+                            //LoadPartSelection(part, BPPieceButton.Name);
                         };
                         
                         //Dont change colors with the callbacks
-                        BPPieceButton.changeColors = false;
+                       // BPPieceButton.changeColors = false;
 
                         //Modulate to 0.25 alpha for unselected
                         BPPieceButton.Modulate = new Color(1,1,1,0.25f);
@@ -255,7 +263,6 @@ public class CraftingMaterialSystem : Node
                         RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
                         detailText.Text = "Correctly Set Detail Text, Very Cool";
 
-                        BPPieceButton.TextureHover = pieceIcons[part];
                     }
                 };
 
@@ -290,23 +297,12 @@ public class CraftingMaterialSystem : Node
         {
             throw(new Exception("Loading Blueprints Broke Blueprints"));
         }
-        //For each blueprint
-        foreach (var bp in blueprints)
-        {
-            //Create new node inside of the blueprints 
- 
-        }
     }
 
     public override void _Process(float delta)
     {            
-        if(selectedPart!=null)
-            selectedPart.Modulate = new Color(1,1,1,1);
-
-        foreach (var bp in blueprints)
-        {
-            
-        }
+        //if(selectedPart!=null)
+        //    selectedPart.Modulate = new Color(1,1,1,1);
     }
 
     public void onHoverStartPartVisualizer()
@@ -349,7 +345,7 @@ public class CraftingMaterialSystem : Node
             };
             
             //Dont change colors with the callbacks
-            PartSelectionButton.changeColors = false;
+            //PartSelectionButton.changeColors = false;
 
             //Modulate to 0.25 alpha for unselected
             PartSelectionButton.Modulate = new Color(1,1,1,0.25f);

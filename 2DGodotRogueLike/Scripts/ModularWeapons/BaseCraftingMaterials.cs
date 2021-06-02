@@ -93,6 +93,21 @@ namespace Materials
 //TODO Move this to a PiecesEnum.cs and generate that code from a list of .png files inside of the My_Art/Parts folder 
 namespace Parts
 {
+    public static class PartTypeConversion
+    {
+        public static PartType FromString(string input)
+        {
+            
+            foreach (Parts.PartType type in Enum.GetValues(typeof(Parts.PartType)))  
+            {
+                if(input == type.ToString())
+                    return type;   
+            }
+            throw(new Exception("Enum " + input + " Does not exist in Parts.PartType."));
+            return PartType.Undefined;
+        }
+    }
+
     //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
     public enum PartType : int
     {
@@ -110,11 +125,12 @@ namespace Parts
         Tool_Head,
         Tool_Crossing,
         Tool_Handle,
+        Mace_Head
     //    HammerHead,     //Art Todo
     //    BattleaxeHead,  //Art Todo
     //    LargeGuard,     //Art Todo
     //    MediumHandle,   //Art Todo
-//        Medium_MaceHead,
+//        Medium_Mace,
 
     }
     //Pickaxe is {LargeHandle, ToolBinding, PickaxeHead}
