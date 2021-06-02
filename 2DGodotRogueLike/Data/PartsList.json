@@ -1,0 +1,97 @@
+[
+{
+    "partName": "BigBlade",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_BigBlade.png",
+    "partType": "Large_Blade",
+    "partCost": 5
+},
+{
+    "partName": "Falchion",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_Falchion.png",
+    "partType": "Large_Blade",
+    "partCost": 5
+},
+{
+    "partName": "BigBlade",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Guard_BigBlade.png",
+    "partType": "Large_Guard",
+    "partCost": 5
+},
+{
+    "partName": "Sword",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Blade_Sword.png",
+    "partType": "Medium_Blade",
+    "partCost": 5
+},
+{
+    "partName": "Rapier",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Blade_Rapier.png",
+    "partType": "Medium_Blade",
+    "partCost": 5
+},
+{
+    "partName": "SwordGuard",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Guard_SwordGuard.png",
+    "partType": "Medium_Guard",
+    "partCost": 5
+},
+{
+    "partName": "RapierGuard",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Guard_RapierGuard.png",
+    "partType": "Medium_Guard",
+    "partCost": 5
+},
+{
+    "partName": "BasicMace",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Mace_BasicMace.png",
+    "partType": "Medium_Mace",
+    "partCost": 5
+},
+{
+    "partName": "BasicPommel",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Pommel_BasicPommel.png",
+    "partType": "Pommel",
+    "partCost": 5
+},
+{
+    "partName": "KnifeBlade",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Blade_KnifeBlade.png",
+    "partType": "Small_Blade",
+    "partCost": 5
+},
+{
+    "partName": "KnifeGuard",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Guard_KnifeGuard.png",
+    "partType": "Small_Guard",
+    "partCost": 5
+},
+{
+    "partName": "SmallHandle",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Handle_SmallHandle.png",
+    "partType": "Small_Handle",
+    "partCost": 5
+},
+{
+    "partName": "WoodCrossing",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Crossing_WoodCrossing.png",
+    "partType": "Tool_Crossing",
+    "partCost": 5
+},
+{
+    "partName": "WoodHandle",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Handle_WoodHandle.png",
+    "partType": "Tool_Handle",
+    "partCost": 5
+},
+{
+    "partName": "Axe",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Head_Axe.png",
+    "partType": "Tool_Head",
+    "partCost": 5
+},
+{
+    "partName": "Pickaxe",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Head_Pickaxe.png",
+    "partType": "Tool_Head",
+    "partCost": 5
+}]

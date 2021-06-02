@@ -30,12 +30,12 @@ public class CraftingMaterialSystem : Node
     Dictionary<Materials.Material, Color> materialTints = new Dictionary<Materials.Material, Color>();
 
     //Dict of type to list of pieces
-    Dictionary<Parts.PartType, Array<Parts.BasePart>> pieces = new Dictionary<Parts.PartType, Array<Parts.BasePart>>();
+    Dictionary<Parts.PartType, Array<Parts.PartBlueprint>> parts = new Dictionary<Parts.PartType, Array<Parts.PartBlueprint>>();
     
     CallbackTextureButton ingot;
 
     BaseBlueprint selectedBlueprint;
-    Parts.BasePart selectedPiece;
+    CallbackTextureButton selectedPart;
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
@@ -52,61 +52,47 @@ public class CraftingMaterialSystem : Node
     RichTextLabel currentBlueprintText;
 
     //TODO determine if we actually need these???
-    Array<TextureButton> blueprintVisualPieces = new Array<TextureButton>();
-    Array<HBoxContainer> blueprintDetailPieces = new Array<HBoxContainer>();
-
+    Array<TextureButton> blueprintVisualParts = new Array<TextureButton>();
+    Array<HBoxContainer> blueprintDetailParts = new Array<HBoxContainer>();
 
     //Todo replace this with something significantly better..
     //It will help to change the type from TextureButton to derived class like the other BP thing with callbacks
     
-    public void UpdateCurrentlySelectedPieceNone()
+    //Load parts into parts dictionary
+    void LoadAllParts()
     {
-        if(blueprintVisualPieces.Count < 4)
-            return;
-        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);   
-    }
+        //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
+        //For each Piece type generate an array in the pieces dict
+        foreach (Parts.PartType type in Enum.GetValues(typeof(Parts.PartType)))  
+        { 
+            if(type == Parts.PartType.Undefined)
+                continue;
+            parts[type] = new Array<Parts.PartBlueprint>();
+        }
 
-    public void UpdateCurrentlySelectedPiece1()
-    {
-        if(blueprintVisualPieces.Count < 4)
-            return;
-        blueprintVisualPieces[0].Modulate = new Color(1,1,1,1);
-        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);   
-    }
+        Array<Parts.PartBlueprint> createdParts = new Array<Parts.PartBlueprint>();
 
-    public void UpdateCurrentlySelectedPiece2()
-    {
-        if(blueprintVisualPieces.Count < 4)
-            return;
-        blueprintVisualPieces[1].Modulate = new Color(1,1,1,1);
-        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);
-    }
+        //Read json file into text
+        Godot.File files = new Godot.File();
+        files.Open("res://Data/PartsList.json", Godot.File.ModeFlags.Read);
+        string jsonText = files.GetAsText();
+        
+        //Construct dict of stuff
+        Godot.Collections.Dictionary<string,Godot.Collections.Array<string>> ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Dictionary<string,Godot.Collections.Array<string>>;
 
-    public void UpdateCurrentlySelectedPiece3()
-    {
-        if(blueprintVisualPieces.Count < 4)
-            return;
-        blueprintVisualPieces[2].Modulate = new Color(1,1,1,1);
-        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[3].Modulate = new Color(1,1,1,0.5f);
-    }
+        //Parse data based on Resource
+        foreach (var data in ParsedData)
+        {
+            Parts.PartBlueprint partBP = new Parts.PartBlueprint();
+            partBP.name = data.Value[0];
+            partBP.texture = (Texture)GD.Load(data.Value[1]);
+            partBP.partType = (Parts.PartType)data.Value[2].ToInt();
+            partBP.materialCost = data.Value[3].ToInt();
 
-    public void UpdateCurrentlySelectedPiece4()
-    {
-        if(blueprintVisualPieces.Count < 4)
-            return;
-        blueprintVisualPieces[3].Modulate = new Color(1,1,1,1);
-        blueprintVisualPieces[1].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[2].Modulate = new Color(1,1,1,0.5f);
-        blueprintVisualPieces[0].Modulate = new Color(1,1,1,0.5f);
+            //Add to the GRAND parts dictionary
+            parts[partBP.partType].Add(partBP);
+        }   
+        
     }
 
     public override void _Ready()
@@ -119,14 +105,7 @@ public class CraftingMaterialSystem : Node
         
         currentBlueprintText = FindNode("CurrentBPname") as RichTextLabel;
 
-        //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
-        //For each Piece type generate an array in the pieces dict
-        foreach (Parts.PartType type in Enum.GetValues(typeof(Parts.PartType)))  
-        { 
-            if(type == Parts.PartType.Undefined)
-                continue;
-            pieces[type] = new Array<Parts.BasePart>();
-        }
+        LoadAllParts();
 
         Color ironBaseColor = new Color("e8e8e8");
         //materialTints = data from file
@@ -199,8 +178,8 @@ public class CraftingMaterialSystem : Node
                     blueprintIconUI.Texture = selectedBlueprint.iconTex;
                     currentBlueprintText.Text = selectedBlueprint.name;
                     
-                    blueprintDetailPieces.Clear();
-                    blueprintVisualPieces.Clear();
+                    blueprintDetailParts.Clear();
+                    blueprintVisualParts.Clear();
 
                     //Queue all current children to be deleted
                     foreach (Node child in partContainer.GetChildren())
@@ -242,23 +221,24 @@ public class CraftingMaterialSystem : Node
                         BPPieceButton.onButtonPressedCallback = () => 
                         {
                             //On select of blueprint piece.
-                            LoadPartSelection(part);
+                            LoadPartSelection(part, BPPieceButton.Name);
                         };
-                        //This works
-                        BPPieceButton.Connect("mouse_entered", this, "UpdateCurrentlySelectedPiece" + partNum.ToString());
-                        BPPieceButton.Connect("mouse_exited",this,"UpdateCurrentlySelectedPieceNone");
-                        //Modulate to 0.5 alpha
-                        BPPieceButton.Modulate = new Color(1,1,1,0.5f);
+                        
+                        //Dont change colors with the callbacks
+                        BPPieceButton.changeColors = false;
+
+                        //Modulate to 0.25 alpha for unselected
+                        BPPieceButton.Modulate = new Color(1,1,1,0.25f);
 
                         partContainer.AddChild(BPPieceButton);
-                        blueprintVisualPieces.Add(BPPieceButton);
+                        blueprintVisualParts.Add(BPPieceButton);
 
                         /////////////////////////////////////////////////////////////////////////////////////////////////
                         //Generate Detail Sprites
                         HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
 
                         partDetailContainer.AddChild(hBox);
-                        blueprintDetailPieces.Add(hBox);
+                        blueprintDetailParts.Add(hBox);
 
                         TextureRect texDetail = hBox.GetChild(0) as TextureRect;
                         //Generate a unique name for the part
@@ -285,8 +265,6 @@ public class CraftingMaterialSystem : Node
                 bpNode.AddChild(newTexRect);
                 //Load the bp's
                 blueprints.Add(loadedBP.name, loadedBP);
-
-                
                 
                 //iterate next BP's
                 nextBlueprint = blueprintDir.GetNext();
@@ -322,6 +300,8 @@ public class CraftingMaterialSystem : Node
 
     public override void _Process(float delta)
     {            
+        if(selectedPart!=null)
+            selectedPart.Modulate = new Color(1,1,1,1);
 
         foreach (var bp in blueprints)
         {
@@ -329,8 +309,60 @@ public class CraftingMaterialSystem : Node
         }
     }
 
-    public void LoadPartSelection(Parts.PartType typeToLoad)
+    public void onHoverStartPartVisualizer()
     {
 
     }
+
+    public void onHoverEndPartVisualizer()
+    {
+
+    }
+
+    public void LoadPartSelection(Parts.PartType typeToLoad, string partName)
+    {
+        selectedPart = GetNode("PartsVisualizerContainer").GetNode(partName) as CallbackTextureButton;
+        int partNum = 0;
+        //Load all parts of this type
+        foreach (var part in parts[typeToLoad])
+        {
+            //Load part as clickable button with callback to set the current piece of the current blueprint as this piece
+            CallbackTextureButton PartSelectionButton = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
+            //Generate a unique name for the part
+            PartSelectionButton.Name = "Part_Selection_" + partNum++;
+            
+            //Set the size of the rect and need this stuff to get it to expand
+            PartSelectionButton.RectSize = new Vector2(32,32);  //size of tex
+            PartSelectionButton.RectScale = new Vector2(4,4);   //new scale
+            PartSelectionButton.Expand = true;
+            PartSelectionButton.StretchMode = TextureButton.StretchModeEnum.Scale;
+            PartSelectionButton.RectMinSize = PartSelectionButton.RectSize * PartSelectionButton.RectScale;
+
+            //Set textures and bitmasks
+            PartSelectionButton.TextureNormal = pieceIcons[typeToLoad];
+            PartSelectionButton.TextureClickMask = pieceIconBitmasks[typeToLoad];
+
+            PartSelectionButton.onButtonPressedCallback = () => 
+            {
+                //On select of blueprint piece.
+                ChangeSelectedPartTo(partName, PartSelectionButton.Name);
+            };
+            
+            //Dont change colors with the callbacks
+            PartSelectionButton.changeColors = false;
+
+            //Modulate to 0.25 alpha for unselected
+            PartSelectionButton.Modulate = new Color(1,1,1,0.25f);
+        }
+    }
+
+    void ChangeSelectedPartTo(string currentPartName, string newPartName)
+    {
+
+    }
+
+    //CallbackTextureButton CreateCallbackTextureButtonFrom()
+    //{
+    //    
+    //}
 }

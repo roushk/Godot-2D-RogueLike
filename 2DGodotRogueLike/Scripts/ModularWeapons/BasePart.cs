@@ -2,7 +2,7 @@ using Godot;
 using System;
 namespace Parts
 {
-    public class BasePart : Resource
+    public class PartBlueprint : Resource
     {
         public static long currentUniquePieceNum = 0;
 
@@ -10,29 +10,22 @@ namespace Parts
         public long uuid { get; private set; } = currentUniquePieceNum++;
 
         [Export]
+        public string name { get; set; } = "BasePiece";
 
-        public string name { get; private set; } = "BasePiece";
         [Export]
-        public int materialCost { get; private set; } = 5;
+        public int materialCost { get; set; } = 5;
 
+        [Export]
+        public PartType partType { get; set; } = PartType.Undefined;
+        
+        public Texture texture { get; set; }
+
+        public PartBlueprint(){}
+    }
+    public class PartConstructed : PartBlueprint
+    {
         [Export]
         public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
-
-        [Export]
-        public PartType pieceType { get; private set; } = PartType.Undefined;
-        
-        [Export]
-        public string spritePath {get; private set; }
-        
-        public Sprite sprite { get; private set; }
-
-        public BasePart(){}
-        public BasePart(string _name, PartType _pieceType, int _materialCost, Materials.MaterialType _materialType) 
-        {
-            name = _name;
-            pieceType = _pieceType;
-            materialCost = _materialCost;
-            materialType = _materialType;
-        }
+        public PartConstructed() : base(){}
     }
 }

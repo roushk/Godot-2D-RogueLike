@@ -17,7 +17,7 @@ public class BaseBlueprint : Resource
     public Array<Parts.PartType> requiredPieces = new Array<Parts.PartType>{Parts.PartType.Medium_Blade};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
-    public Tuple<bool,Array<Parts.PartType>> IsCraftableWithGivenMaterials(Array<Parts.BasePart> existingPieces)
+    public Tuple<bool,Array<Parts.PartType>> IsCraftableWithGivenMaterials(Array<Parts.PartBlueprint> existingPieces)
     {
         //create copies
         List<long> usedPieces = new List<long>();
@@ -33,7 +33,7 @@ public class BaseBlueprint : Resource
             foreach (var existingPiece in existingPieces)
             {
                 //If we have the correct piece type and its not contained within the already used materials
-                if(existingPiece.pieceType == requiredPiece && !usedPieces.Contains(existingPiece.uuid))
+                if(existingPiece.partType == requiredPiece && !usedPieces.Contains(existingPiece.uuid))
                 {
                     //add it to the list of used materials and break searching for the current piece
                     usedPieces.Add(existingPiece.uuid);

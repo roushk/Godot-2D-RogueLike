@@ -29,10 +29,14 @@ public class CallbackTextureButton : TextureButton
     public Color disabledColor = new Color(1,0,0,1);
     [Export]
     public Color defaultColor = new Color();
+
+    [Export]
+    public bool changeColors = true;
     
     public override void _Ready()
     {
-        defaultColor = Modulate;
+        if(changeColors)
+            defaultColor = Modulate;
 
         if(Disabled)
         {
@@ -42,7 +46,8 @@ public class CallbackTextureButton : TextureButton
 
     public void OnButtonPressed()
     {
-        Modulate = new Color(0,0,0,0);
+        if(changeColors)
+            Modulate = new Color(0,0,0,0);
 
         if(onButtonPressedCallback != null)
             onButtonPressedCallback();
@@ -51,7 +56,9 @@ public class CallbackTextureButton : TextureButton
     {
         if(!Disabled)
         {
-            Modulate = pressedColor;
+            if(changeColors)
+                Modulate = pressedColor;
+
             if(onButtonPressedStartCallback != null)
                 onButtonPressedStartCallback();
         }
@@ -61,7 +68,9 @@ public class CallbackTextureButton : TextureButton
     {
         if(!Disabled)
         {
-            Modulate = defaultColor;
+            if(changeColors)
+                Modulate = defaultColor;
+
             if(onButtonPressedEndCallback != null)
                 onButtonPressedEndCallback();
         }
@@ -71,7 +80,9 @@ public class CallbackTextureButton : TextureButton
     {
         if(!Disabled)
         {
-            Modulate = hoveredColor;
+            if(changeColors)
+                Modulate = hoveredColor;
+
             if(onButtonHoveredStartCallback != null)
                 onButtonHoveredStartCallback();
         }
@@ -81,7 +92,9 @@ public class CallbackTextureButton : TextureButton
     {
         if(!Disabled)
         {
-            Modulate = defaultColor;
+            if(changeColors)
+                Modulate = defaultColor;
+                
             if(onButtonHoveredEndCallback != null)
                 onButtonHoveredEndCallback();
         }
@@ -90,7 +103,9 @@ public class CallbackTextureButton : TextureButton
     public void OnButtonDisabledStart()
     {
         Disabled = true;
-        Modulate = disabledColor;
+        if(changeColors)
+            Modulate = disabledColor;
+
         if(onButtonDisabledStartCallback != null)
             onButtonDisabledStartCallback();
     }
@@ -98,7 +113,9 @@ public class CallbackTextureButton : TextureButton
     public void OnButtonDisabledEnd()
     {
         Disabled = false;
-        Modulate = defaultColor;
+        if(changeColors)
+            Modulate = defaultColor;
+            
         if(onButtonDisabledEndCallback != null)
             onButtonDisabledEndCallback();
     }

@@ -94,7 +94,7 @@ namespace Materials
 namespace Parts
 {
     //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
-    public enum PartType
+    public enum PartType : int
     {
         Undefined,
         Large_Blade,

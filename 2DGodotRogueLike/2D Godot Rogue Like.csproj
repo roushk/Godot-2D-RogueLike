@@ -24,6 +24,7 @@
     <Compile Include="Scripts\ModularWeapons\BaseCraftingMaterials.cs" />
     <Compile Include="Scripts\ModularWeapons\CallbackTextureButton.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
+    <Compile Include="Scripts\ModularWeapons\PartResource.cs" />
     <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />
     <Compile Include="Scripts\CCLGenerator.cs" />
@@ -32,6 +33,7 @@
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\PlayerTopDown.cs" />
     <Compile Include="Scripts\TestLevelGeneration.cs" />
+    <Compile Include="Scripts\Utils.cs" />
     <Compile Include="Scripts\WFC Simple Tile Model\WFC2DTile.cs" />
     <Compile Include="Scripts\WFC Simple Tile Model\WFCSimpleTiledModel.cs" />
   </ItemGroup>
