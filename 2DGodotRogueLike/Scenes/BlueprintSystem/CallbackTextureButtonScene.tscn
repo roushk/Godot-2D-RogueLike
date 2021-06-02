@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Art/My_Art/BlueprintIcons/Medium_Sword.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/ModularWeapons/BPTextureButton.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/ModularWeapons/CallbackTextureButton.cs" type="Script" id=2]
 
-[node name="BlueprintIcon" type="TextureButton"]
+[node name="CallbackTextureButtonScene" type="TextureButton"]
 margin_right = 40.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 1 )

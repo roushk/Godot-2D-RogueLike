@@ -30,23 +30,23 @@ public class CraftingMaterialSystem : Node
     Dictionary<Materials.Material, Color> materialTints = new Dictionary<Materials.Material, Color>();
 
     //Dict of type to list of pieces
-    Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>> pieces = new Dictionary<Pieces.PieceType, Array<Pieces.BasePiece>>();
+    Dictionary<Parts.PartType, Array<Parts.BasePart>> pieces = new Dictionary<Parts.PartType, Array<Parts.BasePart>>();
     
-    BPTextureButton ingot;
+    CallbackTextureButton ingot;
 
     BaseBlueprint selectedBlueprint;
-    Pieces.BasePiece selectedPiece;
+    Parts.BasePart selectedPiece;
 
     Dictionary<string,BaseBlueprint> blueprints = new Dictionary<string,BaseBlueprint>();
 
-    Dictionary<Pieces.PieceType,Texture> pieceIcons = new  Dictionary<Pieces.PieceType,Texture>();
+    Dictionary<Parts.PartType,Texture> pieceIcons = new  Dictionary<Parts.PartType,Texture>();
 
     //Todo: Consider creating Bitmasks for each type of piece and use it when constructing the menu instead of using the basic types???
-    Dictionary<Pieces.PieceType,BitMap> pieceIconBitmasks = new  Dictionary<Pieces.PieceType,BitMap>();
+    Dictionary<Parts.PartType,BitMap> pieceIconBitmasks = new  Dictionary<Parts.PartType,BitMap>();
 
     //Load packed scenes 
-    PackedScene BPIconScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BlueprintIcon.tscn");
-    PackedScene BPPieceDataScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BPPieceDetail.tscn");
+    PackedScene CallbackTextureButtonScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/CallbackTextureButtonScene.tscn");
+    PackedScene BPPartDetailScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BPPartDetail.tscn");
 
     TextureRect blueprintIconUI;
     RichTextLabel currentBlueprintText;
@@ -112,7 +112,7 @@ public class CraftingMaterialSystem : Node
     public override void _Ready()
     {
         //Setup UI links
-        ingot = GetNode("Ingot") as BPTextureButton;
+        ingot = GetNode("Ingot") as CallbackTextureButton;
         
         blueprintIconUI = FindNode("BlueprintIcon") as TextureRect;
         blueprintIconUI.SetSize(new Vector2(10,10));
@@ -121,11 +121,11 @@ public class CraftingMaterialSystem : Node
 
         //https://www.c-sharpcorner.com/article/loop-through-enum-values-in-c-sharp/
         //For each Piece type generate an array in the pieces dict
-        foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
+        foreach (Parts.PartType type in Enum.GetValues(typeof(Parts.PartType)))  
         { 
-            if(type == Pieces.PieceType.Undefined)
+            if(type == Parts.PartType.Undefined)
                 continue;
-            pieces[type] = new Array<Pieces.BasePiece>();
+            pieces[type] = new Array<Parts.BasePart>();
         }
 
         Color ironBaseColor = new Color("e8e8e8");
@@ -153,7 +153,7 @@ public class CraftingMaterialSystem : Node
         Directory spriteDir = new Directory();
         const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
 
-        var bpNode = FindNode("GridBlueprints") as GridContainer;
+        var bpNode = FindNode("GridBlueprints") as HBoxContainer;
         
         var partContainer = GetNode("PartsVisualizerContainer") as CenterContainer;
         var partDetailContainer = FindNode("PartDetailContainer") as VBoxContainer;
@@ -183,7 +183,7 @@ public class CraftingMaterialSystem : Node
                 loadedBP.iconTex = loadedBPIcon;
 
                 //Configure Button
-                BPTextureButton newTexRect = BPIconScene.Instance() as BPTextureButton;
+                CallbackTextureButton newTexRect = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
                 newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
                 newTexRect.TextureNormal = loadedBPIcon;
                 newTexRect.blueprint = loadedBP.name;
@@ -216,34 +216,46 @@ public class CraftingMaterialSystem : Node
                     }
 
                     int partNum = 0;
+
+                    //Todo offload this loading from the callback to a startup and just toggle on/off the parts and change the name of their container instead of
+                    //creating them inside of the callback from button pressed on the blueprint
+
                     //Add new piece icons
                     foreach (var part in selectedBlueprint.requiredPieces)
                     {
-                        //Generate Shadow
-                        TextureButton tex = new TextureButton();
+                        //Generate individual part buttons
+                        CallbackTextureButton BPPieceButton = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
                         //Generate a unique name for the part
-                        tex.Name = "Part_" + partNum++;
-                        tex.TextureNormal = pieceIcons[part];
+                        BPPieceButton.Name = "Part_" + partNum++;
                         
                         //Set the size of the rect and need this stuff to get it to expand
-                        tex.RectSize = new Vector2(32,32);  //size of tex
-                        tex.RectScale = new Vector2(4,4);   //new scale
-                        tex.Expand = true;
-                        tex.StretchMode = TextureButton.StretchModeEnum.Scale;
-                        tex.RectMinSize = tex.RectSize * tex.RectScale;
-                        tex.TextureClickMask = pieceIconBitmasks[part];
+                        BPPieceButton.RectSize = new Vector2(32,32);  //size of tex
+                        BPPieceButton.RectScale = new Vector2(4,4);   //new scale
+                        BPPieceButton.Expand = true;
+                        BPPieceButton.StretchMode = TextureButton.StretchModeEnum.Scale;
+                        BPPieceButton.RectMinSize = BPPieceButton.RectSize * BPPieceButton.RectScale;
 
+                        //Set textures and bitmasks
+                        BPPieceButton.TextureNormal = pieceIcons[part];
+                        BPPieceButton.TextureClickMask = pieceIconBitmasks[part];
+
+                        BPPieceButton.onButtonPressedCallback = () => 
+                        {
+                            //On select of blueprint piece.
+                            LoadPartSelection(part);
+                        };
                         //This works
-                        tex.Connect("mouse_entered", this, "UpdateCurrentlySelectedPiece" + partNum.ToString());
-                        tex.Connect("mouse_exited",this,"UpdateCurrentlySelectedPieceNone");
+                        BPPieceButton.Connect("mouse_entered", this, "UpdateCurrentlySelectedPiece" + partNum.ToString());
+                        BPPieceButton.Connect("mouse_exited",this,"UpdateCurrentlySelectedPieceNone");
                         //Modulate to 0.5 alpha
-                        tex.Modulate = new Color(1,1,1,0.5f);
+                        BPPieceButton.Modulate = new Color(1,1,1,0.5f);
 
-                        partContainer.AddChild(tex);
-                        blueprintVisualPieces.Add(tex);
+                        partContainer.AddChild(BPPieceButton);
+                        blueprintVisualPieces.Add(BPPieceButton);
 
+                        /////////////////////////////////////////////////////////////////////////////////////////////////
                         //Generate Detail Sprites
-                        HBoxContainer hBox = BPPieceDataScene.Instance() as HBoxContainer;
+                        HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
 
                         partDetailContainer.AddChild(hBox);
                         blueprintDetailPieces.Add(hBox);
@@ -263,7 +275,7 @@ public class CraftingMaterialSystem : Node
                         RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
                         detailText.Text = "Correctly Set Detail Text, Very Cool";
 
-                        tex.TextureHover = pieceIcons[part];
+                        BPPieceButton.TextureHover = pieceIcons[part];
                     }
                 };
 
@@ -281,9 +293,9 @@ public class CraftingMaterialSystem : Node
             }
 
             const string PartSpriteDir = "res://Assets/Art/My_Art/PartIcons/";
-            foreach (Pieces.PieceType type in Enum.GetValues(typeof(Pieces.PieceType)))  
+            foreach (Parts.PartType type in Enum.GetValues(typeof(Parts.PartType)))  
             { 
-                if(type == Pieces.PieceType.Undefined)
+                if(type == Parts.PartType.Undefined)
                     continue;
                 //Standard is load tex from file, no easy way to load image to tex that I can see and docs suggest loading with the Load func instead of creating it with an Image
                 Texture newTex = (Texture)GD.Load(PartSpriteDir + type.ToString() + ".png");
@@ -315,5 +327,10 @@ public class CraftingMaterialSystem : Node
         {
             
         }
+    }
+
+    public void LoadPartSelection(Parts.PartType typeToLoad)
+    {
+
     }
 }

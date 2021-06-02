@@ -20,9 +20,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\AnimatedTilesetTileSettings.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseBlueprint.cs" />
-    <Compile Include="Scripts\ModularWeapons\BasePiece.cs" />
+    <Compile Include="Scripts\ModularWeapons\BasePart.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseCraftingMaterials.cs" />
-    <Compile Include="Scripts\ModularWeapons\BPTextureButton.cs" />
+    <Compile Include="Scripts\ModularWeapons\CallbackTextureButton.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
     <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />

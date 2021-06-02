@@ -12,6 +12,7 @@ __meta__ = {
 }
 
 [node name="Ingot" type="TextureRect" parent="."]
+anchor_bottom = 1.01725e-07
 margin_left = 239.69
 margin_top = 243.848
 margin_right = 271.69
@@ -22,10 +23,30 @@ __meta__ = {
 }
 
 [node name="PartsVisualizerContainer" type="CenterContainer" parent="."]
-margin_left = 70.0
-margin_top = 40.0
-margin_right = 270.0
-margin_bottom = 240.0
+margin_left = 90.0
+margin_top = 50.0
+margin_right = 290.0
+margin_bottom = 250.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_left = 0.26
+anchor_right = 0.26
+margin_top = 3.78
+margin_right = 96.0
+margin_bottom = 35.78
+rect_min_size = Vector2( 32, 32 )
+scroll_vertical_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridBlueprints" type="HBoxContainer" parent="ScrollContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -87,26 +108,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="BlueprintBackground/BlueprintStuff"]
+[node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 70.0
 margin_right = 110.0
-margin_bottom = 102.0
-rect_min_size = Vector2( 32, 32 )
-scroll_horizontal_enabled = false
-
-[node name="GridBlueprints" type="GridContainer" parent="BlueprintBackground/BlueprintStuff/ScrollContainer"]
-margin_right = 32.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-columns = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
-margin_top = 106.0
-margin_right = 110.0
-margin_bottom = 106.0
+margin_bottom = 70.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -222,7 +227,10 @@ __meta__ = {
 [node name="Page1" type="GridContainer" parent="VBoxContainer/InventoryTabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 40.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 columns = 4
 __meta__ = {
 "_edit_use_anchors_": false

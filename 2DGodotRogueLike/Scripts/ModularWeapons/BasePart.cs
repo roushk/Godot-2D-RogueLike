@@ -1,8 +1,8 @@
 using Godot;
 using System;
-namespace Pieces
+namespace Parts
 {
-    public class BasePiece : Resource
+    public class BasePart : Resource
     {
         public static long currentUniquePieceNum = 0;
 
@@ -19,15 +19,15 @@ namespace Pieces
         public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
 
         [Export]
-        public PieceType pieceType { get; private set; } = PieceType.Undefined;
+        public PartType pieceType { get; private set; } = PartType.Undefined;
         
         [Export]
         public string spritePath {get; private set; }
         
         public Sprite sprite { get; private set; }
 
-        public BasePiece(){}
-        public BasePiece(string _name, PieceType _pieceType, int _materialCost, Materials.MaterialType _materialType) 
+        public BasePart(){}
+        public BasePart(string _name, PartType _pieceType, int _materialCost, Materials.MaterialType _materialType) 
         {
             name = _name;
             pieceType = _pieceType;

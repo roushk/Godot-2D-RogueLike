@@ -14,16 +14,16 @@ public class BaseBlueprint : Resource
     public Texture iconTex { get; set; }
     //A blueprint is made up of a list of required pieces
     [Export(PropertyHint.Enum)]
-    public Array<Pieces.PieceType> requiredPieces = new Array<Pieces.PieceType>{Pieces.PieceType.Medium_Blade};
+    public Array<Parts.PartType> requiredPieces = new Array<Parts.PartType>{Parts.PartType.Medium_Blade};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
-    public Tuple<bool,Array<Pieces.PieceType>> IsCraftableWithGivenMaterials(Array<Pieces.BasePiece> existingPieces)
+    public Tuple<bool,Array<Parts.PartType>> IsCraftableWithGivenMaterials(Array<Parts.BasePart> existingPieces)
     {
         //create copies
         List<long> usedPieces = new List<long>();
 
         //List of missing pieces
-        Array<Pieces.PieceType> missingPieces = new Array<Pieces.PieceType>();
+        Array<Parts.PartType> missingPieces = new Array<Parts.PartType>();
         
         //For every piece
         foreach (var requiredPiece in requiredPieces)
@@ -50,6 +50,6 @@ public class BaseBlueprint : Resource
         }
         
         //Return both the bool on if craftable and the list of pieces that are needed
-        return new Tuple<bool,Array<Pieces.PieceType>>(missingPieces.Count == 0, missingPieces);
+        return new Tuple<bool,Array<Parts.PartType>>(missingPieces.Count == 0, missingPieces);
     }
 }

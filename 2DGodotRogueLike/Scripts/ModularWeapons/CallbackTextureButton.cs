@@ -3,7 +3,7 @@ using System;
 
 //declaring delegate type
 public delegate void BasicCallback();
-public class BPTextureButton : TextureButton
+public class CallbackTextureButton : TextureButton
 {
     public string blueprint;
 

@@ -19,18 +19,18 @@ public class BaseCraftingMaterials : Resource
     public TextureRect sprite = new TextureRect();
 
     [Export(PropertyHint.Enum)]
-    public Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>> materialProperties;
+    public Dictionary<Parts.PartType,Array<Materials.MaterialStatData>> materialProperties;
     
     public BaseCraftingMaterials()
     {
-        materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
-        materialProperties[Pieces.PieceType.Medium_Blade] = new Array<Materials.MaterialStatData>();
-        materialProperties[Pieces.PieceType.Medium_Blade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
+        materialProperties = new Dictionary<Parts.PartType,Array<Materials.MaterialStatData>>();
+        materialProperties[Parts.PartType.Medium_Blade] = new Array<Materials.MaterialStatData>();
+        materialProperties[Parts.PartType.Medium_Blade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
     }
 
     public BaseCraftingMaterials(string _name, int _ingotCost, Materials.MaterialType _materialType, Color _tint) 
     {
-        materialProperties = new Dictionary<Pieces.PieceType,Array<Materials.MaterialStatData>>();
+        materialProperties = new Dictionary<Parts.PartType,Array<Materials.MaterialStatData>>();
         
         name = _name;
         ingotCost = _ingotCost;
@@ -91,10 +91,10 @@ namespace Materials
 }
 
 //TODO Move this to a PiecesEnum.cs and generate that code from a list of .png files inside of the My_Art/Parts folder 
-namespace Pieces
+namespace Parts
 {
     //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
-    public enum PieceType
+    public enum PartType
     {
         Undefined,
         Large_Blade,
