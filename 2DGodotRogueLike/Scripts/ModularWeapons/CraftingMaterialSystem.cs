@@ -51,6 +51,8 @@ public class CraftingMaterialSystem : Node
     TextureRect blueprintIconUI;
     RichTextLabel currentBlueprintText;
 
+    string fontBBcodePrefix = "[center][b]";
+
     //TODO determine if we actually need these???
     Array<CallbackTextureButton> blueprintVisualParts = new Array<CallbackTextureButton>();
     Array<HBoxContainer> blueprintDetailParts = new Array<HBoxContainer>();
@@ -107,7 +109,7 @@ public class CraftingMaterialSystem : Node
         blueprintIconUI = FindNode("BlueprintIcon") as TextureRect;
         blueprintIconUI.SetSize(new Vector2(10,10));
         
-        currentBlueprintText = FindNode("CurrentBPname") as RichTextLabel;
+        currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
 
         //LoadAllParts();
 
@@ -138,7 +140,7 @@ public class CraftingMaterialSystem : Node
 
         var bpNode = FindNode("GridBlueprints") as HBoxContainer;
         
-        var partContainer = GetNode("PartsVisualizerContainer") as CenterContainer;
+        var partContainer = FindNode("PartsVisualizerContainer") as CenterContainer;
         var partDetailContainer = FindNode("PartDetailContainer") as VBoxContainer;
 
         //Load sprites for bp's
@@ -180,7 +182,7 @@ public class CraftingMaterialSystem : Node
 
                     selectedBlueprint = blueprints[newTexRect.blueprint]; 
                     blueprintIconUI.Texture = selectedBlueprint.iconTex;
-                    currentBlueprintText.Text = selectedBlueprint.name;
+                    currentBlueprintText.BbcodeText = fontBBcodePrefix + selectedBlueprint.name;
                     
                     blueprintDetailParts.Clear();
                     blueprintVisualParts.Clear();
