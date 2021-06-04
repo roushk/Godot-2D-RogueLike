@@ -99,17 +99,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CurrentBPVBox" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
+[node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
 margin_right = 162.0
-margin_bottom = 32.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff/CurrentBPVBox"]
-margin_right = 162.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 110, 32 )
+margin_bottom = 16.0
+rect_min_size = Vector2( 110, 16 )
+rect_clip_content = false
 mouse_filter = 1
 custom_fonts/mono_font = ExtResource( 7 )
 custom_fonts/bold_font = ExtResource( 5 )
@@ -122,9 +116,9 @@ __meta__ = {
 }
 
 [node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
-margin_top = 36.0
+margin_top = 20.0
 margin_right = 162.0
-margin_bottom = 36.0
+margin_bottom = 20.0
 theme = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -160,6 +154,7 @@ __meta__ = {
 
 [node name="HoveredPartInfo" type="RichTextLabel" parent="PartSelectionDetail/PartSelectionSpacer"]
 margin_right = 160.0
+margin_bottom = 16.0
 rect_min_size = Vector2( 110, 16 )
 rect_clip_content = false
 mouse_filter = 1

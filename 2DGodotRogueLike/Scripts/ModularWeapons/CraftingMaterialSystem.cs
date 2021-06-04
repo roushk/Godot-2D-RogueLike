@@ -238,6 +238,7 @@ public class CraftingMaterialSystem : Node
         ClearPartsVisualizer();
         ClearCurrentBlueprintDetails();
 
+        Parts.PartStats summationStats = new Parts.PartStats();
         foreach (var part in currentParts)
         {
             //Loads the part visualizer with callbacks to load the part selections
@@ -251,28 +252,52 @@ public class CraftingMaterialSystem : Node
             partVisualizerContainer.AddChild(BPPieceButton);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////
-            //Generate Detail Sprites
-            HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
+           ////Generate Detail Sprites
+           //HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
+           //
+           //currentBlueprintDetailContainer.AddChild(hBox);
 
-            currentBlueprintDetailContainer.AddChild(hBox);
+           //CallbackTextureButton texDetail = hBox.GetChild(0) as CallbackTextureButton;
+           ////Generate a unique name for the part
+           //texDetail.Name = part.name + partNum;
+           //texDetail.TextureNormal = part.texture;
+           //texDetail.Modulate = new Color(1,1,1,1);
+           //
+           ////Set the size of the rect and need this stuff to get it to expand
+           //texDetail.RectSize = new Vector2(32,32);  //size of tex
+           ////texDetail.RectScale = new Vector2(1,1);   //new scale
+           ////texDetail.Expand = true;
+           //texDetail.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
+           //texDetail.RectMinSize = texDetail.RectSize * texDetail.RectScale;
 
-            CallbackTextureButton texDetail = hBox.GetChild(0) as CallbackTextureButton;
-            //Generate a unique name for the part
-            texDetail.Name = part.name + partNum;
-            texDetail.TextureNormal = part.texture;
-            texDetail.Modulate = new Color(1,1,1,1);
-            
-            //Set the size of the rect and need this stuff to get it to expand
-            texDetail.RectSize = new Vector2(32,32);  //size of tex
-            //texDetail.RectScale = new Vector2(1,1);   //new scale
-            //texDetail.Expand = true;
-            texDetail.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
-            texDetail.RectMinSize = texDetail.RectSize * texDetail.RectScale;
-
-            RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
-            detailText.BbcodeText = part.GenerateStatText();
-            detailText.BbcodeEnabled = true;
+           //RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
+           //detailText.BbcodeText = part.stats.GenerateStatText();
+           //detailText.BbcodeEnabled = true;
         }
+        if(currentParts.Count >= 2)
+        {
+            summationStats = Parts.PartStats.GetCombinationOfStats(currentParts[0].stats, currentParts[1].stats);
+            for (int i = 2; i < currentParts.Count; i++)
+            {
+                summationStats = Parts.PartStats.GetCombinationOfStats(summationStats, currentParts[i].stats);
+            }
+        }
+        else if(currentParts.Count == 1)
+        {
+            summationStats = currentParts[0].stats;
+        }
+
+
+        RichTextLabel bpDetails = new RichTextLabel();
+        currentBlueprintDetailContainer.AddChild(bpDetails);
+        bpDetails.BbcodeEnabled = true;
+
+        //Only write text if we have parts
+        if(currentParts.Count >= 1)
+            bpDetails.BbcodeText = summationStats.GenerateStatText(0, false);
+        
+        bpDetails.RectMinSize = new Vector2(110,200);
+        bpDetails.RectClipContent = false;
     }
 
     public override void _Ready()
@@ -340,6 +365,7 @@ public class CraftingMaterialSystem : Node
         //min size is num lines * font size + spacings
         return (1 + label.BbcodeText.Count("\n")) * ((label.Theme.DefaultFont as DynamicFont).Size + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingBottom + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingTop);
     }
+
     //Loads the list of all possible parts of the passed part blueprint
     public void LoadPartSelection(Parts.PartBlueprint currentBlueprint)
     {
@@ -371,7 +397,7 @@ public class CraftingMaterialSystem : Node
             hBox.MoveChild(partSelectionButton,0);  //move to pos 0
 
             RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
-            detailText.BbcodeText = part.GenerateStatText();
+            detailText.BbcodeText = part.stats.GenerateStatText();
             detailText.BbcodeEnabled = true;
             detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
             //Dont change colors with the callbacks
