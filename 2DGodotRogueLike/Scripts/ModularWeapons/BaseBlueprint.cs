@@ -6,15 +6,12 @@ using System.Collections.Generic;
 public class BaseBlueprint : Resource
 {
     [Export]
-    public string name { get; private set; } = "BaseBlueprint";
-    
-    [Export]
-    public string iconSpriteName  { get; private set; } = "Medium_Sword";
+    public string name { get; set; } = "BaseBlueprint";
 
-    public Texture iconTex { get; set; }
+    public Texture texture { get; set; }
     //A blueprint is made up of a list of required pieces
     [Export(PropertyHint.Enum)]
-    public Array<Parts.PartType> requiredPieces = new Array<Parts.PartType>{Parts.PartType.Medium_Blade};
+    public Array<Parts.PartType> requiredPieces = new Array<Parts.PartType>{};
 
     //Returns bool on if its craftable and if not returns a list of piece types that are needed
     public Tuple<bool,Array<Parts.PartType>> IsCraftableWithGivenMaterials(Array<Parts.PartBlueprint> existingPieces)

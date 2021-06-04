@@ -12,8 +12,20 @@
     "partCost": 5
 },
 {
+    "partName": "Zweihander",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_Zweihander.png",
+    "partType": "Large_Blade",
+    "partCost": 5
+},
+{
     "partName": "BigBlade",
     "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Guard_BigBlade.png",
+    "partType": "Large_Guard",
+    "partCost": 5
+},
+{
+    "partName": "Zweihander",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Guard_Zweihander.png",
     "partType": "Large_Guard",
     "partCost": 5
 },

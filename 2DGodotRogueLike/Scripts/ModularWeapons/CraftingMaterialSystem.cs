@@ -82,6 +82,7 @@ public class CraftingMaterialSystem : Node
         Godot.File file = new Godot.File();
         file.Open("res://Data/PartsList.json", Godot.File.ModeFlags.Read);
         string jsonText = file.GetAsText();
+        file.Close();
 
         //Construct dict of stuff
         Godot.Collections.Array ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Array;
@@ -98,6 +99,14 @@ public class CraftingMaterialSystem : Node
             partBP.materialCost = (int)(float)data["partCost"];
             //Ok, its because json uses floats only so object -> float -> int
 
+            Godot.Collections.Dictionary partAttributes = data["partAttributes"] as Godot.Collections.Dictionary;
+            partBP.stats.baseSlashDamage =  (int)(float)partAttributes["baseSlashDamage"];
+            partBP.stats.baseStabDamage =   (int)(float)partAttributes["baseStabDamage"];
+            partBP.stats.baseAttackSpeed =  (int)(float)partAttributes["baseAttackSpeed"];
+            partBP.stats.baseSwingSpeed =   (int)(float)partAttributes["baseSwingSpeed"];
+            partBP.stats.baseLength =       (int)(float)partAttributes["baseLength"];
+            partBP.stats.specialStat =      partAttributes["specialStat"] as string;
+
             //Generate bitmap from texture data
             BitMap newBMP = new BitMap();
             newBMP.CreateFromImageAlpha(partBP.texture.GetData());
@@ -106,7 +115,33 @@ public class CraftingMaterialSystem : Node
             //Add to the GRAND parts dictionary
             allPartsDict[partBP.partType].Add(partBP);
         }
+    }
+
+    void LoadBlueprints()
+    {
+
+        //Read json file into text
+        Godot.File file = new Godot.File();
+        file.Open("res://Data/Blueprints.json", Godot.File.ModeFlags.Read);
+        string jsonText = file.GetAsText();
         file.Close();
+
+        //Construct dict of stuff
+        Godot.Collections.Array ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Array;
+
+        //Parse data based on Resource
+        foreach (Godot.Collections.Dictionary data in ParsedData)
+        {
+            BaseBlueprint partBP = new BaseBlueprint();
+            partBP.name = data["blueprintName"] as string;
+            partBP.texture = (Texture)GD.Load(data["blueprintIconSprite"] as string);
+            
+            foreach (Godot.Collections.Dictionary subData in data["blueprintRequiredPieces"] as Godot.Collections.Array)
+            {
+                partBP.requiredPieces.Add(Parts.PartTypeConversion.FromString(subData["partType"] as string));
+            }
+            blueprints.Add(partBP.name, partBP);
+        }
     }
 
     CallbackTextureButton CreateCallbackButton(Parts.PartBlueprint blueprint, BasicCallback callback, Vector2 size, bool useBitmask = false)
@@ -159,18 +194,13 @@ public class CraftingMaterialSystem : Node
         return new Parts.PartBlueprint(allPartsDict[partType][0]);
     }
 
-    void GenerateBlueprintButton(string filePath)
+    void GenerateBlueprintButton(BaseBlueprint loadedBP)
     {
-        BaseBlueprint loadedBP = (BaseBlueprint)GD.Load(FullBPDir + filePath);
-                
-        //Load the icon for the BP + generate new texture
-        Texture loadedBPIcon = (Texture)GD.Load(FullSpriteDir + loadedBP.iconSpriteName + ".png");
-        loadedBP.iconTex = loadedBPIcon;
 
         //Configure Button
         CallbackTextureButton newTexRect = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
         newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
-        newTexRect.TextureNormal = loadedBPIcon;
+        newTexRect.TextureNormal = loadedBP.texture;
         newTexRect.blueprint = loadedBP.name;
         newTexRect.SetSize(new Vector2(5,5));
 
@@ -182,7 +212,7 @@ public class CraftingMaterialSystem : Node
                 return;
             //Update selected blueprint and the selected BP stuff
             selectedBlueprint = blueprints[newTexRect.blueprint]; 
-            blueprintIconUI.Texture = selectedBlueprint.iconTex;
+            blueprintIconUI.Texture = selectedBlueprint.texture;
             currentBlueprintText.BbcodeText = fontBBcodePrefix + selectedBlueprint.name;
 
             //Clear current parts
@@ -199,8 +229,6 @@ public class CraftingMaterialSystem : Node
 
         //Load the icons
         bpNode.AddChild(newTexRect);
-        //Load the bp's
-        blueprints.Add(loadedBP.name, loadedBP);
     }
 
     void GeneratePartVisualizerUIFromCurrentParts()
@@ -260,6 +288,7 @@ public class CraftingMaterialSystem : Node
         currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
 
         LoadAllParts();
+        LoadBlueprints();
 
         Color ironBaseColor = new Color("e8e8e8");
         //materialTints = data from file
@@ -291,26 +320,9 @@ public class CraftingMaterialSystem : Node
         }
 
         //Load blueprint resources 
-        if(blueprintDir.Open(FullBPDir) == Error.Ok)
+        foreach (var blueprint in blueprints)
         {
-            blueprintDir.ListDirBegin(true, true);
-
-            //GetNext closes the Dir
-            string nextBlueprint = blueprintDir.GetNext();
-
-            //While not empty string
-            while(nextBlueprint != "")
-            {
-                Console.WriteLine("Loading Blueprint \"" + FullBPDir + nextBlueprint + "\"");
-                GenerateBlueprintButton(nextBlueprint);
-                
-                //iterate next BP's
-                nextBlueprint = blueprintDir.GetNext();
-            }
-        }
-        else
-        {
-            throw(new Exception("Loading Blueprints Broke Blueprints"));
+            GenerateBlueprintButton(blueprint.Value);
         }
     }
 

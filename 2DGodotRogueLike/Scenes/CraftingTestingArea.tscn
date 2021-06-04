@@ -208,13 +208,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CraftButton" type="Button" parent="."]
+anchor_left = 0.03
+anchor_top = 0.87
+anchor_right = 0.12
+anchor_bottom = 0.9
+margin_left = -0.359999
+margin_top = -0.559982
+margin_right = 63.56
+margin_bottom = 14.8
+rect_min_size = Vector2( 10, 24 )
+text = "Craft Weapon"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="InventoryContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 416.92
-margin_top = -19.5705
-margin_right = 494.92
-margin_bottom = 228.429
+margin_left = 561.507
+margin_top = 13.3923
+margin_right = 639.507
+margin_bottom = 261.392
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -277,11 +292,6 @@ margin_bottom = 246.0
 margin_top = 250.0
 margin_right = 590.0
 margin_bottom = 271.0
-
-[node name="Button12" type="Button" parent="InventoryContainer"]
-margin_top = 275.0
-margin_right = 590.0
-margin_bottom = 296.0
 
 [node name="Inventory" type="VBoxContainer" parent="."]
 anchor_left = 0.7

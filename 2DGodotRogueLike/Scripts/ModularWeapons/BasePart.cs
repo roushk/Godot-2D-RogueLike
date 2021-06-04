@@ -2,6 +2,15 @@ using Godot;
 using System;
 namespace Parts
 {
+    public class PartStats 
+    {
+        public int baseSlashDamage = 80;
+        public int baseStabDamage = 80;
+        public int baseAttackSpeed = 60;
+        public int baseSwingSpeed = 80;
+        public int baseLength = 200;
+        public string specialStat = "None";
+    }
     public class PartBlueprint : Resource
     {
         public static long currentUniquePieceNum = 0;
@@ -20,6 +29,8 @@ namespace Parts
         
         public Texture texture { get; set; }
         public BitMap bitMask { get; set; }
+        
+        public PartStats stats = new PartStats();
 
         public PartBlueprint(){}
         public PartBlueprint(PartBlueprint rhs)

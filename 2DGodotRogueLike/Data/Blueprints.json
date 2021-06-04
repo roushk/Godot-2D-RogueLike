@@ -1,0 +1,70 @@
+[
+{
+    "blueprintName": "Large Sword",
+    "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Large_Sword.png",
+    "blueprintRequiredPieces": [
+    {
+        "partType": "Large_Blade"
+    },
+    {
+        "partType": "Large_Guard"
+    },
+    {
+        "partType": "Small_Handle"
+    },
+    {
+        "partType": "Pommel"
+    }],
+    "special": "Overhead"
+},
+{
+    "blueprintName": "Medium Sword",
+    "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Medium_Sword.png",
+    "blueprintRequiredPieces": [
+    {
+        "partType": "Medium_Blade"
+    },
+    {
+        "partType": "Medium_Guard"
+    },
+    {
+        "partType": "Small_Handle"
+    },
+    {
+        "partType": "Pommel"
+    }],
+    "special": "None"
+},
+{
+    "blueprintName": "Small Dagger",
+    "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Small_Dagger.png",
+    "blueprintRequiredPieces": [
+    {
+        "partType": "Small_Blade"
+    },
+    {
+        "partType": "Small_Guard"
+    },
+    {
+        "partType": "Small_Handle"
+    },
+    {
+        "partType": "Pommel"
+    }],
+    "special": "Backstab"
+},
+{
+    "blueprintName": "Tool",
+    "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Tool_Axe.png",
+    "blueprintRequiredPieces": [
+    {
+        "partType": "Tool_Head"
+    },
+    {
+        "partType": "Tool_Crossing"
+    },
+    {
+        "partType": "Tool_Handle"
+    }],
+    "special": "Tool"
+}]

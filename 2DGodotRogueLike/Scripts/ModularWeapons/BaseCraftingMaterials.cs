@@ -133,7 +133,7 @@ namespace Parts
         Tool_Head,
         Tool_Crossing,
         Tool_Handle,
-        Mace_Head
+        Medium_Mace
     //    HammerHead,     //Art Todo
     //    BattleaxeHead,  //Art Todo
     //    LargeGuard,     //Art Todo
