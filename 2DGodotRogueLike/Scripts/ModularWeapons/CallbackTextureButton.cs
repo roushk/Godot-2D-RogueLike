@@ -50,6 +50,7 @@ public class CallbackTextureButton : TextureButton
         if(onButtonPressedCallback != null)
             onButtonPressedCallback();
     }
+    
     public void OnButtonPressedStart()
     {
         if(!Disabled)

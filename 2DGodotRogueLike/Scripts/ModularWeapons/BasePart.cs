@@ -19,8 +19,17 @@ namespace Parts
         public PartType partType { get; set; } = PartType.Undefined;
         
         public Texture texture { get; set; }
+        public BitMap bitMask { get; set; }
 
         public PartBlueprint(){}
+        public PartBlueprint(PartBlueprint rhs)
+        {
+            name = rhs.name;
+            materialCost = rhs.materialCost;
+            partType = rhs.partType;
+            texture = rhs.texture;
+            bitMask = rhs.bitMask;
+        }
     }
     public class PartConstructed : PartBlueprint
     {

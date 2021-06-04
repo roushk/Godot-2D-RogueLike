@@ -21,12 +21,16 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/width=400
-window/size/height=300
-window/size/test_width=1440
-window/size/test_height=980
+window/size/width=512
+window/size/height=288
+window/size/test_width=1920
+window/size/test_height=1080
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[gui]
+
+theme/custom_font="res://Assets/Fonts/Jamma.tres"
 
 [importer_defaults]
 

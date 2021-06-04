@@ -106,7 +106,15 @@ namespace Parts
             throw(new Exception("Enum " + input + " Does not exist in Parts.PartType."));
             return PartType.Undefined;
         }
+
+        public static int CompareParts(Parts.PartBlueprint x, Parts.PartBlueprint y)
+        {
+            //Sort parts according to the
+            return x.partType - y.partType;
+        }
     }
+
+
 
     //Going to use enums to simplify the number of classes + adding more types of pieces can be data read into the piece data type instead of some RTTI/CTTI
     public enum PartType : int
