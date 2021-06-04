@@ -45,16 +45,14 @@ public class CraftingMaterialSystem : Node
     PackedScene CallbackTextureButtonScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/CallbackTextureButtonScene.tscn");
     PackedScene BPPartDetailScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BPPartDetail.tscn");
 
-    TextureRect blueprintIconUI;
     RichTextLabel currentBlueprintText;
 
     string fontBBcodePrefix = "[center][b]";
 
-    Node currentPartContainer;
-    Node partContainer;
-    Node partDetailContainer;
-    Node bpNode;
-    Node newPartContainer;
+    Node partVisualizerContainer;
+    Node currentBlueprintDetailContainer;
+    Node blueprintContainer;
+    Node newPartSelectionContainer;
 
     //Todo replace this with something significantly better..
     //It will help to change the type from TextureButton to derived class like the other BP thing with callbacks
@@ -144,7 +142,7 @@ public class CraftingMaterialSystem : Node
         }
     }
 
-    CallbackTextureButton CreateCallbackButton(Parts.PartBlueprint blueprint, BasicCallback callback, Vector2 size, bool useBitmask = false)
+    CallbackTextureButton CreateCallbackButton(Parts.PartBlueprint blueprint, BasicCallback callback, Vector2 size, bool useBitmask = false, bool useColors = true)
     {
         //Generate individual part buttons
         CallbackTextureButton BPPieceButton = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
@@ -155,12 +153,14 @@ public class CraftingMaterialSystem : Node
         BPPieceButton.RectSize = new Vector2(32,32);  //size of tex
         BPPieceButton.RectScale = size;   //new scale
         BPPieceButton.Expand = true;
-        BPPieceButton.StretchMode = TextureButton.StretchModeEnum.Scale;
+        BPPieceButton.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
         BPPieceButton.RectMinSize = BPPieceButton.RectSize * BPPieceButton.RectScale;
 
         //Set textures and bitmasks to the default part's texture and its bitmask
         BPPieceButton.TextureNormal = blueprint.texture;
         BPPieceButton.onButtonPressedCallback = callback;
+        BPPieceButton.changeColors = useColors;
+        BPPieceButton.Modulate = new Color(1,1,1,1);
     
         if(useBitmask)
             BPPieceButton.TextureClickMask = blueprint.bitMask;
@@ -171,18 +171,18 @@ public class CraftingMaterialSystem : Node
     void ClearPartsVisualizer()
     {
         //Queue all current children to be deleted
-        foreach (Node child in partContainer.GetChildren())
+        foreach (Node child in partVisualizerContainer.GetChildren())
         {
-            partContainer.RemoveChild(child);
+            partVisualizerContainer.RemoveChild(child);
             child.QueueFree();
         }
     }
 
-    void ClearPartsDetails()
+    void ClearCurrentBlueprintDetails()
     {
-        foreach (Node child in partDetailContainer.GetChildren())
+        foreach (Node child in currentBlueprintDetailContainer.GetChildren())
         {
-            partDetailContainer.RemoveChild(child);
+            currentBlueprintDetailContainer.RemoveChild(child);
             child.QueueFree();
         }
     }
@@ -198,21 +198,21 @@ public class CraftingMaterialSystem : Node
     {
 
         //Configure Button
-        CallbackTextureButton newTexRect = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
-        newTexRect.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
-        newTexRect.TextureNormal = loadedBP.texture;
-        newTexRect.blueprint = loadedBP.name;
-        newTexRect.SetSize(new Vector2(5,5));
+        CallbackTextureButton newCallbackTextureButton = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
+        newCallbackTextureButton.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
+        newCallbackTextureButton.TextureNormal = loadedBP.texture;
+        newCallbackTextureButton.blueprint = loadedBP.name;
+        newCallbackTextureButton.SetSize(new Vector2(5,5));
+        newCallbackTextureButton.changeColors = true;
 
         //Setup on pressed callback func
-        newTexRect.onButtonPressedCallback = () =>
+        newCallbackTextureButton.onButtonPressedCallback = () =>
         {
             //if we are selecting the same BP that we already have selected then break early
-            if(selectedBlueprint == blueprints[newTexRect.blueprint])
+            if(selectedBlueprint == blueprints[newCallbackTextureButton.blueprint])
                 return;
             //Update selected blueprint and the selected BP stuff
-            selectedBlueprint = blueprints[newTexRect.blueprint]; 
-            blueprintIconUI.Texture = selectedBlueprint.texture;
+            selectedBlueprint = blueprints[newCallbackTextureButton.blueprint]; 
             currentBlueprintText.BbcodeText = fontBBcodePrefix + selectedBlueprint.name;
 
             //Clear current parts
@@ -220,21 +220,23 @@ public class CraftingMaterialSystem : Node
             //Add new piece icons
             foreach (var part in selectedBlueprint.requiredPieces)
             {
-                currentParts.Add(CreatePartBlueprintFromType(part));
+                currentParts.Add(allPartsDict[part][0]);//CreatePartBlueprintFromType(part));
             }
             currentParts.Sort(Parts.PartTypeConversion.CompareParts);
             
+            //Clear part selection as well
+            ClearPartSelection();
             GeneratePartVisualizerUIFromCurrentParts();
         };
 
         //Load the icons
-        bpNode.AddChild(newTexRect);
+        blueprintContainer.AddChild(newCallbackTextureButton);
     }
 
     void GeneratePartVisualizerUIFromCurrentParts()
     {
         ClearPartsVisualizer();
-        ClearPartsDetails();
+        ClearCurrentBlueprintDetails();
 
         foreach (var part in currentParts)
         {
@@ -242,49 +244,44 @@ public class CraftingMaterialSystem : Node
             CallbackTextureButton BPPieceButton = CreateCallbackButton(part, () => 
                 {
                     LoadPartSelection(part);
-                }, new Vector2(4,4),true);
+                }, new Vector2(4,4),true, true);
 
             BPPieceButton.Modulate = new Color(1,1,1,0.4f);
 
-            partContainer.AddChild(BPPieceButton);
+            partVisualizerContainer.AddChild(BPPieceButton);
 
             /////////////////////////////////////////////////////////////////////////////////////////////////
             //Generate Detail Sprites
             HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
 
-            partDetailContainer.AddChild(hBox);
+            currentBlueprintDetailContainer.AddChild(hBox);
 
-            TextureRect texDetail = hBox.GetChild(0) as TextureRect;
+            CallbackTextureButton texDetail = hBox.GetChild(0) as CallbackTextureButton;
             //Generate a unique name for the part
             texDetail.Name = part.name + partNum;
-            texDetail.Texture = part.texture;
+            texDetail.TextureNormal = part.texture;
+            texDetail.Modulate = new Color(1,1,1,1);
             
             //Set the size of the rect and need this stuff to get it to expand
             texDetail.RectSize = new Vector2(32,32);  //size of tex
             //texDetail.RectScale = new Vector2(1,1);   //new scale
             //texDetail.Expand = true;
-            texDetail.StretchMode = TextureRect.StretchModeEnum.KeepAspectCentered;
+            texDetail.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
             texDetail.RectMinSize = texDetail.RectSize * texDetail.RectScale;
 
             RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
-            detailText.Text = "Correctly Set Detail Text, Very Cool";
+            detailText.BbcodeText = part.GenerateStatText();
+            detailText.BbcodeEnabled = true;
         }
     }
 
     public override void _Ready()
     {
-        currentPartContainer = FindNode("PartsVisualizerContainer");
-        partContainer = FindNode("PartsVisualizerContainer");
-        partDetailContainer = FindNode("PartDetailContainer");
-        bpNode = FindNode("GridBlueprints") as HBoxContainer;
-        newPartContainer = FindNode("NewPartDetailContainer");
-
-        //Setup UI links
-        ingot = GetNode("Ingot") as CallbackTextureButton;
-        
-        blueprintIconUI = FindNode("BlueprintIcon") as TextureRect;
-        blueprintIconUI.SetSize(new Vector2(10,10));
-        
+        //TODO: Hardcode path so no search
+        partVisualizerContainer = FindNode("PartsVisualizerContainer");
+        currentBlueprintDetailContainer = FindNode("PartDetailContainer");
+        blueprintContainer = FindNode("GridBlueprints") as HBoxContainer;
+        newPartSelectionContainer = FindNode("NewPartSelectionContainer");
         currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
 
         LoadAllParts();
@@ -324,19 +321,26 @@ public class CraftingMaterialSystem : Node
         {
             GenerateBlueprintButton(blueprint.Value);
         }
+        GeneratePartVisualizerUIFromCurrentParts();
     }
 
+    //Clears the parts selection UI
     void ClearPartSelection()
     {
         //Queue all current children to be deleted
-        foreach (Node child in newPartContainer.GetChildren())
+        foreach (Node child in newPartSelectionContainer.GetChildren())
         {
-            newPartContainer.RemoveChild(child);
+            newPartSelectionContainer.RemoveChild(child);
             child.QueueFree();
         }
     }
 
-    //Loads the list of all possible parts of the passed part type for the node specified by partName
+    int GetMinYSizeFromRichTextLabel(RichTextLabel label)
+    {
+        //min size is num lines * font size + spacings
+        return (1 + label.BbcodeText.Count("\n")) * ((label.Theme.DefaultFont as DynamicFont).Size + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingBottom + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingTop);
+    }
+    //Loads the list of all possible parts of the passed part blueprint
     public void LoadPartSelection(Parts.PartBlueprint currentBlueprint)
     {
         ClearPartSelection();
@@ -352,12 +356,26 @@ public class CraftingMaterialSystem : Node
                 currentParts.Add(part);
                 currentParts.Sort(Parts.PartTypeConversion.CompareParts);
                 GeneratePartVisualizerUIFromCurrentParts();
-            }, new Vector2(1,1), false);
+            }, new Vector2(1,1), false, true);
             
             partSelectionButton.Modulate = new Color(1,1,1,1);
 
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+            //Generate Detail Sprites
+            HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
+
+            Node node = hBox.GetChild(0);
+            hBox.RemoveChild(hBox.GetChild(0));     //Remove current selection button
+            node.QueueFree();                       //Free node
+            hBox.AddChild(partSelectionButton);     //add constructed obj
+            hBox.MoveChild(partSelectionButton,0);  //move to pos 0
+
+            RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
+            detailText.BbcodeText = part.GenerateStatText();
+            detailText.BbcodeEnabled = true;
+            detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
             //Dont change colors with the callbacks
-            newPartContainer.AddChild(partSelectionButton);
+            newPartSelectionContainer.AddChild(hBox);
         }
     }
 }

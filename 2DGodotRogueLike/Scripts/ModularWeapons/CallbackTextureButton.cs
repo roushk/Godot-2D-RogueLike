@@ -30,7 +30,8 @@ public class CallbackTextureButton : TextureButton
     [Export]
     public Color defaultColor = new Color();
 
-    public bool changeColors = true;
+    [Export]
+    public bool changeColors = false;
     
     public override void _Ready()
     {

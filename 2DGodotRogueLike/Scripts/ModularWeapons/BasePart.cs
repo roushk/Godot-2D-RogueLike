@@ -41,6 +41,87 @@ namespace Parts
             texture = rhs.texture;
             bitMask = rhs.bitMask;
         }
+
+        [Export]
+        public Color negativeStatColor = new Color("bd1919");
+        [Export]
+        public Color positiveStatColor = new Color("3fc41a");
+        [Export]
+        public Color specialStatColor = new Color("bd20b2");
+        [Export]
+        public Color normalstatcolor = new Color(1,1,1,1);
+        // returns a string of a - b, 100 - 20 returns "+80) and empty str for zero
+
+        public string BBCodeColorString(string str, Color color)
+        {
+            return "[color=#" + color.ToHtml(false) + "]" + str + "[/color]";
+        }
+        public string GetSignAndValue(int a, int b)
+        {
+            string str = "";
+            if(a - b > 0)
+            {
+                str = BBCodeColorString(" + " + Mathf.Abs(a - b), positiveStatColor);
+            }
+            else if(a - b < 0)
+            {
+                str = BBCodeColorString(" - " + Mathf.Abs(a - b), negativeStatColor);
+            }
+            return str;
+        }
+
+        //Generates text of the stats
+        public string GenerateStatText()
+        {
+            string baseSlashStat = "";
+           
+            if(stats.baseSlashDamage != 100)
+            {
+                baseSlashStat = "Slash Damage" + GetSignAndValue(stats.baseSlashDamage, 100) + "\n";
+            }
+
+            string  baseStabStat = "";
+            if(stats.baseStabDamage != 100)
+            {
+                baseStabStat = "Stab Damage" + GetSignAndValue(stats.baseStabDamage, 100) + "\n";
+            }
+
+            string baseAttackSpeedStat = "";
+            if(stats.baseAttackSpeed != 100)
+            {
+                baseAttackSpeedStat = "Attack Speed" + GetSignAndValue(stats.baseAttackSpeed, 100) + "\n";
+            }
+
+            string baseSwingStat = "";
+            if(stats.baseSwingSpeed != 100)
+            {
+                baseSwingStat = "Swing Speed"+ GetSignAndValue(stats.baseSwingSpeed, 100) + "\n";
+            }
+
+            string baseLengthStat = "";
+            if(stats.baseLength != 100)
+            {
+                baseLengthStat = "Weapon Length" + GetSignAndValue(stats.baseLength, 100) + "\n";
+            }
+
+            string specialStatText = "";
+            if(stats.specialStat != "None")
+                specialStatText = "Special: " + BBCodeColorString(stats.specialStat, specialStatColor) + "\n";
+                //Ternary to return stats if they exist or "No Stat Changes" if no stat changes
+            string tempStr = baseSlashStat + baseStabStat + baseAttackSpeedStat + baseSwingStat + baseLengthStat + specialStatText;
+            
+            //remove the last newline
+            if(tempStr != "")
+            {
+                tempStr = tempStr.Remove(tempStr.FindLast("\n"),1);
+            }
+            else
+            {
+                tempStr = "No Stat Changes";
+            }
+            
+            return tempStr;
+        }
     }
     public class PartConstructed : PartBlueprint
     {

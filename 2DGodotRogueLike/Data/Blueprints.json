@@ -1,6 +1,6 @@
 [
 {
-    "blueprintName": "Large Sword",
+    "blueprintName": "Large Sword Blueprint",
     "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Large_Sword.png",
     "blueprintRequiredPieces": [
     {
@@ -18,7 +18,7 @@
     "special": "Overhead"
 },
 {
-    "blueprintName": "Medium Sword",
+    "blueprintName": "Medium Sword Blueprint",
     "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Medium_Sword.png",
     "blueprintRequiredPieces": [
     {
@@ -36,7 +36,7 @@
     "special": "None"
 },
 {
-    "blueprintName": "Small Dagger",
+    "blueprintName": "Small Dagger Blueprint",
     "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Small_Dagger.png",
     "blueprintRequiredPieces": [
     {
@@ -54,7 +54,7 @@
     "special": "Backstab"
 },
 {
-    "blueprintName": "Tool",
+    "blueprintName": "Tool Blueprint",
     "blueprintIconSprite": "res://Assets/Art/My_Art/BlueprintIcons/Tool_Axe.png",
     "blueprintRequiredPieces": [
     {

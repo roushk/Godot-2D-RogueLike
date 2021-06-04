@@ -11,7 +11,7 @@
         "baseAttackSpeed": 60,
         "baseSwingSpeed": 80,
         "baseLength": 200,
-        "specialStat": "None"
+        "specialStat": "+ Knockback"
     }
 },
 {
@@ -22,7 +22,7 @@
     "partAttributes":
     {
         "baseSlashDamage": 200,
-        "baseStabDamage": 100,
+        "baseStabDamage": 60,
         "baseAttackSpeed": 80,
         "baseSwingSpeed": 80,
         "baseLength": 150,
