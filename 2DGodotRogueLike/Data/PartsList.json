@@ -51,8 +51,8 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
+        "baseSlashDamage": 120,
+        "baseStabDamage": 80,
         "baseAttackSpeed": 80,
         "baseSwingSpeed": 80,
         "baseLength": 250,
@@ -66,10 +66,10 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
+        "baseSlashDamage": 110,
+        "baseStabDamage": 90,
+        "baseAttackSpeed": 90,
+        "baseSwingSpeed": 90,
         "baseLength": 100,
         "specialStat": "None"
     }
@@ -81,10 +81,10 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
+        "baseSlashDamage": 90,
+        "baseStabDamage": 110,
+        "baseAttackSpeed": 90,
+        "baseSwingSpeed": 90,
         "baseLength": 100,
         "specialStat": "None"
     }
@@ -96,11 +96,11 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
+        "baseSlashDamage": 110,
+        "baseStabDamage": 90,
         "baseAttackSpeed": 100,
         "baseSwingSpeed": 100,
-        "baseLength": 100,
+        "baseLength": 120,
         "specialStat": "None"
     }
 },
@@ -111,11 +111,11 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
+        "baseSlashDamage": 80,
+        "baseStabDamage": 120,
+        "baseAttackSpeed": 120,
+        "baseSwingSpeed": 120,
+        "baseLength": 90,
         "specialStat": "Riposte"
     }
 },
@@ -201,11 +201,11 @@
     "partCost": 5,
     "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
+        "baseSlashDamage": 60,
+        "baseStabDamage": 80,
+        "baseAttackSpeed": 140,
+        "baseSwingSpeed": 140,
+        "baseLength": 70,
         "specialStat": "None"
     }
 },

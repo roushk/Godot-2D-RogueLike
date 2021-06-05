@@ -746,6 +746,7 @@ margin_bottom = 245.0
 margin_top = 213.0
 margin_right = 32.0
 margin_bottom = 245.0
+
 [connection signal="pressed" from="OldInv/Button" to="." method="SwitchToIronOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button2" to="." method="SwitchToCopperOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button3" to="." method="SwitchToTinOnButtonPressed"]
