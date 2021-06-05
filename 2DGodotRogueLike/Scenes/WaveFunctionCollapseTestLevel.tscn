@@ -1633,44 +1633,45 @@ margin_bottom = 500.0
 
 [node name="Button5" type="Button" parent="GUI/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 20.0
+margin_bottom = 21.0
 text = "Generate Complete Map"
 
 [node name="Button" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 24.0
+margin_top = 25.0
 margin_right = 300.0
-margin_bottom = 44.0
+margin_bottom = 46.0
 text = "Generate New Tile Map"
 
 [node name="Button2" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 48.0
+margin_top = 50.0
 margin_right = 300.0
-margin_bottom = 68.0
+margin_bottom = 71.0
 text = "Iterate Simulation Once"
 
 [node name="Button3" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 72.0
+margin_top = 75.0
 margin_right = 300.0
-margin_bottom = 92.0
+margin_bottom = 96.0
 text = "Generate Cave Groups"
 
 [node name="Button6" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 96.0
+margin_top = 100.0
 margin_right = 300.0
-margin_bottom = 116.0
+margin_bottom = 121.0
 text = "View Root Groups"
 
 [node name="Button7" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 120.0
+margin_top = 125.0
 margin_right = 300.0
-margin_bottom = 140.0
+margin_bottom = 146.0
 text = "View Individual Groups"
 
 [node name="Button4" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 144.0
+margin_top = 150.0
 margin_right = 300.0
-margin_bottom = 164.0
+margin_bottom = 171.0
 text = "Clear Map"
+
 [connection signal="pressed" from="GUI/VBoxContainer/Button5" to="." method="GenerateCompleteMapButton_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Button" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Button2" to="." method="IterateSimulationOnce_Callback"]

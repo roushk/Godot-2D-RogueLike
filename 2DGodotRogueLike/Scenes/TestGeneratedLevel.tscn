@@ -1633,7 +1633,7 @@ margin_bottom = 500.0
 
 [node name="General" type="Label" parent="GUI/VBoxContainer"]
 margin_right = 300.0
-margin_bottom = 14.0
+margin_bottom = 15.0
 text = "General"
 align = 1
 __meta__ = {
@@ -1641,21 +1641,21 @@ __meta__ = {
 }
 
 [node name="GenNew" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 18.0
+margin_top = 19.0
 margin_right = 300.0
-margin_bottom = 38.0
+margin_bottom = 40.0
 text = "Generate New Tile Map"
 
 [node name="Clear" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 42.0
+margin_top = 44.0
 margin_right = 300.0
-margin_bottom = 62.0
+margin_bottom = 65.0
 text = "Clear Map"
 
 [node name="WFC2" type="Label" parent="GUI/VBoxContainer"]
-margin_top = 66.0
+margin_top = 69.0
 margin_right = 300.0
-margin_bottom = 80.0
+margin_bottom = 84.0
 text = "Game of Life + CCL"
 align = 1
 __meta__ = {
@@ -1663,39 +1663,39 @@ __meta__ = {
 }
 
 [node name="GenMap" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 84.0
+margin_top = 88.0
 margin_right = 300.0
-margin_bottom = 104.0
+margin_bottom = 109.0
 text = "Generate Complete Map"
 
 [node name="IterSim" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 108.0
+margin_top = 113.0
 margin_right = 300.0
-margin_bottom = 128.0
+margin_bottom = 134.0
 text = "Iterate GoL Simulation Once"
 
 [node name="GenCave" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 132.0
+margin_top = 138.0
 margin_right = 300.0
-margin_bottom = 152.0
+margin_bottom = 159.0
 text = "Generate CCL Groups"
 
 [node name="ViewRoot" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 156.0
+margin_top = 163.0
 margin_right = 300.0
-margin_bottom = 176.0
+margin_bottom = 184.0
 text = "View CCL Root Groups"
 
 [node name="ViewInd" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 180.0
+margin_top = 188.0
 margin_right = 300.0
-margin_bottom = 200.0
+margin_bottom = 209.0
 text = "View CCL Individual Groups"
 
 [node name="WFC" type="Label" parent="GUI/VBoxContainer"]
-margin_top = 204.0
+margin_top = 213.0
 margin_right = 300.0
-margin_bottom = 218.0
+margin_bottom = 228.0
 text = "Wave Function Collapse"
 align = 1
 __meta__ = {
@@ -1703,23 +1703,23 @@ __meta__ = {
 }
 
 [node name="WFC_GenComplete" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 222.0
+margin_top = 232.0
 margin_right = 300.0
-margin_bottom = 242.0
+margin_bottom = 253.0
 button_mask = 0
 text = "Generate Complete Map"
 
 [node name="WFC_ITER" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 246.0
+margin_top = 257.0
 margin_right = 300.0
-margin_bottom = 266.0
+margin_bottom = 278.0
 button_mask = 0
 text = "Iterate WFC Simulation Once"
 
 [node name="WFC_ViewSockets" type="Button" parent="GUI/VBoxContainer"]
-margin_top = 270.0
+margin_top = 282.0
 margin_right = 300.0
-margin_bottom = 290.0
+margin_bottom = 303.0
 button_mask = 0
 text = "View Sockets"
 
@@ -1740,11 +1740,14 @@ margin_bottom = 500.0
 
 [node name="Label" type="Label" parent="MapGenColorList/VBoxContainer2"]
 margin_right = 300.0
-margin_bottom = 14.0
+margin_bottom = 15.0
 text = "Map Generation Cave Color to ID"
 
 [node name="HBoxContainer" parent="MapGenColorList/VBoxContainer2" instance=ExtResource( 5 )]
+margin_top = 19.0
 margin_right = 300.0
+margin_bottom = 34.0
+
 [connection signal="pressed" from="GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
 [connection signal="pressed" from="GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]

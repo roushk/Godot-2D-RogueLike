@@ -17,7 +17,20 @@ public class PlayerTopDown : KinematicBody2D
   bool grounded = true;
   bool attacking = false;
 
+  FacingDir currentFacing = FacingDir.Up;
 
+  public enum FacingDir
+  {
+    Up,
+    Right,
+    Down,
+    Left,
+  }
+
+  float getDegreeFromFacing(FacingDir dir)
+  {
+    return (int)dir * 90;
+  }
 
   //map of object name to the amount currently owned
   System.Collections.Generic.SortedDictionary<string, int> materialInventory = new System.Collections.Generic.SortedDictionary<string, int>();
@@ -42,8 +55,6 @@ public class PlayerTopDown : KinematicBody2D
 		//GetNode("OreWorldObject");
 	}
 
-
-
   public void _on_PlayerIneractionArea_area_entered(Area2D body)
   {
     OreWorldObject ore = body.GetParent() as OreWorldObject;
@@ -52,8 +63,7 @@ public class PlayerTopDown : KinematicBody2D
       overlappingOre = true;
       currentlyOverlappedOre = ore;
     }
-    
-    
+  
     InventoryObject inv = body.GetParent() as InventoryObject;
     if(inv != null)
     {
@@ -90,14 +100,16 @@ public class PlayerTopDown : KinematicBody2D
   {
       this.DrawLine(Position,Position + velocity,Color.Color8(1,0,0,1));
       this.DrawLine(Position,Position + new Vector2(0,50),Color.Color8(0,1,0,1));
-
   }
+
   //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
     movingDirection = new Vector2(0,0);
     AnimatedSprite animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
+    AnimationPlayer weaponAnimPlayer = GetNode("WeaponSprite/WeaponAnimPlayer") as AnimationPlayer;
     RayCast2D raycast2D = GetNode("RayCast2D") as RayCast2D;
+    Sprite weaponSprite = GetNode("WeaponSprite") as Sprite;
 
     raycast2D.CastTo = new Vector2(0,50);
 
@@ -107,29 +119,31 @@ public class PlayerTopDown : KinematicBody2D
     //update player movement
 		if(Godot.Input.IsActionPressed("PlayerUp"))
 		{
+      currentFacing = FacingDir.Up;
       movingDirection.y -= 1;
-
 			//velocity += new Vector2(0,-verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerDown"))
 		{
+      currentFacing = FacingDir.Down;
       movingDirection.y += 1;
 			//velocity += new Vector2(0,verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerRight"))
 		{
+      //Prioritize left and right attacks more than up and down
+      currentFacing = FacingDir.Right;
       movingDirection.x += 1;
 			//velocity += new Vector2(horizontalMovementPower,0) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerLeft"))
 		{
       movingDirection.x -= 1;
+      currentFacing = FacingDir.Left;
 			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
 		}
 
-
-    velocity = movingDirection.Normalized() * 10000.0f * delta;
-  
+    velocity = movingDirection.Normalized() * 10000.0f * delta;  
 
   //if velocity x == 0 then dont change
     if(velocity.x > 0)
@@ -147,10 +161,16 @@ public class PlayerTopDown : KinematicBody2D
     {
       attacking = true;
       animatedSprite.Play("Character Attack");
+      if(!weaponAnimPlayer.IsPlaying())
+      {
+        Vector2 mousePos = GetGlobalMousePosition();
+        //AngleToPoint does what we need, literally dont need to do anything else, sweet
+        weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
+        weaponAnimPlayer.Play("BasicWeaponAttackAnim");
+      }
       velocity = new Vector2(0,0);
-
     }
-
+    
     //TODO move this elseware
     if(currentlyOverlappedOre != null && overlappingOre && attacking)
     {
@@ -175,8 +195,6 @@ public class PlayerTopDown : KinematicBody2D
     {
       currentlyOverlappedOre.GetNode<CPUParticles2D>("CPUParticles2D").Emitting = false;
     }
-
-
 
 
     //Bad, need to find a way to detect if animation is completed
