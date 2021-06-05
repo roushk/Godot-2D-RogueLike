@@ -93,14 +93,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_top = 4.0
-margin_right = -4.0
-margin_bottom = -4.0
+margin_right = -6.72
+margin_bottom = 60.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
-margin_right = 162.0
+margin_right = 160.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 110, 16 )
 rect_clip_content = false
@@ -117,12 +117,53 @@ __meta__ = {
 
 [node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 20.0
-margin_right = 162.0
-margin_bottom = 20.0
+margin_right = 160.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 20 )
 theme = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HoveredPartInfo" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
+margin_top = 44.0
+margin_right = 160.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 160, 16 )
+rect_clip_content = false
+mouse_filter = 1
+custom_fonts/mono_font = ExtResource( 7 )
+custom_fonts/bold_font = ExtResource( 5 )
+custom_fonts/normal_font = ExtResource( 6 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Part Information"
+text = "Part Information"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PartSelectionScrollContainer" type="ScrollContainer" parent="BlueprintBackground/BlueprintStuff"]
+margin_top = 64.0
+margin_right = 160.0
+margin_bottom = 183.0
+rect_min_size = Vector2( 160, 119 )
+theme = ExtResource( 8 )
+scroll_horizontal_enabled = false
+
+[node name="NewPartSelectionContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff/PartSelectionScrollContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+theme = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator" type="HSeparator" parent="BlueprintBackground/BlueprintStuff/PartSelectionScrollContainer/NewPartSelectionContainer"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 32.0
+margin_bottom = 5.0
+rect_min_size = Vector2( 5, 5 )
 
 [node name="PartSelectionDetail" type="NinePatchRect" parent="."]
 anchor_left = 0.68
@@ -148,39 +189,6 @@ margin_left = 2.0
 margin_top = 4.0
 margin_right = -2.0
 margin_bottom = -2.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HoveredPartInfo" type="RichTextLabel" parent="PartSelectionDetail/PartSelectionSpacer"]
-margin_right = 160.0
-margin_bottom = 16.0
-rect_min_size = Vector2( 110, 16 )
-rect_clip_content = false
-mouse_filter = 1
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 5 )
-custom_fonts/normal_font = ExtResource( 6 )
-bbcode_enabled = true
-bbcode_text = "[center][b]Part Information"
-text = "Part Information"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PartSelectionScrollContainer" type="ScrollContainer" parent="PartSelectionDetail/PartSelectionSpacer"]
-margin_top = 20.0
-margin_right = 160.0
-margin_bottom = 270.0
-rect_min_size = Vector2( 160, 250 )
-rect_clip_content = false
-scroll_horizontal_enabled = false
-
-[node name="NewPartSelectionContainer" type="VBoxContainer" parent="PartSelectionDetail/PartSelectionSpacer/PartSelectionScrollContainer"]
-margin_right = 32.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
-theme = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

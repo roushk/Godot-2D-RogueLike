@@ -1,6 +1,6 @@
 [
 {
-    "partName": "BigBlade",
+    "partName": "Big Blade",
     "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_BigBlade.png",
     "partType": "Large_Blade",
     "partCost": 5,
@@ -12,6 +12,21 @@
         "baseSwingSpeed": 80,
         "baseLength": 200,
         "specialStat": "+ Knockback"
+    }
+},
+{
+    "partName": "Beefy Blade",
+    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_BeefyBlade.png",
+    "partType": "Large_Blade",
+    "partCost": 5,
+    "partAttributes":
+    {
+        "baseSlashDamage": 75,
+        "baseStabDamage": 75,
+        "baseAttackSpeed": 75,
+        "baseSwingSpeed": 75,
+        "baseLength": 175,
+        "specialStat": "+ Beef"
     }
 },
 {

@@ -291,7 +291,7 @@ public class CraftingMaterialSystem : Node
         if(currentParts.Count >= 1)
             bpDetails.BbcodeText = summationStats.GenerateStatText(0, false);
         
-        bpDetails.RectMinSize = new Vector2(110,200);
+        bpDetails.RectMinSize = new Vector2(32,50);
         bpDetails.RectClipContent = false;
     }
 
@@ -350,6 +350,9 @@ public class CraftingMaterialSystem : Node
         //Queue all current children to be deleted
         foreach (Node child in newPartSelectionContainer.GetChildren())
         {
+            if(child as HSeparator != null)
+                continue;
+
             newPartSelectionContainer.RemoveChild(child);
             child.QueueFree();
         }

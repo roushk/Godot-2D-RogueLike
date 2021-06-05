@@ -75,11 +75,11 @@ namespace Parts
         //Generates text of the stats
         public string GenerateStatText(int threshold = 100, bool relativeNum = true)
         {
-            string baseSlashStat =          GenerateSingleStatText("Slash Damage ", baseSlashDamage, threshold, relativeNum);
-            string baseStabStat =           GenerateSingleStatText("Stab Damage ", baseStabDamage, threshold, relativeNum);
-            string baseAttackSpeedStat =    GenerateSingleStatText("Attack Speed ", baseAttackSpeed, threshold, relativeNum);
-            string baseSwingStat =          GenerateSingleStatText("Swing Speed ", baseSwingSpeed, threshold, relativeNum);
-            string baseLengthStat =         GenerateSingleStatText("Length ", baseLength, threshold, relativeNum);
+            string baseSlashStat =          GenerateSingleStatText("Slash Damage", baseSlashDamage, threshold, relativeNum);
+            string baseStabStat =           GenerateSingleStatText("Stab Damage", baseStabDamage, threshold, relativeNum);
+            string baseAttackSpeedStat =    GenerateSingleStatText("Attack Speed", baseAttackSpeed, threshold, relativeNum);
+            string baseSwingStat =          GenerateSingleStatText("Swing Speed", baseSwingSpeed, threshold, relativeNum);
+            string baseLengthStat =         GenerateSingleStatText("Length", baseLength, threshold, relativeNum);
 
             string specialStatText = "";
             if(specialStat != "None")
