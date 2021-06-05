@@ -209,62 +209,62 @@ __meta__ = {
 }
 
 [node name="Button" type="Button" parent="OldInv"]
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 21.0
 text = "Iron"
 
 [node name="Button2" type="Button" parent="OldInv"]
 margin_top = 25.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 46.0
 text = "Copper"
 
 [node name="Button3" type="Button" parent="OldInv"]
 margin_top = 50.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 71.0
 text = "Tin"
 
 [node name="Button4" type="Button" parent="OldInv"]
 margin_top = 75.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 96.0
 text = "Adamantite"
 
 [node name="Button5" type="Button" parent="OldInv"]
 margin_top = 100.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 121.0
 text = "Steel"
 
 [node name="Button6" type="Button" parent="OldInv"]
 margin_top = 125.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 146.0
 
 [node name="Button7" type="Button" parent="OldInv"]
 margin_top = 150.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 171.0
 
 [node name="Button8" type="Button" parent="OldInv"]
 margin_top = 175.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 196.0
 
 [node name="Button9" type="Button" parent="OldInv"]
 margin_top = 200.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 221.0
 
 [node name="Button10" type="Button" parent="OldInv"]
 margin_top = 225.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 246.0
 
 [node name="Button11" type="Button" parent="OldInv"]
 margin_top = 250.0
-margin_right = 590.0
+margin_right = 589.0
 margin_bottom = 271.0
 
 [node name="Inventory" type="VBoxContainer" parent="."]

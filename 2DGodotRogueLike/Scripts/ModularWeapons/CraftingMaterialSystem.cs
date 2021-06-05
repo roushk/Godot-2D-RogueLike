@@ -170,6 +170,7 @@ public class CraftingMaterialSystem : Node
 
     void ClearPartsVisualizer()
     {
+        selectedPart = null;
         //Queue all current children to be deleted
         foreach (Node child in partVisualizerContainer.GetChildren())
         {
@@ -232,6 +233,18 @@ public class CraftingMaterialSystem : Node
         //Load the icons
         blueprintContainer.AddChild(newCallbackTextureButton);
     }
+    
+    void UpdateCurrentlySelectedPart(CallbackTextureButton newSelectedPart)
+    {
+        newSelectedPart.Modulate = new Color(0,1,0);
+        newSelectedPart.changeColors = false;
+        if(selectedPart != null)
+        {
+            selectedPart.Modulate = new Color(1,1,1);
+            selectedPart.changeColors = true;
+        }
+        selectedPart = newSelectedPart;
+    }
 
     void GeneratePartVisualizerUIFromCurrentParts()
     {
@@ -242,37 +255,20 @@ public class CraftingMaterialSystem : Node
         foreach (var part in currentParts)
         {
             //Loads the part visualizer with callbacks to load the part selections
-            CallbackTextureButton BPPieceButton = CreateCallbackButton(part, () => 
+            //cannot pass BPPieceButton to the functor so need to initialize it to an object. 
+            CallbackTextureButton BPPieceButton = default;
+            BPPieceButton = CreateCallbackButton(part, () => 
+            {
+                if(BPPieceButton != selectedPart)
                 {
+                    UpdateCurrentlySelectedPart(BPPieceButton);
                     LoadPartSelection(part);
-                }, new Vector2(4,4),true, true);
+                }
+            }, new Vector2(4,4),true, true);
 
-            BPPieceButton.Modulate = new Color(1,1,1,0.4f);
+            BPPieceButton.Modulate = new Color(1,1,1,1);
 
             partVisualizerContainer.AddChild(BPPieceButton);
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////
-           ////Generate Detail Sprites
-           //HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
-           //
-           //currentBlueprintDetailContainer.AddChild(hBox);
-
-           //CallbackTextureButton texDetail = hBox.GetChild(0) as CallbackTextureButton;
-           ////Generate a unique name for the part
-           //texDetail.Name = part.name + partNum;
-           //texDetail.TextureNormal = part.texture;
-           //texDetail.Modulate = new Color(1,1,1,1);
-           //
-           ////Set the size of the rect and need this stuff to get it to expand
-           //texDetail.RectSize = new Vector2(32,32);  //size of tex
-           ////texDetail.RectScale = new Vector2(1,1);   //new scale
-           ////texDetail.Expand = true;
-           //texDetail.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
-           //texDetail.RectMinSize = texDetail.RectSize * texDetail.RectScale;
-
-           //RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
-           //detailText.BbcodeText = part.stats.GenerateStatText();
-           //detailText.BbcodeEnabled = true;
         }
         if(currentParts.Count >= 2)
         {
@@ -286,7 +282,6 @@ public class CraftingMaterialSystem : Node
         {
             summationStats = currentParts[0].stats;
         }
-
 
         RichTextLabel bpDetails = new RichTextLabel();
         currentBlueprintDetailContainer.AddChild(bpDetails);
