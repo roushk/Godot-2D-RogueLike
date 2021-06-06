@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://Assets/Art/Characters/CharacterRunNoSword.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Art/Characters/CharacterFallNoSword.png" type="Texture" id=2]
@@ -7,13 +7,15 @@
 [ext_resource path="res://Assets/Art/Items/Coin.png" type="Texture" id=5]
 [ext_resource path="res://Scripts/PlayerTopDown.cs" type="Script" id=6]
 [ext_resource path="res://Assets/Art/Characters/CharacterAttack.png" type="Texture" id=7]
-[ext_resource path="res://Assets/Art/My_Art/Ingot_Image.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Art/My_Art/whitebox.png" type="Texture" id=8]
 [ext_resource path="res://Animations/BasicWeaponAttackAnim.tres" type="Animation" id=9]
 [ext_resource path="res://Assets/Art/My_Art/SpriteSheets/Basic_Animated_Sword-Sheet.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Art/My_Art/Ingot_Normal.png" type="Texture" id=11]
 [ext_resource path="res://Shaders/2DLitShaderMat.tres" type="Material" id=12]
 [ext_resource path="res://Scripts/EditorLight.cs" type="Script" id=13]
-[ext_resource path="res://Assets/Art/My_Art/LightBulb.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Art/My_Art/LightBulbWhite.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Art/My_Art/Ingot_Image.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Art/My_Art/NormalTest.jpg" type="Texture" id=16]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
@@ -226,63 +228,78 @@ visible = false
 scale = Vector2( 0.8, 0.8 )
 shape = SubResource( 34 )
 
+[node name="Light2" type="Sprite" parent="."]
+self_modulate = Color( 0.658824, 0.501961, 0.298039, 1 )
+position = Vector2( -50.1838, -12.9199 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 14 )
+
+[node name="Light2D" type="Light2D" parent="Light2"]
+position = Vector2( 0.0427628, 0.374565 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+texture_scale = 20.0
+color = Color( 0.658824, 0.501961, 0.298039, 1 )
+
 [node name="LitSprite" type="Sprite" parent="."]
 material = ExtResource( 12 )
-position = Vector2( 76.6568, -12.2224 )
-texture = ExtResource( 8 )
+position = Vector2( 65.4359, 1.92686 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
 
 [node name="Node2D" type="Node2D" parent="LitSprite"]
 
 [node name="Light" type="Sprite" parent="LitSprite/Node2D"]
-position = Vector2( -28.3052, 30.7185 )
+self_modulate = Color( 0.294118, 0.666667, 0.631373, 1 )
+position = Vector2( 83.3152, -67.5642 )
 scale = Vector2( 2, 2 )
+z_index = 1
 texture = ExtResource( 14 )
 script = ExtResource( 13 )
 
-[node name="Light2D" type="Light2D" parent="LitSprite/Node2D/Light"]
-position = Vector2( 38.8786, -28.2734 )
-scale = Vector2( 0.5, 0.5 )
+[node name="Light2D2" type="Light2D" parent="LitSprite/Node2D/Light"]
+position = Vector2( -0.323555, 0.267593 )
+texture = ExtResource( 8 )
+texture_scale = 10.0
+color = Color( 0.294118, 0.666667, 0.631373, 1 )
+energy = 2.0
 
 [node name="LitSprite2" type="Sprite" parent="."]
 material = ExtResource( 12 )
 position = Vector2( 148.698, -9.28065 )
-texture = ExtResource( 8 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
-
-[node name="Node2D" type="Node2D" parent="LitSprite2"]
 
 [node name="LitSprite3" type="Sprite" parent="."]
 material = ExtResource( 12 )
 position = Vector2( 115.625, 51.8255 )
-texture = ExtResource( 8 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
-
-[node name="Node2D" type="Node2D" parent="LitSprite3"]
 
 [node name="LitSprite4" type="Sprite" parent="."]
 material = ExtResource( 12 )
 position = Vector2( 13.8865, 53.0855 )
-texture = ExtResource( 8 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
-
-[node name="Node2D" type="Node2D" parent="LitSprite4"]
 
 [node name="LitSprite5" type="Sprite" parent="."]
 material = ExtResource( 12 )
 position = Vector2( 13.2565, -40.4637 )
-texture = ExtResource( 8 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
-
-[node name="Node2D" type="Node2D" parent="LitSprite5"]
 
 [node name="LitSprite6" type="Sprite" parent="."]
 material = ExtResource( 12 )
 position = Vector2( 79.0874, -67.867 )
-texture = ExtResource( 8 )
+texture = ExtResource( 15 )
 normal_map = ExtResource( 11 )
 
-[node name="Node2D" type="Node2D" parent="LitSprite6"]
+[node name="LitSprite7" type="Sprite" parent="."]
+material = ExtResource( 12 )
+position = Vector2( 149.643, -64.4022 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 16 )
 
 [node name="WeaponSprite" type="Sprite" parent="."]
 visible = false

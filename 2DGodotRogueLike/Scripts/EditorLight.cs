@@ -24,11 +24,11 @@ public class EditorLight : Node2D
         parentNode.Rotate(rotateSpeed * delta);
         Rotate(-rotateSpeed  * delta);
 
-        if(spriteToLight != null)
-        {
-            Vector2 lightDir = GlobalPosition - spriteToLight.GlobalPosition;
-            (spriteToLight.Material as ShaderMaterial)?.SetShaderParam("basicLightDir", new Vector3(lightDir.x,-lightDir.y,5));
-        }
+        //if(spriteToLight != null)
+        //{
+        //    Vector2 lightDir = GlobalPosition - spriteToLight.GlobalPosition;
+        //    (spriteToLight.Material as ShaderMaterial)?.SetShaderParam("basicLightDir", new Vector3(lightDir.x,-lightDir.y,5));
+        //}
     }
 }
 

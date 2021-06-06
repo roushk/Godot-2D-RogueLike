@@ -2,28 +2,34 @@
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;	//For spatial you can override vertex, frag, and light shaders
-render_mode unshaded;
+render_mode blend_mix;
 
 uniform vec4 materialColor : hint_color;
-uniform vec3 basicLightDir = vec3(-0.707107,-0.707107,0);
+uniform vec4 ambientColor : hint_color;
 void fragment()
 {
+	vec4 albedo = texture(TEXTURE, UV);
 	
 	//RGB color space [0,1] to normalized vector color space [-1,1]
-	vec3 normLightDir = normalize(basicLightDir.xyz);
-	vec4 albedo = texture(TEXTURE, UV);
-	vec3 normal = normalize((texture(NORMAL_TEXTURE, UV).xyz * 2.0f) - 1.0f);
+	NORMALMAP = normalize((texture(NORMAL_TEXTURE, UV).xyz * 2.0f) - 1.0f);
 	
 	if(albedo.w > 0.1f)
-		COLOR = vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
+		COLOR = albedo * ambientColor * materialColor;//vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
 	else
 		COLOR = vec4(0,0,0,0);
-	
+}
+
+void light()
+{
+	LIGHT_HEIGHT = 1.0f;
+	vec3 normLightDir = normalize(vec3(LIGHT_VEC.xy * vec2(1,-1),LIGHT_HEIGHT));
+
+	LIGHT += vec4((COLOR * clamp(dot(normLightDir, NORMAL.xyz), 0.0f,1.0f)).xyz,1);
 }
 
 "
 
 [resource]
 shader = SubResource( 1 )
-shader_param/materialColor = Color( 0.141176, 0.831373, 0.0862745, 1 )
-shader_param/basicLightDir = Vector3( 5, -5, 5 )
+shader_param/materialColor = Color( 0.588235, 0.588235, 0.588235, 1 )
+shader_param/ambientColor = Color( 0.196078, 0.196078, 0.196078, 1 )
