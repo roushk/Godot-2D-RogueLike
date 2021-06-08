@@ -1,287 +1,275 @@
 [
-{
-    "partName": "Big Blade",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_BigBlade.png",
-    "partType": "Large_Blade",
-    "partCost": 5,
-    "partAttributes":
     {
-        "baseSlashDamage": 80,
-        "baseStabDamage": 80,
-        "baseAttackSpeed": 60,
-        "baseSwingSpeed": 80,
-        "baseLength": 200,
-        "specialStat": "+ Knockback"
-    }
-},
-{
-    "partName": "Beefy Blade",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_BeefyBlade.png",
-    "partType": "Large_Blade",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Big Blade",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Large.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 80,
+            "baseStabDamage": 80,
+            "baseAttackSpeed": 60,
+            "baseSwingSpeed": 80,
+            "baseLength": 200,
+            "specialStat": "+ Knockback"
+        },
+        "partAttachPoints": [
+        {
+            "x": 4,
+            "y": 20,
+            "types": ["Handle"]
+        },
+        {
+            "x": 4,
+            "y": 20,
+            "types": ["Guard"]
+        }]
+    },
     {
-        "baseSlashDamage": 75,
-        "baseStabDamage": 75,
-        "baseAttackSpeed": 75,
-        "baseSwingSpeed": 75,
-        "baseLength": 175,
-        "specialStat": "+ Beef"
-    }
-},
-{
-    "partName": "Falchion",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_Falchion.png",
-    "partType": "Large_Blade",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Medium Sword",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Medium.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 110,
+            "baseStabDamage": 90,
+            "baseAttackSpeed": 100,
+            "baseSwingSpeed": 100,
+            "baseLength": 120,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Handle"]
+        },
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Guard"]
+        }]
+    },
     {
-        "baseSlashDamage": 200,
-        "baseStabDamage": 60,
-        "baseAttackSpeed": 80,
-        "baseSwingSpeed": 80,
-        "baseLength": 150,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "Zweihander",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Blade_Zweihander.png",
-    "partType": "Large_Blade",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Hammer",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Hammer.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 120,
+            "baseStabDamage": 120,
+            "baseAttackSpeed": 80,
+            "baseSwingSpeed": 80,
+            "baseLength": 100,
+            "specialStat": "Smash"
+        },
+        "partAttachPoints": [
+        {
+            "x": 6,
+            "y": 11,
+            "types": ["Handle"]
+        },
+        {
+            "x": 6,
+            "y": 11,
+            "types": ["Guard"]
+        }]
+    },
     {
-        "baseSlashDamage": 120,
-        "baseStabDamage": 80,
-        "baseAttackSpeed": 80,
-        "baseSwingSpeed": 80,
-        "baseLength": 250,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "BigBlade",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Guard_BigBlade.png",
-    "partType": "Large_Guard",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Rapier",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Rapier.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 80,
+            "baseStabDamage": 120,
+            "baseAttackSpeed": 120,
+            "baseSwingSpeed": 120,
+            "baseLength": 90,
+            "specialStat": "Riposte"
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Handle"]
+        },
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Guard"]
+        }]
+    },
     {
-        "baseSlashDamage": 110,
-        "baseStabDamage": 90,
-        "baseAttackSpeed": 90,
-        "baseSwingSpeed": 90,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "Zweihander",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Large_Guard_Zweihander.png",
-    "partType": "Large_Guard",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Small Blade",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Small.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 60,
+            "baseStabDamage": 80,
+            "baseAttackSpeed": 120,
+            "baseSwingSpeed": 120,
+            "baseLength": 70,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 8,
+            "types": ["Handle"]
+        },
+        {
+            "x": 2,
+            "y": 8,
+            "types": ["Guard"]
+        }]
+    },
     {
-        "baseSlashDamage": 90,
-        "baseStabDamage": 110,
-        "baseAttackSpeed": 90,
-        "baseSwingSpeed": 90,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "Sword",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Blade_Sword.png",
-    "partType": "Medium_Blade",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Large Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Large.png",
+        "partType": "Guard",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 100,
+            "baseStabDamage": 100,
+            "baseAttackSpeed": 100,
+            "baseSwingSpeed": 100,
+            "baseLength": 100,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 6,
+            "y": 10,
+            "types": ["Blade"]
+        }]
+    },
     {
-        "baseSlashDamage": 110,
-        "baseStabDamage": 90,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 120,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "Rapier",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Blade_Rapier.png",
-    "partType": "Medium_Blade",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Small Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Small.png",
+        "partType": "Guard",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 80,
+            "baseStabDamage": 80,
+            "baseAttackSpeed": 120,
+            "baseSwingSpeed": 120,
+            "baseLength": 100,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 3,
+            "y": 4,
+            "types": ["Blade"]
+        }]
+    },
     {
-        "baseSlashDamage": 80,
-        "baseStabDamage": 120,
-        "baseAttackSpeed": 120,
-        "baseSwingSpeed": 120,
-        "baseLength": 90,
-        "specialStat": "Riposte"
-    }
-},
-{
-    "partName": "SwordGuard",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Guard_SwordGuard.png",
-    "partType": "Medium_Guard",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "RapierGuard",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Guard_RapierGuard.png",
-    "partType": "Medium_Guard",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 80,
-        "baseStabDamage": 120,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 120,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "BasicMace",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Medium_Mace_BasicMace.png",
-    "partType": "Medium_Mace",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 120,
-        "baseStabDamage": 80,
-        "baseAttackSpeed": 110,
-        "baseSwingSpeed": 110,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "BasicPommel",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Pommel_BasicPommel.png",
-    "partType": "Pommel",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "KnifeBlade",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Blade_KnifeBlade.png",
-    "partType": "Small_Blade",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 80,
-        "baseStabDamage": 80,
-        "baseAttackSpeed": 150,
-        "baseSwingSpeed": 150,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "KnifeGuard",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Guard_KnifeGuard.png",
-    "partType": "Small_Guard",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 60,
-        "baseStabDamage": 80,
-        "baseAttackSpeed": 140,
-        "baseSwingSpeed": 140,
-        "baseLength": 70,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "SmallHandle",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Small_Handle_SmallHandle.png",
-    "partType": "Small_Handle",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "WoodCrossing",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Crossing_WoodCrossing.png",
-    "partType": "Tool_Crossing",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "None"
-    }
-},
-{
-    "partName": "WoodHandle",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Handle_WoodHandle.png",
-    "partType": "Tool_Handle",
-    "partCost": 5,
-    "partAttributes":
-    {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "None"
+        "partName": "Simple Pommel",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Pommel_Simple.png",
+        "partType": "Pommel",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 110,
+            "baseStabDamage": 110,
+            "baseAttackSpeed": 90,
+            "baseSwingSpeed": 90,
+            "baseLength": 100,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 2,
+            "types": ["Handle"]
+        }]
+    },
 
-    }
-},
-{
-    "partName": "Axe",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Head_Axe.png",
-    "partType": "Tool_Head",
-    "partCost": 5,
-    "partAttributes":
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "Axe"
-    }
-},
-{
-    "partName": "Pickaxe",
-    "partTextureDir": "res://Assets/Art/My_Art/Parts/Tool_Head_Pickaxe.png",
-    "partType": "Tool_Head",
-    "partCost": 5,
-    "partAttributes":
+        "partName": "Small Handle",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Small.png",
+        "partType": "Handle",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 100,
+            "baseStabDamage": 100,
+            "baseAttackSpeed": 130,
+            "baseSwingSpeed": 130,
+            "baseLength": 80,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 8,
+            "y": 1,
+            "types": ["Blade"]
+        },
+        {
+            "x": 1,
+            "y": 8,
+            "types": ["Pommel"]
+        }]
+    },
     {
-        "baseSlashDamage": 100,
-        "baseStabDamage": 100,
-        "baseAttackSpeed": 100,
-        "baseSwingSpeed": 100,
-        "baseLength": 100,
-        "specialStat": "Pickaxe"
+        "partName": "Medium Handle",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Medium.png",
+        "partType": "Handle",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 100,
+            "baseStabDamage": 100,
+            "baseAttackSpeed": 90,
+            "baseSwingSpeed": 90,
+            "baseLength": 110,
+            "specialStat": "None"
+
+        },
+        "partAttachPoints": [
+        {
+            "x": 21,
+            "y": 1,
+            "types": ["Blade"]
+        },
+        {
+            "x": 1,
+            "y": 21,
+            "types": ["Pommel"]
+        }]
+    },
+    {
+        "partName": "Large Handle",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Large.png",
+        "partType": "Handle",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 100,
+            "baseStabDamage": 100,
+            "baseAttackSpeed": 80,
+            "baseSwingSpeed": 50,
+            "baseLength": 200,
+            "specialStat": "None"
+        },
+        "partAttachPoints": [
+        {
+            "x": 30,
+            "y": 1,
+            "types": ["Blade"]
+        },
+        {
+            "x": 1,
+            "y": 30,
+            "types": ["Pommel"]
+        }]
     }
-}]
+]

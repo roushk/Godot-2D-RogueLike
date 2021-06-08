@@ -2,6 +2,52 @@ using Godot;
 using System;
 namespace Parts
 {
+    public delegate void WeaponBPNodeFunc(WeaponBlueprintNode node);
+    //Node structure for weapon blueprints to represent the current parts as a node structure for positioning objects
+    public class WeaponBlueprintNode
+    {
+        public PartBlueprint part = null;
+        public Vector2 offset = new Vector2();
+        public System.Collections.Generic.List<WeaponBlueprintNode> children = new System.Collections.Generic.List<WeaponBlueprintNode>();
+
+        public WeaponBlueprintNode(){}
+        public WeaponBlueprintNode(PartBlueprint _part, Vector2 _offset)
+        {
+            part = _part;
+            offset = _offset;
+        }
+
+        public void IterateNode(WeaponBPNodeFunc iterFunc)
+        {
+            iterFunc(this);
+            foreach (var child in children)
+            {
+                child.IterateNode(iterFunc);
+            }
+        }
+
+        void ClearNode()
+        {
+            foreach (var child in children)
+            {
+                child.ClearNode();
+            }
+            children.Clear();
+        }
+    }
+
+    public class AttachPoint
+    {
+        public Vector2 pos = new Vector2();
+        public Godot.Collections.Array<Parts.PartType> partTypes = new  Godot.Collections.Array<Parts.PartType>();
+        public PartBlueprint attachedPart = null;
+        public AttachPoint(Vector2 _pos, Godot.Collections.Array<Parts.PartType> _partTypes)
+        {
+            pos = _pos;
+            partTypes = _partTypes;
+        }
+    }
+
     public class PartStats 
     {
         public int baseSlashDamage = 100;
@@ -100,8 +146,8 @@ namespace Parts
             
             return tempStr;
         }
-        
     }
+
     public class PartBlueprint : Resource
     {
         public static long currentUniquePieceNum = 0;
@@ -122,7 +168,11 @@ namespace Parts
         public BitMap bitMask { get; set; }
         
         public PartStats stats = new PartStats();
-
+        
+        //List of tuples of x/y coords and arrays of part types that are accepted
+        public System.Collections.Generic.List<AttachPoint> partAttachPoints = 
+            new System.Collections.Generic.List<AttachPoint>();
+        
         public PartBlueprint(){}
         public PartBlueprint(PartBlueprint rhs)
         {

@@ -27,7 +27,6 @@
     <Compile Include="Scripts\ModularWeapons\CallbackTextureButton.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftedItem.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
-    <Compile Include="Scripts\ModularWeapons\PartResource.cs" />
     <Compile Include="Scripts\TileSetAnimation.cs" />
     <Compile Include="Scripts\CameraMovement.cs" />
     <Compile Include="Scripts\CCLGenerator.cs" />
