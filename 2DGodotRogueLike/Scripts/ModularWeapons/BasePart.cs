@@ -8,13 +8,15 @@ namespace Parts
     {
         public PartBlueprint part = null;
         public Vector2 offset = new Vector2();
+        public WeaponBlueprintNode parent;
         public System.Collections.Generic.List<WeaponBlueprintNode> children = new System.Collections.Generic.List<WeaponBlueprintNode>();
 
         public WeaponBlueprintNode(){}
-        public WeaponBlueprintNode(PartBlueprint _part, Vector2 _offset)
+        public WeaponBlueprintNode(PartBlueprint _part, Vector2 _offset, WeaponBlueprintNode _parent)
         {
             part = _part;
             offset = _offset;
+            parent = _parent;
         }
 
         public void IterateNode(WeaponBPNodeFunc iterFunc)
@@ -168,6 +170,7 @@ namespace Parts
         public BitMap bitMask { get; set; }
         
         public PartStats stats = new PartStats();
+        public Vector2 baseAttachPoint = new Vector2();
         
         //List of tuples of x/y coords and arrays of part types that are accepted
         public System.Collections.Generic.List<AttachPoint> partAttachPoints = 

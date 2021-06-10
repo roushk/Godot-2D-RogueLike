@@ -13,12 +13,12 @@
             "baseLength": 200,
             "specialStat": "+ Knockback"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 4,
-            "y": 20,
-            "types": ["Handle"]
+            "y": 20
         },
+        "partAttachPoints": [
         {
             "x": 4,
             "y": 20,
@@ -39,12 +39,12 @@
             "baseLength": 120,
             "specialStat": "None"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 2,
-            "y": 19,
-            "types": ["Handle"]
+            "y": 19
         },
+        "partAttachPoints": [
         {
             "x": 2,
             "y": 19,
@@ -65,12 +65,13 @@
             "baseLength": 100,
             "specialStat": "Smash"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
+
             "x": 6,
-            "y": 11,
-            "types": ["Handle"]
+            "y": 11
         },
+        "partAttachPoints": [
         {
             "x": 6,
             "y": 11,
@@ -91,12 +92,12 @@
             "baseLength": 90,
             "specialStat": "Riposte"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 2,
-            "y": 19,
-            "types": ["Handle"]
+            "y": 19
         },
+        "partAttachPoints": [
         {
             "x": 2,
             "y": 19,
@@ -117,12 +118,12 @@
             "baseLength": 70,
             "specialStat": "None"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 2,
-            "y": 8,
-            "types": ["Handle"]
+            "y": 8
         },
+        "partAttachPoints": [
         {
             "x": 2,
             "y": 8,
@@ -143,12 +144,12 @@
             "baseLength": 100,
             "specialStat": "None"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 6,
-            "y": 10,
-            "types": ["Blade"]
-        }]
+            "y": 10
+        },
+        "partAttachPoints": []
     },
     {
         "partName": "Small Guard",
@@ -164,12 +165,12 @@
             "baseLength": 100,
             "specialStat": "None"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 3,
-            "y": 4,
-            "types": ["Blade"]
-        }]
+            "y": 4
+        },
+        "partAttachPoints": []
     },
     {
         "partName": "Simple Pommel",
@@ -185,12 +186,12 @@
             "baseLength": 100,
             "specialStat": "None"
         },
-        "partAttachPoints": [
+        "baseAttachPoint":
         {
             "x": 2,
-            "y": 2,
-            "types": ["Handle"]
-        }]
+            "y": 2
+        },
+        "partAttachPoints": []
     },
 
     {
@@ -206,6 +207,11 @@
             "baseSwingSpeed": 130,
             "baseLength": 80,
             "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 0,
+            "y": 0
         },
         "partAttachPoints": [
         {
@@ -234,6 +240,11 @@
             "specialStat": "None"
 
         },
+        "baseAttachPoint":
+        {
+            "x": 0,
+            "y": 0
+        },
         "partAttachPoints": [
         {
             "x": 21,
@@ -259,6 +270,11 @@
             "baseSwingSpeed": 50,
             "baseLength": 200,
             "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 0,
+            "y": 0
         },
         "partAttachPoints": [
         {
