@@ -429,15 +429,14 @@ public class CraftingMaterialSystem : Control
 				}
 			}, partVisualizerScale,true, true, false);
 
+			//With or without parent
+			BPPieceButton.RectPosition += (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+
 			if(node.parent != null)
 			{
-				BPPieceButton.RectPosition += (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
-				//BPPieceButton.RectPosition += (node.offset - (0.5f * node.parent.part.texture.GetSize())) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+				BPPieceButton.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
 			}
-			else
-			{
-				BPPieceButton.RectPosition += -(0.5f * node.part.texture.GetSize() + node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
-			}
+
 			BPPieceButton.Modulate = new Color(1,1,1,1);
 			partVisualizerContainer.AddChild(BPPieceButton);
 
@@ -488,11 +487,11 @@ public class CraftingMaterialSystem : Control
 			//Location that is 0,0 for the part vizualiser
 
 			//Vector from the part base attach node to the center
-			Vector2 partBaseAttachNodeToPartCenter = center + (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
-			DrawLine(center, partBaseAttachNodeToPartCenter, new Color("00e5ff"),2);
+			Vector2 partBaseAttachNodeToPartCenter = center + (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+			DrawLine(center, partBaseAttachNodeToPartCenter, new Color("00e5ff"), 2);
 			
 			//Represents the vector from the center of the child node anchor 0.5,0.5 (center of the object) to the child node's base attachment point
-			//Vector2 parentAttachNodeToParentCenter = center + -(0.5f * node.part.texture.GetSize() - node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x,-partVisualizerScale.y);
+			//Vector2 parentAttachNodeToParentCenter = center + -(0.5f * node.part.texture.GetSize() - node.part.partAttachPoints[]) * new Vector2(partVisualizerScale.x,-partVisualizerScale.y);
 			//child center to child base attach pt
 			//DrawLine(center, centerToAttachPtChild, new Color(0,0,1),4);
 
@@ -501,9 +500,9 @@ public class CraftingMaterialSystem : Control
 			if(node.parent != null)
 			{
 				//Represents the vector from the parents attachPoint to the center of the child node anchor 0.5,0.5 (center of the object)
-				Vector2 attachPtToCenterChild = center + (node.offset - (0.5f * node.parent.part.texture.GetSize())) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
+				Vector2 attachPtToCenterChild = partBaseAttachNodeToPartCenter + (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
 				//attach pt to child center
-				DrawLine(center, attachPtToCenterChild, new Color(0.5f,1,0),4);
+				DrawLine(partBaseAttachNodeToPartCenter, attachPtToCenterChild, new Color(0.5f,1,0),4);
 			}
 
 		});
