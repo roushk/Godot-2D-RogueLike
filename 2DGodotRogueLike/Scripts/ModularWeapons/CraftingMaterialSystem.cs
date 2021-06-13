@@ -34,7 +34,7 @@ public class CraftingMaterialSystem : Control
 
 	System.Collections.Generic.List<Parts.PartBlueprint> currentParts = new System.Collections.Generic.List<Parts.PartBlueprint>();
 
-	Parts.WeaponBlueprintNode baseNode = new Parts.WeaponBlueprintNode();
+	Parts.WeaponBlueprintNode baseHandleNode = new Parts.WeaponBlueprintNode();
 
 	System.Collections.Generic.List<Parts.AttachPoint> attachPoints = new System.Collections.Generic.List<Parts.AttachPoint>();
 
@@ -207,7 +207,7 @@ public class CraftingMaterialSystem : Control
 		return BPPieceButton;
 	}
 
-	CallbackTextureButton CreateCallbackButtonFromAttachmentPoint(Parts.AttachPoint attachPoint, BasicCallback callback, Vector2 partRectSize, bool useColors = true, bool setMinSize = false)
+	CallbackTextureButton CreateCallbackButtonFromAttachmentPoint(Parts.AttachPoint attachPoint, Parts.WeaponBlueprintNode node, BasicCallback callback, Vector2 partRectSize, bool useColors = true, bool setMinSize = false)
 	{
 		//Generate individual part buttons
 		CallbackTextureButton newAttachpoint = CallbackTextureButtonScene.Instance() as CallbackTextureButton;
@@ -218,10 +218,10 @@ public class CraftingMaterialSystem : Control
 		newAttachpoint.RectScale = partVisualizerScale;   //new scale
 		newAttachpoint.Expand = true;
 		newAttachpoint.StretchMode = TextureButton.StretchModeEnum.KeepAspect;
-		newAttachpoint.AnchorLeft = 0.5f;
-		newAttachpoint.AnchorTop = 0.5f;
-		newAttachpoint.AnchorRight = 0.5f;
-		newAttachpoint.AnchorBottom = 0.5f;
+		//newAttachpoint.AnchorLeft = 0.5f;
+		//newAttachpoint.AnchorTop = 0.5f;
+		//newAttachpoint.AnchorRight = 0.5f;
+		//newAttachpoint.AnchorBottom = 0.5f;
 		
 		if(setMinSize)
 			newAttachpoint.RectMinSize = newAttachpoint.RectSize * newAttachpoint.RectScale;
@@ -229,11 +229,18 @@ public class CraftingMaterialSystem : Control
 			newAttachpoint.RectMinSize = newAttachpoint.RectSize;
 
 		//Center the object
-		newAttachpoint.RectPosition += new Vector2((attachPoint.pos.x)*partVisualizerScale.x + 2,((attachPoint.pos.y)*partVisualizerScale.y) + 2) - ((newAttachpoint.RectSize * partVisualizerScale / 2.0f) + partRectSize);
+		//newAttachpoint.RectPosition += new Vector2((attachPoint.pos.x)*partVisualizerScale.x + 2,((attachPoint.pos.y)*partVisualizerScale.y) + 2) - ((newAttachpoint.RectSize * partVisualizerScale / 2.0f) + partRectSize);
 		//newAttachpoint.RectPosition += (attachPoint.pos - ((newAttachpoint.RectSize + attachPointTex.GetSize()) / 2.0f)) * partVisualizerScale;
 		//Set textures and bitmasks to the default part's texture and its bitmask
 		newAttachpoint.TextureNormal = attachPointTex;
 		
+		newAttachpoint.RectPosition = -(-attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+
+		if(node.parent != null)
+		{
+			newAttachpoint.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
+		}
+
 		newAttachpoint.onButtonPressedCallback = callback;
 		newAttachpoint.changeColors = useColors;
 		newAttachpoint.Modulate = new Color(0,0.8f,0,1);
@@ -373,38 +380,25 @@ public class CraftingMaterialSystem : Control
 		UpdateCurrentlySelectedAttachPoint(attachPoint, newAttachPointButton);
 		selectedAttachPoint = attachPoint;
 		ClearPartSelection();
-		LoadPartSelectionAttachPoint(attachPoint,node);
+		LoadPartSelectionAttachPoint(attachPoint, node, newAttachPointButton);
 	}
 
-	void GenerateAttachPointsUIFromPart(Parts.PartBlueprint part, Parts.WeaponBlueprintNode node, Vector2 partRectSize)
+	void GenerateAttachPointsUIFromPart(Parts.WeaponBlueprintNode node, Vector2 partRectSize)
 	{
-		foreach (var attachPoint in part.partAttachPoints)
+		foreach (var attachPoint in node.part.partAttachPoints)
 		{
 			//Only generate a new button if there is an open attachment slot
-			if(attachPoint.attachedPart == null)
+			if(attachPoint.attachedPart == false)
 			{
 				//Generate green attach point
 				CallbackTextureButton newAttachPointButton = default;
-				newAttachPointButton = CreateCallbackButtonFromAttachmentPoint(attachPoint,() => {SetSelectedAttachPoint(attachPoint, newAttachPointButton, node);}, partRectSize, true, false);
+				newAttachPointButton = CreateCallbackButtonFromAttachmentPoint(attachPoint, node,() => {SetSelectedAttachPoint(attachPoint, newAttachPointButton, node);}, partRectSize, true, false);
 
 				partVisualizerContainer.AddChild(newAttachPointButton);
 				//Set callback to SetSelectedAttachPoint
 			}
 		}
 	}
-
-	//void GenerateAttachPointsUIFromCurrentParts(Parts.WeaponBlueprintNode node)
-	//{   
-	//    //Clear current Attach points UI
-	//    attachPoints.Clear();
-	//    //TODO put Attach points in their own UI
-	//    foreach (var part in currentParts)
-	//    {
-	//        GenerateAttachPointsUIFromPart(part);
-	//        //Generate buttons that are green attachment points
-	//        //they have a callback to be red and set themselves as selected and call SetSelectedAttachPoint on themselves
-	//    }
-	//}
 
 	void GeneratePartVisualizerUIFromCurrentParts()
 	{
@@ -413,7 +407,7 @@ public class CraftingMaterialSystem : Control
 
 		Parts.PartStats summationStats = new Parts.PartStats();
 
-		baseNode.IterateNode((node) => 
+		baseHandleNode.IterateNode((node) => 
 		{
 			//Loads the part visualizer with callbacks to load the part selections
 			//cannot pass BPPieceButton to the functor so need to initialize it to an object. 
@@ -425,12 +419,12 @@ public class CraftingMaterialSystem : Control
 					UpdateCurrentlySelectedPart(BPPieceButton);
 					UpdateCurrentlySelectedAttachPoint(null, null);
 					ClearPartSelection();
-					LoadPartSelection(node.part,node);
+					LoadPartSelection(node);
 				}
 			}, partVisualizerScale,true, true, false);
 
 			//With or without parent
-			BPPieceButton.RectPosition += (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+			BPPieceButton.RectPosition = (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
 			if(node.parent != null)
 			{
@@ -442,7 +436,7 @@ public class CraftingMaterialSystem : Control
 
 			//Place the attachment parts ontop of the actual parts
 
-			GenerateAttachPointsUIFromPart(node.part, node, BPPieceButton.RectSize * BPPieceButton.RectScale / 2.0f);
+			GenerateAttachPointsUIFromPart(node, BPPieceButton.RectSize * BPPieceButton.RectScale / 2.0f);
 		});
 
 		//if(currentParts.Count >= 2)
@@ -482,7 +476,7 @@ public class CraftingMaterialSystem : Control
 		DrawLine(center, center + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
 		DrawLine(center, center + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
 		
-		baseNode.IterateNode((node) => 
+		baseHandleNode.IterateNode((node) => 
 		{
 			//Location that is 0,0 for the part vizualiser
 
@@ -521,7 +515,7 @@ public class CraftingMaterialSystem : Control
 		LoadAllParts();
 		//Start the current part as a empty handle
 		currentParts.Add(allPartsDict[Parts.PartType.Handle][0]);
-		baseNode.part = allPartsDict[Parts.PartType.Handle][0];
+		baseHandleNode.part = allPartsDict[Parts.PartType.Handle][0];
 
 		//LoadPartSelection(allPartsDict[Parts.PartType.Handle][0]);
 		//GeneratePartVisualizerUIFromCurrentParts();
@@ -578,10 +572,10 @@ public class CraftingMaterialSystem : Control
 	}
 
 	//Loads the list of all possible parts of the passed part blueprint
-	public void LoadPartSelection(Parts.PartBlueprint currentBlueprint, Parts.WeaponBlueprintNode currentNode)
+	public void LoadPartSelection(Parts.WeaponBlueprintNode currentNode)
 	{
 		//Load all parts of this type
-		foreach (var part in allPartsDict[currentBlueprint.partType])
+		foreach (var part in allPartsDict[currentNode.part.partType])
 		{
 			//Load part as clickable button with callback to set the current piece of the current blueprint as this piece
 			CallbackTextureButton partSelectionButton = CreateCallbackButtonFromBlueprint(part, () => 
@@ -590,6 +584,34 @@ public class CraftingMaterialSystem : Control
 				//currentParts.Remove(currentBlueprint);
 				//currentParts.Add(part);
 				//currentParts.Sort(Parts.PartTypeConversion.CompareParts);
+			  //System.Collections.Generic.Dictionary<Parts.AttachPoint,Parts.WeaponBlueprintNode> newChildren = new System.Collections.Generic.Dictionary<Parts.AttachPoint,Parts.WeaponBlueprintNode>();
+
+			  ////Translate current children to new children
+			  //
+			  ////For each currently used attachment point in the current node
+			  //foreach (var currAttach in currentNode.part.partAttachPoints)
+			  //{
+			  //	//If a part is attached
+			  //	if(currAttach.attachedPart == true)
+			  //	{
+			  //		newChildren.Add(currentNode.children[currAttach]
+			  //	}
+			  //}
+			  //foreach (var child in currentNode.children)
+			  //{
+			  //	
+			  //		currAttach.partTypes
+			  //	
+			  //}
+				currentNode.IterateNode((currNode) => 
+				{
+					foreach (var attachPt in currNode.part.partAttachPoints)
+					{
+							attachPt.attachedPart = false;
+					}	
+				});
+
+				currentNode.ClearNodeChildren();
 				currentNode.part = part;
 				//currentNode.offset = 
 				GeneratePartVisualizerUIFromCurrentParts();
@@ -617,7 +639,7 @@ public class CraftingMaterialSystem : Control
 	}
 
 	//Loads the list of all possible parts of the passed attachment point
-	public void LoadPartSelectionAttachPoint(Parts.AttachPoint attachPoint, Parts.WeaponBlueprintNode parentNode)
+	public void LoadPartSelectionAttachPoint(Parts.AttachPoint attachPoint, Parts.WeaponBlueprintNode parentNode, CallbackTextureButton newAttachPointButton)
 	{
 		foreach (var partType in attachPoint.partTypes)
 		{
@@ -628,13 +650,13 @@ public class CraftingMaterialSystem : Control
 				CallbackTextureButton partSelectionButton = CreateCallbackButtonFromBlueprint(part, () => 
 				{
 					ClearPartSelection();
-					attachPoint.attachedPart = part;
+					attachPoint.attachedPart = true;
+					partVisualizerContainer.RemoveChild(newAttachPointButton);
 					//Set the x/y pos of the attach point to the actual node that represents the part
-					parentNode.children.Add(new Parts.WeaponBlueprintNode(part, attachPoint.pos, parentNode)); 
-					//currentParts.Add(part);
-					//currentParts.Sort(Parts.PartTypeConversion.CompareParts);
-					GeneratePartVisualizerUIFromCurrentParts();
-				}, new Vector2(1,1), false, true, false);
+					Parts.WeaponBlueprintNode newNode = new Parts.WeaponBlueprintNode(part, attachPoint.pos, parentNode);
+					parentNode.children.Add(attachPoint, newNode); 
+					GeneratePartVisualizerUIFromCurrentParts(); 
+				}, new Vector2(1,1), false, true, false); 
 
 				partSelectionButton.Modulate = new Color(1,1,1,1);
 
@@ -651,7 +673,7 @@ public class CraftingMaterialSystem : Control
 				RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
 				detailText.BbcodeText = part.stats.GenerateStatText();
 				detailText.BbcodeEnabled = true;
-				detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
+				detailText.RectMinSize = new Vector2(detailText.RectMinSize.x, GetMinYSizeFromRichTextLabel(detailText));
 				//Dont change colors with the callbacks
 				newPartSelectionContainer.AddChild(hBox);
 			}

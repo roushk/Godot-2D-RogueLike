@@ -9,7 +9,7 @@ namespace Parts
         public PartBlueprint part = null;
         public Vector2 offset = new Vector2();
         public WeaponBlueprintNode parent;
-        public System.Collections.Generic.List<WeaponBlueprintNode> children = new System.Collections.Generic.List<WeaponBlueprintNode>();
+        public System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode> children = new System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode>();
 
         public WeaponBlueprintNode(){}
         public WeaponBlueprintNode(PartBlueprint _part, Vector2 _offset, WeaponBlueprintNode _parent)
@@ -24,15 +24,15 @@ namespace Parts
             iterFunc(this);
             foreach (var child in children)
             {
-                child.IterateNode(iterFunc);
+                child.Value.IterateNode(iterFunc);
             }
         }
 
-        void ClearNode()
+        public void ClearNodeChildren()
         {
             foreach (var child in children)
             {
-                child.ClearNode();
+                child.Value.ClearNodeChildren();
             }
             children.Clear();
         }
@@ -42,7 +42,7 @@ namespace Parts
     {
         public Vector2 pos = new Vector2();
         public Godot.Collections.Array<Parts.PartType> partTypes = new  Godot.Collections.Array<Parts.PartType>();
-        public PartBlueprint attachedPart = null;
+        public bool attachedPart = false;
         public AttachPoint(Vector2 _pos, Godot.Collections.Array<Parts.PartType> _partTypes)
         {
             pos = _pos;
