@@ -234,13 +234,15 @@ public class CraftingMaterialSystem : Control
 		//Set textures and bitmasks to the default part's texture and its bitmask
 		newAttachpoint.TextureNormal = attachPointTex;
 		
-		newAttachpoint.RectPosition = -(-attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+		newAttachpoint.RectPosition = (attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
 		if(node.parent != null)
 		{
 			newAttachpoint.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
 		}
 
+		newAttachpoint.RectPosition -= new Vector2(2,2) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+		
 		newAttachpoint.onButtonPressedCallback = callback;
 		newAttachpoint.changeColors = useColors;
 		newAttachpoint.Modulate = new Color(0,0.8f,0,1);
