@@ -111,7 +111,7 @@ public class CraftingMaterialSystem : Control
 			
 			//Don't ask
 			partBP.materialCost = (int)(float)data["partCost"];
-			//Ok, its because json uses floats only so object -> float -> int
+			//Ok, it's because json uses floats only so object -> float -> int
 
 
 			Godot.Collections.Dictionary basicAttachPt = data["baseAttachPoint"] as Godot.Collections.Dictionary;
@@ -147,6 +147,7 @@ public class CraftingMaterialSystem : Control
 		}
 	}
 
+	//Load the Blueprints from the json file into the blueprints dictionary
 	void LoadBlueprints()
 	{
 
@@ -174,6 +175,7 @@ public class CraftingMaterialSystem : Control
 		}
 	}
 
+	//Generate a callback button from a weapon blueprint piece
 	CallbackTextureButton CreateCallbackButtonFromBlueprint(Parts.PartBlueprint blueprint, BasicCallback callback, Vector2 size, bool useBitmask = false, bool useColors = true, bool setMinSize = false)
 	{
 		//Generate individual part buttons
@@ -207,6 +209,7 @@ public class CraftingMaterialSystem : Control
 		return BPPieceButton;
 	}
 
+	//Create the callback button from an attachment point on the weapon creation node 
 	CallbackTextureButton CreateCallbackButtonFromAttachmentPoint(Parts.AttachPoint attachPoint, Parts.WeaponBlueprintNode node, BasicCallback callback, Vector2 partRectSize, bool useColors = true, bool setMinSize = false)
 	{
 		//Generate individual part buttons
@@ -251,6 +254,7 @@ public class CraftingMaterialSystem : Control
 		return newAttachpoint;
 	}
 
+	//Clear the parts visualizer's children
 	void ClearPartsVisualizer()
 	{
 		selectedPart = null;
@@ -306,6 +310,7 @@ public class CraftingMaterialSystem : Control
 		return new Parts.PartBlueprint(allPartsDict[partType][0]);
 	}
 
+	//Generate a blueprint button from
 	void GenerateBlueprintButton(BaseBlueprint loadedBP)
 	{
 
@@ -428,9 +433,13 @@ public class CraftingMaterialSystem : Control
 			//With or without parent
 			BPPieceButton.RectPosition = (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
-			if(node.parent != null)
+			Parts.WeaponBlueprintNode parentNode = node.parent;
+			
+			//Add the offset of every node above this one
+			while(parentNode != null)
 			{
 				BPPieceButton.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
+				parentNode = parentNode.parent;
 			}
 
 			BPPieceButton.Modulate = new Color(1,1,1,1);

@@ -138,7 +138,7 @@ public class TestLevelGeneration : Node2D
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-		MapGenColorListNode = GetTree().Root.GetNode("RootNode/GUI/MapGenColorList/VBoxContainer2");
+		MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
 
 		//link forground and background map variables to the nodes
 

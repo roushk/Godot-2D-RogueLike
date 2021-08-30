@@ -102,6 +102,8 @@ namespace Parts
                     return type;   
             }
             throw(new Exception("Enum " + input + " Does not exist in Parts.PartType."));
+
+            //redundent return statement
             return PartType.Undefined;
         }
 
