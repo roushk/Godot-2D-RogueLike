@@ -83,6 +83,6 @@ Other great sources for WFC:
 [Caves of Qud using WFC as a stage of Level Gen](https://www.gdcvault.com/play/1026263/Math-for-Game-Developers-Tile)
 [Oskar Stalberg WFC in Bad North](https://www.youtube.com/watch?v=0bcZb-SsnrA)
 
-### Example Generated World
+### Generated World Goal 
 ![example_overworld](https://user-images.githubusercontent.com/34784335/131397301-5ce03d8a-ce7e-41da-8a22-a93bfbfad41b.PNG)
 
