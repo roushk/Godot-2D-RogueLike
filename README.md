@@ -11,7 +11,7 @@ The game engine is Godot using C# scripting and I am doing everything myself bes
 ### [Weapon Crafting System](#weapon-crafting-system)
 #### [Weapon Crafting System UI Iteration Screenshots](weapon-crafting-system-screenshots)
 #### [Weapon Crafting System Example Weapons](#example-weapons)
-###[Overworld Generation](#overworld-generation)
+### [Overworld Generation](#overworld-generation)
 
 ## World Generation
 One major part of this game is the world generation. For the first iteration the generator uses perlin noise to populate an array to get a good starting point. It then uses modified rules from [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for many iterations to generate somewhat natural looking caves. In the first iteration I used an algorithm where I would make every single tile its own set and then merge adjacent sets to give me the largest cave and use that as the playable area. This was immensely slow and would take several minutes for a 128x128 map which is ridiculous. A flood fill would not work because I have an N number of caves and do not know their starting positions or the minimum size of these caves. I could try to prematurely optimize and generate a sparse grid every 5 pixels or so as the starting location for the flood fill and then merge adjacent sets which would potentially ignore the smaller caves but I would prefer a complete algorithm. In the second iteration I used a [Connected Component Labeling Algorithm](https://en.wikipedia.org/wiki/Connected-component_labeling), which is supposed to be O(NxM), which will be significantly faster, but also more complicated. It is currently being refactored to fix a bug for the parent relationship of the partial neighborhood. 
