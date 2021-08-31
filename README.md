@@ -14,12 +14,21 @@ The game engine is Godot using C# scripting and I am doing everything myself bes
 ### [Overworld Generation](#overworld-level-generation)
 
 ## World Generation
-One major part of this game is the world generation. For the first iteration the generator uses perlin noise to populate an array to get a good starting point. It then uses modified rules from [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for many iterations to generate somewhat natural looking caves. In the first iteration I used an algorithm where I would make every single tile its own set and then merge adjacent sets to give me the largest cave and use that as the playable area. This was immensely slow and would take several minutes for a 128x128 map which is ridiculous. A flood fill would not work because I have an N number of caves and do not know their starting positions or the minimum size of these caves. I could try to prematurely optimize and generate a sparse grid every 5 pixels or so as the starting location for the flood fill and then merge adjacent sets which would potentially ignore the smaller caves but I would prefer a complete algorithm. In the second iteration I used a [Connected Component Labeling Algorithm](https://en.wikipedia.org/wiki/Connected-component_labeling), which is supposed to be O(NxM), which will be significantly faster, but also more complicated. It is currently being refactored to fix a bug for the parent relationship of the partial neighborhood. 
+One major part of this game is the world generation. For the first iteration the generator uses perlin noise to populate an array to get a good starting point. It then uses modified rules from [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for many iterations to generate somewhat natural looking caves. In the first iteration I used an algorithm where I would make every single tile its own set and then merge adjacent sets to give me the largest cave and use that as the playable area. This was immensely slow and would take several minutes for a 128x128 map which is ridiculous. A flood fill would not work because I have an N number of caves and do not know their starting positions or the minimum size of these caves. I could try to prematurely optimize and generate a sparse grid every 5 pixels or so as the starting location for the flood fill and then merge adjacent sets which would potentially ignore the smaller caves but I would prefer a complete algorithm. In the second iteration I used a [Connected Component Labeling Algorithm](https://en.wikipedia.org/wiki/Connected-component_labeling), which is supposed to be O(NxM), was significantly faster, but also more complicated. Currently a 128x128 level takes around 1-2 seconds to run the entire CCL algorithm, [Implemented here](https://github.com/roushk/Godot-2D-RogueLike/blob/main/2DGodotRogueLike/Scripts/MapGeneration/CCLGenerator.cs), on and I plan on optimizing this at a later date but currently 1-2 seconds is fast enough considering I am not planning to have levels much larger than 128x128 considering the size of the tiles. 
 
 ### Level World Generation Screenshots
 
 #### Flood Fill Example 1
 ![FloodFill1](https://user-images.githubusercontent.com/34784335/131393394-c0262dbf-d44d-4f1d-8cc0-d065e0f0b34d.jpg)
+
+### CCL Example 1 128x128 @ 40% initially alive change for Game of Life
+![WorkingCCL_128x128](https://user-images.githubusercontent.com/34784335/131573714-36944d2f-0a0a-4880-8ae2-7b8542605c59.PNG)
+### CCL Example 2 128x128 @ 45% initially alive change for Game of Life
+![WorkingCCL_128x128_45initial](https://user-images.githubusercontent.com/34784335/131573718-b81fb0cc-7e17-4cc5-b8e5-9f4ae4649c72.PNG)
+### CCL Example 3 128x128 @ 46% initially alive change for Game of Life
+![WorkingCCL_128x128_46initial](https://user-images.githubusercontent.com/34784335/131573719-cbd5f744-6692-4069-8f04-23df30ef42f3.PNG)
+### CCL Example 4 256x256 @ 40% initially alive change for Game of Life
+![WorkingCCL_256x256_40initial](https://user-images.githubusercontent.com/34784335/131573720-e31051e6-f910-4447-b002-4a5e1dc73ace.PNG)
 
 #### Map Generation UI
 ![MapGeneratorUI_Iter2](https://user-images.githubusercontent.com/34784335/131393486-b1128c13-35c0-4cd9-b44d-f899daeb4314.PNG)
