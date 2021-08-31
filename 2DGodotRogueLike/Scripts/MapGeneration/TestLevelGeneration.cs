@@ -14,7 +14,7 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked Generate New Tile Map Button");
 		GenerateMap(maxIterations, true);
-		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
@@ -29,7 +29,7 @@ public class TestLevelGeneration : Node2D
 	public void CCL_GenerateCompleteMapButton_Callback()
 	{
 		GenerateMap(maxIterations, true);
-		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		UpdateMapData();
 	}
@@ -38,7 +38,7 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked Prune Tile Map Button");
 		GenerateMap(1, false);
-		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+	  CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
 
@@ -168,7 +168,7 @@ public class TestLevelGeneration : Node2D
 		
 		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 
-		CCLGen.CCLAlgorithm();
+		//CCLGen.CCLAlgorithm();
 		UpdateMapData();
   }
 
@@ -186,6 +186,7 @@ public class TestLevelGeneration : Node2D
 		terrainMap = null;
   }
 
+	//Creates a new map of the tileMapSize and iterates the game of life a set number of times
 	private void GenerateMap(int iterations, bool newMap)
 	{
 		width = (int) tileMapSize.x;
@@ -201,7 +202,7 @@ public class TestLevelGeneration : Node2D
 		//run for set number of iterations
 		for(int i = 0; i < iterations; ++i)  
 		{
-			terrainMap = neighborCheck(terrainMap);
+			terrainMap = GameOfLifeIterate(terrainMap);
 		}
 
 		//We now have a generated level
@@ -243,6 +244,7 @@ public class TestLevelGeneration : Node2D
 		}
   }
 
+	//Sets the foreground map to the tile data of the terrain map
 	private void UpdateMapData()
 	{
 		//Update the cells
@@ -280,7 +282,7 @@ public class TestLevelGeneration : Node2D
 	}
 
 	//Runs game of life a single iteration
-  private int[,] neighborCheck( int[,] oldTerrainMap)
+  private int[,] GameOfLifeIterate( int[,] oldTerrainMap)
   {
 		//more memory???
 		int[,] newTerrainMap = new int[width,height];

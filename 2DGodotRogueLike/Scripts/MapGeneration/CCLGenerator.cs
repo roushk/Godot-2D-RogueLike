@@ -24,8 +24,9 @@ public class CCLGenerator
 	Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
 
 	//dictionary of int ID of set to ID of parent set 
+	//Needs to support N to N values guarenteed unique so using a HastSet of Pairs
 	//key = ID of node, value = ID of parent
-	Dictionary<int,int> IDToParent = new Dictionary<int, int>();
+	HashSet<KeyValuePair<int,int>> IDToParent = new HashSet<KeyValuePair<int,int>>();
 	
 	//TODO it looks like the example uses a list of pairs and a list of roots
 	//a root is an ID that is the value of a pair but if its the key to a pair remove it
@@ -58,6 +59,7 @@ public class CCLGenerator
 		}
 	}
 
+	//Becomes significantly less useful with hashset of pairs
 	public void DebugPrintIDTree(int treeCount)
 	{
 		//Debug Print a tree of each current ID
@@ -66,26 +68,31 @@ public class CCLGenerator
 			//Print the parent path
 			int initialID = i;
 			int ID = i;
-			int IDout = 0;
+			int IDParent = 0;
 			//while we can get parents follow the path
 			//Get Root
 			string treeRoot = "Following Tree " + ID.ToString();
-			while(IDToParent.TryGetValue(ID, out IDout))
+			foreach (var IDPair in IDToParent)
 			{
-				//Console.WriteLine(" ->" + IDout.ToString());
-				treeRoot += " -> " + IDout.ToString();
-				//follow tree up
-				ID = IDout;
+				if(IDPair.Key == ID)
+				{
+					IDParent = IDPair.Value;
+					//Console.WriteLine(" ->" + IDout.ToString());
+					treeRoot += " -> " + IDParent.ToString();
+					//follow tree up
+					ID = IDParent;
+				}
 			}
-
 			GD.Print(treeRoot);
 		}
 	}
 
+	//????
 	public void UpdateIDTreeToRoots(ref int [] sizeOfPixelGroup)
 	{
 
 	}
+
 	public void VisualizeIDTree(VisualizeMode mode)
 	{
 		//put all the pixels into this new map so that we have the links between each pixel and each set still
@@ -106,10 +113,14 @@ public class CCLGenerator
 			if(mode == CCLGenerator.VisualizeMode.Root)
 			{
 				//Get Root
-				while(IDToParent.TryGetValue(ID, out IDout))
+
+				foreach (var IDPair in IDToParent)
 				{
-					//follow tree up
-					ID = IDout;
+					if(IDPair.Key == ID)
+					{
+
+						ID = IDout;
+					}
 				}
 				//move this 1 pixel to its parent size
 				//sizeOfPixelGroup[ID]++;
@@ -164,31 +175,17 @@ public class CCLGenerator
 				
 				bool leftPixelExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out leftPixelID);
 				bool abovePixelExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x, y - 1), out abovePixelID);
-				
-				int leftPixelCurrentParentID = 0;
-				bool leftHasParent = IDToParent.TryGetValue(leftPixelID, out leftPixelCurrentParentID);
-				
-				int abovePixelCurrentParentID = 0;
-				bool aboveHasParent = IDToParent.TryGetValue(abovePixelID, out abovePixelCurrentParentID);
 
 				if(leftPixelExists && abovePixelExists)
 				{
 					//Parent is always smaller than child
 					if(leftPixelID < abovePixelID)
 					{
-						//it doesnt have the parent or it has a parent and the left pixel id is less than the above pixel id
-						if(!aboveHasParent || (aboveHasParent && leftPixelID < abovePixelID))
-						{
-							//set the id to the left pixel
-							IDToParent[abovePixelID] = leftPixelID;
-						}
+						IDToParent.Add( new KeyValuePair<int,int>(abovePixelID, leftPixelID));
 					}
 					else if(leftPixelID > abovePixelID)
 					{
-						if(!leftHasParent || (leftHasParent && abovePixelID < leftPixelID))
-						{
-							IDToParent[leftPixelID] = abovePixelID;
-						}
+						IDToParent.Add( new KeyValuePair<int,int>(leftPixelID, abovePixelID));
 					}
 					//else dont set same ID to child of itself
 
@@ -229,11 +226,99 @@ public class CCLGenerator
 			}
 		}
 		
-		Console.WriteLine("Max ID = " +  nextNewPixelID.ToString());
+		//The goal is to collapse all the ID's and parents  and sometimes some fall through the cracks
+		while(IDToParent.Count > 0)
+		{
 
-		DebugPrintIDTree(nextNewPixelID);
+			//Need to iterate through every ID and set the ID to the smallest parent value
+			//And update the map to set the value to the smallest parent value
+			for(int i = 0; i < nextNewPixelID && IDToParent.Count > 0; i++)
+			{
+				//Set the smallest parent to the current ID value so we never set 1 to something higher than 1
+				int smallestParent = i;
+				//Get a list where the Key/Value pair is CurrentID/Parent
+				foreach(KeyValuePair<int,int> currentIDPair in IDToParent.Where((KeyValuePair<int,int> IDPair) => IDPair.Key == i || IDPair.Value == i))
+				{
+					if(currentIDPair.Value < smallestParent)
+					{
+						smallestParent = currentIDPair.Value;
+					}
+					if(currentIDPair.Key < smallestParent)
+					{
+						smallestParent = currentIDPair.Key;
+					}
+				}
+
+				//Set the value of each pair to the smallest
+				if(i != smallestParent)
+				{
+					SetIDToNewID(i, smallestParent);
+					Console.WriteLine("Changes ID " + i .ToString() + " To " + smallestParent.ToString());
+				}
+			}
+		}
+
+		//Console.WriteLine("Max ID = " +  nextNewPixelID.ToString());
+
+		//DebugPrintIDTree(nextNewPixelID);
 
 		VisualizeIDTree(VisualizeMode.Root);
   }
 
+	//Sets all pixel's IDs from the current ID to the new ID
+	void SetIDToNewID(int oldID, int newID)
+	{
+		//Temp var to not change the collection as we iterate
+		List<KeyValuePair<KeyValuePair<int, int>, int>> newValuesToInsert = new List<KeyValuePair<KeyValuePair<int, int>, int>>();
+
+		//Get list of new values
+		foreach (var item in dictIDToListofCoords)
+		{
+			//If the ID of the coordinates is the current ID then reinsert that pair with the new ID
+			if(item.Value == oldID)
+				newValuesToInsert.Add(new KeyValuePair<KeyValuePair<int, int>, int>(item.Key, newID));
+		}
+		
+		List<KeyValuePair<int, int>> toDelete = new List<KeyValuePair<int, int>>();
+		List<KeyValuePair<int, int>> toAdd = new List<KeyValuePair<int, int>>();
+		
+		//Create a list of items to remove and items to add to the hash set because no changing while iterating
+		//Probably a better way to do this
+		foreach (var item in IDToParent)
+		{
+			//Check Keys
+			if(item.Key == oldID)
+			{
+				toDelete.Add(item);
+				//We want to converge at a min set so do not add [1,1] because we know that [1,1] inheriently
+				if(item.Value != newID)
+					toAdd.Add(new KeyValuePair<int, int>(newID, item.Value));
+			}
+			//Check Values
+			if(item.Value == oldID)
+			{
+				toDelete.Add(item);
+				//We want to converge at a min set so do not add [1,1] because we know that [1,1] inheriently
+				if(item.Key != newID)
+					toAdd.Add(new KeyValuePair<int, int>(item.Key, newID));
+			}
+		}
+
+		//Update values
+		foreach (var item in toDelete)
+		{
+			IDToParent.Remove(item);
+		}
+
+		foreach (var item in toAdd)
+		{
+			IDToParent.Add(item);
+		}
+
+		//Update Dictionary
+		foreach (var item in newValuesToInsert)
+		{
+			dictIDToListofCoords[item.Key] = item.Value;
+		}
+	}
 }
