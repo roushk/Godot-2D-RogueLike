@@ -60,7 +60,7 @@ public class CCLGenerator
 	}
 
 	//Becomes significantly less useful with hashset of pairs
-	public void DebugPrintIDTree(int treeCount)
+	public void DebugPrintIDTree(int treeCount) 
 	{
 		//Debug Print a tree of each current ID
 		for(int i = 0; i < treeCount; i++)
@@ -85,12 +85,6 @@ public class CCLGenerator
 			}
 			GD.Print(treeRoot);
 		}
-	}
-
-	//????
-	public void UpdateIDTreeToRoots(ref int [] sizeOfPixelGroup)
-	{
-
 	}
 
 	public void VisualizeIDTree(VisualizeMode mode)
