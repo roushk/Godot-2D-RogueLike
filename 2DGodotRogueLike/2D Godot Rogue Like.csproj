@@ -18,7 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\AnimatedTilesetTileSettings.cs" />
+    <Compile Include="Scripts\Animation\AnimatedTilesetTileSettings.cs" />
     <Compile Include="Scripts\EditorLight.cs" />
     <Compile Include="Scripts\Inventory\BaseInventory.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseBlueprint.cs" />
@@ -27,17 +27,17 @@
     <Compile Include="Scripts\ModularWeapons\CallbackTextureButton.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftedItem.cs" />
     <Compile Include="Scripts\ModularWeapons\CraftingMaterialSystem.cs" />
-    <Compile Include="Scripts\TileSetAnimation.cs" />
-    <Compile Include="Scripts\CameraMovement.cs" />
-    <Compile Include="Scripts\CCLGenerator.cs" />
-    <Compile Include="Scripts\InventoryWorldObject.cs" />
-    <Compile Include="Scripts\OreWorldObject.cs" />
-    <Compile Include="Scripts\Player.cs" />
-    <Compile Include="Scripts\PlayerTopDown.cs" />
-    <Compile Include="Scripts\TestLevelGeneration.cs" />
+    <Compile Include="Scripts\Animation\TileSetAnimation.cs" />
+    <Compile Include="Scripts\Player\CameraMovement.cs" />
+    <Compile Include="Scripts\Player\Player.cs" />
+    <Compile Include="Scripts\Player\PlayerTopDown.cs" />
+    <Compile Include="Scripts\Inventory\InventoryWorldObject.cs" />
+    <Compile Include="Scripts\Inventory\OreWorldObject.cs" />
     <Compile Include="Scripts\Utils.cs" />
-    <Compile Include="Scripts\WFC Simple Tile Model\WFC2DTile.cs" />
-    <Compile Include="Scripts\WFC Simple Tile Model\WFCSimpleTiledModel.cs" />
+    <Compile Include="Scripts\MapGeneration\TestLevelGeneration.cs" />
+    <Compile Include="Scripts\MapGeneration\CCLGenerator.cs" />
+    <Compile Include="Scripts\MapGeneration\WFCSimpleTileModel\WFC2DTile.cs" />
+    <Compile Include="Scripts\MapGeneration\WFCSimpleTileModel\WFCSimpleTiledModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scenes\" />
