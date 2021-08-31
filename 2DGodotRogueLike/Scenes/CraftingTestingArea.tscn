@@ -11,6 +11,7 @@
 [ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=9]
 
 [node name="CraftingScreen" type="Control"]
+modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -41,11 +42,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PartsVisualizerContainer" type="CenterContainer" parent="ParchmentBackground"]
+[node name="PartsVisualizerContainer" type="Control" parent="ParchmentBackground"]
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
 anchor_bottom = 0.9
+margin_left = 32.0
+margin_top = 72.0
+margin_right = 32.0
+margin_bottom = 72.0
 mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
