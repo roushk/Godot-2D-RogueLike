@@ -24,8 +24,6 @@ public class BaseCraftingMaterials : Resource
     public BaseCraftingMaterials()
     {
         materialProperties = new Dictionary<Parts.PartType,Array<Materials.MaterialStatData>>();
-        materialProperties[Parts.PartType.Medium_Blade] = new Array<Materials.MaterialStatData>();
-        materialProperties[Parts.PartType.Medium_Blade].Add(new Materials.MaterialStatData(Materials.MaterialStatType.Damage, 5));
     }
 
     public BaseCraftingMaterials(string _name, int _ingotCost, Materials.MaterialType _materialType, Color _tint) 
@@ -104,6 +102,8 @@ namespace Parts
                     return type;   
             }
             throw(new Exception("Enum " + input + " Does not exist in Parts.PartType."));
+
+            //redundent return statement
             return PartType.Undefined;
         }
 
@@ -120,26 +120,16 @@ namespace Parts
     public enum PartType : int
     {
         Undefined,
-        Large_Blade,
-        Medium_Blade,
-        Small_Blade,
-        Large_Guard,    //Art Todo
-        Medium_Guard,          
-        Small_Guard,
-        Large_Handle,
-        Medium_Handle,
-        Small_Handle,
+        Blade,       //Blades, mace heads, tool heads, etc
+        Guard,
+        Handle,
         Pommel,
-        Tool_Head,
-        Tool_Crossing,
-        Tool_Handle,
-        Medium_Mace
+        
     //    HammerHead,     //Art Todo
     //    BattleaxeHead,  //Art Todo
     //    LargeGuard,     //Art Todo
     //    MediumHandle,   //Art Todo
-//        Medium_Mace,
-
+    //    Medium_Mace,
     }
     //Pickaxe is {LargeHandle, ToolBinding, PickaxeHead}
     //Axe is {LargeHandle, ToolBinding, AxeHead}
