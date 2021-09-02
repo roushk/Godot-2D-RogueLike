@@ -281,6 +281,25 @@ public class CCLGenerator
 		}
 	}
 
+	//Returns a copy of the largest set
+	public List<KeyValuePair<int, int>> GetLargestSet()
+	{
+		int largestSetSize = 0;
+		int largestSet = 0;
+
+		foreach (var item in connectedSets)
+		{
+			if(item.Value.Count > largestSetSize)
+			{
+				largestSet = item.Key;
+				largestSetSize = item.Value.Count;
+			}
+		}
+		//https://stackoverflow.com/questions/14007405/how-create-a-new-deep-copy-clone-of-a-listt
+		//Returns a new list
+		return connectedSets[largestSet].ConvertAll(kvPair => new KeyValuePair<int, int>(kvPair.Key, kvPair.Value));
+	}
+
 	//Sets all pixel's IDs from the current ID to the new ID
 	void SetIDToNewID(int oldID, int newID)
 	{

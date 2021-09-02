@@ -65,6 +65,8 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked CCL_SelectLargestCave_Callback Button");
 		//CCLGen.SelectLargestCave();
+		List<KeyValuePair<int, int>> largestSet = CCLGen.GetLargestSet();
+		GD.Print("Largest Set Count = " + largestSet.Count);
 	}
 
 	//WFC Signals

@@ -1728,7 +1728,6 @@ margin_left = -859.961
 margin_top = -548.745
 margin_right = -559.961
 margin_bottom = -48.7447
-rect_rotation = 0.235454
 rect_scale = Vector2( 2.13898, 2.43508 )
 __meta__ = {
 "_edit_use_anchors_": false
