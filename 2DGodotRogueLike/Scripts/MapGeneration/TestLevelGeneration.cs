@@ -61,6 +61,12 @@ public class TestLevelGeneration : Node2D
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Individual);
 	}
 
+	public void CCL_SelectLargestCave_Callback()
+	{
+		GD.Print("Clicked CCL_SelectLargestCave_Callback Button");
+		//CCLGen.SelectLargestCave();
+	}
+
 	//WFC Signals
 	public void WFC_GenerateCompleteMapButton_Callback()
 	{

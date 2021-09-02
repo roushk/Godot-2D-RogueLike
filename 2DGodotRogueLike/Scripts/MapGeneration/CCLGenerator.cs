@@ -23,6 +23,9 @@ public class CCLGenerator
 	//This long line is a dictionary from Id's to a hashset (unique list) of integer x,y coords as a keypair
 	Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
 
+	//This dictionary is a list of the final connected sets (caves) ID's to a list of x/y values, basically an invert of the dictIDToListofCoords
+	Dictionary<int, List<KeyValuePair<int, int>>> connectedSets = new Dictionary<int, List<KeyValuePair<int, int>>>();
+
 	//dictionary of int ID of set to ID of parent set 
 	//Needs to support N to N values guarenteed unique so using a HastSet of Pairs
 	//key = ID of node, value = ID of parent
@@ -257,7 +260,26 @@ public class CCLGenerator
 		//DebugPrintIDTree(nextNewPixelID);
 
 		VisualizeIDTree(VisualizeMode.Root);
+		GenerateConnectedSetLists(nextNewPixelID);
   }
+
+	//Take the dictIDToListofCoords and populate the connectedSets with the series of connected sets and their values
+	void GenerateConnectedSetLists(int maxSets)
+	{
+		//first clear
+		connectedSets.Clear();
+
+		foreach (var item in dictIDToListofCoords)
+		{
+			//If the ID's set is null create it
+			if(!connectedSets.ContainsKey(item.Value))
+			{
+				connectedSets[item.Value] = new List<KeyValuePair<int, int>>();
+			}
+			//Add the coordinates to the set at the ID key
+			connectedSets[item.Value].Add(item.Key);
+		}
+	}
 
 	//Sets all pixel's IDs from the current ID to the new ID
 	void SetIDToNewID(int oldID, int newID)

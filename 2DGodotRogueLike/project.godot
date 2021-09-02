@@ -18,6 +18,10 @@ config/name="2D Godot Rogue Like"
 run/main_scene="res://Scenes/TestGeneratedLevel.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+InputManagerSingletonNode="*res://Scenes/Singletons/InputManagerSingletonNode.tscn"
+
 [display]
 
 window/size/width=512

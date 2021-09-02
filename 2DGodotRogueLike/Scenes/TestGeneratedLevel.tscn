@@ -1618,7 +1618,6 @@ zoom = Vector2( 5, 5 )
 script = ExtResource( 4 )
 
 [node name="GUI" type="MarginContainer" parent="Camera2D"]
-visible = false
 margin_left = 364.682
 margin_top = -465.59
 margin_right = 664.682
@@ -1725,7 +1724,6 @@ button_mask = 0
 text = "View Sockets"
 
 [node name="MapGenColorList" type="MarginContainer" parent="Camera2D"]
-visible = false
 margin_left = -859.961
 margin_top = -548.745
 margin_right = -559.961
