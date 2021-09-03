@@ -8,6 +8,10 @@ public class TestLevelGeneration : Node2D
 
 	public CCLGenerator CCLGen = new CCLGenerator();
 	public WFCSimpleTiledModel WFCSTM = new WFCSimpleTiledModel();
+	List<KeyValuePair<int, int>> largestSet = new List<KeyValuePair<int, int>>();
+
+
+	public const int maxColors = 112;
 
 	//General Signals
 	public void GenerateNewTileMapButton_Callback()
@@ -31,6 +35,7 @@ public class TestLevelGeneration : Node2D
 		GenerateMap(maxIterations, true);
 		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
+		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
 		ClearSmallerCaves();
 	}
@@ -56,17 +61,17 @@ public class TestLevelGeneration : Node2D
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Root);
 	}
 
-	public void CCL_ViewIndividualGroups_Callback()
+	public void ViewAdjacency_Callback()
 	{
-		GD.Print("Clicked ViewRootGroups_Callback Button");
-		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Individual);
+		GD.Print("View Adjacency Callback");
+		GenerateAdjacentcyGrid();
 	}
 
 	public void CCL_SelectLargestCave_Callback()
 	{
 		GD.Print("Clicked CCL_SelectLargestCave_Callback Button");
 		//CCLGen.SelectLargestCave();
-		List<KeyValuePair<int, int>> largestSet = CCLGen.GetLargestSet();
+		largestSet = CCLGen.GetLargestSet();
 		GD.Print("Largest Set Count = " + largestSet.Count);
 	}
 
@@ -85,6 +90,17 @@ public class TestLevelGeneration : Node2D
 		GenerateMap(1, false);
 		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
+	}
+
+	public void Generate_CCL_Select_Largest_Adj()
+	{
+		GenerateMap(maxIterations, true);
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.CCLAlgorithm();
+		largestSet = CCLGen.GetLargestSet();
+		UpdateMapData();
+		ClearSmallerCaves();
+		GenerateAdjacentcyGrid();
 	}
 
 	public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
@@ -120,6 +136,16 @@ public class TestLevelGeneration : Node2D
   [Export(PropertyHint.Range,"1,100,1")]
   public int maxIterations;
 
+	//Also displays it green, yellow, orange, red, purple, blue, cyan, white for 0,1,2,3,4,5,6,7
+	List<Color> colorMap = new List<Color>{
+		Colors.Green, 	//0
+		Colors.Yellow,	//1
+		Colors.Orange,	//2
+		Colors.Red, 		//3
+		Colors.Purple,	//4
+		Colors.Blue, 		//5
+		Colors.Cyan, 		//6
+		Colors.White};	//7
 
   //for tileset
   [Export]
@@ -140,9 +166,13 @@ public class TestLevelGeneration : Node2D
   Random random;
 
   //bounds of cell for neighbor check
-  Vector2[] neighborsToCheck;
+  Vector2[] neighborsToCheckDiag;
+	Vector2[] neighborsToCheckAdj;
 
   int [,] terrainMap;
+
+	//Dict of pixel to distance from closest wall
+	Dictionary<KeyValuePair<int,int>, int> closestWalls = new Dictionary<KeyValuePair<int, int>, int>();
 
 
 	public int [,] GetTerrainMapCopy()
@@ -166,7 +196,7 @@ public class TestLevelGeneration : Node2D
 
 		//Vector2 maxValues = new Vector2(0,0);
     //Set the current cave to floor
-    foreach (var coord in CCLGen.GetLargestSet())
+    foreach (var coord in largestSet)
     {
       terrainMap[coord.Key,coord.Value] = 0;
 
@@ -207,16 +237,21 @@ public class TestLevelGeneration : Node2D
 		random = new Random();
 
 		//fill neighbors offset for any arbitrary vector, precalced into a container
-		neighborsToCheck = new Vector2[8];
+		neighborsToCheckDiag = new Vector2[8];
+		neighborsToCheckAdj = new Vector2[4];
+
 		int pos = 0;
+		int posAdj = 0;
 		for(int i = -1; i <= 1; ++i)  
 		{
 			for(int j = -1; j <= 1; ++j)  
 			{
 				if(i == 0 && j == 0)
 					continue;
+				if(i == 0 || j == 0)
+					neighborsToCheckAdj[posAdj++] = new Vector2(i, j);
 
-					neighborsToCheck[pos++] = new Vector2(i, j);
+				neighborsToCheckDiag[pos++] = new Vector2(i, j);
 				}
 		}
 
@@ -358,7 +393,7 @@ public class TestLevelGeneration : Node2D
 			//Get Number of Neighbors
 			numNeighbors = 0;
 			//for each neighbor
-			foreach (Vector2 tilePos in neighborsToCheck)
+			foreach (Vector2 tilePos in neighborsToCheckDiag)
 			{
 				//break on out of bounds
 				if(x + tilePos.x < 0 || x + tilePos.x >= width || y + tilePos.y < 0 || y + tilePos.y >= height)
@@ -409,4 +444,58 @@ public class TestLevelGeneration : Node2D
 	//return the new map
 	return newTerrainMap;
   }
+
+	//Maybe try to grow a rectangle into 3x3 or larger and classify that as a "room" 
+	//each coord has the distnace to the closest wall, higher points are more open areas aka larger rooms?
+	//Turn every point into its own Square (Corner to center navigable) and then attempt to grow each square ring
+	//Also displays it green, yellow, orange, red, purple, blue, cyan for 1,2,3,4,5,6,7
+	//Runs on the terrainMap to find the closest number of tiles
+	private void GenerateAdjacentcyGrid()
+	{
+		closestWalls.Clear();
+
+		foreach (var largestItem in largestSet)
+		{
+			//3x3,5x5,7x7,9x9 +-1 on x,y +-2 on x,y +-3 on xy until wall
+			//For growing square borders size 1,9,25,49 and if they contain walls then thats the distance
+			int squareSize = 0;
+			bool foundWall = false;
+			while(foundWall == false)
+			{
+				squareSize++;
+				//can use neighborsToCheckAdj or neighborsToCheckDiag
+				foreach (var item in neighborsToCheckDiag)
+				{
+					//if wall
+					int posX = largestItem.Key + (int)item.x * squareSize;
+					int posY = largestItem.Value + (int)item.y * squareSize;
+
+					//Make sure coordinates are inside of the terrain
+					posX = Mathf.Max(0,Mathf.Min(width - 1, posX));
+					posY = Mathf.Max(0,Mathf.Min(height - 1, posY));
+					
+					if(terrainMap[posX,posY] == 1)
+					{ 
+						foundWall = true;
+						closestWalls[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = squareSize;
+						break;
+					}
+				}
+			}
+		}
+
+		for(int x = 0; x < width; ++x)
+		{
+			for(int y = 0; y < height; ++y)
+			{
+				//Set cell to -1 deletes it
+				mapIDVisualizationRef.SetCell(-x + width / 2, -y + height / 2, -1);
+			}
+		}
+
+		foreach (var item in largestSet)
+		{
+			mapIDVisualizationRef.SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
+		}
+	}
 }
