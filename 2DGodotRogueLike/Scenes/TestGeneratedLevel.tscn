@@ -1597,7 +1597,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 15
 BottomTile = 13
-tileMapSize = Vector2( 64, 128 )
+tileMapSize = Vector2( 200, 100 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -1606,6 +1606,7 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="FloodFillMap" type="TileMap" parent="."]
+visible = false
 show_behind_parent = true
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )

@@ -32,6 +32,7 @@ public class TestLevelGeneration : Node2D
 		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		UpdateMapData();
+		ClearSmallerCaves();
 	}
 
 	public void CCL_IterateSimulationOnce_Callback()
@@ -133,8 +134,8 @@ public class TestLevelGeneration : Node2D
   [Export]
   public Vector2 tileMapSize;
 
-  int width;
-  int height;
+  public int width { get; private set; }
+  public int height { get; private set; }
 
   Random random;
 
@@ -142,6 +143,59 @@ public class TestLevelGeneration : Node2D
   Vector2[] neighborsToCheck;
 
   int [,] terrainMap;
+
+
+	public int [,] GetTerrainMapCopy()
+	{
+		int [,] newTerrainMap = new int[width, height];
+		terrainMap.CopyTo(newTerrainMap,0);
+		return newTerrainMap;
+	}
+
+
+	public void ClearSmallerCaves()
+  {
+    //Set every tile to wall
+    for(int y = 0; y < height; ++y)
+		{
+			for(int x = 0; x < width; ++x)
+			{  
+				terrainMap[x,y] = 1;
+			}
+		}
+
+		//Vector2 maxValues = new Vector2(0,0);
+    //Set the current cave to floor
+    foreach (var coord in CCLGen.GetLargestSet())
+    {
+      terrainMap[coord.Key,coord.Value] = 0;
+
+			//Code to find max values
+			//if(coord.Key > maxValues.x)
+			//{
+			//	maxValues.x = coord.Key;
+			//}
+			//if(coord.Value > maxValues.y)
+			//{
+			//	maxValues.y = coord.Value;
+			//}
+    }
+
+		//This is incase we want the max bounds of the cave to clear away extra floor tiles
+		//for(int y = 0; y < height; ++y)
+		//{
+		//	for(int x = 0; x < width; ++x)
+		//	{  
+		//		if(x > maxValues.x + 1)
+		//		{
+		//
+		//		}
+		//		terrainMap[x,y] = 1;
+		//	}
+		//}
+    UpdateMapData();
+  }
+
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
@@ -252,7 +306,7 @@ public class TestLevelGeneration : Node2D
   }
 
 	//Sets the foreground map to the tile data of the terrain map
-	private void UpdateMapData()
+	public void UpdateMapData()
 	{
 		//Update the cells
 		for(int x = 0; x < width; ++x)
