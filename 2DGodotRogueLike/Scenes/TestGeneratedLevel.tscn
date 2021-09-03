@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/ManyColors.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=4]
-[ext_resource path="res://TemplateScenes/IDAndColorUIElement.tscn" type="PackedScene" id=5]
 
 [sub_resource type="TileSet" id=1]
 0/name = "ManyColors.png 0"
@@ -1592,13 +1591,13 @@
 
 [node name="RootNode" type="Node2D"]
 script = ExtResource( 1 )
-initialDeadChance = 46
+initialDeadChance = 45
 deathLimit = 3
 birthLimit = 4
 maxIterations = 100
 TopTile = 15
 BottomTile = 13
-tileMapSize = Vector2( 128, 128 )
+tileMapSize = Vector2( 64, 128 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -1618,10 +1617,10 @@ zoom = Vector2( 5, 5 )
 script = ExtResource( 4 )
 
 [node name="GUI" type="MarginContainer" parent="Camera2D"]
-margin_left = 364.682
-margin_top = -465.59
-margin_right = 664.682
-margin_bottom = 34.4101
+margin_left = 657.094
+margin_top = -535.515
+margin_right = 957.094
+margin_bottom = -35.5144
 rect_scale = Vector2( 2, 2.2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1722,30 +1721,6 @@ margin_right = 300.0
 margin_bottom = 303.0
 button_mask = 0
 text = "View Sockets"
-
-[node name="MapGenColorList" type="MarginContainer" parent="Camera2D"]
-margin_left = -859.961
-margin_top = -548.745
-margin_right = -559.961
-margin_bottom = -48.7447
-rect_scale = Vector2( 2.13898, 2.43508 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="Camera2D/MapGenColorList"]
-margin_right = 300.0
-margin_bottom = 500.0
-
-[node name="Label" type="Label" parent="Camera2D/MapGenColorList/VBoxContainer2"]
-margin_right = 300.0
-margin_bottom = 15.0
-text = "Map Generation Cave Color to ID"
-
-[node name="HBoxContainer" parent="Camera2D/MapGenColorList/VBoxContainer2" instance=ExtResource( 5 )]
-margin_top = 19.0
-margin_right = 300.0
-margin_bottom = 34.0
 
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]

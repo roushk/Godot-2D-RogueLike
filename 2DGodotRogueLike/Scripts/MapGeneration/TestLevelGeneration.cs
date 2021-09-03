@@ -152,8 +152,7 @@ public class TestLevelGeneration : Node2D
 
 		random = new Random();
 
-		//fill neighbors
-
+		//fill neighbors offset for any arbitrary vector, precalced into a container
 		neighborsToCheck = new Vector2[8];
 		int pos = 0;
 		for(int i = -1; i <= 1; ++i)  
@@ -221,7 +220,7 @@ public class TestLevelGeneration : Node2D
 		{
 			for(int x = 0; x < width; ++x)
 			{  
-				if(x == 0 || y == 0 || x == width || y == height)
+				if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
 				{
 					terrainMap[x,y] = 1;
 				}
@@ -265,7 +264,7 @@ public class TestLevelGeneration : Node2D
 				{
 					//range of -x to x amd -y to y to center the tile map;
 					//set to the top tile
-					ForegroundMap.SetCell(-x + width / 2, -y + width / 2, TopTile);
+					ForegroundMap.SetCell(-x + width / 2, -y + height / 2, TopTile);
 				}
 				else  //Bottom Tile = 0 = Grass Wall
 				{
