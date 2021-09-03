@@ -18,6 +18,8 @@ One major part of this game is the world generation. The first iteration the gen
 
 After the initial world generation the generator finds the largest cave and coordinates to each tile inside that cave to select as the playable area. In the first iteration I used an algorithm that set every single tile its own set and then merge adjacent sets to give me the largest cave and use that as the playable area. This was immensely slow and would take several minutes for a 128x128 map which is ridiculous. A flood fill would not work because I have an N number of caves and do not know their starting positions or the minimum size of these caves. I could try to prematurely optimize and generate a sparse grid every 5 pixels or so as the starting location for the flood fill and then merge adjacent sets which would potentially ignore the smaller caves but I would prefer a complete algorithm. In the second iteration I used a [Connected Component Labeling Algorithm](https://en.wikipedia.org/wiki/Connected-component_labeling), which is supposed to be O(NxM), was significantly faster, but also more complicated. Currently a 128x128 level takes around 1-2 seconds to run the entire CCL algorithm, [Implemented here](https://github.com/roushk/Godot-2D-RogueLike/blob/main/2DGodotRogueLike/Scripts/MapGeneration/CCLGenerator.cs), on and I plan on optimizing this at a later date but currently 1-2 seconds is fast enough considering I am not planning to have levels much larger than 128x128 considering the size of the tiles. 
 
+Next I am looking to figure out the best way to place the level starting location and levelending location in addition to figuring out some way to differentiate rooms vs hallways in reguards to spawning enemies and items in the world. Currently my method to figure out larger rooms is to figure out the distance from each ground tile to the wall. I am doing this somewhat inefficiently by growing a 8 tile edge around each tile in the map until it hits a wall to figure out the distance away. I have 2 overlays, one being 4 tiles and the other just 8. In the lower adjacency example image you can see the colors showing the distance from the edge. I am planning on refining this by planning and implementing a faster alg that instead of growing a square maybe uses the distance of tiles near it with backtracking or something to propogate the changes for know tiles. 
+
 ### Level World Generation Screenshots
 
 #### Flood Fill Example 1
@@ -31,6 +33,11 @@ After the initial world generation the generator finds the largest cave and coor
 ![WorkingCCL_128x128_46initial](https://user-images.githubusercontent.com/34784335/131573719-cbd5f744-6692-4069-8f04-23df30ef42f3.PNG)
 ### CCL Example 4 256x256 @ 40% initially alive change for Game of Life
 ![WorkingCCL_256x256_40initial](https://user-images.githubusercontent.com/34784335/131573720-e31051e6-f910-4447-b002-4a5e1dc73ace.PNG)
+## CCL Example 5 200x100 @ 44% initial with only largest cave visible
+![CompleteCCLWithLargestCave](https://user-images.githubusercontent.com/34784335/131959077-069cbaf5-dd34-4278-af4c-0223fb578c5f.PNG)
+## Adjacency overlay of 200x100 
+![Adjacency](https://user-images.githubusercontent.com/34784335/131959204-247caa48-6ea0-43b6-8b9c-65408322e3e1.PNG)
+
 
 #### Map Generation UI
 ![MapGeneratorUI_Iter2](https://user-images.githubusercontent.com/34784335/131393486-b1128c13-35c0-4cd9-b44d-f899daeb4314.PNG)
