@@ -12,6 +12,7 @@ The game engine is Godot using C# scripting and I am doing everything myself bes
 #### [Weapon Crafting System UI Iteration Screenshots](weapon-crafting-system-screenshots)
 #### [Weapon Crafting System Example Weapons](#example-weapons)
 ### [Overworld Generation](#overworld-level-generation)
+### [Lighting Testing](#initial-lighting-testing)
 
 ## World Generation
 One major part of this game is the world generation. The first iteration the generator randomly selects if each tile is alive or dead based on a initial chance to create a good starting point. It then uses modified rules from [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for many iterations to generate somewhat natural looking caves. Specifically  based on this [article](https://gamedevelopment.tutsplus.com/tutorials/generate-random-cave-levels-using-cellular-automata--gamedev-9664). I plan to add later world generation methods as it is something that interests me. 
@@ -104,3 +105,11 @@ Other great sources for WFC:
 ### Generated World Goal 
 ![example_overworld](https://user-images.githubusercontent.com/34784335/131397301-5ce03d8a-ce7e-41da-8a22-a93bfbfad41b.PNG)
 
+### Initial Lighting Testing
+
+For this game I wanted to have a unique art style but sadly I am not a skilled artist I decided to leverage my knowledge of 3D graphics and PBR, IBL, etc to make the game look pretty without beautiful assets. While researching 2D platformer/adventure/metroidvania games for a different project I came across this very beautiful game [Seige and Sandfox](https://siegeandsandfox.com/). I appreciated their lighting and art style, they managed to make the game feel like an old school 8bit game while having very pretty lighting. Watching their talk [Beyond Authentic Pixel Art in Unreal Engine](https://www.youtube.com/watch?v=TLbXNYK4928) online and seeing the upgrade and depth that normal maps added to their world inspired me to try it myself. I decided to add normal mapping with lighting to the 2D sprites and see what that type of 2D/3D depth effect would look like. 
+
+It took me a day or two but after digging through Godot's documentation found out that they have a 2D/3D lighting pipeline and after plugging in a normal map I found online and one I created for some ingots I got decently good looking lighting and plan to create a larger test scene with walls and props to see if I want to continue down this path. 
+
+#### Initial Lighting example
+https://user-images.githubusercontent.com/34784335/132577652-1004471e-d819-494d-b8c5-1cf4db1ea357.mp4
