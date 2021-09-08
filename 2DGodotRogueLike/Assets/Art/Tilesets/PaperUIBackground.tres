@@ -1,6 +1,7 @@
 [gd_resource type="TileSet" load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice_5x5.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice.png" type="Texture" id=1]
+
 
 [resource]
 0/name = "PaperUI_9Slice_5x5.png 0"

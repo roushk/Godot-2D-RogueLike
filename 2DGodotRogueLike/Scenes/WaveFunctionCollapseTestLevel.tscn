@@ -5,7 +5,6 @@
 [ext_resource path="res://Assets/Art/Debug/ManyColors.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=4]
 
-
 [sub_resource type="TileSet" id=1]
 0/name = "ManyColors.png 0"
 0/texture = ExtResource( 3 )
