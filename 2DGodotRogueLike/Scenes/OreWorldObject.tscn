@@ -3,7 +3,8 @@
 [ext_resource path="res://Assets/Art/Tiles/FantasyRpg/outside.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Art/Tiles/FantasyRpg/dungeon.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_55.png" type="Texture" id=3]
-[ext_resource path="res://Scripts/OreWorldObject.cs" type="Script" id=4]
+[ext_resource path="res://Scripts/Inventory/OreWorldObject.cs" type="Script" id=4]
+
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )

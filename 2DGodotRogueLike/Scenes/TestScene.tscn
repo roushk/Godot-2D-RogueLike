@@ -4,7 +4,8 @@
 [ext_resource path="res://Assets/Art/Tilesets/ForestFloor.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Tilesets/SimpleGrass.tres" type="TileSet" id=3]
 [ext_resource path="res://Assets/Art/Tilesets/TestSpriteFrame.tres" type="SpriteFrames" id=4]
-[ext_resource path="res://Scripts/TileSetAnimation.cs" type="Script" id=5]
+[ext_resource path="res://Scripts/Animation/TileSetAnimation.cs" type="Script" id=5]
+
 
 [sub_resource type="Animation" id=1]
 resource_name = "Water"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=41 format=2]
 
-[ext_resource path="res://Scripts/InventoryWorldObject.cs" type="Script" id=1]
+[ext_resource path="res://Scripts/Inventory/InventoryWorldObject.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_66.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_65.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_67.png" type="Texture" id=4]
@@ -18,6 +18,7 @@
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_52.png" type="Texture" id=17]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_56.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_80.png" type="Texture" id=19]
+
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 5 )
