@@ -38,9 +38,9 @@ public class CCLGenerator
 	//ID to size for the first iteration
 	int [] sizeOfPixelGroup = new int [maxNumGroups];
 
-	public void SetVisualizationMap(ref Godot.TileMap _mapIDVisualization)
+	public void SetVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
 	{
-		mapIDVisualization = _mapIDVisualization;
+		mapIDVisualization = _mapIDVisualization[map];
 	}
 
 	public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)

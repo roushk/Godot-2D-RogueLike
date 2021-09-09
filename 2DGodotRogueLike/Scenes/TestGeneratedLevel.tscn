@@ -1606,7 +1606,13 @@ cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( -720910, 1, 0, -720909, 1, 1, -720908, 1, 1, -720907, 1, 1, -720906, 1, 2, -655374, 1, 65536, -655373, 1, 65537, -655372, 1, 65537, -655371, 1, 65537, -655370, 1, 131077, -655369, 1, 2, -655365, 1, 0, -655364, 1, 1, -655363, 1, 2, -589838, 1, 65536, -589837, 1, 65537, -589836, 1, 65537, -589835, 1, 65537, -589834, 1, 65537, -589833, 1, 65538, -589829, 1, 65536, -589828, 1, 65537, -589827, 1, 131077, -589826, 1, 1, -589825, 1, 2, -524302, 1, 65536, -524301, 1, 65537, -524300, 1, 65537, -524299, 1, 65537, -524298, 1, 65537, -524297, 1, 65538, -524293, 1, 65536, -524292, 1, 65537, -524291, 1, 65537, -524290, 1, 65541, -524289, 1, 131074, -458766, 1, 65536, -458765, 1, 65537, -458764, 1, 65537, -458763, 1, 65537, -458762, 1, 65537, -458761, 1, 65538, -458757, 1, 131072, -458756, 1, 65542, -458755, 1, 65541, -458754, 1, 131074, -524285, 1, 0, -524284, 1, 2, -393230, 1, 65536, -393229, 1, 65537, -393228, 1, 65537, -393227, 1, 65537, -393226, 1, 65537, -393225, 1, 65538, -393220, 1, 131072, -393219, 1, 65543, -458749, 1, 131072, -458748, 1, 9, -458747, 1, 2, -327694, 1, 65536, -327693, 1, 65537, -327692, 1, 65537, -327691, 1, 65537, -327690, 1, 65541, -327689, 1, 131074, -327683, 1, 196612, -327682, 1, 7, -393212, 1, 131072, -393211, 1, 131074, -262158, 1, 131072, -262157, 1, 131073, -262156, 1, 131073, -262155, 1, 131073, -262154, 1, 131074, -262146, 1, 196612, -262145, 1, 7, -196613, 1, 0, -196612, 1, 2, -196609, 1, 131076, -262144, 1, 2, -131078, 1, 0, -131077, 1, 131078, -131076, 1, 262149, -131075, 1, 196609, -131074, 1, 196609, -131073, 1, 196614, -196608, 1, 131074, -65543, 1, 196608, -65542, 1, 262150, -65541, 1, 65537, -65540, 1, 65538, -6, 1, 131072, -5, 1, 131073, -4, 1, 131074 )
 
-[node name="FloodFillMap" type="TileMap" parent="."]
+[node name="AdjacencyMap" type="TileMap" parent="."]
+show_behind_parent = true
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="AnotherOverlayMap" type="TileMap" parent="."]
 show_behind_parent = true
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
@@ -1652,29 +1658,38 @@ margin_right = 305.0
 margin_bottom = 65.0
 text = "Clear Map"
 
-[node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+[node name="GenLargestAndAdjacency" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 69.0
 margin_right = 305.0
-margin_bottom = 84.0
+margin_bottom = 90.0
+text = "CCL + Largest + Adj"
+
+[node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 94.0
+margin_right = 305.0
+margin_bottom = 109.0
 text = "Overlays"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ToggleAdjacency" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 88.0
+[node name="SelectedOverlay" type="OptionButton" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 113.0
 margin_right = 305.0
-margin_bottom = 109.0
-text = "Toggle Adjacency Overlay"
+margin_bottom = 134.0
+text = "No Overlay"
+align = 1
+items = [ "No Overlay", null, false, 0, null, "Adjacency Overlay", null, false, 1, null, "Another Overlay", null, false, 2, null ]
+selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WFC2" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 113.0
+margin_top = 138.0
 margin_right = 305.0
-margin_bottom = 128.0
+margin_bottom = 153.0
 text = "Game of Life + CCL"
 align = 1
 __meta__ = {
@@ -1682,27 +1697,27 @@ __meta__ = {
 }
 
 [node name="ViewRoot" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 132.0
-margin_right = 305.0
-margin_bottom = 153.0
-text = "Generate + CCL + Select Largest + Adj"
-
-[node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 157.0
 margin_right = 305.0
 margin_bottom = 178.0
-text = "Run CCL"
+text = "Generate + CCL + Select Largest + Adj"
 
-[node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+[node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 182.0
 margin_right = 305.0
 margin_bottom = 203.0
+text = "Run CCL"
+
+[node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 207.0
+margin_right = 305.0
+margin_bottom = 228.0
 text = "Iterate GoL Simulation Once"
 
 [node name="WFC" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 207.0
+margin_top = 232.0
 margin_right = 305.0
-margin_bottom = 222.0
+margin_bottom = 247.0
 text = "Wave Function Collapse"
 align = 1
 __meta__ = {
@@ -1710,29 +1725,30 @@ __meta__ = {
 }
 
 [node name="WFC_GenComplete" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 226.0
-margin_right = 305.0
-margin_bottom = 247.0
-button_mask = 0
-text = "Generate Complete Map"
-
-[node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 251.0
 margin_right = 305.0
 margin_bottom = 272.0
 button_mask = 0
-text = "Iterate WFC Simulation Once"
+text = "Generate Complete Map"
 
-[node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+[node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 276.0
 margin_right = 305.0
 margin_bottom = 297.0
+button_mask = 0
+text = "Iterate WFC Simulation Once"
+
+[node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 301.0
+margin_right = 305.0
+margin_bottom = 322.0
 button_mask = 0
 text = "View Sockets"
 
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ToggleAdjacency" to="." method="ToggleAdjacency_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenLargestAndAdjacency" to="." method="GenLargestAndAdjacency"]
+[connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/SelectedOverlay" to="." method="OverlaySelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/IterSim" to="." method="CCL_IterateSimulationOnce_Callback"]

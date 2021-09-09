@@ -6,7 +6,6 @@ using System.Linq;
 public class TestLevelGeneration : Node2D
 {
 
-
 #region Signals
 
 	//General Signals
@@ -57,14 +56,6 @@ public class TestLevelGeneration : Node2D
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Root);
 	}
 
-	public void ToggleAdjacency_Callback()
-	{
-		GD.Print("Toggle Adjacency Callback");
-
-		//Toggle visibility
-		VisualizationMap.Visible = !VisualizationMap.Visible;
-	}
-
 	public void CCL_SelectLargestCave_Callback()
 	{
 		GD.Print("Clicked CCL_SelectLargestCave_Callback Button");
@@ -90,6 +81,16 @@ public class TestLevelGeneration : Node2D
 		UpdateMapData();
 	}
 
+	public void GenLargestAndAdjacency()
+	{
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CCLGen.CCLAlgorithm();
+		largestSet = CCLGen.GetLargestSet();
+		UpdateMapData();
+		ClearSmallerCaves();
+		GenerateAdjacencyGrid();
+	}
+
 	public void Generate_CCL_Select_Largest_Adj()
 	{
 		GenerateMap(maxIterations, true);
@@ -98,7 +99,27 @@ public class TestLevelGeneration : Node2D
 		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
 		ClearSmallerCaves();
-		GenerateAdjacentcyGrid();
+		GenerateAdjacencyGrid();
+	}
+
+	//Sets visibility of the overlays
+	public void OverlaySelected_Callback(int index)
+	{
+		if(index == 0)
+		{
+			foreach (var item in VisualizationMaps)
+			{
+				item.Value.Visible = false;
+			}
+		}
+		else
+		{
+			foreach (var item in VisualizationMaps)
+			{
+				item.Value.Visible = false;
+			}
+			VisualizationMaps[ActiveOverlayOptions.GetItemText(index)].Visible = true;
+		}
 	}
 
 #endregion
@@ -126,7 +147,7 @@ public class TestLevelGeneration : Node2D
   //declare Foreground and Background map variables
   public Godot.TileMap ForegroundMap;
 
-  public Godot.TileMap VisualizationMap; 
+  public Dictionary<string,Godot.TileMap> VisualizationMaps; 
 
   //range of 0 to 100 with step range of 5
   [Export(PropertyHint.Range,"0,100,1")]
@@ -181,6 +202,7 @@ public class TestLevelGeneration : Node2D
 	//Dict of pixel to distance from closest wall
 	Dictionary<KeyValuePair<int,int>, int> closestWalls = new Dictionary<KeyValuePair<int, int>, int>();
 
+	OptionButton ActiveOverlayOptions;
 #endregion
 
 	public int [,] GetTerrainMapCopy()
@@ -311,6 +333,8 @@ public class TestLevelGeneration : Node2D
   {
 		MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
 
+		ActiveOverlayOptions = GetNode("Camera2D/GUI/VBoxContainer/SelectedOverlay") as OptionButton;
+		
 		//link forground and background map variables to the nodes
 
 		random = new Random();
@@ -331,13 +355,16 @@ public class TestLevelGeneration : Node2D
 				neighborsToCheckSingle[pos++] = new Vector2(i, j);
 			}
 		}
-
+		VisualizationMaps = new Dictionary<string, TileMap>();
 		ForegroundMap = GetNode("ForegroundMap") as TileMap;
-		VisualizationMap = GetNode("FloodFillMap") as TileMap;
+
+		//this NEEDS to be the same as the text in the options menu SelectedOverlay
+		VisualizationMaps["Adjacency Overlay"] = GetNode("AdjacencyMap") as TileMap;
+		VisualizationMaps["Another Overlay"] = GetNode("AnotherOverlayMap") as TileMap;
 
 		GenerateMap(maxIterations, true);
 
-		CCLGen.SetVisualizationMap(ref VisualizationMap);
+		CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
 		
 		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 
@@ -526,7 +553,7 @@ public class TestLevelGeneration : Node2D
 	//Turn every point into its own Square (Corner to center navigable) and then attempt to grow each square ring
 	//Also displays it green, yellow, orange, red, purple, blue, cyan for 1,2,3,4,5,6,7
 	//Runs on the terrainMap to find the closest number of tiles
-	private void GenerateAdjacentcyGrid()
+	private void GenerateAdjacencyGrid()
 	{
 		closestWalls.Clear();
 
@@ -567,13 +594,13 @@ public class TestLevelGeneration : Node2D
 			for(int y = 0; y < height; ++y)
 			{
 				//Set cell to -1 deletes it
-				VisualizationMap.SetCell(-x + width / 2, -y + height / 2, -1);
+				VisualizationMaps["Adjacency Overlay"].SetCell(-x + width / 2, -y + height / 2, -1);
 			}
 		}
 
 		foreach (var item in largestSet)
 		{
-			VisualizationMap.SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
+			VisualizationMaps["Adjacency Overlay"].SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
 		}
 	}
 }
