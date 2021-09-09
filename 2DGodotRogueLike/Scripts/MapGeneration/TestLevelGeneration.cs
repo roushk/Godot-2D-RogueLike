@@ -235,7 +235,7 @@ public class TestLevelGeneration : Node2D
   }
 
 	//based on https://www.geeksforgeeks.org/mid-point-circle-drawing-algorithm/
-	List<HashSet<Vector2>>  GenerateMidPointCircle(int radius)
+	List<HashSet<Vector2>> GenerateMidPointCircle(int radius)
 	{
 		List<HashSet<Vector2>> points = new List<HashSet<Vector2>>();
 
@@ -255,14 +255,11 @@ public class TestLevelGeneration : Node2D
 			//radius 1 -> 1+
 			if(radiusIter > 0)
 			{
-				//x + x_center, -y + y_center
-				points[radiusIter].Add(new Vector2(x,-y));
-
-				//y + x_center, x + y_center
+				//Changes these from the example drawing alg because they didn't give the points wanted.
+				//Not sure if its my mistake or theirs but these values give me an adjacency overlay that looks like what I expected
+				points[radiusIter].Add(new Vector2(-x,y));
 				points[radiusIter].Add(new Vector2(y,x));
-				
-				//-y + x_center, x + y_center
-				points[radiusIter].Add(new Vector2(-y,x));
+				points[radiusIter].Add(new Vector2(y,-x));
 				
 			}
 			
