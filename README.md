@@ -19,9 +19,20 @@ One major part of this game is the world generation. The first iteration the gen
 
 After the initial world generation the generator finds the largest cave and coordinates to each tile inside that cave to select as the playable area. In the first iteration I used an algorithm that set every single tile its own set and then merge adjacent sets to give me the largest cave and use that as the playable area. This was immensely slow and would take several minutes for a 128x128 map which is ridiculous. A flood fill would not work because I have an N number of caves and do not know their starting positions or the minimum size of these caves. I could try to prematurely optimize and generate a sparse grid every 5 pixels or so as the starting location for the flood fill and then merge adjacent sets which would potentially ignore the smaller caves but I would prefer a complete algorithm. In the second iteration I used a [Connected Component Labeling Algorithm](https://en.wikipedia.org/wiki/Connected-component_labeling), which is supposed to be O(NxM), was significantly faster, but also more complicated. Currently a 128x128 level takes around 1-2 seconds to run the entire CCL algorithm, [Implemented here](https://github.com/roushk/Godot-2D-RogueLike/blob/main/2DGodotRogueLike/Scripts/MapGeneration/CCLGenerator.cs), on and I plan on optimizing this at a later date but currently 1-2 seconds is fast enough considering I am not planning to have levels much larger than 128x128 considering the size of the tiles. 
 
-Next I am looking to figure out the best way to place the level starting location and levelending location in addition to figuring out some way to differentiate rooms vs hallways in reguards to spawning enemies and items in the world. Currently my method to figure out larger rooms is to figure out the distance from each ground tile to the wall. I am doing this somewhat inefficiently by growing a 8 tile edge around each tile in the map until it hits a wall to figure out the distance away. I have 2 overlays, one being 4 tiles and the other just 8. In the lower adjacency example image you can see the colors showing the distance from the edge. I am planning on refining this by planning and implementing a faster alg that instead of growing a square maybe uses the distance of tiles near it with backtracking or something to propogate the changes for know tiles. 
+Next I am looking to figure out the best way to place the level starting location and levelending location in addition to figuring out some way to differentiate rooms vs hallways in reguards to spawning enemies and items in the world. Currently my method to figure out larger rooms is to figure out the distance from each ground tile to the wall. I am doing this somewhat effectively by using the Midpoint Circle alg to pregen a series of growing radii to then run simple collision to determin the distance from the edge of a room any tile is and save that data.
+
+My current idea for sorting the rooms spatially is to first run a flood fill to generate a directed graph and then use that with Tarjan’s Algorithm to find choke points. Then after finding the choke points I can run flood fills to create rooms from the areas between each choke point and then run A* on the entire map to figure out the farthest rooms and use those as the starting and ending rooms for the level. My goal is to have the directed graph generate a fairly predictable growth that looks something like tree roots. Currently the directed graph its generated but I need to change the method for queueing up tiles to check in order to generate something closer to what I want as it looping into and out of rooms. 
 
 ### Level World Generation Screenshots
+
+## Map with no overlay
+![DirGraph_CCL_NoOverlay](https://user-images.githubusercontent.com/34784335/132656123-f0d485be-c162-4d2d-b87a-790598cd53dc.PNG)
+## Map with Adjacency Overlay
+![DirGraph_AdjacencyOverlay](https://user-images.githubusercontent.com/34784335/132656147-d03d9d7e-fe2a-49a1-af8c-0c8636dc6432.PNG)
+## Map with Directed Graph overlay (Arrows point to parent, root is red dot)
+![DirGraph_DirectedGraphOverlay](https://user-images.githubusercontent.com/34784335/132656293-6ae349a6-2dd4-46ac-adf9-33b9f2b1cb80.PNG)
+## Map with Directed Graph overlay with example unwanted path (Arrows point to parent, root is red dot)
+![DirGraph_DirectedGraphOverlay_ExamplePt_FIFO](https://user-images.githubusercontent.com/34784335/132656285-f2e8a477-d6ae-445a-9619-25498a52c163.PNG)
 
 #### Flood Fill Example 1
 ![FloodFill1](https://user-images.githubusercontent.com/34784335/131393394-c0262dbf-d44d-4f1d-8cc0-d065e0f0b34d.jpg)
@@ -38,7 +49,6 @@ Next I am looking to figure out the best way to place the level starting locatio
 ![CompleteCCLWithLargestCave](https://user-images.githubusercontent.com/34784335/131959077-069cbaf5-dd34-4278-af4c-0223fb578c5f.PNG)
 ## Adjacency overlay of 200x100 
 ![Adjacency](https://user-images.githubusercontent.com/34784335/131959204-247caa48-6ea0-43b6-8b9c-65408322e3e1.PNG)
-
 
 #### Map Generation UI
 ![MapGeneratorUI_Iter2](https://user-images.githubusercontent.com/34784335/131393486-b1128c13-35c0-4cd9-b44d-f899daeb4314.PNG)
