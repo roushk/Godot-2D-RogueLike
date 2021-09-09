@@ -8,13 +8,26 @@ public class TestLevelGeneration : Node2D
 
 #region Signals
 
+	public void FloodFillToDirectedGraph_Callback()
+	{
+		cpfRootNode = CPF.GenerateDirectedGraphFromFloodFill(new Vector2(largestSet[0].Key, largestSet[0].Value));
+	}
+
+	public void DirectedGraphToTarjans_Callback()
+	{
+		
+	}
+
+	public void TarjansToRooms_Callback()
+	{
+
+	}
+
 	//General Signals
 	public void GenerateNewTileMapButton_Callback()
 	{
 		GD.Print("Clicked Generate New Tile Map Button");
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
-		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
 
@@ -28,7 +41,6 @@ public class TestLevelGeneration : Node2D
 	public void CCL_GenerateCompleteMapButton_Callback()
 	{
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
@@ -39,7 +51,6 @@ public class TestLevelGeneration : Node2D
 	{
 		GD.Print("Clicked Prune Tile Map Button");
 		GenerateMap(1, false);
-	  CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		UpdateMapData();
 	}
 
@@ -83,7 +94,6 @@ public class TestLevelGeneration : Node2D
 
 	public void GenLargestAndAdjacency()
 	{
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
@@ -94,7 +104,6 @@ public class TestLevelGeneration : Node2D
 	public void Generate_CCL_Select_Largest_Adj()
 	{
 		GenerateMap(maxIterations, true);
-		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 		CCLGen.CCLAlgorithm();
 		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
@@ -127,12 +136,16 @@ public class TestLevelGeneration : Node2D
 #region Variables
 	public CCLGenerator CCLGen = new CCLGenerator();
 	public WFCSimpleTiledModel WFCSTM = new WFCSimpleTiledModel();
+	public ChokePointFinder CPF = new ChokePointFinder();
+
 	List<KeyValuePair<int, int>> largestSet = new List<KeyValuePair<int, int>>();
 
 	public const int maxColors = 112;
 
 	public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
 	Node MapGenColorListNode;
+
+	ChokePointFinder.CPFNode cpfRootNode = new ChokePointFinder.CPFNode();
 
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	//map  0,0 = bottom right
@@ -360,7 +373,8 @@ public class TestLevelGeneration : Node2D
 
 		//List visualization maps here
 		VisualizationMaps["Adjacency Overlay"] = GetNode("AdjacencyMap") as TileMap;
-		VisualizationMaps["Another Overlay"] = GetNode("AnotherOverlayMap") as TileMap;
+		VisualizationMaps["Directed Graph Overlay"] = GetNode("Directed Graph Overlay") as TileMap;
+		VisualizationMaps["Room Overlay"] = GetNode("Room Overlay") as TileMap;
 
 		//Generate the options menu from the dict keys to make sure they are good with 0 still being no overlays
 		foreach (var item in VisualizationMaps)
@@ -372,6 +386,8 @@ public class TestLevelGeneration : Node2D
 
 		//Set the CCLGen Adjacency Overlay map to output adjacency data to
 		CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
+		CPF.SetDirectedGraphVisualizationMap(ref VisualizationMaps, "Directed Graph Overlay");
+		CPF.SetRoomVisualizationMap(ref VisualizationMaps, "Room Overlay");
 	}
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -385,6 +401,8 @@ public class TestLevelGeneration : Node2D
   {
 		ForegroundMap.Clear();
 		CCLGen.Clear();
+		//TODO VVV
+		CPF.Clear();
 		terrainMap = null;
   }
 
@@ -422,6 +440,34 @@ public class TestLevelGeneration : Node2D
 				}
 			}
 		}
+
+		bool floorExists = false;
+
+		//Check if every single spot is a wall
+		for(int y = 0; y < height; ++y)
+		{
+			if(floorExists)
+				break;
+			for(int x = 0; x < width; ++x)
+			{  
+				if(terrainMap[x,y] != 1)
+				{
+					floorExists = true;
+					break;
+				}
+			}
+		}
+		
+		//just regen if no map
+		if(!floorExists)
+		{
+			GenerateMap(iterations, newMap);
+		}
+
+		CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		CPF.UpdateInternalMap(width, height, ref terrainMap);
+		WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
+
 	}
 
   //seeds the terrain map with random dead or alive values

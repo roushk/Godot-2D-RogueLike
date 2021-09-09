@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/ManyColors.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=4]
 [ext_resource path="res://Scripts/UI/OptionsMenuPopupFix.cs" type="Script" id=5]
+[ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=6]
 
 [sub_resource type="TileSet" id=1]
 0/name = "ManyColors.png 0"
@@ -1589,6 +1590,27 @@
 112/shape_one_way_margin = 0.0
 112/shapes = [  ]
 112/z_index = 0
+113/name = "ManyColors.png 113"
+113/texture = ExtResource( 3 )
+113/tex_offset = Vector2( 0, 0 )
+113/modulate = Color( 1, 1, 1, 1 )
+113/region = Rect2( 0, 0, 256, 240 )
+113/tile_mode = 2
+113/autotile/icon_coordinate = Vector2( 0, 0 )
+113/autotile/tile_size = Vector2( 16, 16 )
+113/autotile/spacing = 0
+113/autotile/occluder_map = [  ]
+113/autotile/navpoly_map = [  ]
+113/autotile/priority_map = [  ]
+113/autotile/z_index_map = [  ]
+113/occluder_offset = Vector2( 0, 0 )
+113/navigation_offset = Vector2( 0, 0 )
+113/shape_offset = Vector2( 0, 0 )
+113/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+113/shape_one_way = false
+113/shape_one_way_margin = 0.0
+113/shapes = [  ]
+113/z_index = 0
 
 [node name="RootNode" type="Node2D"]
 script = ExtResource( 1 )
@@ -1614,7 +1636,14 @@ tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
-[node name="AnotherOverlayMap" type="TileMap" parent="."]
+[node name="Directed Graph Overlay" type="TileMap" parent="."]
+visible = false
+show_behind_parent = true
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="Room Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
 tile_set = SubResource( 1 )
@@ -1732,22 +1761,56 @@ __meta__ = {
 margin_top = 251.0
 margin_right = 305.0
 margin_bottom = 272.0
-button_mask = 0
 text = "Generate Complete Map"
 
 [node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 276.0
 margin_right = 305.0
 margin_bottom = 297.0
-button_mask = 0
 text = "Iterate WFC Simulation Once"
 
 [node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 301.0
 margin_right = 305.0
 margin_bottom = 322.0
-button_mask = 0
 text = "View Sockets"
+
+[node name="WFC3" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 326.0
+margin_right = 305.0
+margin_bottom = 341.0
+text = "Choke Point Generator"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets2" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 345.0
+margin_right = 305.0
+margin_bottom = 366.0
+text = "Flood Fill -> Directed Graph"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets3" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 370.0
+margin_right = 305.0
+margin_bottom = 391.0
+text = "Directed Graph -> Tarjan’s "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets4" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 395.0
+margin_right = 305.0
+margin_bottom = 416.0
+text = "Tarjan’s -> Rooms"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
@@ -1756,3 +1819,6 @@ text = "View Sockets"
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/IterSim" to="." method="CCL_IterateSimulationOnce_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets2" to="." method="FloodFillToDirectedGraph_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets3" to="." method="DirectedGraphToTarjans_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets4" to="." method="TarjansToRooms_Callback"]

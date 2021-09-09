@@ -9,33 +9,82 @@ public class ChokePointFinder
   // Trajan's Algorithm on Directed Graph -> Choke Points
   // Choke Points -> Flood Fill until Pts
   // Creates rooms
-
+#region Subclass Definitions
   public enum NodeState
   {
     NotChecked,
     Closed
   }
   
-  public class Node
+  public class CPFNode
   {
     public Vector2 pos = new Vector2();
-    public Node parent = new Node();
-    public List<Node> children = new List<Node>();
-    public NodeState state = NodeState.NotChecked;
+    public CPFNode parent;
+    public List<CPFNode> children = new List<CPFNode>();
+    //public NodeState state = NodeState.NotChecked;
   };
 
-  public class NodeQueueSorter : Comparer<Node>
+  public class NodeQueueSorter : Comparer<CPFNode>
   {
-    Node rootNode;
-    public NodeQueueSorter(Node _rootNode)
+    CPFNode rootNode;
+    public NodeQueueSorter(CPFNode _rootNode)
     {
       rootNode = _rootNode;
     }
-    public override int Compare(Node x, Node y)
+    public override int Compare(CPFNode x, CPFNode y)
     {
       return x.pos.DistanceSquaredTo(rootNode.pos).CompareTo(y.pos.DistanceSquaredTo(rootNode.pos));
     }
   }
+
+#endregion
+
+#region Variables
+  public const int maxColors = 112;
+  int [,] terrainMap;
+	int width;
+  int height;
+
+  Godot.TileMap directedGraphVisMap = new TileMap();
+  Godot.TileMap roomVisMap = new TileMap();
+  CPFNode rootNode = new CPFNode();
+  Dictionary<Vector2, int> DebugDirToTile = new Dictionary<Vector2, int>
+  {
+    //Y down
+    {new Vector2(0,0), 4},
+    {new Vector2(0,1), 3},
+    {new Vector2(0,-1), 5},
+    {new Vector2(1,0), 1},
+    {new Vector2(-1,0), 7},
+    {new Vector2(1,1), 8},
+    {new Vector2(-1,1), 2},
+    {new Vector2(1,-1), 6},
+    {new Vector2(-1,-1), 0},
+  };
+
+#endregion
+#region Map Funcs
+  public void SetDirectedGraphVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
+	{
+		directedGraphVisMap = _mapIDVisualization[map];
+	}
+
+  public void SetRoomVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
+	{
+		roomVisMap = _mapIDVisualization[map];
+	}
+
+	public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
+	{
+    //Delete children
+    rootNode = new CPFNode();
+		width = _width;
+		height = _height;
+		terrainMap = _terrainMap;
+	}
+
+
+#endregion
 
   //Flood-fill (node):
   //1. Set Q to the empty queue or stack.
@@ -53,48 +102,62 @@ public class ChokePointFinder
   //8. Return.
 
   //Returns root node
-  public Node GenerateDirectedGraphFromFloodFill(int[,] terrainMap, Vector2 startingPoint)
+  public CPFNode GenerateDirectedGraphFromFloodFill(Vector2 startingPoint)
   {
-    Node rootNode = new Node();
+    int NodesChecked = 0;
     rootNode.pos = startingPoint;
 
     NodeQueueSorter sorter = new NodeQueueSorter(rootNode);
 
     //1. Set Q to the empty queue or stack.
     //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
-    SortedSet<Node> queue = new SortedSet<Node>(sorter);
+    HashSet<CPFNode> queue = new HashSet<CPFNode>();
+    HashSet<Vector2> checkedPos = new HashSet<Vector2>();
 
     //2. Add node to the end of Q.
     queue.Add(rootNode);
+    checkedPos.Add(rootNode.pos);
+    //rootNode.state = NodeState.Closed;
 
     //3. While Q is not empty:
     while(queue.Count != 0)
     {
       //4.   Set n equal to the first element of Q.
-      Node currNode = queue.First();
+      CPFNode currNode = queue.First();
       //5.   Remove first element from Q.
+      //Console.WriteLine("Checking Node: " + currNode.pos.x.ToString() + ", " + currNode.pos.y.ToString());
+      //Console.WriteLine("Queue Size: " + queue.Count.ToString());
+      NodesChecked++;
       queue.Remove(currNode);
-      //6.   If n is Inside: (Inside = exists within the checked values but we are not adding checked values into the list so skip)
+      checkedPos.Add(currNode.pos);
+      
+      //6.   If n is Inside: (aInside = exists within the checked values but we are not adding checked values into the list so skip)
       //       Set the n
 
       //Make sure we are adding actual terrain not walls
       //       Add the node to the west of n to the end of Q.
-      if(terrainMap[(int)currNode.pos.x, (int)currNode.pos.y + 1] == 0)
-      {
-        Node foundNode;
-        if(queue.TryGetValue(currNode, out foundNode))
-        {
-          if(foundNode.state == NodeState.NotChecked)
-          {
-            queue.Add(foundNode);
-          }
-        }
-        else
-        {
-          //If node doesn't exist then create new node
-          foundNode = new Node();
-          queue.Add(foundNode);
 
+      for(int i = -1; i <= 1; ++i)  
+      {
+        for(int j = -1; j <= 1; ++j)  
+        {
+          //Ignore center (this node) and corners (only doing + shape)
+          if((i == 0 && j == 0) || (i != 0 && j != 0))
+            continue;
+
+          if(terrainMap[(int)currNode.pos.x + i, (int)currNode.pos.y + j] == 0)
+          {
+            Vector2 checkPos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
+            if(!checkedPos.TryGetValue(checkPos, out checkPos))
+            {
+              //If node doesn't exist then create new node
+              CPFNode newNode = new CPFNode();
+              newNode.pos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
+              newNode.parent = currNode;
+              currNode.children.Add(newNode);
+              queue.Add(newNode);
+            }
+          }
         }
       }
       //Finish up the rest of the values
@@ -105,8 +168,32 @@ public class ChokePointFinder
       //8. Return.
 
     }
-
-
+    
+    UpdateDirectedMapVis(rootNode);
     return rootNode;
+  }
+
+  public void Clear()
+  {
+    directedGraphVisMap.Clear();
+    roomVisMap.Clear();
+  }
+
+
+  //DFS recursive func to iter over every child and show its parent relationship
+  void UpdateDirectedMapVis(CPFNode currNode)
+  {
+    Vector2 offsetToParent= new Vector2(0,0);
+    if(currNode.parent != null)
+    {
+      //parent - child = dir child->parent
+      offsetToParent = currNode.parent.pos - currNode.pos;
+    }
+    
+    directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, DebugDirToTile[offsetToParent]);
+    foreach (var child in currNode.children)
+    {
+      UpdateDirectedMapVis(child);
+    }
   }
 }

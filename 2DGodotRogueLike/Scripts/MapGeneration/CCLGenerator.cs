@@ -18,7 +18,7 @@ public class CCLGenerator
 	int width;
   int height;
 
-  Godot.TileMap mapIDVisualization = new Godot.TileMap(); 
+  Godot.TileMap mapIDVisualization = new TileMap();
 
 	//This long line is a dictionary from Id's to a hashset (unique list) of integer x,y coords as a keypair
 	Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
@@ -223,6 +223,7 @@ public class CCLGenerator
 			}
 		}
 		
+		//This is the slow part
 		//The goal is to collapse all the ID's and parents  and sometimes some fall through the cracks
 		while(IDToParent.Count > 0)
 		{
@@ -250,7 +251,7 @@ public class CCLGenerator
 				if(i != smallestParent)
 				{
 					SetIDToNewID(i, smallestParent);
-					Console.WriteLine("Changes ID " + i .ToString() + " To " + smallestParent.ToString());
+					//Console.WriteLine("Changes ID " + i .ToString() + " To " + smallestParent.ToString());
 				}
 			}
 		}
