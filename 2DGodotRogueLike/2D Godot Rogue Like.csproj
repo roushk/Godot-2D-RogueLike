@@ -22,6 +22,7 @@
     <Compile Include="Scripts\EditorLight.cs" />
     <Compile Include="Scripts\InputManager\InputManager.cs" />
     <Compile Include="Scripts\Inventory\BaseInventory.cs" />
+    <Compile Include="Scripts\MapGeneration\ChokePointFinder.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseBlueprint.cs" />
     <Compile Include="Scripts\ModularWeapons\BasePart.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseCraftingMaterials.cs" />

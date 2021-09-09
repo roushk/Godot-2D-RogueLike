@@ -411,6 +411,7 @@ public class TestLevelGeneration : Node2D
 
 		//add border
 		//create a border of walkable Stone Ground terrain around the entire map
+		//I think its wall now...
 		for(int y = 0; y < height; ++y)
 		{
 			for(int x = 0; x < width; ++x)
