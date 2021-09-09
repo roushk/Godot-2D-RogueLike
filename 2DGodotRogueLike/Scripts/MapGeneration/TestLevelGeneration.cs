@@ -6,12 +6,8 @@ using System.Linq;
 public class TestLevelGeneration : Node2D
 {
 
-	public CCLGenerator CCLGen = new CCLGenerator();
-	public WFCSimpleTiledModel WFCSTM = new WFCSimpleTiledModel();
-	List<KeyValuePair<int, int>> largestSet = new List<KeyValuePair<int, int>>();
 
-
-	public const int maxColors = 112;
+#region Signals
 
 	//General Signals
 	public void GenerateNewTileMapButton_Callback()
@@ -61,10 +57,12 @@ public class TestLevelGeneration : Node2D
 		CCLGen.VisualizeIDTree(CCLGenerator.VisualizeMode.Root);
 	}
 
-	public void ViewAdjacency_Callback()
+	public void ToggleAdjacency_Callback()
 	{
-		GD.Print("View Adjacency Callback");
-		GenerateAdjacentcyGrid();
+		GD.Print("Toggle Adjacency Callback");
+
+		//Toggle visibility
+		VisualizationMap.Visible = !VisualizationMap.Visible;
 	}
 
 	public void CCL_SelectLargestCave_Callback()
@@ -103,6 +101,15 @@ public class TestLevelGeneration : Node2D
 		GenerateAdjacentcyGrid();
 	}
 
+#endregion
+
+#region Variables
+	public CCLGenerator CCLGen = new CCLGenerator();
+	public WFCSimpleTiledModel WFCSTM = new WFCSimpleTiledModel();
+	List<KeyValuePair<int, int>> largestSet = new List<KeyValuePair<int, int>>();
+
+	public const int maxColors = 112;
+
 	public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
 	Node MapGenColorListNode;
 
@@ -119,7 +126,7 @@ public class TestLevelGeneration : Node2D
   //declare Foreground and Background map variables
   public Godot.TileMap ForegroundMap;
 
-  public Godot.TileMap mapIDVisualizationRef; 
+  public Godot.TileMap VisualizationMap; 
 
   //range of 0 to 100 with step range of 5
   [Export(PropertyHint.Range,"0,100,1")]
@@ -165,15 +172,16 @@ public class TestLevelGeneration : Node2D
 
   Random random;
 
-  //bounds of cell for neighbor check
-  Vector2[] neighborsToCheckDiag;
-	Vector2[] neighborsToCheckAdj;
+  //bounds of cell for neighbor check, one for each radius 0 to n
+	List<HashSet<Vector2>>  neighborsToCheck;
+	Vector2[] neighborsToCheckSingle;
 
   int [,] terrainMap;
 
 	//Dict of pixel to distance from closest wall
 	Dictionary<KeyValuePair<int,int>, int> closestWalls = new Dictionary<KeyValuePair<int, int>, int>();
 
+#endregion
 
 	public int [,] GetTerrainMapCopy()
 	{
@@ -226,6 +234,80 @@ public class TestLevelGeneration : Node2D
     UpdateMapData();
   }
 
+	//based on https://www.geeksforgeeks.org/mid-point-circle-drawing-algorithm/
+	List<HashSet<Vector2>>  GenerateMidPointCircle(int radius)
+	{
+		List<HashSet<Vector2>> points = new List<HashSet<Vector2>>();
+
+		for(int radiusIter = 0; radiusIter <= radius; radiusIter++)
+		{
+			//create list
+			points.Add(new HashSet<Vector2>());
+
+			int x = radiusIter;
+			int y = 0;
+
+			//center is 0,0
+
+			//x + x_center, y + y_center
+			points[radiusIter].Add(new Vector2(x,y));
+
+			//radius 1 -> 1+
+			if(radiusIter > 0)
+			{
+				//x + x_center, -y + y_center
+				points[radiusIter].Add(new Vector2(x,-y));
+
+				//y + x_center, x + y_center
+				points[radiusIter].Add(new Vector2(y,x));
+				
+				//-y + x_center, x + y_center
+				points[radiusIter].Add(new Vector2(-y,x));
+				
+			}
+			
+			//Midpoint of two pixels
+			int midpoint = 1 - radiusIter;
+			while (x > y)
+			{
+				++y;
+
+				//Midpoint inside or on perimeter
+				if(midpoint <= 0)
+				{
+					midpoint += (2 * y) + 1;
+				}
+				else	//Outside perimeter
+				{
+					--x;
+					midpoint += + (2 * y) - (2 * x) + 1;
+				}
+
+				if(x < y)
+				{
+					//break this perimeter iter
+					break;
+				}
+
+				//Print each octant of the circle (4 points on each of the quadrents as this func iterates a single quadrent
+				//x + x_center, y + y_center
+				points[radiusIter].Add(new Vector2(x,y));
+				points[radiusIter].Add(new Vector2(-x,y));
+				points[radiusIter].Add(new Vector2(x,-y));
+				points[radiusIter].Add(new Vector2(-x,-y));
+
+				if(x != y)
+				{
+					points[radiusIter].Add(new Vector2(y,x));
+					points[radiusIter].Add(new Vector2(-y,x));
+					points[radiusIter].Add(new Vector2(y,-x));
+					points[radiusIter].Add(new Vector2(-y,-x));
+				}
+			}
+		}
+
+		return points;
+	}
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
@@ -237,30 +319,28 @@ public class TestLevelGeneration : Node2D
 		random = new Random();
 
 		//fill neighbors offset for any arbitrary vector, precalced into a container
-		neighborsToCheckDiag = new Vector2[8];
-		neighborsToCheckAdj = new Vector2[4];
+		neighborsToCheck = GenerateMidPointCircle(6);
+
+
+		neighborsToCheckSingle = new Vector2[8];
 
 		int pos = 0;
-		int posAdj = 0;
 		for(int i = -1; i <= 1; ++i)  
 		{
 			for(int j = -1; j <= 1; ++j)  
 			{
 				if(i == 0 && j == 0)
 					continue;
-				if(i == 0 || j == 0)
-					neighborsToCheckAdj[posAdj++] = new Vector2(i, j);
-
-				neighborsToCheckDiag[pos++] = new Vector2(i, j);
-				}
+				neighborsToCheckSingle[pos++] = new Vector2(i, j);
+			}
 		}
 
 		ForegroundMap = GetNode("ForegroundMap") as TileMap;
-		mapIDVisualizationRef = GetNode("FloodFillMap") as TileMap;
+		VisualizationMap = GetNode("FloodFillMap") as TileMap;
 
 		GenerateMap(maxIterations, true);
 
-		CCLGen.SetVisualizationMap(ref mapIDVisualizationRef);
+		CCLGen.SetVisualizationMap(ref VisualizationMap);
 		
 		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
 
@@ -389,18 +469,17 @@ public class TestLevelGeneration : Node2D
 		{
 			for(int y = 0; y < height; ++y)
 			{
-
-			//Get Number of Neighbors
-			numNeighbors = 0;
-			//for each neighbor
-			foreach (Vector2 tilePos in neighborsToCheckDiag)
-			{
-				//break on out of bounds
-				if(x + tilePos.x < 0 || x + tilePos.x >= width || y + tilePos.y < 0 || y + tilePos.y >= height)
+				//Get Number of Neighbors
+				numNeighbors = 0;
+				//for each neighbor
+				foreach (Vector2 tilePos in neighborsToCheckSingle)
 				{
-					//count the border as alive so + 1
-					numNeighbors++;
-					continue;
+					//break on out of bounds
+					if(x + tilePos.x < 0 || x + tilePos.x >= width || y + tilePos.y < 0 || y + tilePos.y >= height)
+					{
+						//count the border as alive so + 1
+						numNeighbors++;
+						continue;
 					}
 					else  //if not out of bounds
 					{
@@ -417,11 +496,11 @@ public class TestLevelGeneration : Node2D
 					//if num neighbors < death limit than die)
 					if(numNeighbors < deathLimit)
 					{
-					newTerrainMap[x,y] = 0;
+						newTerrainMap[x,y] = 0;
 					}
 					else  //above death limit 
 					{
-					newTerrainMap[x,y] = 1;
+						newTerrainMap[x,y] = 1;
 					}
 				}
 				else  //if zero
@@ -429,20 +508,20 @@ public class TestLevelGeneration : Node2D
 					//if num neighbors < death limit than die)
 					if(numNeighbors > birthLimit)
 					{
-					//create new cell
-					newTerrainMap[x,y] = 1;
+						//create new cell
+						newTerrainMap[x,y] = 1;
 					}
 					else  //below birth limit 
 					{
-					//stays dead
-					newTerrainMap[x,y] = 0;
+						//stays dead
+						newTerrainMap[x,y] = 0;
 					}
 				}
 			}
 		}
 
-	//return the new map
-	return newTerrainMap;
+		//return the new map
+		return newTerrainMap;
   }
 
 	//Maybe try to grow a rectangle into 3x3 or larger and classify that as a "room" 
@@ -460,15 +539,14 @@ public class TestLevelGeneration : Node2D
 			//For growing square borders size 1,9,25,49 and if they contain walls then thats the distance
 			int squareSize = 0;
 			bool foundWall = false;
-			while(foundWall == false)
+			//can use neighborsToCheckAdj or neighborsToCheckDiag
+			foreach (var set in neighborsToCheck)
 			{
-				squareSize++;
-				//can use neighborsToCheckAdj or neighborsToCheckDiag
-				foreach (var item in neighborsToCheckDiag)
+				foreach (var item in set)
 				{
 					//if wall
-					int posX = largestItem.Key + (int)item.x * squareSize;
-					int posY = largestItem.Value + (int)item.y * squareSize;
+					int posX = largestItem.Key + (int)item.x;
+					int posY = largestItem.Value + (int)item.y;
 
 					//Make sure coordinates are inside of the terrain
 					posX = Mathf.Max(0,Mathf.Min(width - 1, posX));
@@ -481,6 +559,9 @@ public class TestLevelGeneration : Node2D
 						break;
 					}
 				}
+				squareSize++;
+				if(foundWall)
+					break;
 			}
 		}
 
@@ -489,13 +570,13 @@ public class TestLevelGeneration : Node2D
 			for(int y = 0; y < height; ++y)
 			{
 				//Set cell to -1 deletes it
-				mapIDVisualizationRef.SetCell(-x + width / 2, -y + height / 2, -1);
+				VisualizationMap.SetCell(-x + width / 2, -y + height / 2, -1);
 			}
 		}
 
 		foreach (var item in largestSet)
 		{
-			mapIDVisualizationRef.SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
+			VisualizationMap.SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
 		}
 	}
 }

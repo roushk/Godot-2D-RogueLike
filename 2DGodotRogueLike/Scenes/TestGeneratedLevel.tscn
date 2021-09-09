@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Art/Modified/CaveandGrass-autotile/CaveandGrass-autotile.tres" type="TileSet" id=2]
+[ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/ManyColors.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=4]
 
@@ -1652,56 +1652,57 @@ margin_right = 305.0
 margin_bottom = 65.0
 text = "Clear Map"
 
-[node name="ViewInd" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+[node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 69.0
 margin_right = 305.0
-margin_bottom = 90.0
-text = "View Adjacency"
+margin_bottom = 84.0
+text = "Overlays"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ViewInd2" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 94.0
+[node name="ToggleAdjacency" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 88.0
 margin_right = 305.0
-margin_bottom = 115.0
-text = "Select Largest Cave"
+margin_bottom = 109.0
+text = "Toggle Adjacency Overlay"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="WFC2" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 119.0
+margin_top = 113.0
 margin_right = 305.0
-margin_bottom = 134.0
+margin_bottom = 128.0
 text = "Game of Life + CCL"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 138.0
-margin_right = 305.0
-margin_bottom = 159.0
-text = "Run Complete CCL"
-
-[node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 163.0
-margin_right = 305.0
-margin_bottom = 184.0
-text = "Iterate GoL Simulation Once"
-
-[node name="GenCave" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 188.0
-margin_right = 305.0
-margin_bottom = 209.0
-text = "Generate CCL Groups"
-
 [node name="ViewRoot" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 213.0
+margin_top = 132.0
 margin_right = 305.0
-margin_bottom = 234.0
+margin_bottom = 153.0
 text = "Generate + CCL + Select Largest + Adj"
 
-[node name="WFC" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 238.0
+[node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 157.0
 margin_right = 305.0
-margin_bottom = 253.0
+margin_bottom = 178.0
+text = "Run CCL"
+
+[node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 182.0
+margin_right = 305.0
+margin_bottom = 203.0
+text = "Iterate GoL Simulation Once"
+
+[node name="WFC" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 207.0
+margin_right = 305.0
+margin_bottom = 222.0
 text = "Wave Function Collapse"
 align = 1
 __meta__ = {
@@ -1709,31 +1710,29 @@ __meta__ = {
 }
 
 [node name="WFC_GenComplete" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 257.0
+margin_top = 226.0
 margin_right = 305.0
-margin_bottom = 278.0
+margin_bottom = 247.0
 button_mask = 0
 text = "Generate Complete Map"
 
 [node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 282.0
+margin_top = 251.0
 margin_right = 305.0
-margin_bottom = 303.0
+margin_bottom = 272.0
 button_mask = 0
 text = "Iterate WFC Simulation Once"
 
 [node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 307.0
+margin_top = 276.0
 margin_right = 305.0
-margin_bottom = 328.0
+margin_bottom = 297.0
 button_mask = 0
 text = "View Sockets"
 
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewInd" to="." method="ViewAdjacency_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewInd2" to="." method="CCL_SelectLargestCave_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ToggleAdjacency" to="." method="ToggleAdjacency_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/IterSim" to="." method="CCL_IterateSimulationOnce_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenCave" to="." method="CCL_GenerateCaveGroups_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
