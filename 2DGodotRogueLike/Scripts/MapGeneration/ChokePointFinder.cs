@@ -13,6 +13,7 @@ public class ChokePointFinder
   public enum NodeState
   {
     NotChecked,
+    OpenList,
     Closed
   }
   
@@ -21,7 +22,7 @@ public class ChokePointFinder
     public Vector2 pos = new Vector2();
     public CPFNode parent;
     public List<CPFNode> children = new List<CPFNode>();
-    //public NodeState state = NodeState.NotChecked;
+    public NodeState state = NodeState.NotChecked;
   };
 
   public class NodeQueueSorter : Comparer<CPFNode>
@@ -33,7 +34,24 @@ public class ChokePointFinder
     }
     public override int Compare(CPFNode x, CPFNode y)
     {
-      return x.pos.DistanceSquaredTo(rootNode.pos).CompareTo(y.pos.DistanceSquaredTo(rootNode.pos));
+      if(x.pos.DistanceSquaredTo(rootNode.pos).CompareTo(y.pos.DistanceSquaredTo(rootNode.pos)) != 0)
+      {
+        return x.pos.DistanceSquaredTo(rootNode.pos).CompareTo(y.pos.DistanceSquaredTo(rootNode.pos));
+      }
+      else if(x.pos.x.CompareTo(y.pos.x) != 0)
+      {
+        return x.pos.x.CompareTo(y.pos.x);
+      }
+      else if(x.pos.y.CompareTo(y.pos.y) != 0)
+      {
+        return x.pos.y.CompareTo(y.pos.y);
+      }
+      else if(x.GetHashCode().CompareTo(y.GetHashCode()) != 0)
+      {
+        return x.GetHashCode().CompareTo(y.GetHashCode());
+      }
+      else
+        return 0;
     }
   }
 
@@ -60,7 +78,13 @@ public class ChokePointFinder
     {new Vector2(-1,1), 2},
     {new Vector2(1,-1), 6},
     {new Vector2(-1,-1), 0},
+    //9 is open list
   };
+
+  NodeQueueSorter comparer;
+  SortedSet<CPFNode> queue = new SortedSet<CPFNode>();
+  //HashSet<CPFNode> queue = new HashSet<CPFNode>();
+  HashSet<Vector2> checkedPos;
 
 #endregion
 #region Map Funcs
@@ -101,23 +125,29 @@ public class ChokePointFinder
   //7. Continue looping until Q is exhausted.
   //8. Return.
 
-  //Returns root node
-  public CPFNode GenerateDirectedGraphFromFloodFill(Vector2 startingPoint)
+  //Returns is finished
+  public bool GenerateDirectedGraphFromFloodFill(out CPFNode outRootNode, Vector2 startingPoint, bool runIteratively = false)
   {
     int NodesChecked = 0;
-    rootNode.pos = startingPoint;
+    outRootNode = rootNode;
+    //Considering queue count = 0 means that we are the first iter
+    if(!runIteratively || runIteratively && queue.Count == 0)
+    {
+      rootNode.pos = startingPoint;
+      rootNode.state = NodeState.Closed;
+      comparer = new NodeQueueSorter(rootNode);
+      queue = new SortedSet<CPFNode>(comparer);
+      //queue = new HashSet<CPFNode>();
+      checkedPos = new HashSet<Vector2>();
+      //1. Set Q to the empty queue or stack.
+      //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
+      
 
-    NodeQueueSorter sorter = new NodeQueueSorter(rootNode);
-
-    //1. Set Q to the empty queue or stack.
-    //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
-    HashSet<CPFNode> queue = new HashSet<CPFNode>();
-    HashSet<Vector2> checkedPos = new HashSet<Vector2>();
-
-    //2. Add node to the end of Q.
-    queue.Add(rootNode);
-    checkedPos.Add(rootNode.pos);
-    //rootNode.state = NodeState.Closed;
+      //2. Add node to the end of Q.
+      queue.Add(rootNode);
+      checkedPos.Add(rootNode.pos);
+      //rootNode.state = NodeState.Closed;
+    }
 
     //3. While Q is not empty:
     while(queue.Count != 0)
@@ -130,13 +160,15 @@ public class ChokePointFinder
       NodesChecked++;
       queue.Remove(currNode);
       checkedPos.Add(currNode.pos);
+      //This is only affecting nodes that later have children added to them???
+      currNode.state = NodeState.Closed;
       
       //6.   If n is Inside: (aInside = exists within the checked values but we are not adding checked values into the list so skip)
       //       Set the n
 
       //Make sure we are adding actual terrain not walls
       //       Add the node to the west of n to the end of Q.
-
+      //Add adjacent 
       for(int i = -1; i <= 1; ++i)  
       {
         for(int j = -1; j <= 1; ++j)  
@@ -148,14 +180,20 @@ public class ChokePointFinder
           if(terrainMap[(int)currNode.pos.x + i, (int)currNode.pos.y + j] == 0)
           {
             Vector2 checkPos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
+
+            //If node hasn't been checked yet
             if(!checkedPos.TryGetValue(checkPos, out checkPos))
             {
               //If node doesn't exist then create new node
               CPFNode newNode = new CPFNode();
               newNode.pos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
+              //need to show that we have checked this node.... not adding this allows us to create multiple nodes for each tile
+              checkedPos.Add(newNode.pos);
               newNode.parent = currNode;
+              newNode.state = NodeState.OpenList;
               currNode.children.Add(newNode);
               queue.Add(newNode);
+              directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, 9);  //9 is open list
             }
           }
         }
@@ -167,10 +205,31 @@ public class ChokePointFinder
       //7. Continue looping until Q is exhausted.
       //8. Return.
 
+      //If we run iteratively than we want to 
+      if(runIteratively)
+        break;
     }
-    
+
     UpdateDirectedMapVis(rootNode);
-    return rootNode;
+    if(runIteratively && queue.Count != 0)
+      return false;
+    if(runIteratively && queue.Count == 0)
+      return true;
+    
+    return true;
+  }
+
+  //Resets flood fill data structures + root node
+  public void ResetFloodFill()
+  {
+    if(queue != null)
+      queue.Clear();
+    if(checkedPos != null)
+      checkedPos.Clear();
+    if(directedGraphVisMap != null)
+      directedGraphVisMap.Clear();
+      
+    rootNode = new CPFNode();
   }
 
   public void Clear()
@@ -179,7 +238,7 @@ public class ChokePointFinder
     roomVisMap.Clear();
   }
 
-
+#region Debug Visual Funcs
   //DFS recursive func to iter over every child and show its parent relationship
   void UpdateDirectedMapVis(CPFNode currNode)
   {
@@ -190,10 +249,17 @@ public class ChokePointFinder
       offsetToParent = currNode.parent.pos - currNode.pos;
     }
     
-    directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, DebugDirToTile[offsetToParent]);
+    if(currNode.state == NodeState.OpenList) 
+    {
+      directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, 9);  //9 is open list
+    }
+    else
+      directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, DebugDirToTile[offsetToParent]);
+
     foreach (var child in currNode.children)
     {
       UpdateDirectedMapVis(child);
     }
   }
+#endregion
 }

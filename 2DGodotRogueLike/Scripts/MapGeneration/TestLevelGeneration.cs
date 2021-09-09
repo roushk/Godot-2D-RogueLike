@@ -10,7 +10,36 @@ public class TestLevelGeneration : Node2D
 
 	public void FloodFillToDirectedGraph_Callback()
 	{
-		cpfRootNode = CPF.GenerateDirectedGraphFromFloodFill(new Vector2(largestSet[0].Key, largestSet[0].Value));
+		CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value));
+	}
+
+	public void FloodFillToDirectedGraphIter_Callback()
+	{
+		for (int i = 0; i < numDirectedGraphFromFloodFillIter; i++)
+		{
+			CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), true);
+		}
+	}
+
+	public void NumFloodFillDebugIter(float val)
+	{
+		numDirectedGraphFromFloodFillIter = (int)val;
+		//https://www.reddit.com/r/godot/comments/jcqj6f/how_to_release_focus_out_of_a_spin_box_after/
+		//Wow this is irritating that these both need to be here to kick the keyboard out after entering a number
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/SpinBox") as SpinBox).ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/SpinBox") as SpinBox).GetLineEdit().ReleaseFocus();
+	}
+
+	public void RunIterPerFrame()
+	{
+		realtimeFloodFill = true;
+		CPF.ResetFloodFill();
+	}
+
+	public void FloodFillToDirectedGraphReset_Callback()
+	{
+		realtimeFloodFill = false;
+		CPF.ResetFloodFill();
 	}
 
 	public void DirectedGraphToTarjans_Callback()
@@ -147,6 +176,8 @@ public class TestLevelGeneration : Node2D
 
 	ChokePointFinder.CPFNode cpfRootNode = new ChokePointFinder.CPFNode();
 
+	int numDirectedGraphFromFloodFillIter = 1;
+	bool realtimeFloodFill = false;
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	//map  0,0 = bottom right
 	//!!!!!!!!!!!!!!!!!!!!!!!!
@@ -225,7 +256,26 @@ public class TestLevelGeneration : Node2D
 		return newTerrainMap;
 	}
 
-
+	//Fixed
+	public override void _PhysicsProcess(float delta)
+	{
+		if(realtimeFloodFill == true)
+		{
+			for (int i = 0; i < numDirectedGraphFromFloodFillIter; i++)
+			{
+				if(CPF.GenerateDirectedGraphFromFloodFill(
+						out cpfRootNode, 
+						new Vector2(largestSet[0].Key, 
+						largestSet[0].Value), true))
+						{
+							realtimeFloodFill = false;
+							//Set the button to display as untoggled
+							(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/HSplitContainer/WFC_ViewSockets6") as Button).ToggleMode = false;
+							break;
+						}
+			}
+		}
+	}
 	public void ClearSmallerCaves()
   {
     //Set every tile to wall
