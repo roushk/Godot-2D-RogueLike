@@ -34,6 +34,7 @@
     <Compile Include="Scripts\Player\PlayerTopDown.cs" />
     <Compile Include="Scripts\Inventory\InventoryWorldObject.cs" />
     <Compile Include="Scripts\Inventory\OreWorldObject.cs" />
+    <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
     <Compile Include="Scripts\Utils.cs" />
     <Compile Include="Scripts\MapGeneration\TestLevelGeneration.cs" />
     <Compile Include="Scripts\MapGeneration\CCLGenerator.cs" />

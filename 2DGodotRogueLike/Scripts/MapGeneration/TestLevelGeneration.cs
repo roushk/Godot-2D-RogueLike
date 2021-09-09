@@ -358,19 +358,21 @@ public class TestLevelGeneration : Node2D
 		VisualizationMaps = new Dictionary<string, TileMap>();
 		ForegroundMap = GetNode("ForegroundMap") as TileMap;
 
-		//this NEEDS to be the same as the text in the options menu SelectedOverlay
+		//List visualization maps here
 		VisualizationMaps["Adjacency Overlay"] = GetNode("AdjacencyMap") as TileMap;
 		VisualizationMaps["Another Overlay"] = GetNode("AnotherOverlayMap") as TileMap;
 
-		GenerateMap(maxIterations, true);
-
-		CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
+		//Generate the options menu from the dict keys to make sure they are good with 0 still being no overlays
+		foreach (var item in VisualizationMaps)
+		{
+			ActiveOverlayOptions.AddItem(item.Key);
+		}
 		
-		//CCLGen.UpdateInternalMap(width, height, ref terrainMap);
+		Generate_CCL_Select_Largest_Adj();
 
-		//CCLGen.CCLAlgorithm();
-		UpdateMapData();
-  }
+		//Set the CCLGen Adjacency Overlay map to output adjacency data to
+		CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
+	}
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
