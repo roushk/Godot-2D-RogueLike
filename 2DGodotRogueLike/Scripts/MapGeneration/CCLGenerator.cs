@@ -128,7 +128,7 @@ public class CCLGenerator
 			}
 
 			//here when this set has no parent
-			mapIDVisualization.SetCell(-key.Key + width / 2, -key.Value + height / 2, ID % maxColors);
+			mapIDVisualization.SetCell(key.Key , key.Value , ID % maxColors);
 		}
 
 		//update old dict with new one

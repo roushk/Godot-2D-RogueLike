@@ -256,26 +256,7 @@ public class TestLevelGeneration : Node2D
 		return newTerrainMap;
 	}
 
-	//Fixed
-	public override void _PhysicsProcess(float delta)
-	{
-		if(realtimeFloodFill == true)
-		{
-			for (int i = 0; i < numDirectedGraphFromFloodFillIter; i++)
-			{
-				if(CPF.GenerateDirectedGraphFromFloodFill(
-						out cpfRootNode, 
-						new Vector2(largestSet[0].Key, 
-						largestSet[0].Value), true))
-						{
-							realtimeFloodFill = false;
-							//Set the button to display as untoggled
-							(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/HSplitContainer/WFC_ViewSockets6") as Button).ToggleMode = false;
-							break;
-						}
-			}
-		}
-	}
+
 	public void ClearSmallerCaves()
   {
     //Set every tile to wall
@@ -391,6 +372,78 @@ public class TestLevelGeneration : Node2D
 		return points;
 	}
 
+	bool FindNodeAtPos(Vector2 pos, ChokePointFinder.CPFNode node, out ChokePointFinder.CPFNode foundNode)
+	{
+		
+		if(node.pos == pos.Round())
+		{
+			foundNode = node;
+			return true;
+		}
+
+		foreach (var child in node.children)
+    {
+			if(FindNodeAtPos(pos, child, out foundNode))
+			{
+				return true;
+			}
+    }
+		foundNode = null;
+		return false;
+	}
+	
+	//Fixed
+	public override void _PhysicsProcess(float delta)
+	{
+		if(realtimeFloodFill == true)
+		{
+			for (int i = 0; i < numDirectedGraphFromFloodFillIter; i++)
+			{
+				if(CPF.GenerateDirectedGraphFromFloodFill(
+					out cpfRootNode, 
+					new Vector2(largestSet[largestSet.Count/2].Key, 
+					largestSet[largestSet.Count/2].Value), true))
+				{
+					realtimeFloodFill = false;
+					//Set the button to display as untoggled
+					(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/HSplitContainer/WFC_ViewSockets6") as Button).ToggleMode = false;
+					break;
+				}
+			}
+		}
+	}
+
+	//Draw parent tree with simple parent follow set to the tile to show the path to the parent
+	void DrawParentTree(ChokePointFinder.CPFNode currNode)
+  {
+		VisualizationMaps["Directed Graph Overlay"].SetCell((int)currNode.pos.x , (int)currNode.pos.y , 10);
+    if(currNode.parent == null)
+    {
+			return;
+    }
+		else
+		{
+			DrawParentTree(currNode.parent);
+		}
+  }
+
+	public override void _UnhandledInput(InputEvent inputEvent)
+	{
+		if (@inputEvent is InputEventMouseButton mouseClick && (mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left))
+		{
+			//World space -> Map space where coordinates are
+			Vector2 clickedPos = VisualizationMaps["Directed Graph Overlay"].
+				WorldToMap(VisualizationMaps["Directed Graph Overlay"].GetLocalMousePosition());
+			ChokePointFinder.CPFNode foundNode;
+			if(FindNodeAtPos(clickedPos, cpfRootNode, out foundNode))
+			{
+				//Reset the visuals
+				CPF.UpdateDirectedMapVis(cpfRootNode);
+				DrawParentTree(foundNode);
+				//Console.WriteLine("Found Node! at " + clickedPos.ToString() + " Where node exists at " + foundNode.pos.ToString());
+			}
+		}
+	}
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -556,26 +609,26 @@ public class TestLevelGeneration : Node2D
 				{
 					//range of -x to x amd -y to y to center the tile map;
 					//set to the top tile
-					ForegroundMap.SetCell(-x + width / 2, -y + height / 2, TopTile);
+					ForegroundMap.SetCell(x , y , TopTile);
 				}
 				else  //Bottom Tile = 0 = Grass Wall
 				{
-					ForegroundMap.SetCell(-x + width / 2, -y + height / 2, BottomTile);
+					ForegroundMap.SetCell(x , y , BottomTile);
 
 				}
 
 				//set the background to all bottom tile????
-				//BackgroundMap.SetCell(-x + width / 2, -y + width / 2, BottomTile);
+				//BackgroundMap.SetCell(-x , -y , BottomTile);
 			}
 		}
 
 		//ForegroundMap.SetCell(-width / 2, -height / 2, 0);
 		//oregroundMap.SetCell(0, 0, 1);
-		//ForegroundMap.SetCell( width / 2, -(width - 1)  + height / 2, 0);
+		//ForegroundMap.SetCell( width / 2, -(width - 1)  , 0);
 
 
 		//update bitmask for auto tile
-		ForegroundMap.UpdateBitmaskRegion(new Vector2(-width/2, -height/2), new Vector2(width/2, height/2));
+		ForegroundMap.UpdateBitmaskRegion(new Vector2(0, 0), new Vector2(width, height));
 
 		//ForegroundMap.SetCell(width / 2, width / 2,TestTile);
 	}
@@ -693,13 +746,13 @@ public class TestLevelGeneration : Node2D
 			for(int y = 0; y < height; ++y)
 			{
 				//Set cell to -1 deletes it
-				VisualizationMaps["Adjacency Overlay"].SetCell(-x + width / 2, -y + height / 2, -1);
+				VisualizationMaps["Adjacency Overlay"].SetCell(x , y , -1);
 			}
 		}
 
 		foreach (var item in largestSet)
 		{
-			VisualizationMaps["Adjacency Overlay"].SetCell(-item.Key + width / 2, -item.Value + height / 2, (closestWalls[item] * 4) % maxColors);
+			VisualizationMaps["Adjacency Overlay"].SetCell(item.Key , item.Value , (closestWalls[item] * 4) % maxColors);
 		}
 	}
 }

@@ -21,6 +21,7 @@ public class CameraMovement : Camera2D
     public override void _Ready()
     {
         inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
+        cameraGoalPos = Position;
     }
 
     public override void _Input(InputEvent inputEvent)

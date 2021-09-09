@@ -82,8 +82,8 @@ public class ChokePointFinder
   };
 
   NodeQueueSorter comparer;
-  SortedSet<CPFNode> queue = new SortedSet<CPFNode>();
-  //HashSet<CPFNode> queue = new HashSet<CPFNode>();
+  //SortedSet<CPFNode> queue = new SortedSet<CPFNode>();
+  List<CPFNode> queue = new List<CPFNode>();
   HashSet<Vector2> checkedPos;
 
 #endregion
@@ -136,8 +136,9 @@ public class ChokePointFinder
       rootNode.pos = startingPoint;
       rootNode.state = NodeState.Closed;
       comparer = new NodeQueueSorter(rootNode);
-      queue = new SortedSet<CPFNode>(comparer);
+      //queue = new SortedSet<CPFNode>(comparer);
       //queue = new HashSet<CPFNode>();
+      queue = new List<CPFNode>();
       checkedPos = new HashSet<Vector2>();
       //1. Set Q to the empty queue or stack.
       //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
@@ -192,8 +193,10 @@ public class ChokePointFinder
               newNode.parent = currNode;
               newNode.state = NodeState.OpenList;
               currNode.children.Add(newNode);
+              //Make sure to add to the end
               queue.Add(newNode);
-              directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, 9);  //9 is open list
+              //queue.Add(newNode);
+              directedGraphVisMap.SetCell((int)currNode.pos.x , (int)currNode.pos.y , 9);  //9 is open list
             }
           }
         }
@@ -228,7 +231,6 @@ public class ChokePointFinder
       checkedPos.Clear();
     if(directedGraphVisMap != null)
       directedGraphVisMap.Clear();
-      
     rootNode = new CPFNode();
   }
 
@@ -240,7 +242,7 @@ public class ChokePointFinder
 
 #region Debug Visual Funcs
   //DFS recursive func to iter over every child and show its parent relationship
-  void UpdateDirectedMapVis(CPFNode currNode)
+  public void UpdateDirectedMapVis(CPFNode currNode)
   {
     Vector2 offsetToParent= new Vector2(0,0);
     if(currNode.parent != null)
@@ -251,10 +253,10 @@ public class ChokePointFinder
     
     if(currNode.state == NodeState.OpenList) 
     {
-      directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, 9);  //9 is open list
+      directedGraphVisMap.SetCell((int)currNode.pos.x , (int)currNode.pos.y , 9);  //9 is open list
     }
     else
-      directedGraphVisMap.SetCell((int)-currNode.pos.x + width / 2, (int)-currNode.pos.y + height / 2, DebugDirToTile[offsetToParent]);
+      directedGraphVisMap.SetCell((int)currNode.pos.x , (int)currNode.pos.y , DebugDirToTile[offsetToParent]);
 
     foreach (var child in currNode.children)
     {
