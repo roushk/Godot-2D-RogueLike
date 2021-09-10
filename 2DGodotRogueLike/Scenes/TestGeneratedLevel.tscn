@@ -1651,7 +1651,6 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="KMeans Overlay" type="TileMap" parent="."]
-visible = false
 show_behind_parent = true
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
@@ -1664,21 +1663,21 @@ zoom = Vector2( 5, 5 )
 script = ExtResource( 4 )
 
 [node name="GUI" type="MarginContainer" parent="Camera2D"]
-margin_left = 657.0
-margin_top = -536.0
-margin_right = 966.0
-margin_bottom = -36.0
+margin_left = 604.143
+margin_top = -534.112
+margin_right = 941.143
+margin_bottom = -31.1122
 rect_scale = Vector2( 2, 2.2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/GUI"]
-margin_right = 309.0
-margin_bottom = 524.0
+margin_right = 337.0
+margin_bottom = 503.0
 
 [node name="General" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_right = 309.0
+margin_right = 337.0
 margin_bottom = 15.0
 text = "General"
 align = 1
@@ -1686,28 +1685,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GenNew" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 19.0
-margin_right = 309.0
-margin_bottom = 40.0
-text = "Generate New Tile Map"
+margin_right = 337.0
+margin_bottom = 44.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Clear" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 44.0
-margin_right = 309.0
-margin_bottom = 65.0
-text = "Clear Map"
+[node name="GenNew" type="Button" parent="Camera2D/GUI/VBoxContainer/HSplitContainer3"]
+margin_right = 162.0
+margin_bottom = 25.0
+text = "Generate New GoL Map"
+
+[node name="SpinBox" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer3"]
+margin_left = 174.0
+margin_right = 337.0
+margin_bottom = 25.0
+value = 44.0
+prefix = "Dead Chance:"
 
 [node name="GenLargestAndAdjacency" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 69.0
-margin_right = 309.0
-margin_bottom = 90.0
-text = "CCL + Largest + Adj"
+margin_top = 48.0
+margin_right = 337.0
+margin_bottom = 69.0
+text = "Gen Everything"
+
+[node name="Clear" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 73.0
+margin_right = 337.0
+margin_bottom = 94.0
+text = "Clear Map"
 
 [node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 94.0
-margin_right = 309.0
-margin_bottom = 109.0
+margin_top = 98.0
+margin_right = 337.0
+margin_bottom = 113.0
 text = "Overlays"
 align = 1
 __meta__ = {
@@ -1715,9 +1728,9 @@ __meta__ = {
 }
 
 [node name="SelectedOverlay" type="OptionButton" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 113.0
-margin_right = 309.0
-margin_bottom = 134.0
+margin_top = 117.0
+margin_right = 337.0
+margin_bottom = 138.0
 text = "No Overlay"
 align = 1
 items = [ "No Overlay", null, false, 0, null ]
@@ -1728,9 +1741,9 @@ __meta__ = {
 }
 
 [node name="WFC2" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 138.0
-margin_right = 309.0
-margin_bottom = 153.0
+margin_top = 142.0
+margin_right = 337.0
+margin_bottom = 157.0
 text = "Game of Life + CCL"
 align = 1
 __meta__ = {
@@ -1738,27 +1751,27 @@ __meta__ = {
 }
 
 [node name="ViewRoot" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 157.0
-margin_right = 309.0
-margin_bottom = 178.0
+margin_top = 161.0
+margin_right = 337.0
+margin_bottom = 182.0
 text = "Generate + CCL + Select Largest + Adj"
 
 [node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 182.0
-margin_right = 309.0
-margin_bottom = 203.0
+margin_top = 186.0
+margin_right = 337.0
+margin_bottom = 207.0
 text = "Run CCL"
 
 [node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 207.0
-margin_right = 309.0
-margin_bottom = 228.0
+margin_top = 211.0
+margin_right = 337.0
+margin_bottom = 232.0
 text = "Iterate GoL Simulation Once"
 
 [node name="WFC" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 232.0
-margin_right = 309.0
-margin_bottom = 247.0
+margin_top = 236.0
+margin_right = 337.0
+margin_bottom = 251.0
 text = "Wave Function Collapse"
 align = 1
 __meta__ = {
@@ -1766,27 +1779,27 @@ __meta__ = {
 }
 
 [node name="WFC_GenComplete" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 251.0
-margin_right = 309.0
-margin_bottom = 272.0
+margin_top = 255.0
+margin_right = 337.0
+margin_bottom = 276.0
 text = "Generate Complete Map"
 
 [node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 276.0
-margin_right = 309.0
-margin_bottom = 297.0
+margin_top = 280.0
+margin_right = 337.0
+margin_bottom = 301.0
 text = "Iterate WFC Simulation Once"
 
 [node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 301.0
-margin_right = 309.0
-margin_bottom = 322.0
+margin_top = 305.0
+margin_right = 337.0
+margin_bottom = 326.0
 text = "View Sockets"
 
 [node name="WFC3" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 326.0
-margin_right = 309.0
-margin_bottom = 341.0
+margin_top = 330.0
+margin_right = 337.0
+margin_bottom = 345.0
 text = "Choke Point Generator"
 align = 1
 __meta__ = {
@@ -1794,18 +1807,18 @@ __meta__ = {
 }
 
 [node name="WFC_ViewSockets2" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 345.0
-margin_right = 309.0
-margin_bottom = 366.0
+margin_top = 349.0
+margin_right = 337.0
+margin_bottom = 370.0
 text = "Flood Fill -> Directed Graph"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 370.0
-margin_right = 309.0
-margin_bottom = 395.0
+margin_top = 374.0
+margin_right = 337.0
+margin_bottom = 399.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1836,7 +1849,7 @@ __meta__ = {
 
 [node name="SpinBox" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer"]
 margin_left = 185.0
-margin_right = 309.0
+margin_right = 337.0
 margin_bottom = 25.0
 min_value = 1.0
 max_value = 1000.0
@@ -1848,18 +1861,18 @@ __meta__ = {
 }
 
 [node name="WFC_ViewSockets6" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 399.0
-margin_right = 309.0
-margin_bottom = 420.0
+margin_top = 403.0
+margin_right = 337.0
+margin_bottom = 424.0
 text = "Flood Fill Reset"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSplitContainer2" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 424.0
-margin_right = 309.0
-margin_bottom = 449.0
+margin_top = 428.0
+margin_right = 337.0
+margin_bottom = 453.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1872,40 +1885,61 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SpinBox2" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2"]
 margin_left = 105.0
-margin_right = 309.0
+margin_right = 337.0
+margin_bottom = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox3" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer"]
+margin_right = 110.0
+margin_bottom = 25.0
+min_value = 10.0
+max_value = 1000.0
+value = 100.0
+align = 1
+prefix = "Iter:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox2" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer"]
+margin_left = 122.0
+margin_right = 232.0
 margin_bottom = 25.0
 min_value = 5.0
 max_value = 50.0
 value = 10.0
 align = 1
-prefix = "Num Clusters: "
+prefix = "Sets:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WFC_ViewSockets3" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 453.0
-margin_right = 309.0
-margin_bottom = 474.0
+margin_top = 457.0
+margin_right = 337.0
+margin_bottom = 478.0
 text = "Directed Graph -> Tarjan’s "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WFC_ViewSockets4" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 478.0
-margin_right = 309.0
-margin_bottom = 499.0
+margin_top = 482.0
+margin_right = 337.0
+margin_bottom = 503.0
 text = "Tarjan’s -> Rooms"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer3/GenNew" to="." method="GenerateNewTileMapButton_Callback"]
+[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer3/SpinBox" to="." method="SetGameOfLifeDeadChance"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenLargestAndAdjacency" to="." method="GenAll"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenLargestAndAdjacency" to="." method="GenLargestAndAdjacency"]
 [connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/SelectedOverlay" to="." method="OverlaySelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]
@@ -1916,6 +1950,7 @@ __meta__ = {
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer/SpinBox" to="." method="NumFloodFillDebugIter"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets6" to="." method="FloodFillToDirectedGraphReset_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/WFC_ViewSockets5" to="." method="RunKMeansOnLargestSet"]
-[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2" to="." method="SetNumKMeansClusters"]
+[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox3" to="." method="SetIterKMeansClusters"]
+[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox2" to="." method="SetNumKMeansClusters"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets3" to="." method="DirectedGraphToTarjans_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets4" to="." method="TarjansToRooms_Callback"]

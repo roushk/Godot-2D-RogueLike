@@ -131,7 +131,7 @@ public class ChokePointFinder
   //       - new centroid = mean of all points assigned to that cluster
   //6. End 
 
-  public bool GenerateKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, int numIteratons = 1000, bool runIteratively = false)
+  public bool GenerateKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, int numIteratons = 100, bool runIteratively = false)
   {
     //## K-Means Clustering 
     //1. Choose the number of clusters(K) and obtain the data points 
@@ -192,11 +192,16 @@ public class ChokePointFinder
     }
     //6. End 
     //Centroids for Clusters C_1 -> C_K
-
+    CleanKMeansIslands();
     UpdateKMeansVisMap();
     return false;
   }
 
+  //Find islands and set figure out a way to set them to the closest set
+  void CleanKMeansIslands()
+  {
+    
+  }
 
 
   //Flood-fill (node):
@@ -325,9 +330,13 @@ public class ChokePointFinder
 
   public void Clear()
   {
-    directedGraphVisMap.Clear();
-    roomVisMap.Clear();
-    KMeansVisMap.Clear();
+    if(directedGraphVisMap != null)
+      directedGraphVisMap.Clear();
+    if(roomVisMap != null)
+      roomVisMap.Clear();
+    if(KMeansVisMap != null)
+      KMeansVisMap.Clear();
+    KMeansSets.Clear();
   }
 
 #region Debug Visual Funcs

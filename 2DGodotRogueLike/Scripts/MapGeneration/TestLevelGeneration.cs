@@ -34,8 +34,24 @@ public class TestLevelGeneration : Node2D
 	{
 		numKMeansClusters = (int)val;
 
-		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2") as SpinBox).ReleaseFocus();
-		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2") as SpinBox).GetLineEdit().ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox2") as SpinBox).ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox2") as SpinBox).GetLineEdit().ReleaseFocus();
+	}
+
+	public void SetIterKMeansClusters(float val)
+	{
+		iterKMeans = (int)val;
+
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox3") as SpinBox).ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox3") as SpinBox).GetLineEdit().ReleaseFocus();
+	}
+
+	public void SetGameOfLifeDeadChance(float val)
+	{
+		initialDeadChance = (int)val;
+
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer3/SpinBox") as SpinBox).ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer3/SpinBox") as SpinBox).GetLineEdit().ReleaseFocus();
 	}
 
 	public void RunIterPerFrame()
@@ -129,13 +145,32 @@ public class TestLevelGeneration : Node2D
 		UpdateMapData();
 	}
 
-	public void GenLargestAndAdjacency()
+	public void GenAll()
 	{
+		//Clear old
+		CCLGen.Clear();
+		CPF.Clear();
+		//WFCSTM.Clear();
+		
+		//Generate Map
+		GenerateMap(maxIterations, true);
+
+		//CCL
 		CCLGen.CCLAlgorithm();
+		
+		//Get Largest Set
 		largestSet = CCLGen.GetLargestSet();
 		UpdateMapData();
 		ClearSmallerCaves();
+
+		//Adjacency Vis Map
 		GenerateAdjacencyGrid();
+		
+		//Directed Graph Vis Map
+		FloodFillToDirectedGraph_Callback();
+
+		//KMeans Vis Map
+		RunKMeansOnLargestSet();
 	}
 
 	public void Generate_CCL_Select_Largest_Adj()
@@ -170,7 +205,7 @@ public class TestLevelGeneration : Node2D
 
 	public void RunKMeansOnLargestSet()
 	{
-		CPF.GenerateKMeansFromTerrain(numKMeansClusters, largestSet);
+		CPF.GenerateKMeansFromTerrain(numKMeansClusters, largestSet, iterKMeans);
 	}
 
 #endregion
@@ -192,6 +227,7 @@ public class TestLevelGeneration : Node2D
 	int numDirectedGraphFromFloodFillIter = 1;
 	bool realtimeFloodFill = false;
 	int numKMeansClusters = 10;
+	int iterKMeans = 100;
 
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	//map  0,0 = bottom right
@@ -470,7 +506,7 @@ public class TestLevelGeneration : Node2D
 		random = new Random();
 
 		//fill neighbors offset for any arbitrary vector, precalced into a container
-		neighborsToCheck = GenerateMidPointCircle(6);
+		neighborsToCheck = GenerateMidPointCircle(50);
 
 		neighborsToCheckSingle = new Vector2[8];
 
@@ -524,6 +560,7 @@ public class TestLevelGeneration : Node2D
 		terrainMap = null;
   }
 
+#region Game of Life
 	//Creates a new map of the tileMapSize and iterates the game of life a set number of times
 	private void GenerateMap(int iterations, bool newMap)
 	{
@@ -715,6 +752,7 @@ public class TestLevelGeneration : Node2D
 		return newTerrainMap;
   }
 
+#endregion
 	//Maybe try to grow a rectangle into 3x3 or larger and classify that as a "room" 
 	//each coord has the distnace to the closest wall, higher points are more open areas aka larger rooms?
 	//Turn every point into its own Square (Corner to center navigable) and then attempt to grow each square ring
@@ -754,16 +792,22 @@ public class TestLevelGeneration : Node2D
 				if(foundWall)
 					break;
 			}
-		}
-
-		for(int x = 0; x < width; ++x)
-		{
-			for(int y = 0; y < height; ++y)
+			if(foundWall == false)
 			{
-				//Set cell to -1 deletes it
-				VisualizationMaps["Adjacency Overlay"].SetCell(x , y , -1);
+				Console.WriteLine("Did not find wall in radius 50");
+				closestWalls[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = int.MaxValue;
 			}
 		}
+
+		//for(int x = 0; x < width; ++x)
+		//{
+		//	for(int y = 0; y < height; ++y)
+		//	{
+		//		//Set cell to -1 deletes it
+		//		VisualizationMaps["Adjacency Overlay"].SetCell(x , y , -1);
+		//	}
+		//}
+		VisualizationMaps["Adjacency Overlay"].Clear();
 
 		foreach (var item in largestSet)
 		{
