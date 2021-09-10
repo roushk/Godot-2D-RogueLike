@@ -65,6 +65,7 @@ public class ChokePointFinder
 
   Godot.TileMap directedGraphVisMap = new TileMap();
   Godot.TileMap roomVisMap = new TileMap();
+  Godot.TileMap KMeansVisMap = new TileMap();
   CPFNode rootNode = new CPFNode();
   Dictionary<Vector2, int> DebugDirToTile = new Dictionary<Vector2, int>
   {
@@ -86,6 +87,9 @@ public class ChokePointFinder
   List<CPFNode> queue = new List<CPFNode>();
   HashSet<Vector2> checkedPos;
 
+  //Clusters C_1 -> C_K
+  //Dict of point to centroid
+  Dictionary<KeyValuePair<int, int>, int> KMeansSets = new Dictionary<KeyValuePair<int, int>, int>();
 #endregion
 #region Map Funcs
   public void SetDirectedGraphVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
@@ -98,6 +102,11 @@ public class ChokePointFinder
 		roomVisMap = _mapIDVisualization[map];
 	}
 
+  public void SetKMeansVisMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
+  {
+    KMeansVisMap = _mapIDVisualization[map];
+  }
+
 	public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
 	{
     //Delete children
@@ -109,6 +118,86 @@ public class ChokePointFinder
 
 
 #endregion
+
+
+  //## K-Means Clustering 
+  //1. Choose the number of clusters(K) and obtain the data points 
+  //2. Place the centroids c_1, c_2, ..... c_k randomly 
+  //3. Repeat steps 4 and 5 until convergence or until the end of a fixed number of iterations
+  //4. for each data point x_i:
+  //       - find the nearest centroid(c_1, c_2 .. c_k) 
+  //       - assign the point to that cluster 
+  //5. for each cluster j = 1..k
+  //       - new centroid = mean of all points assigned to that cluster
+  //6. End 
+
+  public bool GenerateKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, int numIteratons = 1000, bool runIteratively = false)
+  {
+    //## K-Means Clustering 
+    //1. Choose the number of clusters(K) and obtain the data points 
+    List<Vector2> centroids = new List<Vector2>();
+    
+    Random random = new Random();
+    
+    //2. Place the centroids c_1, c_2, ..... c_k randomly 
+    //Generate the centroids from the point cloud randomly, can change the random but for now using basic random
+    for (int i = 0; i < numClusters; ++i)
+    {
+      KeyValuePair<int,int> pt = pointCloud[random.Next(0,pointCloud.Count - 1)];
+      centroids.Add(new Vector2(pt.Key, pt.Value));
+    }
+
+    //3. Repeat steps 4 and 5 until convergence or until the end of a fixed number of iterations
+
+    for (int i = 0; i < numIteratons; ++i)
+    {
+    //4. for each data point x_i:
+      foreach (var point in pointCloud)
+      {
+        float closestDistSq = float.MaxValue;
+        int closestCentroid = 0;
+    //       - find the nearest centroid(c_1, c_2 .. c_k) 
+        for (int j = 0; j < centroids.Count; j++)
+        {
+          //Distance formula squared = (x2-x1)^2 + (y2-y1)^2
+          float dist = ((centroids[j].x - point.Key) * (centroids[j].x - point.Key)) + ((centroids[j].y - point.Value) * (centroids[j].y - point.Value));
+          
+          //Get smallest distance
+          if(dist < closestDistSq)
+          {
+            closestCentroid = j;
+            closestDistSq = dist;
+          }
+        }
+    //       - assign the point to that cluster 
+        KMeansSets[point] = closestCentroid;
+      }
+
+    //5. for each cluster j = 1..k
+
+      Vector2[] centroidSums = new Vector2[centroids.Count];
+      int[] centroidCount = new int[centroids.Count];
+      foreach (var item in KMeansSets)
+      {
+        centroidSums[item.Value] += new Vector2(item.Key.Key, item.Key.Value);
+        centroidCount[item.Value]++;
+      }
+      for (int j = 0; j < centroids.Count; j++)
+      {
+          
+        centroids[j] = centroidSums[j] / centroidCount[j];
+      }
+    //       - new centroid = mean of all points assigned to that cluster
+    //mean = sum / num
+    }
+    //6. End 
+    //Centroids for Clusters C_1 -> C_K
+
+    UpdateKMeansVisMap();
+    return false;
+  }
+
+
 
   //Flood-fill (node):
   //1. Set Q to the empty queue or stack.
@@ -238,6 +327,7 @@ public class ChokePointFinder
   {
     directedGraphVisMap.Clear();
     roomVisMap.Clear();
+    KMeansVisMap.Clear();
   }
 
 #region Debug Visual Funcs
@@ -261,6 +351,15 @@ public class ChokePointFinder
     foreach (var child in currNode.children)
     {
       UpdateDirectedMapVis(child);
+    }
+  }
+
+  public void UpdateKMeansVisMap()
+  {
+    //KMeansSet is dict of KV pairs to ID
+    foreach (var item in KMeansSets)
+    {
+      KMeansVisMap.SetCell(item.Key.Key , item.Key.Value , (item.Value * 3) % maxColors);
     }
   }
 #endregion

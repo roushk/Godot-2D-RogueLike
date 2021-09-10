@@ -1626,9 +1626,8 @@ tileMapSize = Vector2( 200, 100 )
 show_behind_parent = true
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
-cell_custom_transform = Transform2D( 16, 0, 0, 16, 0, 0 )
 format = 1
-tile_data = PoolIntArray( -720910, 1, 0, -720909, 1, 1, -720908, 1, 1, -720907, 1, 1, -720906, 1, 2, -655374, 1, 65536, -655373, 1, 65537, -655372, 1, 65537, -655371, 1, 65537, -655370, 1, 131077, -655369, 1, 2, -655365, 1, 0, -655364, 1, 1, -655363, 1, 2, -589838, 1, 65536, -589837, 1, 65537, -589836, 1, 65537, -589835, 1, 65537, -589834, 1, 65537, -589833, 1, 65538, -589829, 1, 65536, -589828, 1, 65537, -589827, 1, 131077, -589826, 1, 1, -589825, 1, 2, -524302, 1, 65536, -524301, 1, 65537, -524300, 1, 65537, -524299, 1, 65537, -524298, 1, 65537, -524297, 1, 65538, -524293, 1, 65536, -524292, 1, 65537, -524291, 1, 65537, -524290, 1, 65541, -524289, 1, 131074, -458766, 1, 65536, -458765, 1, 65537, -458764, 1, 65537, -458763, 1, 65537, -458762, 1, 65537, -458761, 1, 65538, -458757, 1, 131072, -458756, 1, 65542, -458755, 1, 65541, -458754, 1, 131074, -524285, 1, 0, -524284, 1, 2, -393230, 1, 65536, -393229, 1, 65537, -393228, 1, 65537, -393227, 1, 65537, -393226, 1, 65537, -393225, 1, 65538, -393220, 1, 131072, -393219, 1, 65543, -458749, 1, 131072, -458748, 1, 9, -458747, 1, 2, -327694, 1, 65536, -327693, 1, 65537, -327692, 1, 65537, -327691, 1, 65537, -327690, 1, 65541, -327689, 1, 131074, -327683, 1, 196612, -327682, 1, 7, -393212, 1, 131072, -393211, 1, 131074, -262158, 1, 131072, -262157, 1, 131073, -262156, 1, 131073, -262155, 1, 131073, -262154, 1, 131074, -262146, 1, 196612, -262145, 1, 7, -196613, 1, 0, -196612, 1, 2, -196609, 1, 131076, -262144, 1, 2, -131078, 1, 0, -131077, 1, 131078, -131076, 1, 262149, -131075, 1, 196609, -131074, 1, 196609, -131073, 1, 196614, -196608, 1, 131074, -65543, 1, 196608, -65542, 1, 262150, -65541, 1, 65537, -65540, 1, 65538, -6, 1, 131072, -5, 1, 131073, -4, 1, 131074 )
+tile_data = PoolIntArray( 2687069, 1, 0, 2687070, 1, 1, 2687071, 1, 2, 2752605, 1, 65536, 2752606, 1, 65537, 2752607, 1, 131077, 2752608, 1, 2, 2818141, 1, 65536, 2818142, 1, 65537, 2818143, 1, 65537, 2818144, 1, 65538, 2883675, 1, 0, 2883676, 1, 1, 2883677, 1, 131078, 2883678, 1, 65537, 2883679, 1, 65537, 2883680, 1, 65538, 2949209, 1, 0, 2949210, 1, 1, 2949211, 1, 131078, 2949212, 1, 65537, 2949213, 1, 65537, 2949214, 1, 65537, 2949215, 1, 65541, 2949216, 1, 131074, 3014744, 1, 0, 3014745, 1, 131078, 3014746, 1, 65537, 3014747, 1, 65537, 3014748, 1, 65537, 3014749, 1, 65537, 3014750, 1, 65541, 3014751, 1, 131074, 3080280, 1, 65536, 3080281, 1, 65537, 3080282, 1, 65537, 3080283, 1, 65537, 3080284, 1, 65537, 3080285, 1, 65537, 3080286, 1, 65538, 3145809, 1, 0, 3145810, 1, 1, 3145811, 1, 5, 3145812, 1, 196609, 3145813, 1, 196609, 3145814, 1, 196609, 3145815, 1, 196609, 3145816, 1, 262150, 3145817, 1, 65537, 3145818, 1, 65537, 3145819, -1073741823, 65537, 3145820, 1, 65537, 3145821, 1, 65541, 3145822, 1, 131074, 3211345, 1, 65536, 3211346, 1, 65537, 3211347, 1, 65538, 3211352, 1, 65536, 3211353, 1, 65537, 3211354, 1, 65537, 3211355, 1, 65537, 3211356, 1, 65541, 3211357, 1, 131074, 3276881, 1, 65536, 3276882, 1, 65537, 3276883, 1, 131077, 3276884, 1, 2, 3276888, 1, 65536, 3276889, 1, 65541, 3276890, 1, 131073, 3276891, 1, 131073, 3276892, 1, 131074, 3342417, 1, 131072, 3342418, 1, 65542, 3342419, 1, 65537, 3342420, 1, 65538, 3342424, 1, 131072, 3342425, 1, 131074, 3407954, 1, 65536, 3407955, 1, 65537, 3407956, 1, 65538, 3473490, 1, 131072, 3473491, 1, 131073, 3473492, 1, 196613, 3473493, 1, 7, 3539029, 1, 196612, 3539030, 1, 7, 3604566, 1, 65539, 3670102, 1, 196612, 3670103, 1, 196609, 3670104, 1, 196610 )
 
 [node name="AdjacencyMap" type="TileMap" parent="."]
 visible = false
@@ -1645,6 +1644,13 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Room Overlay" type="TileMap" parent="."]
+visible = false
+show_behind_parent = true
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="KMeans Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
 tile_set = SubResource( 1 )
@@ -1669,7 +1675,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/GUI"]
 margin_right = 309.0
-margin_bottom = 500.0
+margin_bottom = 524.0
 
 [node name="General" type="Label" parent="Camera2D/GUI/VBoxContainer"]
 margin_right = 309.0
@@ -1850,19 +1856,48 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WFC_ViewSockets3" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 424.0
 margin_right = 309.0
-margin_bottom = 445.0
+margin_bottom = 449.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets5" type="Button" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2"]
+margin_right = 93.0
+margin_bottom = 25.0
+text = "Run K-Means"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox2" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer2"]
+margin_left = 105.0
+margin_right = 309.0
+margin_bottom = 25.0
+min_value = 5.0
+max_value = 50.0
+value = 10.0
+align = 1
+prefix = "Num Clusters: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets3" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 453.0
+margin_right = 309.0
+margin_bottom = 474.0
 text = "Directed Graph -> Tarjan’s "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="WFC_ViewSockets4" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 449.0
+margin_top = 478.0
 margin_right = 309.0
-margin_bottom = 470.0
+margin_bottom = 499.0
 text = "Tarjan’s -> Rooms"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1880,5 +1915,7 @@ __meta__ = {
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer/HSplitContainer/WFC_ViewSockets6" to="." method="RunIterPerFrame"]
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer/SpinBox" to="." method="NumFloodFillDebugIter"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets6" to="." method="FloodFillToDirectedGraphReset_Callback"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/WFC_ViewSockets5" to="." method="RunKMeansOnLargestSet"]
+[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2" to="." method="SetNumKMeansClusters"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets3" to="." method="DirectedGraphToTarjans_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets4" to="." method="TarjansToRooms_Callback"]

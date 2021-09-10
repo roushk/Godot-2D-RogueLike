@@ -30,6 +30,14 @@ public class TestLevelGeneration : Node2D
 		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/SpinBox") as SpinBox).GetLineEdit().ReleaseFocus();
 	}
 
+	public void SetNumKMeansClusters(float val)
+	{
+		numKMeansClusters = (int)val;
+
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2") as SpinBox).ReleaseFocus();
+		(GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer2/SpinBox2") as SpinBox).GetLineEdit().ReleaseFocus();
+	}
+
 	public void RunIterPerFrame()
 	{
 		realtimeFloodFill = true;
@@ -160,6 +168,11 @@ public class TestLevelGeneration : Node2D
 		}
 	}
 
+	public void RunKMeansOnLargestSet()
+	{
+		CPF.GenerateKMeansFromTerrain(numKMeansClusters, largestSet);
+	}
+
 #endregion
 
 #region Variables
@@ -178,6 +191,8 @@ public class TestLevelGeneration : Node2D
 
 	int numDirectedGraphFromFloodFillIter = 1;
 	bool realtimeFloodFill = false;
+	int numKMeansClusters = 10;
+
 	//!!!!!!!!!!!!!!!!!!!!!!!!
 	//map  0,0 = bottom right
 	//!!!!!!!!!!!!!!!!!!!!!!!!
@@ -432,8 +447,7 @@ public class TestLevelGeneration : Node2D
 		if (@inputEvent is InputEventMouseButton mouseClick && (mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left))
 		{
 			//World space -> Map space where coordinates are
-			Vector2 clickedPos = VisualizationMaps["Directed Graph Overlay"].
-				WorldToMap(VisualizationMaps["Directed Graph Overlay"].GetLocalMousePosition());
+			Vector2 clickedPos = VisualizationMaps["Directed Graph Overlay"].WorldToMap(VisualizationMaps["Directed Graph Overlay"].GetLocalMousePosition());
 			ChokePointFinder.CPFNode foundNode;
 			if(FindNodeAtPos(clickedPos, cpfRootNode, out foundNode))
 			{
@@ -458,7 +472,6 @@ public class TestLevelGeneration : Node2D
 		//fill neighbors offset for any arbitrary vector, precalced into a container
 		neighborsToCheck = GenerateMidPointCircle(6);
 
-
 		neighborsToCheckSingle = new Vector2[8];
 
 		int pos = 0;
@@ -478,6 +491,7 @@ public class TestLevelGeneration : Node2D
 		VisualizationMaps["Adjacency Overlay"] = GetNode("AdjacencyMap") as TileMap;
 		VisualizationMaps["Directed Graph Overlay"] = GetNode("Directed Graph Overlay") as TileMap;
 		VisualizationMaps["Room Overlay"] = GetNode("Room Overlay") as TileMap;
+		VisualizationMaps["KMeans Overlay"] = GetNode("KMeans Overlay") as TileMap;
 
 		//Generate the options menu from the dict keys to make sure they are good with 0 still being no overlays
 		foreach (var item in VisualizationMaps)
@@ -491,6 +505,7 @@ public class TestLevelGeneration : Node2D
 		CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
 		CPF.SetDirectedGraphVisualizationMap(ref VisualizationMaps, "Directed Graph Overlay");
 		CPF.SetRoomVisualizationMap(ref VisualizationMaps, "Room Overlay");
+		CPF.SetKMeansVisMap(ref VisualizationMaps, "KMeans Overlay");
 	}
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
