@@ -59,6 +59,8 @@ public class ChokePointFinder
 
 #region Variables
   public const int maxColors = 112;
+
+  //0 is floor
   int [,] terrainMap;
 	int width;
   int height;
@@ -200,7 +202,7 @@ public class ChokePointFinder
   //Find islands and set figure out a way to set them to the closest set
   void CleanKMeansIslands()
   {
-    
+
   }
 
 
@@ -272,6 +274,7 @@ public class ChokePointFinder
           if((i == 0 && j == 0) || (i != 0 && j != 0))
             continue;
 
+          //0 is floor
           if(terrainMap[(int)currNode.pos.x + i, (int)currNode.pos.y + j] == 0)
           {
             Vector2 checkPos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
