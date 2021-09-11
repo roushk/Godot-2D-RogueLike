@@ -51,11 +51,17 @@ namespace Parts
 
   public class PartStats 
   {
+    //Slash damage is damage in slashing attack
     public int baseSlashDamage = 100;
+    //Stab damage is damage in stab attack
     public int baseStabDamage = 100;
+    //Attack speed is howhow many attacks per second
     public int baseAttackSpeed = 100;
+    //Swing speed affects how fast the blade is swung, more is fast swing and stab
     public int baseSwingSpeed = 100;
+    //Length is the reach of the weapon
     public int baseLength = 100;
+    //Special stat is a special stat
     public string specialStat = "None";
 
     //Sets special stat to both
