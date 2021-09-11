@@ -8,7 +8,7 @@ The game engine is Godot using C# scripting and I am doing everything myself bes
 ## Table of Contents
 ### [Level World Generation](#world-generation)
 #### [Level World Generation Screenshots](#level-world-generation-screenshots)
-### [Weapon Crafting System](#weapon-crafting-system)
+### [Custom Weapon Crafting System](#weapon-crafting-system)
 #### [Weapon Crafting System UI Iteration Screenshots](weapon-crafting-system-screenshots)
 #### [Weapon Crafting System Example Weapons](#example-weapons)
 ### [Overworld Generation](#overworld-level-generation)
