@@ -221,25 +221,27 @@ public class CraftingMaterialSystem : Control
     newAttachpoint.RectScale = partVisualizerScale;   //new scale
     newAttachpoint.Expand = true;
     newAttachpoint.StretchMode = TextureButton.StretchModeEnum.KeepAspect;
-    //newAttachpoint.AnchorLeft = 0.5f;
-    //newAttachpoint.AnchorTop = 0.5f;
-    //newAttachpoint.AnchorRight = 0.5f;
-    //newAttachpoint.AnchorBottom = 0.5f;
-    
+
     if(setMinSize)
       newAttachpoint.RectMinSize = newAttachpoint.RectSize * newAttachpoint.RectScale;
     else
       newAttachpoint.RectMinSize = newAttachpoint.RectSize;
 
-    //Center the object
-    //newAttachpoint.RectPosition += new Vector2((attachPoint.pos.x)*partVisualizerScale.x + 2,((attachPoint.pos.y)*partVisualizerScale.y) + 2) - ((newAttachpoint.RectSize * partVisualizerScale / 2.0f) + partRectSize);
-    //newAttachpoint.RectPosition += (attachPoint.pos - ((newAttachpoint.RectSize + attachPointTex.GetSize()) / 2.0f)) * partVisualizerScale;
     //Set textures and bitmasks to the default part's texture and its bitmask
     newAttachpoint.TextureNormal = attachPointTex;
     
-    newAttachpoint.RectPosition = (node.currentOffset + attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+    newAttachpoint.RectPosition = (node.currentOffset + attachPoint.pos - (attachPointTex.GetSize() / 2.0f)) * partVisualizerScale;
 
-    newAttachpoint.RectPosition -= new Vector2(2,2) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+    //if odd then move a bit
+    if(newAttachpoint.RectSize.x % 2 == 1)
+    {
+      newAttachpoint.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0);
+    }
+    if(newAttachpoint.RectSize.y % 2 == 1)
+    {
+      newAttachpoint.RectPosition += new Vector2(0,0.5f * partVisualizerScale.y);
+    }
+
     
     newAttachpoint.onButtonPressedCallback = callback;
     newAttachpoint.changeColors = useColors;
@@ -284,20 +286,6 @@ public class CraftingMaterialSystem : Control
       child.QueueFree();
     }
   }
-
-  //Clear the attachment point UI
-  //void ClearAttachPoints()
-  //{
-  //    selectedAttachPoint = null;
-  //    //Queue all current children to be deleted
-  //    foreach (Node child in attachPointsContainer.GetChildren())
-  //    {
-  //        if(child as HSeparator != null)
-  //            continue;
-  //        attachPointsContainer.RemoveChild(child);
-  //        child.QueueFree();
-  //    }
-  //}
 
   //Generate a new blueprint so the array can be moved into a FinishedBP list
   Parts.PartBlueprint CreatePartBlueprintFromType(Parts.PartType partType)
@@ -401,7 +389,7 @@ public class CraftingMaterialSystem : Control
       }
     }
   }
-
+  
   void GeneratePartsFromWeaponBPNode(Parts.WeaponBlueprintNode node, Vector2 baseOffset)
   {
     //Loads the part visualizer with callbacks to load the part selections
@@ -421,7 +409,18 @@ public class CraftingMaterialSystem : Control
       
       //places the location - the attach point because attachpoint is -vector to move image so its 0,0 is the attach pt + the base offset
       node.currentOffset = -node.part.baseAttachPoint + baseOffset;
-      BPPieceButton.RectPosition = node.currentOffset * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+      BPPieceButton.RectPosition = node.currentOffset * partVisualizerScale;
+
+      //if odd then move a bit
+      //Weirdly this works perfectly with the attachment points but makes the problem worse here
+      //if(BPPieceButton.RectSize.x % 2 == 1)
+      //{
+      //  BPPieceButton.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0);
+      //}
+      //if(BPPieceButton.RectSize.y % 2 == 1)
+      //{
+      //  BPPieceButton.RectPosition += new Vector2(0,0.5f * partVisualizerScale.y);
+      //}
 
       Parts.WeaponBlueprintNode parentNode = node.parent;
 
@@ -439,27 +438,67 @@ public class CraftingMaterialSystem : Control
       }
   }
 
+  Vector2 maxWeaponUIExtents = Vector2.Zero;
+  Vector2 minWeaponUIExtents = Vector2.Inf;
+
+  //recursively get the largest UI extents
+  void GetLargestUIExtents(Parts.WeaponBlueprintNode node)
+  {
+        
+    //Set the bounding box of the weapon so we can rescale the UI
+    maxWeaponUIExtents = new Vector2(Mathf.Max(node.currentOffset.x + node.part.texture.GetSize().x, maxWeaponUIExtents.x), Mathf.Max(node.currentOffset.y + node.part.texture.GetSize().y, maxWeaponUIExtents.y));
+    minWeaponUIExtents = new Vector2(Mathf.Min(node.currentOffset.x - node.part.texture.GetSize().x, minWeaponUIExtents.x), Mathf.Min(node.currentOffset.y - node.part.texture.GetSize().y, minWeaponUIExtents.y));
+    foreach (var item in node.children)
+    {
+      GetLargestUIExtents(item.Value);
+    }   
+  }
+
+  void AccumulateStats(Parts.WeaponBlueprintNode node, ref Parts.PartStats summationStats)
+  {
+    summationStats = Parts.PartStats.GetCombinationOfStats(summationStats, node.part.stats);
+    foreach (var item in node.children)
+    {
+      AccumulateStats(item.Value, ref summationStats);
+    }   
+  }
+
   void GeneratePartVisualizerUIFromCurrentParts()
   {
+    maxWeaponUIExtents = Vector2.Zero;  
+    minWeaponUIExtents = Vector2.Inf;
+
+    //We need to update the currentOffset before we get the extents
+    GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f);
+    GetLargestUIExtents(weaponRootNode);
+
     ClearPartsVisualizer();
     ClearCurrentBlueprintDetails();
 
     Parts.PartStats summationStats = new Parts.PartStats();
 
-    GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f);
+    Console.WriteLine("Max Weapon UI Extents Part Visualizer Scale is " + maxWeaponUIExtents.ToString());
+    Console.WriteLine("Min Weapon UI Extents Part Visualizer Scale is " + minWeaponUIExtents.ToString());
+    
+    //max - min = dist
+    Vector2 weaponUIExtents = maxWeaponUIExtents - minWeaponUIExtents;
+    Console.WriteLine("Weapon UI Extents Part Visualizer Scale is " + weaponUIExtents.ToString());
 
-    //if(currentParts.Count >= 2)
-    //{
-    //    summationStats = Parts.PartStats.GetCombinationOfStats(currentParts[0].stats, currentParts[1].stats);
-    //    for (int i = 2; i < currentParts.Count; i++)
-    //    {
-    //        summationStats = Parts.PartStats.GetCombinationOfStats(summationStats, currentParts[i].stats);
-    //    }
-    //}
-    //else if(currentParts.Count == 1)
-    //{
-    //    summationStats = currentParts[0].stats;
-    //}
+    //get the larget axis, MaxAxis returns the largest axis not the number of it
+    float weaponUIMaxScale = Mathf.Max(weaponUIExtents.x, weaponUIExtents.y);
+
+    Console.WriteLine("Weapon UI Extents Scale is " + weaponUIMaxScale.ToString());
+    //hardcoded expected 32 to be the largest size so divide the max by the current to get the multiplier * the scale at 32 length gives us the new scalar (instead of 4)
+    //And round it so that we don't have any float shenannagins 
+    float newScale = Mathf.Round((32.0f/weaponUIMaxScale) * 4.0f * 100.0f)/100.0f;
+    //TODO the rescaling isn't properly propogating
+    //partVisualizerScale = new Vector2(newScale,newScale);
+
+    Console.WriteLine("New Part Visualizer Scale is " + partVisualizerScale.x.ToString());
+    GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f);
+    //GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f + (weaponUIExtents / 2.0f) / partVisualizerScale);
+    
+    AccumulateStats(weaponRootNode, ref summationStats);
 
     RichTextLabel bpDetails = new RichTextLabel();
     currentBlueprintDetailContainer.AddChild(bpDetails);
@@ -467,7 +506,7 @@ public class CraftingMaterialSystem : Control
 
     //Only write text if we have parts
     //if(currentParts.Count >= 1)
-    //    bpDetails.BbcodeText = summationStats.GenerateStatText(0, false);
+    bpDetails.BbcodeText = summationStats.GenerateStatText(0, false);
     
     bpDetails.RectMinSize = new Vector2(32,50);
     bpDetails.RectClipContent = false;
