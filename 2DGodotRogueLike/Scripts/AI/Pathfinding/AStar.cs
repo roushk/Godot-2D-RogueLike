@@ -188,10 +188,7 @@ public class AStar
     {
       int openQueueMaxSize = 0;
       Stopwatch timer = new Stopwatch();
-      if(realtimeAStar == false)
-      {
-        timer.Start();
-      }
+      timer.Start();
       
       while(openList.Count > 0 && state == PathState.Searching)
       {
@@ -297,7 +294,8 @@ public class AStar
       
       //More accurate to use total ms cause double
       //https://stackoverflow.com/questions/2329079/how-do-you-convert-stopwatch-ticks-to-nanoseconds-milliseconds-and-seconds
-      Console.WriteLine("A* pathfinding took {0:000000} ms with an Open Queue of max size {1}", timer.Elapsed.TotalMilliseconds, openQueueMaxSize);
+      if(!realtimeAStar)
+        Console.WriteLine("A* pathfinding took {0:000000} ms with an Open Queue of max size {1}", timer.Elapsed.TotalMilliseconds, openQueueMaxSize);
       //If we get here then there is no path 
       return state;
     }

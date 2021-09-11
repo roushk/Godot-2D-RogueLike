@@ -1620,7 +1620,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 2
 BottomTile = 1
-tileMapSize = Vector2( 200, 100 )
+tileMapSize = Vector2( 200, 200 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
