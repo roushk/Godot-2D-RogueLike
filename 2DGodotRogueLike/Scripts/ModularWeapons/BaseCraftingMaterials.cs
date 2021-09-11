@@ -104,7 +104,7 @@ namespace Parts
             throw(new Exception("Enum " + input + " Does not exist in Parts.PartType."));
 
             //redundent return statement
-            return PartType.Undefined;
+            //return PartType.Undefined;
         }
 
         public static int CompareParts(Parts.PartBlueprint x, Parts.PartBlueprint y)

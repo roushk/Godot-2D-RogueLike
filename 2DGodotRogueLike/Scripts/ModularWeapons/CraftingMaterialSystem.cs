@@ -34,7 +34,7 @@ public class CraftingMaterialSystem : Control
 
   System.Collections.Generic.List<Parts.PartBlueprint> currentParts = new System.Collections.Generic.List<Parts.PartBlueprint>();
 
-  Parts.WeaponBlueprintNode baseHandleNode = new Parts.WeaponBlueprintNode();
+  Parts.WeaponBlueprintNode weaponRootNode = new Parts.WeaponBlueprintNode();
 
   System.Collections.Generic.List<Parts.AttachPoint> attachPoints = new System.Collections.Generic.List<Parts.AttachPoint>();
 
@@ -241,7 +241,7 @@ public class CraftingMaterialSystem : Control
 
     if(node.parent != null)
     {
-      newAttachpoint.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
+      newAttachpoint.RectPosition += (node.currentOffset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
     }
 
     newAttachpoint.RectPosition -= new Vector2(2,2) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
@@ -407,16 +407,9 @@ public class CraftingMaterialSystem : Control
     }
   }
 
-  void GeneratePartVisualizerUIFromCurrentParts()
+  void GeneratePartsFromWeaponBPNode(Parts.WeaponBlueprintNode node, Vector2 baseOffset)
   {
-    ClearPartsVisualizer();
-    ClearCurrentBlueprintDetails();
-
-    Parts.PartStats summationStats = new Parts.PartStats();
-
-    baseHandleNode.IterateNode((node) => 
-    {
-      //Loads the part visualizer with callbacks to load the part selections
+    //Loads the part visualizer with callbacks to load the part selections
       //cannot pass BPPieceButton to the functor so need to initialize it to an object. 
       CallbackTextureButton BPPieceButton = default;
       BPPieceButton = CreateCallbackButtonFromBlueprint(node.part, () => 
@@ -428,27 +421,40 @@ public class CraftingMaterialSystem : Control
           ClearPartSelection();
           LoadPartSelection(node);
         }
-      }, partVisualizerScale,true, true, false);
+      }, partVisualizerScale, true, true, false);
+
+      //update current offset from parents
+      node.currentOffset = node.offset + baseOffset;
 
       //With or without parent
-      BPPieceButton.RectPosition = (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+
+      BPPieceButton.RectPosition = (node.currentOffset + node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+
+      BPPieceButton.RectPosition -= (node.part.texture.GetSize() / 2.0f) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
       Parts.WeaponBlueprintNode parentNode = node.parent;
-      
-      //Add the offset of every node above this one
-      while(parentNode != null)
-      {
-        BPPieceButton.RectPosition += (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
-        parentNode = parentNode.parent;
-      }
 
       BPPieceButton.Modulate = new Color(1,1,1,1);
       partVisualizerContainer.AddChild(BPPieceButton);
 
-      //Place the attachment parts ontop of the actual parts
+      //Place the attachment parts on top of the actual parts
 
       GenerateAttachPointsUIFromPart(node, BPPieceButton.RectSize * BPPieceButton.RectScale / 2.0f);
-    });
+
+      foreach (var item in node.children)
+      {
+        GeneratePartsFromWeaponBPNode(item.Value, baseOffset + item.Key.pos);
+      }
+  }
+
+  void GeneratePartVisualizerUIFromCurrentParts()
+  {
+    ClearPartsVisualizer();
+    ClearCurrentBlueprintDetails();
+
+    Parts.PartStats summationStats = new Parts.PartStats();
+
+    GeneratePartsFromWeaponBPNode(weaponRootNode, Vector2.Zero);
 
     //if(currentParts.Count >= 2)
     //{
@@ -487,9 +493,9 @@ public class CraftingMaterialSystem : Control
     DrawLine(center, center + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
     DrawLine(center, center + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
     
-    baseHandleNode.IterateNode((node) => 
+    weaponRootNode.IterateNode((node) => 
     {
-      //Location that is 0,0 for the part vizualiser
+      //Location that is 0,0 for the part visualizer
 
       //Vector from the part base attach node to the center
       Vector2 partBaseAttachNodeToPartCenter = center + (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
@@ -505,7 +511,7 @@ public class CraftingMaterialSystem : Control
       if(node.parent != null)
       {
         //Represents the vector from the parents attachPoint to the center of the child node anchor 0.5,0.5 (center of the object)
-        Vector2 attachPtToCenterChild = partBaseAttachNodeToPartCenter + (node.offset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
+        Vector2 attachPtToCenterChild = partBaseAttachNodeToPartCenter + (node.currentOffset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
         //attach pt to child center
         DrawLine(partBaseAttachNodeToPartCenter, attachPtToCenterChild, new Color(0.5f,1,0),4);
       }
@@ -526,7 +532,7 @@ public class CraftingMaterialSystem : Control
     LoadAllParts();
     //Start the current part as a empty handle
     currentParts.Add(allPartsDict[Parts.PartType.Handle][0]);
-    baseHandleNode.part = allPartsDict[Parts.PartType.Handle][0];
+    weaponRootNode.part = allPartsDict[Parts.PartType.Handle][0];
 
     //LoadPartSelection(allPartsDict[Parts.PartType.Handle][0]);
     //GeneratePartVisualizerUIFromCurrentParts();
@@ -664,7 +670,7 @@ public class CraftingMaterialSystem : Control
           attachPoint.attachedPart = true;
           partVisualizerContainer.RemoveChild(newAttachPointButton);
           //Set the x/y pos of the attach point to the actual node that represents the part
-          Parts.WeaponBlueprintNode newNode = new Parts.WeaponBlueprintNode(part, attachPoint.pos, parentNode);
+          Parts.WeaponBlueprintNode newNode = new Parts.WeaponBlueprintNode(part, Vector2.Zero, parentNode);
           parentNode.children.Add(attachPoint, newNode); 
           GeneratePartVisualizerUIFromCurrentParts(); 
         }, new Vector2(1,1), false, true, false); 

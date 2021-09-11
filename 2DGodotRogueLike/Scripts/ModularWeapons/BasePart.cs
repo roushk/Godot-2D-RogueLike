@@ -8,6 +8,7 @@ namespace Parts
     {
         public PartBlueprint part = null;
         public Vector2 offset = new Vector2();
+        public Vector2 currentOffset = new Vector2();
         public WeaponBlueprintNode parent = null;
         public System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode> children = new System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode>();
 
