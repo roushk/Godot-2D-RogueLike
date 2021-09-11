@@ -79,30 +79,25 @@
         }]
     },
     {
-        "partName": "Rapier",
-        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Rapier.png",
+        "partName": "Mace",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Mace.png",
         "partType": "Blade",
         "partCost": 5,
         "partAttributes":
         {
-            "baseSlashDamage": 80,
-            "baseStabDamage": 120,
-            "baseAttackSpeed": 120,
-            "baseSwingSpeed": 120,
+            "baseSlashDamage": 140,
+            "baseStabDamage": 60,
+            "baseAttackSpeed": 110,
+            "baseSwingSpeed": 110,
             "baseLength": 90,
-            "specialStat": "Riposte"
+            "specialStat": "None"
         },
         "baseAttachPoint":
         {
-            "x": 2,
-            "y": 19
+            "x": 3,
+            "y": 8
         },
-        "partAttachPoints": [
-        {
-            "x": 2,
-            "y": 19,
-            "types": ["Guard"]
-        }]
+        "partAttachPoints": []
     },
     {
         "partName": "Small Blade",
@@ -205,7 +200,7 @@
             "baseStabDamage": 100,
             "baseAttackSpeed": 130,
             "baseSwingSpeed": 130,
-            "baseLength": 80,
+            "baseLength": 20,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -287,5 +282,162 @@
             "y": 30,
             "types": ["Pommel"]
         }]
+    },
+    {
+        "partName": "Rapier",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Rapier.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 80,
+            "baseStabDamage": 120,
+            "baseAttackSpeed": 120,
+            "baseSwingSpeed": 120,
+            "baseLength": 90,
+            "specialStat": "Riposte"
+        },
+        "baseAttachPoint":
+        {
+            "x": 2,
+            "y": 19
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Guard"]
+        }]
+    },
+    {
+        "partName": "Medium Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Medium.png",
+        "partType": "Guard",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 110,
+            "baseStabDamage": 110,
+            "baseAttackSpeed": 90,
+            "baseSwingSpeed": 90,
+            "baseLength": 100,
+            "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 5,
+            "y": 7
+        },
+        "partAttachPoints": []
+    },
+    {
+        "partName": "Rapier Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Rapier.png",
+        "partType": "Guard",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 80,
+            "baseStabDamage": 120,
+            "baseAttackSpeed": 110,
+            "baseSwingSpeed": 110,
+            "baseLength": 90,
+            "specialStat": "Riposte"
+        },
+        "baseAttachPoint":
+        {
+            "x": 9,
+            "y": 6
+        },
+        "partAttachPoints": []
+    },
+    {
+        "partName": "Falchion Blade",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Falchion.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 150,
+            "baseStabDamage": 50,
+            "baseAttackSpeed": 80,
+            "baseSwingSpeed": 80,
+            "baseLength": 140,
+            "specialStat": "Bleed"
+        },
+        "baseAttachPoint":
+        {
+            "x": 2,
+            "y": 19
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 19,
+            "types": ["Guard"]
+        }]
+    },
+    {
+        "partName": "Axe Head",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Axe.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 120,
+            "baseStabDamage": 50,
+            "baseAttackSpeed": 70,
+            "baseSwingSpeed": 120,
+            "baseLength": 110,
+            "specialStat": "Axe"
+        },
+        "baseAttachPoint":
+        {
+            "x": 5,
+            "y": 6
+        },
+        "partAttachPoints": []
+    },
+    {
+        "partName": "Pickaxe Head",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Pickaxe.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 120,
+            "baseStabDamage": 50,
+            "baseAttackSpeed": 70,
+            "baseSwingSpeed": 120,
+            "baseLength": 110,
+            "specialStat": "Pickaxe"
+        },
+        "baseAttachPoint":
+        {
+            "x": 14,
+            "y": 8
+        },
+        "partAttachPoints": []
+    },
+    {
+        "partName": "TBD",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/TBD.png",
+        "partType": "Blade",
+        "partCost": 5,
+        "partAttributes":
+        {
+            "baseSlashDamage": 100,
+            "baseStabDamage": 100,
+            "baseAttackSpeed": 100,
+            "baseSwingSpeed": 100,
+            "baseLength": 100,
+            "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 3,
+            "y": 4
+        },
+        "partAttachPoints": []
     }
 ]

@@ -11,7 +11,6 @@
 [ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=9]
 
 [node name="CraftingScreen" type="Control"]
-modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -106,12 +105,9 @@ margin_bottom = 16.0
 rect_min_size = Vector2( 110, 16 )
 rect_clip_content = false
 mouse_filter = 1
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 5 )
-custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
-bbcode_text = "[center][b]Selected Blueprint"
-text = "Selected Blueprint"
+bbcode_text = "[center][b]Current Weapon Stats"
+text = "Current Weapon Stats"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -133,9 +129,6 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 160, 16 )
 rect_clip_content = false
 mouse_filter = 1
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 5 )
-custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
 bbcode_text = "[center][b]Part Information"
 text = "Part Information"

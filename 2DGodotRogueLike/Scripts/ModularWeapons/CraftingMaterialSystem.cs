@@ -107,6 +107,12 @@ public class CraftingMaterialSystem : Control
       Parts.PartBlueprint partBP = new Parts.PartBlueprint();
       partBP.name = data["partName"] as string;
       partBP.texture = (Texture)GD.Load(data["partTextureDir"] as string);
+      
+      if(partBP.texture == null)
+      {
+        throw new Exception("Missing Texture :\"" + data["partTextureDir"] as string +"\"");
+      }
+
       partBP.partType = Parts.PartTypeConversion.FromString(data["partType"] as string);
       
       //Don't ask
@@ -139,6 +145,7 @@ public class CraftingMaterialSystem : Control
 
       //Generate bitmap from texture data
       BitMap newBMP = new BitMap();
+
       newBMP.CreateFromImageAlpha(partBP.texture.GetData());
       partBP.bitMask = newBMP;
 
@@ -232,12 +239,13 @@ public class CraftingMaterialSystem : Control
     
     newAttachpoint.RectPosition = (node.currentOffset + attachPoint.pos - (attachPointTex.GetSize() / 2.0f)) * partVisualizerScale;
 
+    //TODO need to fix the usage of currentOffset for the 
     //if odd then move a bit
-    if(newAttachpoint.RectSize.x % 2 == 1)
+    if(newAttachpoint.RectSize.x % 2 == 1 && (maxWeaponUIExtents.x-minWeaponUIExtents.x) % 2 == 0)
     {
       newAttachpoint.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0);
     }
-    if(newAttachpoint.RectSize.y % 2 == 1)
+    if(newAttachpoint.RectSize.y % 2 == 1 && (maxWeaponUIExtents.y-minWeaponUIExtents.y) % 2 == 0)
     {
       newAttachpoint.RectPosition += new Vector2(0,0.5f * partVisualizerScale.y);
     }
@@ -491,7 +499,7 @@ public class CraftingMaterialSystem : Control
     //hardcoded expected 32 to be the largest size so divide the max by the current to get the multiplier * the scale at 32 length gives us the new scalar (instead of 4)
     //And round it so that we don't have any float shenannagins 
     float newScale = Mathf.Round((32.0f/weaponUIMaxScale) * 4.0f * 100.0f)/100.0f;
-    //TODO the rescaling isn't properly propogating
+
     partVisualizerScale = new Vector2(newScale,newScale);
 
     Console.WriteLine("New Part Visualizer Scale is " + partVisualizerScale.x.ToString());
@@ -519,10 +527,10 @@ public class CraftingMaterialSystem : Control
     //Vector2 center = (partVisualizerContainer as Control).RectGlobalPosition + (partVisualizerContainer as Control).RectSize * 0.5f;
 
     //Debug lines
-    //DrawLine(center, center + new Vector2(0,100),new Color("fc0303"),2);  //Pos Y
-    //DrawLine(center, center + new Vector2(0,-100),new Color("fcdb03"),2);  //Neg Y
-    //DrawLine(center, center + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
-    //DrawLine(center, center + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
+    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(0,100),new Color("fc0303"),2);  //Pos Y
+    //DrawLine(center + maxWeaponUIExtents, center + maxWeaponUIExtents + new Vector2(0,-100),new Color("fcdb03"),2);  //Neg Y
+    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
+    //DrawLine(center + maxWeaponUIExtents, center + maxWeaponUIExtents + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
   }
   
 
