@@ -3,15 +3,15 @@ using System;
 
 public class PlayerTopDown : KinematicBody2D
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
+  // Declare member variables here. Examples:
+  // private int a = 2;
+  // private string b = "text";
 
-	Vector2 velocity;
+  Vector2 velocity;
   Vector2 movingDirection;
   float horizontalMovementPower = 1200.0f;
   float verticalMovementPower = 1200.0f;
-	
+  
   float idleEpsilon = 10;
 
   bool grounded = true;
@@ -45,15 +45,15 @@ public class PlayerTopDown : KinematicBody2D
 
   //todo Doesnt quite work, need better way to detect if above fallable block
   bool OnTile = false;
-	// Called when the node enters the scene tree for the first time.
+  // Called when the node enters the scene tree for the first time.
 
   OreWorldObject currentlyOverlappedOre;
   bool overlappingOre = false;
 
   public override void _Ready()
-	{
-		//GetNode("OreWorldObject");
-	}
+  {
+    //GetNode("OreWorldObject");
+  }
 
   public void _on_PlayerIneractionArea_area_entered(Area2D body)
   {
@@ -117,31 +117,31 @@ public class PlayerTopDown : KinematicBody2D
     OnTile = raycast2D.IsColliding();
 
     //update player movement
-		if(Godot.Input.IsActionPressed("PlayerUp"))
-		{
+    if(Godot.Input.IsActionPressed("PlayerUp"))
+    {
       currentFacing = FacingDir.Up;
       movingDirection.y -= 1;
-			//velocity += new Vector2(0,-verticalMovementPower) * delta;
-		}
-		if(Godot.Input.IsActionPressed("PlayerDown"))
-		{
+      //velocity += new Vector2(0,-verticalMovementPower) * delta;
+    }
+    if(Godot.Input.IsActionPressed("PlayerDown"))
+    {
       currentFacing = FacingDir.Down;
       movingDirection.y += 1;
-			//velocity += new Vector2(0,verticalMovementPower) * delta;
-		}
-		if(Godot.Input.IsActionPressed("PlayerRight"))
-		{
+      //velocity += new Vector2(0,verticalMovementPower) * delta;
+    }
+    if(Godot.Input.IsActionPressed("PlayerRight"))
+    {
       //Prioritize left and right attacks more than up and down
       currentFacing = FacingDir.Right;
       movingDirection.x += 1;
-			//velocity += new Vector2(horizontalMovementPower,0) * delta;
-		}
-		if(Godot.Input.IsActionPressed("PlayerLeft"))
-		{
+      //velocity += new Vector2(horizontalMovementPower,0) * delta;
+    }
+    if(Godot.Input.IsActionPressed("PlayerLeft"))
+    {
       movingDirection.x -= 1;
       currentFacing = FacingDir.Left;
-			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
-		}
+      //velocity += new Vector2(-horizontalMovementPower,0) * delta;
+    }
 
     velocity = movingDirection.Normalized() * 10000.0f * delta;  
 

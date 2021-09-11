@@ -7,7 +7,7 @@ public class InventoryObject : Node2D
   public string inventoryObjectName;
 
   int vaccumRadius = 500;
-	Vector2 velocity;
+  Vector2 velocity;
 
 
   public override void _Ready() 

@@ -62,7 +62,7 @@ public class ChokePointFinder
 
   //0 is floor
   int [,] terrainMap;
-	int width;
+  int width;
   int height;
 
   Godot.TileMap directedGraphVisMap = new TileMap();
@@ -95,28 +95,28 @@ public class ChokePointFinder
 #endregion
 #region Map Funcs
   public void SetDirectedGraphVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
-	{
-		directedGraphVisMap = _mapIDVisualization[map];
-	}
+  {
+    directedGraphVisMap = _mapIDVisualization[map];
+  }
 
   public void SetRoomVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
-	{
-		roomVisMap = _mapIDVisualization[map];
-	}
+  {
+    roomVisMap = _mapIDVisualization[map];
+  }
 
   public void SetKMeansVisMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
   {
     KMeansVisMap = _mapIDVisualization[map];
   }
 
-	public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
-	{
+  public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
+  {
     //Delete children
     rootNode = new CPFNode();
-		width = _width;
-		height = _height;
-		terrainMap = _terrainMap;
-	}
+    width = _width;
+    height = _height;
+    terrainMap = _terrainMap;
+  }
 
 
 #endregion

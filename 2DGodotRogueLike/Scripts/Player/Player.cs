@@ -3,15 +3,15 @@ using System;
 
 public class Player : KinematicBody2D
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
+  // Declare member variables here. Examples:
+  // private int a = 2;
+  // private string b = "text";
 
-	Vector2 velocity;
+  Vector2 velocity;
   float gravity = 1300f;
   float horizontalMovementPower = 1000.0f;
   float jumpPower = -720.0f;
-	
+  
   float idleEpsilon = 10;
 
   bool grounded = true;
@@ -19,11 +19,11 @@ public class Player : KinematicBody2D
 
   //todo Doesnt quite work, need better way to detect if above fallable block
   bool OnTile = false;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		
-	}
+  // Called when the node enters the scene tree for the first time.
+  public override void _Ready()
+  {
+    
+  }
 
 
 public override void _Draw()
@@ -46,27 +46,27 @@ public override void _Draw()
     OnTile = raycast2D.IsColliding();
 
     //update player movement
-		if(Godot.Input.IsActionPressed("PlayerUp") && grounded)
-		{
-			velocity += new Vector2(0,jumpPower);
-		}
-		if(Godot.Input.IsActionPressed("PlayerDown"))
-		{
-			Position = new Vector2(Position.x, Position.y + 1);
-		}
-		if(Godot.Input.IsActionPressed("PlayerRight"))
-		{
-			velocity += new Vector2(horizontalMovementPower,0) * delta;
-		}
-		if(Godot.Input.IsActionPressed("PlayerLeft"))
-		{
-			velocity += new Vector2(-horizontalMovementPower,0) * delta;
-		}
+    if(Godot.Input.IsActionPressed("PlayerUp") && grounded)
+    {
+      velocity += new Vector2(0,jumpPower);
+    }
+    if(Godot.Input.IsActionPressed("PlayerDown"))
+    {
+      Position = new Vector2(Position.x, Position.y + 1);
+    }
+    if(Godot.Input.IsActionPressed("PlayerRight"))
+    {
+      velocity += new Vector2(horizontalMovementPower,0) * delta;
+    }
+    if(Godot.Input.IsActionPressed("PlayerLeft"))
+    {
+      velocity += new Vector2(-horizontalMovementPower,0) * delta;
+    }
 
     velocity.y += gravity * delta;
 
     
-		velocity = MoveAndSlide(velocity, new Vector2(0,-1)) * 0.95f;
+    velocity = MoveAndSlide(velocity, new Vector2(0,-1)) * 0.95f;
     if(grounded)
     {
       velocity.x *= 0.90f;

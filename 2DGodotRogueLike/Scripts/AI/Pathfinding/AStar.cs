@@ -134,30 +134,30 @@ public class AStar
       //Reset map
       AStarVisMap.Clear();
 
-			if(state == AStar.PathState.Searching)
-			{
-				for (int i = 0; i < map.width; i++)
-				{
-					for (int j = 0; j < map.height; j++)
-					{
-						if(map.GetNodeAt(new Vector2(i,j)).state == AStar.NodeState.ClosedList)
-						{
-							AStarVisMap.SetCell(i,j, 10);
-						}
-						else if(map.GetNodeAt(new Vector2(i,j)).state == AStar.NodeState.OpenList)
-						{
-							AStarVisMap.SetCell(i,j, 9);
-						}
-					}
-				}
-			}
-			else if (state == AStar.PathState.Found)
-			{
-				foreach (var item in path)
-				{
-					AStarVisMap.SetCell((int)item.x,(int)item.y, 10);			
-				}
-			}
+      if(state == AStar.PathState.Searching)
+      {
+        for (int i = 0; i < map.width; i++)
+        {
+          for (int j = 0; j < map.height; j++)
+          {
+            if(map.GetNodeAt(new Vector2(i,j)).state == AStar.NodeState.ClosedList)
+            {
+              AStarVisMap.SetCell(i,j, 10);
+            }
+            else if(map.GetNodeAt(new Vector2(i,j)).state == AStar.NodeState.OpenList)
+            {
+              AStarVisMap.SetCell(i,j, 9);
+            }
+          }
+        }
+      }
+      else if (state == AStar.PathState.Found)
+      {
+        foreach (var item in path)
+        {
+          AStarVisMap.SetCell((int)item.x,(int)item.y, 10);      
+        }
+      }
 
       AStarVisMap.SetCell((int)startPos.x,(int)startPos.y, 4);
       AStarVisMap.SetCell((int)goalPos.x,(int)goalPos.y, 11);

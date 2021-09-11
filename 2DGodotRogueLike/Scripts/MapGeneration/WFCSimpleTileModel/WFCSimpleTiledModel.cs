@@ -95,11 +95,11 @@ public class WFCSimpleTiledModel
   //Constraints
   
   public void UpdateInternalMap(int _width, int _height, ref int [,] _terrainMap)
-	{
-		width = _width;
-		height = _height;
-		terrainMap = _terrainMap;
-	}
+  {
+    width = _width;
+    height = _height;
+    terrainMap = _terrainMap;
+  }
   
   public void Iterate()
   {
