@@ -7,16 +7,14 @@ namespace Parts
     public class WeaponBlueprintNode
     {
         public PartBlueprint part = null;
-        public Vector2 offset = new Vector2();
-        public Vector2 currentOffset = new Vector2();
         public WeaponBlueprintNode parent = null;
+        public Vector2 currentOffset = Vector2.Zero;
         public System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode> children = new System.Collections.Generic.Dictionary<AttachPoint,WeaponBlueprintNode>();
 
         public WeaponBlueprintNode(){}
-        public WeaponBlueprintNode(PartBlueprint _part, Vector2 _offset, WeaponBlueprintNode _parent)
+        public WeaponBlueprintNode(PartBlueprint _part, WeaponBlueprintNode _parent)
         {
             part = _part;
-            offset = _offset;
             parent = _parent;
         }
 

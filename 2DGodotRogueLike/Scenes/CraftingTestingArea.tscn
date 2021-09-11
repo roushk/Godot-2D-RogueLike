@@ -45,8 +45,8 @@ __meta__ = {
 [node name="PartsVisualizerContainer" type="Control" parent="ParchmentBackground"]
 anchor_left = 0.5
 anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_right = 0.9
+anchor_bottom = 0.9
 mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false

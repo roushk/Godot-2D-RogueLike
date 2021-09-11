@@ -237,12 +237,7 @@ public class CraftingMaterialSystem : Control
     //Set textures and bitmasks to the default part's texture and its bitmask
     newAttachpoint.TextureNormal = attachPointTex;
     
-    newAttachpoint.RectPosition = (attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
-
-    if(node.parent != null)
-    {
-      newAttachpoint.RectPosition += (node.currentOffset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
-    }
+    newAttachpoint.RectPosition = (node.currentOffset + attachPoint.pos) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
     newAttachpoint.RectPosition -= new Vector2(2,2) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
     
@@ -423,14 +418,10 @@ public class CraftingMaterialSystem : Control
         }
       }, partVisualizerScale, true, true, false);
 
-      //update current offset from parents
-      node.currentOffset = node.offset + baseOffset;
-
-      //With or without parent
-
-      BPPieceButton.RectPosition = (node.currentOffset + node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
-
-      BPPieceButton.RectPosition -= (node.part.texture.GetSize() / 2.0f) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
+      
+      //places the location - the attach point because attachpoint is -vector to move image so its 0,0 is the attach pt + the base offset
+      node.currentOffset = -node.part.baseAttachPoint + baseOffset;
+      BPPieceButton.RectPosition = node.currentOffset * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
 
       Parts.WeaponBlueprintNode parentNode = node.parent;
 
@@ -443,7 +434,8 @@ public class CraftingMaterialSystem : Control
 
       foreach (var item in node.children)
       {
-        GeneratePartsFromWeaponBPNode(item.Value, baseOffset + item.Key.pos);
+        //- attach pt as its inverted
+        GeneratePartsFromWeaponBPNode(item.Value, -node.part.baseAttachPoint + item.Key.pos + baseOffset);
       }
   }
 
@@ -454,7 +446,7 @@ public class CraftingMaterialSystem : Control
 
     Parts.PartStats summationStats = new Parts.PartStats();
 
-    GeneratePartsFromWeaponBPNode(weaponRootNode, Vector2.Zero);
+    GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f);
 
     //if(currentParts.Count >= 2)
     //{
@@ -487,36 +479,11 @@ public class CraftingMaterialSystem : Control
     Vector2 center = (partVisualizerContainer as Control).RectGlobalPosition;// + (partVisualizerContainer as Control).RectSize * 0.5f;
     //Vector2 center = (partVisualizerContainer as Control).RectGlobalPosition + (partVisualizerContainer as Control).RectSize * 0.5f;
 
-    //Y axis
-    DrawLine(center, center + new Vector2(0,100),new Color("fc0303"),2);  //Pos Y
-    DrawLine(center, center + new Vector2(0,-100),new Color("fcdb03"),2);  //Neg Y
-    DrawLine(center, center + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
-    DrawLine(center, center + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
-    
-    weaponRootNode.IterateNode((node) => 
-    {
-      //Location that is 0,0 for the part visualizer
-
-      //Vector from the part base attach node to the center
-      Vector2 partBaseAttachNodeToPartCenter = center + (-node.part.baseAttachPoint) * new Vector2(partVisualizerScale.x, partVisualizerScale.y);
-      DrawLine(center, partBaseAttachNodeToPartCenter, new Color("00e5ff"), 2);
-      
-      //Represents the vector from the center of the child node anchor 0.5,0.5 (center of the object) to the child node's base attachment point
-      //Vector2 parentAttachNodeToParentCenter = center + -(0.5f * node.part.texture.GetSize() - node.part.partAttachPoints[]) * new Vector2(partVisualizerScale.x,-partVisualizerScale.y);
-      //child center to child base attach pt
-      //DrawLine(center, centerToAttachPtChild, new Color(0,0,1),4);
-
-      //Center to parent attach pt
-
-      if(node.parent != null)
-      {
-        //Represents the vector from the parents attachPoint to the center of the child node anchor 0.5,0.5 (center of the object)
-        Vector2 attachPtToCenterChild = partBaseAttachNodeToPartCenter + (node.currentOffset) * new Vector2(partVisualizerScale.x,partVisualizerScale.y);
-        //attach pt to child center
-        DrawLine(partBaseAttachNodeToPartCenter, attachPtToCenterChild, new Color(0.5f,1,0),4);
-      }
-
-    });
+    //Debug lines
+    //DrawLine(center, center + new Vector2(0,100),new Color("fc0303"),2);  //Pos Y
+    //DrawLine(center, center + new Vector2(0,-100),new Color("fcdb03"),2);  //Neg Y
+    //DrawLine(center, center + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
+    //DrawLine(center, center + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
   }
   
 
@@ -670,7 +637,7 @@ public class CraftingMaterialSystem : Control
           attachPoint.attachedPart = true;
           partVisualizerContainer.RemoveChild(newAttachPointButton);
           //Set the x/y pos of the attach point to the actual node that represents the part
-          Parts.WeaponBlueprintNode newNode = new Parts.WeaponBlueprintNode(part, Vector2.Zero, parentNode);
+          Parts.WeaponBlueprintNode newNode = new Parts.WeaponBlueprintNode(part, parentNode);
           parentNode.children.Add(attachPoint, newNode); 
           GeneratePartVisualizerUIFromCurrentParts(); 
         }, new Vector2(1,1), false, true, false); 
