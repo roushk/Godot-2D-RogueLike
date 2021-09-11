@@ -34,6 +34,7 @@ window/stretch/aspect="keep"
 [gui]
 
 theme/custom_font="res://Assets/Fonts/Jamma.tres"
+common/snap_controls_to_pixels=false
 
 [importer_defaults]
 
@@ -116,6 +117,5 @@ limits/message_queue/max_size_kb=2048
 
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
-2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
-quality/2d/use_pixel_snap=true
+quality/2d/use_pixel_snap=false

@@ -492,7 +492,7 @@ public class CraftingMaterialSystem : Control
     //And round it so that we don't have any float shenannagins 
     float newScale = Mathf.Round((32.0f/weaponUIMaxScale) * 4.0f * 100.0f)/100.0f;
     //TODO the rescaling isn't properly propogating
-    //partVisualizerScale = new Vector2(newScale,newScale);
+    partVisualizerScale = new Vector2(newScale,newScale);
 
     Console.WriteLine("New Part Visualizer Scale is " + partVisualizerScale.x.ToString());
     GeneratePartsFromWeaponBPNode(weaponRootNode, -weaponRootNode.part.texture.GetSize() / 2.0f);
