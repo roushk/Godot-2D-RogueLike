@@ -71,12 +71,7 @@
             "x": 6,
             "y": 11
         },
-        "partAttachPoints": [
-        {
-            "x": 6,
-            "y": 11,
-            "types": ["Guard"]
-        }]
+        "partAttachPoints": []
     },
     {
         "partName": "Mace",
@@ -132,10 +127,10 @@
         "partCost": 5,
         "partAttributes":
         {
-            "baseSlashDamage": 100,
-            "baseStabDamage": 100,
-            "baseAttackSpeed": 100,
-            "baseSwingSpeed": 100,
+            "baseSlashDamage": 150,
+            "baseStabDamage": 150,
+            "baseAttackSpeed": 50,
+            "baseSwingSpeed": 80,
             "baseLength": 100,
             "specialStat": "None"
         },

@@ -16,6 +16,7 @@ __meta__ = {
 [node name="PartIcon" parent="." instance=ExtResource( 2 )]
 margin_right = 32.0
 margin_bottom = 50.0
+rect_min_size = Vector2( 10, 10 )
 disabled = true
 
 [node name="PartData" type="RichTextLabel" parent="."]

@@ -514,7 +514,7 @@ public class CraftingMaterialSystem : Control
 
     //Only write text if we have parts
     //if(currentParts.Count >= 1)
-    bpDetails.BbcodeText = summationStats.GenerateStatText(0, false);
+    bpDetails.BbcodeText = summationStats.GenerateStatText(null, 0, false);
     
     bpDetails.RectMinSize = new Vector2(32,50);
     bpDetails.RectClipContent = false;
@@ -612,28 +612,6 @@ public class CraftingMaterialSystem : Control
       CallbackTextureButton partSelectionButton = CreateCallbackButtonFromBlueprint(part, () => 
       {
         ClearPartSelection();
-        //currentParts.Remove(currentBlueprint);
-        //currentParts.Add(part);
-        //currentParts.Sort(Parts.PartTypeConversion.CompareParts);
-        //System.Collections.Generic.Dictionary<Parts.AttachPoint,Parts.WeaponBlueprintNode> newChildren = new System.Collections.Generic.Dictionary<Parts.AttachPoint,Parts.WeaponBlueprintNode>();
-
-        ////Translate current children to new children
-        //
-        ////For each currently used attachment point in the current node
-        //foreach (var currAttach in currentNode.part.partAttachPoints)
-        //{
-        //  //If a part is attached
-        //  if(currAttach.attachedPart == true)
-        //  {
-        //    newChildren.Add(currentNode.children[currAttach]
-        //  }
-        //}
-        //foreach (var child in currentNode.children)
-        //{
-        //  
-        //    currAttach.partTypes
-        //  
-        //}
         currentNode.IterateNode((currNode) => 
         {
           foreach (var attachPt in currNode.part.partAttachPoints)
@@ -661,7 +639,7 @@ public class CraftingMaterialSystem : Control
       hBox.MoveChild(partSelectionButton,0);  //move to pos 0
 
       RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
-      detailText.BbcodeText = part.stats.GenerateStatText();
+      detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part);
       detailText.BbcodeEnabled = true;
       detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
       //Dont change colors with the callbacks
