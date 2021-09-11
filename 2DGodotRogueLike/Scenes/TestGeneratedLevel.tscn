@@ -1620,7 +1620,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 2
 BottomTile = 1
-tileMapSize = Vector2( 200, 100 )
+tileMapSize = Vector2( 500, 500 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -1657,6 +1657,13 @@ tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
+[node name="AStar Overlay" type="TileMap" parent="."]
+visible = false
+show_behind_parent = true
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 1445.1, 734.947 )
 current = true
@@ -1675,7 +1682,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/GUI"]
 margin_right = 337.0
-margin_bottom = 503.0
+margin_bottom = 551.0
 
 [node name="General" type="Label" parent="Camera2D/GUI/VBoxContainer"]
 margin_right = 337.0
@@ -1718,20 +1725,28 @@ margin_right = 337.0
 margin_bottom = 94.0
 text = "Clear Map"
 
-[node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+[node name="HSplitContainer5" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
 margin_top = 98.0
 margin_right = 337.0
-margin_bottom = 113.0
-text = "Overlays"
+margin_bottom = 119.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Overlays" type="Label" parent="Camera2D/GUI/VBoxContainer/HSplitContainer5"]
+margin_top = 3.0
+margin_right = 114.0
+margin_bottom = 18.0
+text = "Overlay Selection"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SelectedOverlay" type="OptionButton" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 117.0
+[node name="SelectedOverlay" type="OptionButton" parent="Camera2D/GUI/VBoxContainer/HSplitContainer5"]
+margin_left = 126.0
 margin_right = 337.0
-margin_bottom = 138.0
+margin_bottom = 21.0
 text = "No Overlay"
 align = 1
 items = [ "No Overlay", null, false, 0, null ]
@@ -1741,10 +1756,67 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WFC2" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 142.0
+[node name="HSplitContainer6" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 123.0
 margin_right = 337.0
-margin_bottom = 157.0
+margin_bottom = 144.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseOps" type="Label" parent="Camera2D/GUI/VBoxContainer/HSplitContainer6"]
+margin_top = 3.0
+margin_right = 92.0
+margin_bottom = 18.0
+text = "Mouse Options"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseOptions" type="OptionButton" parent="Camera2D/GUI/VBoxContainer/HSplitContainer6"]
+margin_left = 104.0
+margin_right = 337.0
+margin_bottom = 21.0
+text = "No Overlay"
+align = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathfindingOpt" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 148.0
+margin_right = 337.0
+margin_bottom = 169.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathfindingOpt" type="Label" parent="Camera2D/GUI/VBoxContainer/PathfindingOpt"]
+margin_top = 3.0
+margin_right = 124.0
+margin_bottom = 18.0
+text = "Pathfinding Option"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathfindingOptions" type="OptionButton" parent="Camera2D/GUI/VBoxContainer/PathfindingOpt"]
+margin_left = 136.0
+margin_right = 337.0
+margin_bottom = 21.0
+align = 1
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC2" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 173.0
+margin_right = 337.0
+margin_bottom = 188.0
 text = "Game of Life + CCL"
 align = 1
 __meta__ = {
@@ -1752,27 +1824,27 @@ __meta__ = {
 }
 
 [node name="ViewRoot" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 161.0
+margin_top = 192.0
 margin_right = 337.0
-margin_bottom = 182.0
+margin_bottom = 213.0
 text = "Generate + CCL + Select Largest + Adj"
 
 [node name="GenMap" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 186.0
+margin_top = 217.0
 margin_right = 337.0
-margin_bottom = 207.0
+margin_bottom = 238.0
 text = "Run CCL"
 
 [node name="IterSim" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 211.0
+margin_top = 242.0
 margin_right = 337.0
-margin_bottom = 232.0
+margin_bottom = 263.0
 text = "Iterate GoL Simulation Once"
 
 [node name="WFC" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 236.0
+margin_top = 267.0
 margin_right = 337.0
-margin_bottom = 251.0
+margin_bottom = 282.0
 text = "Wave Function Collapse"
 align = 1
 __meta__ = {
@@ -1780,27 +1852,27 @@ __meta__ = {
 }
 
 [node name="WFC_GenComplete" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 255.0
+margin_top = 286.0
 margin_right = 337.0
-margin_bottom = 276.0
+margin_bottom = 307.0
 text = "Generate Complete Map"
 
 [node name="WFC_ITER" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 280.0
+margin_top = 311.0
 margin_right = 337.0
-margin_bottom = 301.0
+margin_bottom = 332.0
 text = "Iterate WFC Simulation Once"
 
 [node name="WFC_ViewSockets" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 305.0
+margin_top = 336.0
 margin_right = 337.0
-margin_bottom = 326.0
+margin_bottom = 357.0
 text = "View Sockets"
 
 [node name="WFC3" type="Label" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 330.0
+margin_top = 361.0
 margin_right = 337.0
-margin_bottom = 345.0
+margin_bottom = 376.0
 text = "Choke Point Generator"
 align = 1
 __meta__ = {
@@ -1808,18 +1880,18 @@ __meta__ = {
 }
 
 [node name="WFC_ViewSockets2" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 349.0
+margin_top = 380.0
 margin_right = 337.0
-margin_bottom = 370.0
+margin_bottom = 401.0
 text = "Flood Fill -> Directed Graph"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSplitContainer" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 374.0
+margin_top = 405.0
 margin_right = 337.0
-margin_bottom = 399.0
+margin_bottom = 430.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1862,18 +1934,28 @@ __meta__ = {
 }
 
 [node name="WFC_ViewSockets6" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 403.0
+margin_top = 434.0
 margin_right = 337.0
-margin_bottom = 424.0
+margin_bottom = 455.0
 text = "Flood Fill Reset"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 428.0
+[node name="KMeans" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 459.0
 margin_right = 337.0
-margin_bottom = 453.0
+margin_bottom = 474.0
+text = "K - Means"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer2" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 478.0
+margin_right = 337.0
+margin_bottom = 503.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1919,20 +2001,182 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WFC_ViewSockets3" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 457.0
+[node name="A-Star" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 507.0
 margin_right = 337.0
-margin_bottom = 478.0
-text = "Directed Graph -> Tarjan’s "
+margin_bottom = 522.0
+text = "A* Pathfinder"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WFC_ViewSockets4" type="Button" parent="Camera2D/GUI/VBoxContainer"]
-margin_top = 482.0
+[node name="HSplitContainer4" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 526.0
 margin_right = 337.0
-margin_bottom = 503.0
-text = "Tarjan’s -> Rooms"
+margin_bottom = 551.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WFC_ViewSockets4" type="Button" parent="Camera2D/GUI/VBoxContainer/HSplitContainer4"]
+margin_right = 150.0
+margin_bottom = 25.0
+toggle_mode = true
+text = "Toggle Realtime Iter"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpinBox3" type="SpinBox" parent="Camera2D/GUI/VBoxContainer/HSplitContainer4"]
+margin_left = 162.0
+margin_right = 337.0
+margin_bottom = 25.0
+min_value = 1.0
+value = 1.0
+align = 1
+prefix = "Iters:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseInfoUI" type="MarginContainer" parent="Camera2D"]
+margin_left = -1268.0
+margin_top = 462.0
+margin_right = -1067.0
+margin_bottom = 587.0
+rect_scale = Vector2( 2, 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/MouseInfoUI"]
+margin_right = 201.0
+margin_bottom = 125.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer"]
+margin_right = 201.0
+margin_bottom = 15.0
+text = "Mouse Info"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Camera2D/MouseInfoUI/VBoxContainer"]
+margin_top = 19.0
+margin_right = 201.0
+margin_bottom = 110.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer"]
+margin_right = 97.0
+margin_bottom = 91.0
+
+[node name="General2" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_right = 97.0
+margin_bottom = 15.0
+text = "Coords: "
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General3" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 19.0
+margin_right = 97.0
+margin_bottom = 34.0
+text = "Given Cost:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General4" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 38.0
+margin_right = 97.0
+margin_bottom = 53.0
+text = "Heuristic: "
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General5" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 57.0
+margin_right = 97.0
+margin_bottom = 72.0
+text = "Parent Coords"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General6" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer"]
+margin_top = 76.0
+margin_right = 97.0
+margin_bottom = 91.0
+text = "State:"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer"]
+margin_left = 109.0
+margin_right = 201.0
+margin_bottom = 91.0
+
+[node name="General7" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2"]
+margin_right = 92.0
+margin_bottom = 15.0
+text = "X: 0 Y: 1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General8" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2"]
+margin_top = 19.0
+margin_right = 92.0
+margin_bottom = 34.0
+text = "1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General9" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2"]
+margin_top = 38.0
+margin_right = 92.0
+margin_bottom = 53.0
+text = "14.213788"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General10" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2"]
+margin_top = 57.0
+margin_right = 92.0
+margin_bottom = 72.0
+text = "X: -1 Y: -1"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="General11" type="Label" parent="Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2"]
+margin_top = 76.0
+margin_right = 92.0
+margin_bottom = 91.0
+text = "Closed List"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1941,7 +2185,9 @@ __meta__ = {
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer3/SpinBox" to="." method="SetGameOfLifeDeadChance"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenLargestAndAdjacency" to="." method="GenAll"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/Clear" to="." method="ClearMapButton_Callback"]
-[connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/SelectedOverlay" to="." method="OverlaySelected_Callback"]
+[connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/HSplitContainer5/SelectedOverlay" to="." method="OverlaySelected_Callback"]
+[connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/HSplitContainer6/MouseOptions" to="." method="MouseOptionsSelected_Callback"]
+[connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/PathfindingOpt/PathfindingOptions" to="." method="MouseOptionsSelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/ViewRoot" to="." method="Generate_CCL_Select_Largest_Adj"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenMap" to="." method="CCL_GenerateCompleteMapButton_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/IterSim" to="." method="CCL_IterateSimulationOnce_Callback"]
@@ -1953,5 +2199,5 @@ __meta__ = {
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/WFC_ViewSockets5" to="." method="RunKMeansOnLargestSet"]
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox3" to="." method="SetIterKMeansClusters"]
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox2" to="." method="SetNumKMeansClusters"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets3" to="." method="DirectedGraphToTarjans_Callback"]
-[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/WFC_ViewSockets4" to="." method="TarjansToRooms_Callback"]
+[connection signal="toggled" from="Camera2D/GUI/VBoxContainer/HSplitContainer4/WFC_ViewSockets4" to="." method="ToggleRealtimeAStar"]
+[connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer4/SpinBox3" to="." method="SetRealtimeAStarIter"]
