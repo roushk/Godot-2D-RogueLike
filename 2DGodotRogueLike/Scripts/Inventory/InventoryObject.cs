@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 //can be either a unique item or a material
 public class InventoryObject : Node2D
@@ -7,8 +8,11 @@ public class InventoryObject : Node2D
   [Export]
   public string inventoryObjectName;
 
+  [Export]
   public bool isMaterial = true;
+  [Export]
   public Materials.Material material;
+  [Export]
   public int numMaterials = 0;
 
   public BaseBlueprint blueprint;
@@ -16,7 +20,7 @@ public class InventoryObject : Node2D
   float vaccumRadius = 50.0f;
   float minRadius = 10.0f;
   Vector2 velocity;
-  AnimatedSprite animatedSprite;
+  public AnimatedSprite animatedSprite;
   Area2D area2D;
   CollisionShape2D collisionShape2D;
   CPUParticles2D cpuParticles2D;
@@ -41,6 +45,7 @@ public class InventoryObject : Node2D
     {
       throw new Exception ("Error: Player is null in InventoryObject");
     }
+    animatedSprite.Frame = (int)material;
   }
 
   public override void _Draw()

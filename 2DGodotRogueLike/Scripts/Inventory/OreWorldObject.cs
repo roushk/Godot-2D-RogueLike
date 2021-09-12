@@ -28,7 +28,6 @@ public class OreWorldObject : Node2D
   
   private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/InventoryObject.tscn");
 
-  //const inventoryObject = Godot.ResourcePreloader. ("res://Bullet.tscn")
   public override void _Ready()
   {
     animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
@@ -51,8 +50,9 @@ public class OreWorldObject : Node2D
     invObj.numMaterials = amountInOre;
     invObj.isMaterial = true;
 
-    //should be setting it to data loaded from a file for the craftable material property 
+    //should be setting it to data loaded from a file for the craftable material property
     newInvObject.GetNode<AnimatedSprite>("AnimatedSprite").Animation = "Ore Chunks";
+    newInvObject.GetNode<AnimatedSprite>("AnimatedSprite").Frame = (int)material;
     //InventoryObject.Get
   }
 
@@ -60,6 +60,4 @@ public class OreWorldObject : Node2D
   {
 
   }
-
-
 }

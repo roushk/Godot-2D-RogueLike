@@ -243,18 +243,18 @@ public class PlayerTopDown : KinematicBody2D
 		{
 			attacking = false;
 		}
-		//elocity.y += gravity * delta;
+		//velocity.y += gravity * delta;
 		
 		//idle - if grounded and slow
 		if(grounded && !attacking)
 		{
 			if((Mathf.Abs(velocity.x) > idleEpsilon || Mathf.Abs(velocity.y) > idleEpsilon))
 			{
-			animatedSprite.Play("Character Run");
+				animatedSprite.Play("Character Run");
 			}
 			else
 			{
-			animatedSprite.Play("Character Idle");
+				animatedSprite.Play("Character Idle");
 			}
 		}
 		
