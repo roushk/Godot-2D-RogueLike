@@ -9,7 +9,7 @@ The game engine is Godot using C# scripting and I am doing everything myself bes
 ### [Level World Generation](#world-generation)
 #### [Level World Generation Screenshots](#level-world-generation-screenshots)
 ### [Custom Weapon Crafting System](#weapon-crafting-system)
-#### [Weapon Crafting System UI Iteration Screenshots](weapon-crafting-system-screenshots)
+#### [Weapon Crafting System UI Iteration Screenshots](#weapon-crafting-system-screenshots)
 #### [Weapon Crafting System Example Weapons](#example-weapons)
 ### [Overworld Generation](#overworld-level-generation)
 ### [Lighting Testing](#initial-lighting-testing)
@@ -77,36 +77,37 @@ Currently I am fixing some UI placement issues with the Weapon Crafting System a
 
 ### Weapon Crafting System Screenshots
 
-#### Weapon Builder UI Iteration 1
-![ModularWeaponsUI_Iter1_1](https://user-images.githubusercontent.com/34784335/131393584-5c975c7c-b9d7-4d29-b02e-e90df36264c4.PNG)
+#### Crafting Weapon Video
+https://user-images.githubusercontent.com/34784335/132964618-cb922f25-bf9f-4341-94b2-a1f214a5f39c.mp4
 
-#### Weapon Builder UI Iteration 2
-![ModularWeaponsUI_Iter2_1](https://user-images.githubusercontent.com/34784335/131393626-c5073056-ac59-4a28-a55f-7b668b9f2b4e.PNG)
+### Example Weapons
 
-#### Weapon Builder UI Iteration 3
-![ModularWeaponsUI_Iter3_2](https://user-images.githubusercontent.com/34784335/131393647-b27c9a21-85fc-461c-a5ee-fc0e07f8a9ec.PNG)
-![ModularWeaponsUI_Iter3_1](https://user-images.githubusercontent.com/34784335/131393651-8f6c687b-e1ec-43d4-977d-3137c33c42e0.PNG)
+#### Example Weapon: Basic Sword
+![ModularWeaponsUI_Iter6_ExampleWeapon](https://user-images.githubusercontent.com/34784335/132963683-05aca8cc-2f61-470d-b8ba-f5ecd77d7b8a.PNG)
+
+#### Example Weapon: Large Blade
+![ModularWeaponsUI_Iter6_ExampleWeapon_02](https://user-images.githubusercontent.com/34784335/132963687-a168af81-e136-4817-8446-471c2d051736.PNG)
+
+#### Example Weapon: Large Mace
+![ModularWeaponsUI_Iter6_ExampleWeapon_03](https://user-images.githubusercontent.com/34784335/132963693-306dd2b5-a8b6-4a0d-82c3-25826b9343f9.PNG)
+
+#### Example Weapon: Tiny Axe
+![ModularWeaponsUI_Iter6_ExampleWeapon_04](https://user-images.githubusercontent.com/34784335/132963700-368366fc-4d98-43ce-a906-49f482f8ca60.PNG)
 
 #### Weapon Builder UI Iteration 4
 ![ModularWeaponsUI_Iter4_2](https://user-images.githubusercontent.com/34784335/131393667-1e830d5c-8530-4add-b8b1-2f0042d3d5e3.PNG)
 ![ModularWeaponsUI_Iter4_1](https://user-images.githubusercontent.com/34784335/131393668-7ce214cc-6d5c-4fa8-9563-6e1a55a4ab8d.PNG)
 
-### Weapon Builder Iteration 2 with UI Iteration 5 - Post internal system refactor 
+#### Weapon Builder UI Iteration 3
+![ModularWeaponsUI_Iter3_2](https://user-images.githubusercontent.com/34784335/131393647-b27c9a21-85fc-461c-a5ee-fc0e07f8a9ec.PNG)
+![ModularWeaponsUI_Iter3_1](https://user-images.githubusercontent.com/34784335/131393651-8f6c687b-e1ec-43d4-977d-3137c33c42e0.PNG)
 
-#### The UI with a graph of the X/Y that I use for debugging the UI placement
-![ModularWeaponsUI_Iter5_PartiallyVisibleToSeeCoords](https://user-images.githubusercontent.com/34784335/131394292-a3f96202-6e21-47d5-af4f-53d812045781.PNG)
+#### Weapon Builder UI Iteration 2
+![ModularWeaponsUI_Iter2_1](https://user-images.githubusercontent.com/34784335/131393626-c5073056-ac59-4a28-a55f-7b668b9f2b4e.PNG)
 
-#### Selecting a node brings up the part selection
-![ModularWeaponsUI_Iter5_SelectedNode](https://user-images.githubusercontent.com/34784335/131394293-36b0ef06-c6af-4d28-8be1-fa67f56421aa.PNG)
+#### Weapon Builder UI Iteration 1
+![ModularWeaponsUI_Iter1_1](https://user-images.githubusercontent.com/34784335/131393584-5c975c7c-b9d7-4d29-b02e-e90df36264c4.PNG)
 
-### Example Weapons
-
-#### Example Weapon: Basic Sword
-![ModularWeaponsUI_Iter5_CreatedSword](https://user-images.githubusercontent.com/34784335/131394299-ff7ac21a-d182-4741-8f16-8e01fdcf9db2.PNG)
-#### Example Weapon: Warhammer
-![ModularWeaponsUI_Iter5_CreatedWarhammer](https://user-images.githubusercontent.com/34784335/131394301-6cfef866-d7f6-4847-8c72-e0437b562ccb.PNG)
-#### Example Weapon: Large Bladed thing?
-![ModularWeaponsUI_Iter5_CreatedWeirdLongBladedThing](https://user-images.githubusercontent.com/34784335/131394287-b1b2741d-0fb8-4e3a-95d6-3db4663651fa.PNG)
 
 ## Overworld Level Generation
 The other algorithm that I am going to implement is [Wave Function Collapse](https://github.com/mxgmn/WaveFunctionCollapse), specifically the Simple Tiled Model. This would be used to generate an Overworld for the player to traverse with cities, lakes, etc. The basic WFC algorithm is that every single tile exists in a state of being all tiles, similar to the Wave Function in Quantum Physics which this algorithm is named after. The goal of the algorithm is to observe, select a specific tile, the tiles with the lowest entropy, chance to change or in this case lowest amount of tiles in the possibility set, and then propagate those changes throughout the map to create a stable state where the entire map is observed. Once this is finished a map is generated. There are rules for the tiles, such as water is only adjacent to the coast etc, and these rules determine the possible set of tiles that any position can be observed as. There are some problems with this algorithm, specifically with observing on larger maps and how depending on if the algorithm is implemented recursively, as would be most natural, may cause stack issues when destroying a branch of possibility with the tile choice. 
