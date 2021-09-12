@@ -233,24 +233,28 @@ margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene4" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
 margin_right = 104.0
 margin_bottom = 32.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene5" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
 margin_right = 140.0
 margin_bottom = 32.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene6" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_top = 36.0
 margin_right = 32.0
 margin_bottom = 68.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene7" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 36.0
@@ -258,6 +262,7 @@ margin_top = 36.0
 margin_right = 68.0
 margin_bottom = 68.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene8" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
@@ -265,6 +270,7 @@ margin_top = 36.0
 margin_right = 104.0
 margin_bottom = 68.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene9" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
@@ -272,12 +278,14 @@ margin_top = 36.0
 margin_right = 140.0
 margin_bottom = 68.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene10" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_top = 72.0
 margin_right = 32.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene11" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 36.0
@@ -285,6 +293,7 @@ margin_top = 72.0
 margin_right = 68.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene12" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
@@ -292,6 +301,7 @@ margin_top = 72.0
 margin_right = 104.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene13" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
@@ -299,12 +309,14 @@ margin_top = 72.0
 margin_right = 140.0
 margin_bottom = 104.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene14" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_top = 108.0
 margin_right = 32.0
 margin_bottom = 140.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene15" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 36.0
@@ -312,6 +324,7 @@ margin_top = 108.0
 margin_right = 68.0
 margin_bottom = 140.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene16" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
@@ -319,6 +332,7 @@ margin_top = 108.0
 margin_right = 104.0
 margin_bottom = 140.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene17" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
@@ -326,12 +340,14 @@ margin_top = 108.0
 margin_right = 140.0
 margin_bottom = 140.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene18" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_top = 144.0
 margin_right = 32.0
 margin_bottom = 176.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene19" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 36.0
@@ -339,6 +355,7 @@ margin_top = 144.0
 margin_right = 68.0
 margin_bottom = 176.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene20" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
@@ -346,6 +363,7 @@ margin_top = 144.0
 margin_right = 104.0
 margin_bottom = 176.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene21" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
@@ -353,12 +371,14 @@ margin_top = 144.0
 margin_right = 140.0
 margin_bottom = 176.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene22" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_top = 180.0
 margin_right = 32.0
 margin_bottom = 212.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene23" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 36.0
@@ -366,6 +386,7 @@ margin_top = 180.0
 margin_right = 68.0
 margin_bottom = 212.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene24" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 72.0
@@ -373,6 +394,7 @@ margin_top = 180.0
 margin_right = 104.0
 margin_bottom = 212.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="CallbackTextureButtonScene25" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal" instance=ExtResource( 3 )]
 margin_left = 108.0
@@ -380,13 +402,14 @@ margin_top = 180.0
 margin_right = 140.0
 margin_bottom = 212.0
 texture_normal = ExtResource( 1 )
+changeColors = true
 
 [node name="Wood" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 25.0
+margin_top = 33.0
 margin_right = -4.0
 margin_bottom = -4.0
 columns = 4
@@ -519,7 +542,7 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
-margin_top = 25.0
+margin_top = 33.0
 margin_right = -4.0
 margin_bottom = -4.0
 columns = 4
