@@ -227,8 +227,6 @@ public class PlayerTopDown : KinematicBody2D
 				currentlyOverlappedOre.QueueFree();
 				currentlyOverlappedOre = null;
 				overlappingOre = false;
-
-
 			}
 		}
 

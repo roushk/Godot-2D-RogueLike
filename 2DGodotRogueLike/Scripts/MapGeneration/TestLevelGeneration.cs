@@ -76,6 +76,57 @@ public class TestLevelGeneration : Node2D
 
   }
 
+  public void SpawnOreChunksRoom_pressed()
+  {
+    foreach (var item in adjacencyMap)
+    {
+      if(item.Value > 2)
+      {
+        if(random.NextDouble() < oreChunkRoomSpawnChance)
+        {
+          SpawnOreChunkAt(new Vector2(item.Key.Key, item.Key.Value));
+        }
+      }
+    }
+  }
+
+  public void SpawnOreChunksEdge_pressed()
+  {
+    foreach (var item in adjacencyMap)
+    {
+      if(item.Value == 1)
+      {
+        if(random.NextDouble() < oreChunkEdgeSpawnChance)
+        {
+          SpawnOreChunkAt(new Vector2(item.Key.Key , item.Key.Value));
+        }
+      }
+    }
+  }
+
+  public void SpawnOreChunkAt(Vector2 pos )
+  {
+    OreWorldObject newObj = oreWorldObjectScene.Instance() as OreWorldObject;
+
+    //Spawn ore chunk at item.Key * scale + offset (0,0 is upper left corner) so they are centered
+    newObj.Position = pos * ForegroundMap.CellSize * ForegroundMap.Scale + (ForegroundMap.CellSize * ForegroundMap.Scale * 0.5f);
+    newObj.material = (Materials.Material)random.Next(0,6);
+    newObj.amountInOre = random.Next(1,6);
+    newObj.timeToMine = random.Next(2,4);
+
+    //Calls _Ready func
+    GetTree().Root.AddChild(newObj);
+
+    if(newObj.material == Materials.Material.Copper)
+      newObj.animatedSprite.Animation = "Copper Ores";
+    if(newObj.material == Materials.Material.Cobalt)
+      newObj.animatedSprite.Animation = "Cobalt Ores";
+
+    newObj.animatedSprite.Frame = random.Next(0,10);
+    newObj.ZIndex = -1;
+  }
+
+
   //General Signals
   public void GenerateNewTileMapButton_Callback()
   {
@@ -262,7 +313,6 @@ public class TestLevelGeneration : Node2D
   AStar.PathState AStarState = AStar.PathState.None;
   Vector2 AStarStart;
   Vector2 AStarDest;
-  
 
   MouseOptions currentMouseOption = MouseOptions.AStar_Pathfind;
 
@@ -272,6 +322,14 @@ public class TestLevelGeneration : Node2D
   Label currentMouseSelectionAStar_ParentNodeCoords;
   Label currentMouseSelectionAStar_NodeState;
   AStar.AStarNode currentMouseSelectionNode = new AStar.AStarNode();
+
+  //0 to 1
+  float oreChunkEdgeSpawnChance = 0.1f;
+
+  //0 to 1
+  float oreChunkRoomSpawnChance = 0.4f;
+
+  private PackedScene oreWorldObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/OreWorldObject.tscn");
 
   //!!!!!!!!!!!!!!!!!!!!!!!!
   //map  0,0 = bottom right
@@ -348,7 +406,7 @@ public class TestLevelGeneration : Node2D
   int [,] terrainMap;
 
   //Dict of pixel to distance from closest wall
-  Dictionary<KeyValuePair<int,int>, int> closestWalls = new Dictionary<KeyValuePair<int, int>, int>();
+  Dictionary<KeyValuePair<int,int>, int> adjacencyMap = new Dictionary<KeyValuePair<int, int>, int>();
 
   OptionButton ActiveOverlayOptions;
   OptionButton MouseOptionsButton;
@@ -947,7 +1005,7 @@ public class TestLevelGeneration : Node2D
   //Runs on the terrainMap to find the closest number of tiles
   private void GenerateAdjacencyGrid()
   {
-    closestWalls.Clear();
+    adjacencyMap.Clear();
 
     foreach (var largestItem in largestSet)
     {
@@ -971,7 +1029,7 @@ public class TestLevelGeneration : Node2D
           if(terrainMap[posX,posY] == 1)
           { 
             foundWall = true;
-            closestWalls[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = squareSize;
+            adjacencyMap[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = squareSize;
             break;
           }
         }
@@ -982,7 +1040,7 @@ public class TestLevelGeneration : Node2D
       if(foundWall == false)
       {
         Console.WriteLine("Did not find wall in radius 50");
-        closestWalls[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = int.MaxValue;
+        adjacencyMap[new KeyValuePair<int, int>(largestItem.Key,largestItem.Value)] = int.MaxValue;
       }
     }
 
@@ -998,7 +1056,7 @@ public class TestLevelGeneration : Node2D
 
     foreach (var item in largestSet)
     {
-      VisualizationMaps["Adjacency Overlay"].SetCell(item.Key , item.Value , (closestWalls[item] * 4) % maxColors);
+      VisualizationMaps["Adjacency Overlay"].SetCell(item.Key , item.Value , (adjacencyMap[item] * 4) % maxColors);
     }
   }
 }

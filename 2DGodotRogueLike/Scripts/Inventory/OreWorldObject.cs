@@ -20,11 +20,10 @@ public class OreWorldObject : Node2D
   [Export]
   public float timeToMine = 3;
 
-  AnimatedSprite animatedSprite;
+  public AnimatedSprite animatedSprite;
   Area2D area2D;
   CollisionShape2D collisionShape2D;
   CPUParticles2D cpuParticles2D;
-  //GD.Load()
   
   private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/InventoryObject.tscn");
 

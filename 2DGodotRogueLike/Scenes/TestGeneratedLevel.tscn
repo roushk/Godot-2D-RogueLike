@@ -1624,14 +1624,17 @@ tileMapSize = Vector2( 200, 100 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
+scale = Vector2( 4, 4 )
+z_index = -10
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 2687069, 1, 0, 2687070, 1, 1, 2687071, 1, 2, 2752605, 1, 65536, 2752606, 1, 65537, 2752607, 1, 131077, 2752608, 1, 2, 2818141, 1, 65536, 2818142, 1, 65537, 2818143, 1, 65537, 2818144, 1, 65538, 2883675, 1, 0, 2883676, 1, 1, 2883677, 1, 131078, 2883678, 1, 65537, 2883679, 1, 65537, 2883680, 1, 65538, 2949209, 1, 0, 2949210, 1, 1, 2949211, 1, 131078, 2949212, 1, 65537, 2949213, 1, 65537, 2949214, 1, 65537, 2949215, 1, 65541, 2949216, 1, 131074, 3014744, 1, 0, 3014745, 1, 131078, 3014746, 1, 65537, 3014747, 1, 65537, 3014748, 1, 65537, 3014749, 1, 65537, 3014750, 1, 65541, 3014751, 1, 131074, 3080280, 1, 65536, 3080281, 1, 65537, 3080282, 1, 65537, 3080283, 1, 65537, 3080284, 1, 65537, 3080285, 1, 65537, 3080286, 1, 65538, 3145809, 1, 0, 3145810, 1, 1, 3145811, 1, 5, 3145812, 1, 196609, 3145813, 1, 196609, 3145814, 1, 196609, 3145815, 1, 196609, 3145816, 1, 262150, 3145817, 1, 65537, 3145818, 1, 65537, 3145819, -1073741823, 65537, 3145820, 1, 65537, 3145821, 1, 65541, 3145822, 1, 131074, 3211345, 1, 65536, 3211346, 1, 65537, 3211347, 1, 65538, 3211352, 1, 65536, 3211353, 1, 65537, 3211354, 1, 65537, 3211355, 1, 65537, 3211356, 1, 65541, 3211357, 1, 131074, 3276881, 1, 65536, 3276882, 1, 65537, 3276883, 1, 131077, 3276884, 1, 2, 3276888, 1, 65536, 3276889, 1, 65541, 3276890, 1, 131073, 3276891, 1, 131073, 3276892, 1, 131074, 3342417, 1, 131072, 3342418, 1, 65542, 3342419, 1, 65537, 3342420, 1, 65538, 3342424, 1, 131072, 3342425, 1, 131074, 3407954, 1, 65536, 3407955, 1, 65537, 3407956, 1, 65538, 3473490, 1, 131072, 3473491, 1, 131073, 3473492, 1, 196613, 3473493, 1, 7, 3539029, 1, 196612, 3539030, 1, 7, 3604566, 1, 65539, 3670102, 1, 196612, 3670103, 1, 196609, 3670104, 1, 196610 )
+tile_data = PoolIntArray( 1900592, 1, 0, 1900593, 1, 1, 1900594, 1, 1, 1900595, 1, 1, 1900596, 1, 1, 1900597, 1, 1, 1900598, 1, 1, 1900599, 1, 1, 1900600, 1, 1, 1900601, 1, 1, 1900602, 1, 2, 1966127, 1, 0, 1966128, 1, 131078, 1966129, 1, 65537, 1966130, 1, 65537, 1966131, 1, 65537, 1966132, 1, 65537, 1966133, 1, 65537, 1966134, 1, 65537, 1966135, 1, 65537, 1966136, 1, 65537, 1966137, 1, 65537, 1966138, 1, 131077, 1966139, 1, 1, 1966140, 1, 2, 2031663, 1, 131072, 2031664, 1, 65542, 2031665, 1, 65537, 2031666, 1, 65537, 2031667, 1, 65537, 2031668, 1, 65537, 2031669, 1, 65537, 2031670, 1, 65537, 2031671, 1, 65537, 2031672, 1, 65537, 2031673, 1, 65537, 2031674, 1, 65537, 2031675, 1, 65537, 2031676, 1, 65538, 2097200, 1, 65536, 2097201, 1, 65537, 2097202, 1, 65537, 2097203, 1, 65537, 2097204, 1, 65537, 2097205, 1, 65537, 2097206, 1, 65537, 2097207, 1, 65537, 2097208, 1, 65537, 2097209, 1, 65537, 2097210, 1, 65537, 2097211, 1, 65537, 2097212, 1, 262149, 2097213, 1, 196610, 2162736, 1, 65536, 2162737, 1, 65537, 2162738, 1, 65537, 2162739, 1, 65537, 2162740, 1, 65537, 2162741, 1, 65537, 2162742, 1, 65537, 2162743, 1, 65537, 2162744, 1, 65537, 2162745, 1, 65537, 2162746, 1, 65537, 2162747, 1, 65541, 2162748, 1, 131074, 2228272, 1, 65540, 2228273, 1, 131073, 2228274, 1, 131073, 2228275, 1, 131073, 2228276, 1, 131073, 2228277, 1, 131073, 2228278, 1, 131073, 2228279, 1, 131073, 2228280, 1, 131073, 2228281, 1, 65542, 2228282, 1, 65541, 2228283, 1, 131074, 2293808, 1, 131075, 2293817, 1, 65536, 2293818, 1, 65538, 2359353, 1, 65540, 2359354, 1, 131074, 2424889, 1, 131075, 2687069, 1, 0, 2687070, 1, 1, 2687071, 1, 2, 2752605, 1, 65536, 2752606, 1, 65537, 2752607, 1, 131077, 2752608, 1, 2, 2818141, 1, 65536, 2818142, 1, 65537, 2818143, 1, 65537, 2818144, 1, 65538, 2883675, 1, 0, 2883676, 1, 1, 2883677, 1, 131078, 2883678, 1, 65537, 2883679, 1, 65537, 2883680, 1, 65538, 2949209, 1, 0, 2949210, 1, 1, 2949211, 1, 131078, 2949212, 1, 65537, 2949213, 1, 65537, 2949214, 1, 65537, 2949215, 1, 65541, 2949216, 1, 131074, 3014744, 1, 0, 3014745, 1, 131078, 3014746, 1, 65537, 3014747, 1, 65537, 3014748, 1, 65537, 3014749, 1, 65537, 3014750, 1, 65541, 3014751, 1, 131074, 3080280, 1, 65536, 3080281, 1, 65537, 3080282, 1, 65537, 3080283, 1, 65537, 3080284, 1, 65537, 3080285, 1, 65537, 3080286, 1, 65538, 3145809, 1, 0, 3145810, 1, 1, 3145811, 1, 5, 3145812, 1, 196609, 3145813, 1, 196609, 3145814, 1, 196609, 3145815, 1, 196609, 3145816, 1, 262150, 3145817, 1, 65537, 3145818, 1, 65537, 3145819, -1073741823, 65537, 3145820, 1, 65537, 3145821, 1, 65541, 3145822, 1, 131074, 3211345, 1, 65536, 3211346, 1, 65537, 3211347, 1, 65538, 3211352, 1, 65536, 3211353, 1, 65537, 3211354, 1, 65537, 3211355, 1, 65537, 3211356, 1, 65541, 3211357, 1, 131074, 3276881, 1, 65536, 3276882, 1, 65537, 3276883, 1, 131077, 3276884, 1, 2, 3276888, 1, 65536, 3276889, 1, 65541, 3276890, 1, 131073, 3276891, 1, 131073, 3276892, 1, 131074, 3342417, 1, 131072, 3342418, 1, 65542, 3342419, 1, 65537, 3342420, 1, 65538, 3342424, 1, 131072, 3342425, 1, 131074, 3407954, 1, 65536, 3407955, 1, 65537, 3407956, 1, 65538, 3473490, 1, 131072, 3473491, 1, 131073, 3473492, 1, 196613, 3473493, 1, 7, 3539029, 1, 196612, 3539030, 1, 7, 3604566, 1, 65539, 3670102, 1, 196612, 3670103, 1, 196609, 3670104, 1, 196610 )
 
 [node name="AdjacencyMap" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
+scale = Vector2( 4, 4 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -1639,6 +1642,7 @@ format = 1
 [node name="Directed Graph Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
+scale = Vector2( 4, 4 )
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -1646,6 +1650,7 @@ format = 1
 [node name="Room Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
+scale = Vector2( 4, 4 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -1653,6 +1658,7 @@ format = 1
 [node name="KMeans Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
+scale = Vector2( 4, 4 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
@@ -1660,29 +1666,30 @@ format = 1
 [node name="AStar Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
+scale = Vector2( 4, 4 )
 tile_set = ExtResource( 6 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 1445.1, 734.947 )
+position = Vector2( 3527.45, 2075.13 )
 current = true
 zoom = Vector2( 5, 5 )
 script = ExtResource( 4 )
 
 [node name="GUI" type="MarginContainer" parent="Camera2D"]
-margin_left = 604.143
-margin_top = -534.112
-margin_right = 941.143
-margin_bottom = -31.1122
-rect_scale = Vector2( 2, 2.2 )
+margin_left = 600.554
+margin_top = -710.352
+margin_right = 937.554
+margin_bottom = -115.352
+rect_scale = Vector2( 2, 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/GUI"]
 margin_right = 337.0
-margin_bottom = 551.0
+margin_bottom = 595.0
 
 [node name="General" type="Label" parent="Camera2D/GUI/VBoxContainer"]
 margin_right = 337.0
@@ -2040,6 +2047,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Game Object Buttons" type="Label" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 555.0
+margin_right = 337.0
+margin_bottom = 570.0
+text = "Game Object Buttons"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplitContainer7" type="HSplitContainer" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 574.0
+margin_right = 337.0
+margin_bottom = 595.0
+split_offset = 50
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpawnOreChunksRoom" type="Button" parent="Camera2D/GUI/VBoxContainer/HSplitContainer7"]
+margin_right = 168.0
+margin_bottom = 21.0
+text = "Spawn Ore Room"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpawnOreChunksEdge" type="Button" parent="Camera2D/GUI/VBoxContainer/HSplitContainer7"]
+margin_left = 180.0
+margin_right = 337.0
+margin_bottom = 21.0
+text = "Spawn Ore Edge"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MouseInfoUI" type="MarginContainer" parent="Camera2D"]
 margin_left = -1268.0
 margin_top = 462.0
@@ -2201,3 +2244,5 @@ __meta__ = {
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer2/HSplitContainer/SpinBox2" to="." method="SetNumKMeansClusters"]
 [connection signal="toggled" from="Camera2D/GUI/VBoxContainer/HSplitContainer4/WFC_ViewSockets4" to="." method="ToggleRealtimeAStar"]
 [connection signal="value_changed" from="Camera2D/GUI/VBoxContainer/HSplitContainer4/SpinBox3" to="." method="SetRealtimeAStarIter"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer7/SpawnOreChunksRoom" to="." method="SpawnOreChunksRoom_pressed"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer7/SpawnOreChunksEdge" to="." method="SpawnOreChunksEdge_pressed"]

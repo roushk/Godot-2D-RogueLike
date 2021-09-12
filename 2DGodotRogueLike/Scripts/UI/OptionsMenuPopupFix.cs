@@ -14,5 +14,7 @@ public class OptionsMenuPopupFix : OptionButton
   public override void _Process(float delta)
   {
     GetPopup().SetPosition(RectGlobalPosition + offset);
+    //Make sure on the top
+    GetPopup().SetAsToplevel(true);
   }
 }
