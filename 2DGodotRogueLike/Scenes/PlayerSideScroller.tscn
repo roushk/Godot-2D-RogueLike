@@ -96,23 +96,28 @@ atlas = ExtResource( 5 )
 region = Rect2( 48, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 3 )
+atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=24]
-atlas = ExtResource( 3 )
+atlas = ExtResource( 4 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 3 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=27]
 animations = [ {
+"frames": [  ],
+"loop": true,
+"name": "New Anim",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
 "loop": true,
 "name": "Character Idle",
@@ -130,18 +135,13 @@ animations = [ {
 }, {
 "frames": [ SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
-"name": "Character Fall",
+"name": "Character Jump",
 "speed": 10.0
 }, {
 "frames": [ SubResource( 25 ), SubResource( 26 ) ],
 "loop": true,
-"name": "Character Jump",
+"name": "Character Fall",
 "speed": 10.0
-}, {
-"frames": [  ],
-"loop": true,
-"name": "New Anim",
-"speed": 5.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=28]

@@ -22,7 +22,7 @@
     <Compile Include="Scripts\Animation\AnimatedTilesetTileSettings.cs" />
     <Compile Include="Scripts\EditorLight.cs" />
     <Compile Include="Scripts\InputManager\InputManager.cs" />
-    <Compile Include="Scripts\Inventory\BaseInventory.cs" />
+    <Compile Include="Scripts\Inventory\Inventory.cs" />
     <Compile Include="Scripts\MapGeneration\ChokePointFinder.cs" />
     <Compile Include="Scripts\ModularWeapons\BaseBlueprint.cs" />
     <Compile Include="Scripts\ModularWeapons\BasePart.cs" />
@@ -34,7 +34,7 @@
     <Compile Include="Scripts\Player\CameraMovement.cs" />
     <Compile Include="Scripts\Player\Player.cs" />
     <Compile Include="Scripts\Player\PlayerTopDown.cs" />
-    <Compile Include="Scripts\Inventory\InventoryWorldObject.cs" />
+    <Compile Include="Scripts\Inventory\InventoryObject.cs" />
     <Compile Include="Scripts\Inventory\OreWorldObject.cs" />
     <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
     <Compile Include="Scripts\Utils.cs" />

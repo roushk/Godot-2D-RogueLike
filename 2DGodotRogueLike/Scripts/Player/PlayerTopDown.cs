@@ -32,16 +32,7 @@ public class PlayerTopDown : KinematicBody2D
 		return (int)dir * 90;
   }
 
-  //map of object name to the amount currently owned
-  System.Collections.Generic.SortedDictionary<string, int> materialInventory = new System.Collections.Generic.SortedDictionary<string, int>();
-  
-
-  //integer of amount of gold the player has
-  int gold = 0;
-
-  //TODO create a UniqueItem class that is any unique item such as a crafted sword, armor, ring, necklace, anything of that nature
-  //System.Collections.Generic.List<UniqueItem> uniqueItemInventory;
-
+	Inventory inventory = new Inventory();
 
   //todo Doesnt quite work, need better way to detect if above fallable block
   bool OnTile = false;
@@ -49,11 +40,53 @@ public class PlayerTopDown : KinematicBody2D
 
   OreWorldObject currentlyOverlappedOre;
   bool overlappingOre = false;
+	Area2D playerArea;
+	AnimatedSprite animatedSprite;
+	AnimationPlayer weaponAnimPlayer;
+	RayCast2D raycast2D;
+	Sprite weaponSprite;
 
   public override void _Ready()
   {
 		//GetNode("OreWorldObject");
+		playerArea = GetNode<Area2D>("PlayerInteractionArea");
+		animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
+		weaponAnimPlayer = GetNode("WeaponSprite/WeaponAnimPlayer") as AnimationPlayer;
+		raycast2D = GetNode("RayCast2D") as RayCast2D;
+		weaponSprite = GetNode("WeaponSprite") as Sprite;
   }
+
+
+	void CollidingWithInvObject(InventoryObject inv)
+	{
+		Console.WriteLine("Overlapping Inventory Object" + inv.ToString());
+		//Add to relevent material
+		if(inv.isMaterial)
+		{
+			int currVal = 0;
+			if(inventory.stackableItems.TryGetValue(inv.material, out currVal))
+				inventory.stackableItems[inv.material] = currVal + inv.numMaterials;
+		}
+		else
+		{
+			inventory.uniqueItems.Add(new Tuple<string,	BaseBlueprint>(inv.inventoryObjectName,inv.blueprint));
+		}
+
+		//TODO setup callback if needed
+		//inv.PickedUpCallback();
+		//delete the object after adding it
+		inv.QueueFree();
+	}
+
+	public void _on_PlayerInteractionArea_body_entered(Node body)
+  {
+		InventoryObject inv = body.GetParent() as InventoryObject;
+		if(inv != null)
+		{
+			CollidingWithInvObject(inv);
+		}
+	}
+
 
   public void _on_PlayerInteractionArea_area_entered(Area2D body)
   {
@@ -63,23 +96,10 @@ public class PlayerTopDown : KinematicBody2D
 			overlappingOre = true;
 			currentlyOverlappedOre = ore;
 		}
-		
 		InventoryObject inv = body.GetParent() as InventoryObject;
 		if(inv != null)
 		{
-			/*
-
-			if inv == material
-			add to materials
-			destroy world object
-
-			if inv = unique object
-			add to unique object list
-			destroy world object
-
-			inventoryObject
-			*/
-			
+			CollidingWithInvObject(inv);
 		}
   }
 
@@ -103,11 +123,34 @@ public class PlayerTopDown : KinematicBody2D
   //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
+		//For some reason Godot's on entered func just straight up doesnt work if the bodies are moving so 
+		//we make them stop moving in their script and run this to verify we got everything and it works most of the time
+		//var bodies = playerArea.GetOverlappingBodies();
+		//foreach (PhysicsBody2D item in bodies)
+		//{
+		//	if(item != null)
+		//	{
+		//		InventoryObject inv = item.GetParent() as InventoryObject;
+		//		if(inv != null)
+		//		{
+		//			CollidingWithInvObject(inv);
+		//		}
+		//	}
+		//}
+		//var areas = playerArea.GetOverlappingAreas();
+		//foreach (Area2D item in areas)
+		//{
+		//	if(item != null)
+		//	{
+		//		InventoryObject inv = item.GetParent() as InventoryObject;
+		//		if(inv != null)
+		//		{
+		//			CollidingWithInvObject(inv);
+		//		}
+		//	}
+		//}
+
 		movingDirection = new Vector2(0,0);
-		AnimatedSprite animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
-		AnimationPlayer weaponAnimPlayer = GetNode("WeaponSprite/WeaponAnimPlayer") as AnimationPlayer;
-		RayCast2D raycast2D = GetNode("RayCast2D") as RayCast2D;
-		Sprite weaponSprite = GetNode("WeaponSprite") as Sprite;
 
 		raycast2D.CastTo = new Vector2(0,50);
 
@@ -161,10 +204,10 @@ public class PlayerTopDown : KinematicBody2D
 			animatedSprite.Play("Character Attack");
 			if(!weaponAnimPlayer.IsPlaying())
 			{
-			Vector2 mousePos = GetGlobalMousePosition();
-			//AngleToPoint does what we need, literally dont need to do anything else, sweet
-			weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
-			weaponAnimPlayer.Play("BasicWeaponAttackAnim");
+				Vector2 mousePos = GetGlobalMousePosition();
+				//AngleToPoint does what we need, literally dont need to do anything else, sweet
+				weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
+				weaponAnimPlayer.Play("BasicWeaponAttackAnim");
 			}
 			velocity = new Vector2(0,0);
 		}
@@ -178,12 +221,12 @@ public class PlayerTopDown : KinematicBody2D
 			//if spent enough time mining ore
 			if(currentlyOverlappedOre.timeToMine <= 0)
 			{
-			//Spawn ore item
-
-			//Destroy ore object
-			currentlyOverlappedOre.QueueFree();
-			currentlyOverlappedOre = null;
-			overlappingOre = false;
+				//Spawn ore item
+				currentlyOverlappedOre.CreateInventoryObject();
+				//Destroy ore object
+				currentlyOverlappedOre.QueueFree();
+				currentlyOverlappedOre = null;
+				overlappingOre = false;
 
 
 			}

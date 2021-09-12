@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=1]
-[ext_resource path="res://Scenes/TopDownPlayerScene.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/OreWorldObject.tscn" type="PackedScene" id=3]
+[ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=3]
+[ext_resource path="res://TemplateScenes/InventoryObject.tscn" type="PackedScene" id=4]
 
 [node name="Node2D" type="Node2D"]
 
@@ -20,6 +21,7 @@ position = Vector2( -89.3805, 67.8423 )
 
 [node name="Iron Ore 5" parent="." instance=ExtResource( 3 )]
 position = Vector2( 132.865, -21.7195 )
+timeToMine = 1.0
 
 [node name="Cobalt Ore" parent="." instance=ExtResource( 3 )]
 position = Vector2( -196.331, 82.3664 )
@@ -44,6 +46,24 @@ position = Vector2( 14.2438, 221.293 )
 
 [node name="AnimatedSprite" parent="Ore" index="0"]
 animation = "Crystal Ores"
+
+[node name="Object" parent="." instance=ExtResource( 4 )]
+position = Vector2( 219.415, -36.9197 )
+
+[node name="Object2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 79.4058, -55.4194 )
+
+[node name="Object3" parent="." instance=ExtResource( 4 )]
+position = Vector2( 145.416, 27.4089 )
+
+[node name="Object4" parent="." instance=ExtResource( 4 )]
+position = Vector2( 172.325, -39.0219 )
+
+[node name="Object5" parent="." instance=ExtResource( 4 )]
+position = Vector2( 274.073, -7.90874 )
+
+[node name="Object6" parent="." instance=ExtResource( 4 )]
+position = Vector2( 271.551, -78.1236 )
 
 [editable path="Iron Ore 1"]
 [editable path="Iron Ore 5"]

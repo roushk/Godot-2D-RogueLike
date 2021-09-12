@@ -12,7 +12,7 @@ public class OreWorldObject : Node2D
 
   // Called when the node enters the scene tree for the first time.
   [Export]
-  public string oreName;
+  public Materials.Material material;
 
   [Export]
   public int amountInOre = 1;
@@ -20,41 +20,44 @@ public class OreWorldObject : Node2D
   [Export]
   public float timeToMine = 3;
 
+  AnimatedSprite animatedSprite;
+  Area2D area2D;
+  CollisionShape2D collisionShape2D;
+  CPUParticles2D cpuParticles2D;
   //GD.Load()
   
-  private PackedScene _inventoryObjectScene = (PackedScene)GD.Load("res://Scenes/InventoryObject.tscn");
+  private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/InventoryObject.tscn");
 
   //const inventoryObject = Godot.ResourcePreloader. ("res://Bullet.tscn")
   public override void _Ready()
   {
-
+    animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
+    area2D = GetNode("Area2D") as Area2D;
+    collisionShape2D = GetNode("Area2D/CollisionShape2D") as CollisionShape2D;
+    cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
   }
 
   public void CreateInventoryObject()
   {
-    Node _inventoryObject = _inventoryObjectScene.Instance(); 
-    //adds the new object as a child to the parent of this object so they are not tetherd together.
-    this.GetParent().AddChild(_inventoryObject); 
-    var inventoryObject =  _inventoryObject as InventoryObject;
-    inventoryObject.Position = this.Position;
-    inventoryObject.inventoryObjectName = oreName;
-    //should be setting it to data loaded from a file for the craftable material property 
-    inventoryObject.GetNode<AnimatedSprite>("AnimatedSprite").Animation = "Ore Chunks";
-    //InventoryObject.Get
+    Node2D newInvObject = inventoryObjectScene.Instance() as Node2D; 
+    GetTree().Root.AddChild(newInvObject); 
 
+    //adds the new object as a child to the parent of this object so they are not tetherd together.
+    
+    newInvObject.GlobalPosition = this.GlobalPosition;
+    var invObj = (newInvObject as InventoryObject);
+    invObj.inventoryObjectName = material.ToString();
+    invObj.material = material;
+    invObj.numMaterials = amountInOre;
+    invObj.isMaterial = true;
+
+    //should be setting it to data loaded from a file for the craftable material property 
+    newInvObject.GetNode<AnimatedSprite>("AnimatedSprite").Animation = "Ore Chunks";
+    //InventoryObject.Get
   }
 
   public override void _Process(float delta)
   {
-
-    AnimatedSprite animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
-
-    Area2D area2D = GetNode("Area2D") as Area2D;
-
-    CollisionShape2D collisionShape2D = GetNode("Area2D/CollisionShape2D") as CollisionShape2D;
-
-    CPUParticles2D cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
-
 
   }
 

@@ -26,12 +26,12 @@ public class Player : KinematicBody2D
   }
 
 
-public override void _Draw()
-{
-    this.DrawLine(Position,Position + velocity,Color.Color8(1,0,0,1));
-    this.DrawLine(Position,Position + new Vector2(0,50),Color.Color8(0,1,0,1));
+  public override void _Draw()
+  {
+      this.DrawLine(Position,Position + velocity,Color.Color8(1,0,0,1));
+      this.DrawLine(Position,Position + new Vector2(0,50),Color.Color8(0,1,0,1));
 
-}
+  }
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
