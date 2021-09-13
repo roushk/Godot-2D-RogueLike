@@ -10,14 +10,14 @@ public class TestLevelGeneration : Node2D
 
   public void FloodFillToDirectedGraph_Callback()
   {
-    CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value));
+    CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), null, false, true);
   }
 
   public void FloodFillToDirectedGraphIter_Callback()
   {
     for (int i = 0; i < numDirectedGraphFromFloodFillIter; i++)
     {
-      CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), true);
+      CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), null, false, true);
     }
   }
 
@@ -78,13 +78,16 @@ public class TestLevelGeneration : Node2D
 
   public void SpawnOreChunksRoom_pressed()
   {
-    foreach (var item in adjacencyMap)
+    foreach (var room in rooms)
     {
-      if(item.Value > 2)
+      foreach (var point in room)
       {
-        if(random.NextDouble() < oreChunkRoomSpawnChance)
+        if(point.Value > 2)
         {
-          SpawnOreChunkAt(new Vector2(item.Key.Key, item.Key.Value));
+          if(random.NextDouble() < oreChunkRoomSpawnChance)
+          {
+            SpawnOreChunkAt(new Vector2(point.Key, point.Value));
+          }
         }
       }
     }
@@ -102,6 +105,170 @@ public class TestLevelGeneration : Node2D
         }
       }
     }
+  }
+
+  public void GenerateRoomsFromFloodFillAndAdjacency()
+  {
+    //Select every point in the adjacency man that has a adjacency value >= 2 and returns those points into a IEnumerable
+    //
+    //List<KeyValuePair<int,int>> points = CPF.FloodFill((x,y)=>{return terrainMap[x,y] == 0 && adjacencyMap[new KeyValuePair<int,int>(x,y)] >= 2;}, true, false)
+
+    HashSet<KeyValuePair<int,int>> checkedPts = new HashSet<KeyValuePair<int, int>>();
+    //For each value >=2 
+    rooms = adjacencyMap.Where(point => point.Value > 2).Select(pt => pt.Key).ToList()  //Creates list of points.Value >= 2
+      //flood fill each point
+      .Select(p => CPF.FloodFill(checkedPts,p,(x,y)=>{return terrainMap[x,y] == 0 && adjacencyMap[new KeyValuePair<int,int>(x,y)] >= 2 && !checkedPts.Contains(new KeyValuePair<int,int>(x,y));}, true)).Where(l => l.Count > 0).ToList(); //Generates list of list of flood fill points
+      //Make sets of point clouds unique
+      //.Distinct(); //Selects unique lists
+
+    VisualizationMaps["Room Overlay"].Clear();
+    int currListValue = 0;
+    foreach (var pointList in rooms)
+    {
+      foreach (var item in pointList)
+      {
+        VisualizationMaps["Room Overlay"].SetCell(item.Key, item.Value, (currListValue * 2) % maxColors);
+      }
+      currListValue++;
+    }
+
+    //Weighted KMeans, doesnt quite give the result as wanted
+    //=================================================================================
+    //var seedPoints = points.Select(pointArray => pointArray[0]).ToList(); //Selects the first value of each list and turns that into its own list
+    //
+    //Dictionary<KeyValuePair<int,int>, float> seedPointsToWeight = new Dictionary<KeyValuePair<int, int>, float>();
+    //
+    //for (int i = 0; i < seedPoints.Count; i++)
+    //{
+    //  seedPointsToWeight.Add(seedPoints[i], Mathf.Sqrt(points[i].Count));  
+    //}
+    //
+    //CPF.GenerateWeightedKMeansFromTerrain(seedPoints.Count, largestSet, seedPointsToWeight, iterKMeans);
+    //End Weighted KMeans
+    //=================================================================================
+  }
+
+  //Translates grid vec to center of vec in world pos
+  public Vector2 MapPointToWorldPos(Vector2 pos)
+  {
+    return pos * ForegroundMap.CellSize * ForegroundMap.Scale + (ForegroundMap.CellSize * ForegroundMap.Scale * 0.5f);
+  }
+
+  public void SpawnPlayerAtStartRoom()
+  {
+    if(startRoom != -1)
+    {
+      PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;
+      
+      GetTree().Root.AddChild(newPlayer);
+      playerCamera = newPlayer.GetNode("Camera2D") as Camera2D;
+      newPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
+      SetPlayerMode(true);
+    }
+  }
+
+  public void SetPlayerMode(bool _playerMode)
+  {
+    playerMode = _playerMode;
+    if(playerMode)
+    {
+      debugCamera.Current = false;
+      if(playerCamera != null)
+        playerCamera.Current = true;
+    }
+    else
+    {
+      debugCamera.Current = true;
+      if(playerCamera != null)
+        playerCamera.Current = false;
+    }
+  }
+
+  //Calculates the distances from each room to each other room
+  public void FindFarthestRooms()
+  {
+    //index of room as X/Y start to end
+    roomDistances = new int[rooms.Count,rooms.Count];
+    int currStartRoom = 0;
+    
+    //potentially every room can be an end room
+    potentialEndRooms = new List<int>();
+    
+    foreach (var startRoom in rooms)
+    {
+      int currEndRoom = 0;
+      foreach (var endRoom in rooms)
+      {
+        if(currStartRoom != currEndRoom && roomDistances[currStartRoom, currEndRoom] == 0)
+        {
+          //Need new map
+          AStarMap = new AStar.AStarMap(terrainMap, width, height);   
+          AStarPather.InitPather(new Vector2(startRoom[0].Key, startRoom[0].Value),new Vector2(endRoom[0].Key, endRoom[0].Value), AStarMap);
+          var result = AStarPather.GeneratePath();  
+          
+          roomDistances[currStartRoom, currEndRoom] = AStarPather.path.Count();
+          //Update each other start/end pair
+          roomDistances[currEndRoom, currStartRoom] = roomDistances[currStartRoom, currEndRoom];
+
+          if(result == AStar.PathState.DoesNotExist)
+          {
+            Console.WriteLine("Path Does not exists between " + startRoom[0].ToString() + " and " + endRoom[0].ToString());
+          }
+          else if (result == AStar.PathState.Found)
+          {
+            Console.WriteLine("Path Found between " + startRoom[0].ToString() + " and " + endRoom[0].ToString());
+          }
+        }
+        currEndRoom++;
+      }
+      currStartRoom++;
+    }
+
+    int longestPath = 0;
+    int longestStartRoom = 0;
+    int longestEndRoom = 0;
+
+    for (int i = 0; i < rooms.Count; i++)
+    {
+      //Only check along diagonal
+      for (int j = i; j < rooms.Count; j++)
+      {
+        if(roomDistances[i,j] > longestPath)
+        {
+          longestStartRoom = i;
+          longestEndRoom = j;
+          longestPath = roomDistances[i,j];
+        }
+
+      }
+    }
+
+    for (int i = 0; i < rooms.Count; i++)
+    {
+      //Add all possible rooms with an exit to a list so that we can create many exits if we want to
+      if(roomDistances[longestStartRoom,i] > minDistToEndRoom)
+      {
+        potentialEndRooms.Add(i);
+      }
+    }
+
+    Console.WriteLine("Farthest apart rooms is Room " + longestStartRoom.ToString() + " and Room " + longestEndRoom.ToString());
+
+    //Clear AStar vis map
+    VisualizationMaps["AStar Overlay"].Clear();
+
+    //Draw rooms that are far enough 
+    foreach (var item in potentialEndRooms)
+    {
+      VisualizationMaps["AStar Overlay"].SetCell(rooms[item][0].Key,rooms[item][0].Value, 10);
+    }
+
+    //Draw start and abs farthest
+    VisualizationMaps["AStar Overlay"].SetCell(rooms[longestStartRoom][0].Key,rooms[longestStartRoom][0].Value, 4);
+    VisualizationMaps["AStar Overlay"].SetCell(rooms[longestEndRoom][0].Key,rooms[longestEndRoom][0].Value, 11);
+
+    startRoom = longestStartRoom;
+    endRoom = longestEndRoom;
   }
 
   public void SpawnOreChunkAt(Vector2 pos )
@@ -222,6 +389,9 @@ public class TestLevelGeneration : Node2D
 
     //KMeans Vis Map
     RunKMeansOnLargestSet();
+
+    //Room finder
+    GenerateRoomsFromFloodFillAndAdjacency();
   }
 
   public void Generate_CCL_Select_Largest_Adj()
@@ -261,7 +431,7 @@ public class TestLevelGeneration : Node2D
 
   public void RunKMeansOnLargestSet()
   {
-    CPF.GenerateKMeansFromTerrain(numKMeansClusters, largestSet, iterKMeans);
+    CPF.GenerateKMeansFromTerrain(numKMeansClusters, largestSet, null, iterKMeans);
   }
 
   public void ToggleRealtimeAStar(bool toggle)
@@ -327,9 +497,23 @@ public class TestLevelGeneration : Node2D
   float oreChunkEdgeSpawnChance = 0.1f;
 
   //0 to 1
-  float oreChunkRoomSpawnChance = 0.4f;
+  float oreChunkRoomSpawnChance = 0.2f;
 
   private PackedScene oreWorldObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/OreWorldObject.tscn");
+  private PackedScene playerObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/TopDownPlayerScene.tscn");
+
+  List<List<KeyValuePair<int,int>>> rooms = new List<List<KeyValuePair<int, int>>>();
+
+  //Array of room distances to each other
+  int[,] roomDistances;
+
+  //Index of starting room + ending room
+  int endRoom = -1;
+  int startRoom = -1;
+  List<int> potentialEndRooms;
+  
+  //num nodes not full distance atm, slightly faster to do it like this than dist calcs even though not as accurate
+  int minDistToEndRoom = 50;
 
   //!!!!!!!!!!!!!!!!!!!!!!!!
   //map  0,0 = bottom right
@@ -410,6 +594,15 @@ public class TestLevelGeneration : Node2D
 
   OptionButton ActiveOverlayOptions;
   OptionButton MouseOptionsButton;
+
+
+  Camera2D debugCamera;
+  Camera2D playerCamera;
+
+  InputManager inputManager;
+  bool playerMode = false;
+  
+
 #endregion
 
   public int [,] GetTerrainMapCopy()
@@ -565,10 +758,10 @@ public class TestLevelGeneration : Node2D
         if(CPF.GenerateDirectedGraphFromFloodFill(
           out cpfRootNode, 
           new Vector2(largestSet[largestSet.Count/2].Key, 
-          largestSet[largestSet.Count/2].Value), true))
+          largestSet[largestSet.Count/2].Value), null, false, true))
         {
           realtimeFloodFill = false;
-          //Set the button to display as untoggled
+          //Set the button to display as not toggled
           (GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer/HSplitContainer/WFC_ViewSockets6") as Button).ToggleMode = false;
           break;
         }
@@ -721,11 +914,18 @@ public class TestLevelGeneration : Node2D
         UpdateMouseInfoUI();
       }
     }
+
+    if(inputManager.IsKeyPressed(KeyList.M))
+    {
+      SetPlayerMode(!playerMode);
+    }
   }
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
+    debugCamera = GetNode("Camera2D") as Camera2D;
+
     MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
 
     ActiveOverlayOptions = GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer5/SelectedOverlay") as OptionButton;
@@ -738,7 +938,7 @@ public class TestLevelGeneration : Node2D
     currentMouseSelectionAStar_ParentNodeCoords = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General10") as Label;
     currentMouseSelectionAStar_NodeState = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General11") as Label;
     
-    //link forground and background map variables to the nodes
+    inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
 
     random = new Random();
 
@@ -927,6 +1127,7 @@ public class TestLevelGeneration : Node2D
     //update bitmask for auto tile
     ForegroundMap.UpdateBitmaskRegion(new Vector2(0, 0), new Vector2(width, height));
 
+    ForegroundMap.UpdateDirtyQuadrants();
     //ForegroundMap.SetCell(width / 2, width / 2,TestTile);
   }
 
@@ -999,7 +1200,7 @@ public class TestLevelGeneration : Node2D
 
 #endregion
   //Maybe try to grow a rectangle into 3x3 or larger and classify that as a "room" 
-  //each coord has the distnace to the closest wall, higher points are more open areas aka larger rooms?
+  //each coord has the distance to the closest wall, higher points are more open areas aka larger rooms?
   //Turn every point into its own Square (Corner to center navigable) and then attempt to grow each square ring
   //Also displays it green, yellow, orange, red, purple, blue, cyan for 1,2,3,4,5,6,7
   //Runs on the terrainMap to find the closest number of tiles

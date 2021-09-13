@@ -31,11 +31,21 @@ public class InputManager : Node
         return keys[key];
     }
 
+
+
+    //pressed this frame
+    public bool IsKeyPressed(KeyList key)
+    {
+        return keys[key] == KeyState.Pressed;
+    }
+    
+    //Down = pressed this frame or held down
     public bool IsKeyDown(KeyList key)
     {
         return keys[key] == KeyState.Pressed || keys[key] == KeyState.Held;
     }
-
+    
+    //If the key is held down
     public bool IsKeyHeld(KeyList key)
     {
         return keys[key] == KeyState.Held;

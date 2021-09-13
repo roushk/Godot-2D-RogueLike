@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +23,12 @@ public class ChokePointFinder
     public Vector2 pos = new Vector2();
     public CPFNode parent;
     public List<CPFNode> children = new List<CPFNode>();
+    public NodeState state = NodeState.NotChecked;
+  };
+
+  public class BasicFloodFillNode
+  {
+    public KeyValuePair<int,int> pos = new KeyValuePair<int,int>();
     public NodeState state = NodeState.NotChecked;
   };
 
@@ -86,14 +93,18 @@ public class ChokePointFinder
 
   NodeQueueSorter comparer;
   //SortedSet<CPFNode> queue = new SortedSet<CPFNode>();
-  List<CPFNode> queue = new List<CPFNode>();
-  HashSet<Vector2> checkedPos;
+  List<CPFNode> CPFNodeQueue = new List<CPFNode>();
+  List<BasicFloodFillNode> genericNodeQueue = new List<BasicFloodFillNode>();
+  HashSet<Vector2> checkedPosVec2;
+  
+  //Hash set so unique
+  HashSet<KeyValuePair<int,int>> connectedPoints = new HashSet<KeyValuePair<int,int>>();
 
   //Clusters C_1 -> C_K
   //Dict of point to centroid
   Dictionary<KeyValuePair<int, int>, int> KMeansSets = new Dictionary<KeyValuePair<int, int>, int>();
 #endregion
-#region Map Funcs
+#region Map Functions
   public void SetDirectedGraphVisualizationMap(ref Dictionary<string,Godot.TileMap> _mapIDVisualization, string map)
   {
     directedGraphVisMap = _mapIDVisualization[map];
@@ -122,7 +133,7 @@ public class ChokePointFinder
 #endregion
 
 
-  //## K-Means Clustering 
+  // K-Means Clustering 
   //1. Choose the number of clusters(K) and obtain the data points 
   //2. Place the centroids c_1, c_2, ..... c_k randomly 
   //3. Repeat steps 4 and 5 until convergence or until the end of a fixed number of iterations
@@ -133,9 +144,9 @@ public class ChokePointFinder
   //       - new centroid = mean of all points assigned to that cluster
   //6. End 
 
-  public bool GenerateKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, int numIteratons = 100, bool runIteratively = false)
+  public bool GenerateKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, IEnumerable<KeyValuePair<int, int>> startingPoints = null, int numIterations = 100, bool runIteratively = false)
   {
-    //## K-Means Clustering 
+    // K-Means Clustering 
     //1. Choose the number of clusters(K) and obtain the data points 
     List<Vector2> centroids = new List<Vector2>();
     
@@ -143,15 +154,26 @@ public class ChokePointFinder
     
     //2. Place the centroids c_1, c_2, ..... c_k randomly 
     //Generate the centroids from the point cloud randomly, can change the random but for now using basic random
-    for (int i = 0; i < numClusters; ++i)
+    if(startingPoints == null)
     {
-      KeyValuePair<int,int> pt = pointCloud[random.Next(0,pointCloud.Count - 1)];
-      centroids.Add(new Vector2(pt.Key, pt.Value));
+
+      for (int i = 0; i < numClusters; ++i)
+      {
+        KeyValuePair<int,int> pt = pointCloud[random.Next(0,pointCloud.Count - 1)];
+        centroids.Add(new Vector2(pt.Key, pt.Value));
+      }
+    }
+    else
+    {
+      foreach(var val in startingPoints)
+      {
+        centroids.Add(new Vector2(val.Key, val.Value));
+      }
     }
 
     //3. Repeat steps 4 and 5 until convergence or until the end of a fixed number of iterations
 
-    for (int i = 0; i < numIteratons; ++i)
+    for (int i = 0; i < numIterations; ++i)
     {
     //4. for each data point x_i:
       foreach (var point in pointCloud)
@@ -205,7 +227,6 @@ public class ChokePointFinder
 
   }
 
-
   //Flood-fill (node):
   //1. Set Q to the empty queue or stack.
   //2. Add node to the end of Q.
@@ -221,42 +242,45 @@ public class ChokePointFinder
   //7. Continue looping until Q is exhausted.
   //8. Return.
 
-  //Returns is finished
-  public bool GenerateDirectedGraphFromFloodFill(out CPFNode outRootNode, Vector2 startingPoint, bool runIteratively = false)
+  public bool defaultFloodFillPredicate(int x, int y)
   {
-    int NodesChecked = 0;
-    outRootNode = rootNode;
-    //Considering queue count = 0 means that we are the first iter
-    if(!runIteratively || runIteratively && queue.Count == 0)
+    return terrainMap[x,y] == 0; 
+  }
+
+  //Flood fills over the entire map checking each node if it succeeds the predicate and is connected and returns that point cloud
+  public List<KeyValuePair<int,int>> FloodFill(HashSet<KeyValuePair<int,int>> checkedValues, KeyValuePair<int,int> startingPoint, Func<int,int,bool> nodeToCheckPredicate = null, bool checkDiag = false)
+  {
+
+    BasicFloodFillNode startingPointNode = new BasicFloodFillNode();
+    startingPointNode.pos = startingPoint;
+
+    connectedPoints.Clear();
+    genericNodeQueue = new List<BasicFloodFillNode>();
+    connectedPoints = new HashSet<KeyValuePair<int,int>>();
+
+    if(checkedValues != null && checkedValues.Contains(startingPoint))
     {
-      rootNode.pos = startingPoint;
-      rootNode.state = NodeState.Closed;
-      comparer = new NodeQueueSorter(rootNode);
-      //queue = new SortedSet<CPFNode>(comparer);
-      //queue = new HashSet<CPFNode>();
-      queue = new List<CPFNode>();
-      checkedPos = new HashSet<Vector2>();
-      //1. Set Q to the empty queue or stack.
-      //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
-      
-
-      //2. Add node to the end of Q.
-      queue.Add(rootNode);
-      checkedPos.Add(rootNode.pos);
-      //rootNode.state = NodeState.Closed;
+      return new List<KeyValuePair<int, int>>();
     }
+    //1. Set Q to the empty queue or stack.
+    //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
+    //2. Add node to the end of Q.
+    genericNodeQueue.Add(startingPointNode);
+    connectedPoints.Add(startingPoint);
 
-    //3. While Q is not empty:
-    while(queue.Count != 0)
+    //default is 
+    if(nodeToCheckPredicate == null)
+      nodeToCheckPredicate = defaultFloodFillPredicate; 
+
+    while(genericNodeQueue.Count != 0)
     {
       //4.   Set n equal to the first element of Q.
-      CPFNode currNode = queue.First();
+      BasicFloodFillNode currNode = genericNodeQueue.First();
       //5.   Remove first element from Q.
       //Console.WriteLine("Checking Node: " + currNode.pos.x.ToString() + ", " + currNode.pos.y.ToString());
       //Console.WriteLine("Queue Size: " + queue.Count.ToString());
-      NodesChecked++;
-      queue.Remove(currNode);
-      checkedPos.Add(currNode.pos);
+      genericNodeQueue.Remove(currNode);
+      connectedPoints.Add(currNode.pos);
       //This is only affecting nodes that later have children added to them???
       currNode.state = NodeState.Closed;
       
@@ -271,33 +295,205 @@ public class ChokePointFinder
         for(int j = -1; j <= 1; ++j)  
         {
           //Ignore center (this node) and corners (only doing + shape)
-          if((i == 0 && j == 0) || (i != 0 && j != 0))
+          if((i == 0 && j == 0) || (i != 0 && j != 0 && !checkDiag))
             continue;
 
           //0 is floor
-          if(terrainMap[(int)currNode.pos.x + i, (int)currNode.pos.y + j] == 0)
+          if(nodeToCheckPredicate((int)currNode.pos.Key + i, (int)currNode.pos.Value + j))
+          {
+            KeyValuePair<int, int> checkPos = new KeyValuePair<int, int>(currNode.pos.Key + i, currNode.pos.Value + j);
+
+            //If node hasn't been checked yet
+            if(!connectedPoints.TryGetValue(checkPos, out checkPos))
+            {
+              //If node doesn't exist then create new node
+              BasicFloodFillNode newNode = new BasicFloodFillNode();
+              newNode.pos = new KeyValuePair<int, int>(currNode.pos.Key + i, currNode.pos.Value + j);
+              //need to show that we have checked this node.... not adding this allows us to create multiple nodes for each tile
+              connectedPoints.Add(newNode.pos);
+              newNode.state = NodeState.OpenList;
+              //Make sure to add to the end
+              genericNodeQueue.Add(newNode);
+              if(checkedValues != null)
+                checkedValues.Add(newNode.pos);
+              //queue.Add(newNode);
+            }
+          }
+        }
+      }
+
+      //Finish up the rest of the values
+      //       Add the node to the east of n to the end of Q.
+      //       Add the node to the north of n to the end of Q.
+      //       Add the node to the south of n to the end of Q.
+      //7. Continue looping until Q is exhausted.
+      //8. Return.
+    }
+    return connectedPoints.ToList<KeyValuePair<int,int>>();
+  }
+
+  public bool GenerateWeightedKMeansFromTerrain(int numClusters, List<KeyValuePair<int, int>> pointCloud, Dictionary<KeyValuePair<int, int>, float> startingPoints = null, int numIterations = 100, bool runIteratively = false)
+  {
+    // K-Means Clustering 
+    //1. Choose the number of clusters(K) and obtain the data points 
+    List<Vector2> centroids = new List<Vector2>();
+    List<float> centroidsWeight = new List<float>();
+
+    Random random = new Random();
+    
+    //2. Place the centroids c_1, c_2, ..... c_k randomly 
+    //Generate the centroids from the point cloud randomly, can change the random but for now using basic random
+    if(startingPoints == null)
+    {
+      for (int i = 0; i < numClusters; ++i)
+      {
+        KeyValuePair<int,int> pt = pointCloud[random.Next(0,pointCloud.Count - 1)];
+        centroids.Add(new Vector2(pt.Key, pt.Value));
+        centroidsWeight.Add(1);
+      }
+    }
+    else
+    {
+      foreach(var val in startingPoints)
+      {
+        centroids.Add(new Vector2(val.Key.Key, val.Key.Value));
+        centroidsWeight.Add(val.Value);
+      }
+    }
+
+    //3. Repeat steps 4 and 5 until convergence or until the end of a fixed number of iterations
+
+    for (int i = 0; i < numIterations; ++i)
+    {
+    //4. for each data point x_i:
+      foreach (var point in pointCloud)
+      {
+        float closestDistSq = float.MaxValue;
+        int closestCentroid = 0;
+    //       - find the nearest centroid(c_1, c_2 .. c_k) 
+        for (int j = 0; j < centroids.Count; j++)
+        {
+          //Distance formula squared = (x2-x1)^2 + (y2-y1)^2
+          float dist = ((centroids[j].x - point.Key) * (centroids[j].x - point.Key)) + ((centroids[j].y - point.Value) * (centroids[j].y - point.Value));
+          
+          //Get smallest distance
+          if(dist * centroidsWeight[j] < closestDistSq)
+          {
+            closestCentroid = j;
+            closestDistSq = dist * centroidsWeight[j];
+          }
+        }
+    //       - assign the point to that cluster 
+        KMeansSets[point] = closestCentroid;
+      }
+
+    //5. for each cluster j = 1..k
+
+      Vector2[] centroidSums = new Vector2[centroids.Count];
+      int[] centroidCount = new int[centroids.Count];
+      foreach (var item in KMeansSets)
+      {
+        centroidSums[item.Value] += new Vector2(item.Key.Key, item.Key.Value);
+        centroidCount[item.Value]++;
+      }
+      for (int j = 0; j < centroids.Count; j++)
+      {
+          
+        centroids[j] = centroidSums[j] / centroidCount[j];
+      }
+    //       - new centroid = mean of all points assigned to that cluster
+    //mean = sum / num
+    }
+    //6. End 
+    //Centroids for Clusters C_1 -> C_K
+    CleanKMeansIslands();
+    UpdateKMeansVisMap();
+    return false;
+  }
+
+
+  //Returns is finished
+  public bool GenerateDirectedGraphFromFloodFill(out CPFNode outRootNode, Vector2 startingPoint, Func<int,int,bool> nodeToCheckPredicate = null, bool checkDiag = false, bool runIteratively = false)
+  {
+    int NodesChecked = 0;
+    outRootNode = rootNode;
+    //Considering queue count = 0 means that we are the first iter
+    if(!runIteratively || runIteratively && CPFNodeQueue.Count == 0)
+    {
+      rootNode.pos = startingPoint;
+      rootNode.state = NodeState.Closed;
+      //comparer = new NodeQueueSorter(rootNode);
+      //queue = new SortedSet<CPFNode>(comparer);
+      //queue = new HashSet<CPFNode>();
+      CPFNodeQueue = new List<CPFNode>();
+      checkedPosVec2 = new HashSet<Vector2>();
+      //1. Set Q to the empty queue or stack.
+      //Initialize the queue to be sorted via the absolute distance from the root node and the nodes that way we search in a radial pattern instead of diamond or line
+      
+
+      //2. Add node to the end of Q.
+      CPFNodeQueue.Add(rootNode);
+      checkedPosVec2.Add(rootNode.pos);
+      //rootNode.state = NodeState.Closed;
+    }
+  
+    //default is 
+    if(nodeToCheckPredicate == null)
+      nodeToCheckPredicate = defaultFloodFillPredicate;
+
+    //3. While Q is not empty:
+    while(CPFNodeQueue.Count != 0)
+    {
+      //4.   Set n equal to the first element of Q.
+      CPFNode currNode = CPFNodeQueue.First();
+      //5.   Remove first element from Q.
+      //Console.WriteLine("Checking Node: " + currNode.pos.x.ToString() + ", " + currNode.pos.y.ToString());
+      //Console.WriteLine("Queue Size: " + queue.Count.ToString());
+      NodesChecked++;
+      CPFNodeQueue.Remove(currNode);
+      checkedPosVec2.Add(currNode.pos);
+      //This is only affecting nodes that later have children added to them???
+      currNode.state = NodeState.Closed;
+      
+      //6.   If n is Inside: (aInside = exists within the checked values but we are not adding checked values into the list so skip)
+      //       Set the n
+
+      //Make sure we are adding actual terrain not walls
+      //       Add the node to the west of n to the end of Q.
+      //Add adjacent 
+      for(int i = -1; i <= 1; ++i)  
+      {
+        for(int j = -1; j <= 1; ++j)  
+        {
+          //Ignore center (this node) and corners (only doing + shape)
+          if((i == 0 && j == 0) || (i != 0 && j != 0 && !checkDiag))
+            continue;
+
+          //0 is floor
+          if(nodeToCheckPredicate((int)currNode.pos.x + i, (int)currNode.pos.y + j))
           {
             Vector2 checkPos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
 
             //If node hasn't been checked yet
-            if(!checkedPos.TryGetValue(checkPos, out checkPos))
+            if(!checkedPosVec2.TryGetValue(checkPos, out checkPos))
             {
               //If node doesn't exist then create new node
               CPFNode newNode = new CPFNode();
               newNode.pos = new Vector2(currNode.pos.x + i, currNode.pos.y + j);
               //need to show that we have checked this node.... not adding this allows us to create multiple nodes for each tile
-              checkedPos.Add(newNode.pos);
+              checkedPosVec2.Add(newNode.pos);
               newNode.parent = currNode;
               newNode.state = NodeState.OpenList;
               currNode.children.Add(newNode);
               //Make sure to add to the end
-              queue.Add(newNode);
+              CPFNodeQueue.Add(newNode);
               //queue.Add(newNode);
               directedGraphVisMap.SetCell((int)currNode.pos.x , (int)currNode.pos.y , 9);  //9 is open list
             }
           }
         }
       }
+
       //Finish up the rest of the values
       //       Add the node to the east of n to the end of Q.
       //       Add the node to the north of n to the end of Q.
@@ -311,9 +507,9 @@ public class ChokePointFinder
     }
 
     UpdateDirectedMapVis(rootNode);
-    if(runIteratively && queue.Count != 0)
+    if(runIteratively && CPFNodeQueue.Count != 0)
       return false;
-    if(runIteratively && queue.Count == 0)
+    if(runIteratively && CPFNodeQueue.Count == 0)
       return true;
     
     return true;
@@ -322,10 +518,10 @@ public class ChokePointFinder
   //Resets flood fill data structures + root node
   public void ResetFloodFill()
   {
-    if(queue != null)
-      queue.Clear();
-    if(checkedPos != null)
-      checkedPos.Clear();
+    if(CPFNodeQueue != null)
+      CPFNodeQueue.Clear();
+    if(checkedPosVec2 != null)
+      checkedPosVec2.Clear();
     if(directedGraphVisMap != null)
       directedGraphVisMap.Clear();
     rootNode = new CPFNode();
