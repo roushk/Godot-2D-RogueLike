@@ -115,9 +115,9 @@ public class TestLevelGeneration : Node2D
 
     HashSet<KeyValuePair<int,int>> checkedPts = new HashSet<KeyValuePair<int, int>>();
     //For each value >=2 
-    rooms = adjacencyMap.Where(point => point.Value > 2).Select(pt => pt.Key).ToList()  //Creates list of points.Value >= 2
+    rooms = adjacencyMap.Where(point => point.Value > mapRoomMinDist).Select(pt => pt.Key).ToList()  //Creates list of points.Value >= 2
       //flood fill each point
-      .Select(p => CPF.FloodFill(checkedPts,p,(x,y)=>{return terrainMap[x,y] == 0 && adjacencyMap[new KeyValuePair<int,int>(x,y)] >= 2 && !checkedPts.Contains(new KeyValuePair<int,int>(x,y));}, true)).Where(l => l.Count > 0).ToList(); //Generates list of list of flood fill points
+      .Select(p => CPF.FloodFill(checkedPts,p,(x,y)=>{return terrainMap[x,y] == 0 && adjacencyMap[new KeyValuePair<int,int>(x,y)] >= mapRoomMinDist && !checkedPts.Contains(new KeyValuePair<int,int>(x,y));}, true)).Where(l => l.Count > 0).ToList(); //Generates list of list of flood fill points
       //Make sets of point clouds unique
       //.Distinct(); //Selects unique lists
 
@@ -308,7 +308,8 @@ public class TestLevelGeneration : Node2D
   {
     GD.Print("Clicked Generate New Tile Map Button");
     GenerateMap(maxIterations, true);
-    UpdateMapData();
+    UpdateInternalMaps();
+    UpdateForegroundMapData();
   }
 
   public void ClearMapButton_Callback()
@@ -321,9 +322,10 @@ public class TestLevelGeneration : Node2D
   public void CCL_GenerateCompleteMapButton_Callback()
   {
     GenerateMap(maxIterations, true);
+    UpdateInternalMaps();
     CCLGen.CCLAlgorithm();
     largestSet = CCLGen.GetLargestSet();
-    UpdateMapData();
+    UpdateForegroundMapData();
     ClearSmallerCaves();
   }
 
@@ -331,14 +333,15 @@ public class TestLevelGeneration : Node2D
   {
     GD.Print("Clicked Prune Tile Map Button");
     GenerateMap(1, false);
-    UpdateMapData();
+    UpdateInternalMaps();
+    UpdateForegroundMapData();
   }
 
   public void CCL_GenerateCaveGroups_Callback()
   {
     GD.Print("Generate Cave Groups Button");
     CCLGen.CCLAlgorithm();
-    UpdateMapData();
+    UpdateForegroundMapData();
   }
 
   public void CCL_ViewRootGroups_Callback()
@@ -359,17 +362,19 @@ public class TestLevelGeneration : Node2D
   public void WFC_GenerateCompleteMapButton_Callback()
   {
     GenerateMap(maxIterations, true);
+    UpdateInternalMaps();
     WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
     //WFCSTM.CCLAlgorithm();
-    UpdateMapData();
+    UpdateForegroundMapData();
   }
 
   public void WFC_IterateSimulationOnce_Callback()
   {
     GD.Print("Clicked Prune Tile Map Button");
     GenerateMap(1, false);
+    UpdateInternalMaps();
     WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
-    UpdateMapData();
+    UpdateForegroundMapData();
   }
 
   public void GenAll()
@@ -381,13 +386,21 @@ public class TestLevelGeneration : Node2D
     
     //Generate Map
     GenerateMap(maxIterations, true);
+    if(mapFinalScale > 1)
+    {
+      UpscaleMap(mapFinalScale);  //3 so the player can go through stuff
+      GenerateMap(1, false);
+    }
+    
+    UpdateInternalMaps();
+    UpdateForegroundMapData();
+
 
     //CCL
     CCLGen.CCLAlgorithm();
     
     //Get Largest Set
     largestSet = CCLGen.GetLargestSet();
-    UpdateMapData();
     ClearSmallerCaves();
 
     //Adjacency Vis Map
@@ -415,9 +428,10 @@ public class TestLevelGeneration : Node2D
   public void Generate_CCL_Select_Largest_Adj()
   {
     GenerateMap(maxIterations, true);
+    UpdateInternalMaps();
     CCLGen.CCLAlgorithm();
     largestSet = CCLGen.GetLargestSet();
-    UpdateMapData();
+    UpdateForegroundMapData();
     ClearSmallerCaves();
     GenerateAdjacencyGrid();
   }
@@ -562,13 +576,11 @@ public class TestLevelGeneration : Node2D
   [Export(PropertyHint.Range,"0,100,1")]
   public int initialDeadChance;
 
-  
   [Export(PropertyHint.Range,"1,8,1")]
   public int deathLimit;
 
   [Export(PropertyHint.Range,"1,8,1")]
   public int birthLimit;
-
   
   [Export(PropertyHint.Range,"1,100,1")]
   public int maxIterations;
@@ -622,7 +634,12 @@ public class TestLevelGeneration : Node2D
   PlayerManager playerManager;
 
   bool playerMode = false;
-  
+
+  //Final scale of the map, upscales initial caves by this amt
+  int mapFinalScale = 1;
+  int mapRoomMinDist = 2; 
+  //mapFinalScale of 1 should have a mapRoomMinDist of 2
+  //mapFinalScale of 2 should have a mapRoomMinDist of 5
 
 #endregion
 
@@ -674,7 +691,7 @@ public class TestLevelGeneration : Node2D
     //    terrainMap[x,y] = 1;
     //  }
     //}
-    UpdateMapData();
+    UpdateForegroundMapData();
   }
 
   //based on https://www.geeksforgeeks.org/mid-point-circle-drawing-algorithm/
@@ -1031,14 +1048,42 @@ public class TestLevelGeneration : Node2D
   }
 
 #region Game of Life
+
+  //for each tile places scaleMultiplier tiles for each current tile
+  private void UpscaleMap(int scaleMultiplier)
+  {
+    int [,] newTerrainMap = new int[width*scaleMultiplier, height*scaleMultiplier];
+    
+    for (int i = 0; i < width; i++)
+    {
+      for (int j = 0; j < height; j++)
+      {
+        //X increase
+        for (int k = 0; k < scaleMultiplier; k++)
+        {
+          //Y increase
+          for (int l = 0; l < scaleMultiplier; l++)
+          {
+            newTerrainMap[i*scaleMultiplier+k, j*scaleMultiplier+l] = terrainMap[i,j];
+          }
+        }
+      }
+    }
+
+    //Update current stuff
+    width = width*scaleMultiplier;
+    height = height*scaleMultiplier;
+    terrainMap = newTerrainMap; 
+  }
+
   //Creates a new map of the tileMapSize and iterates the game of life a set number of times
   private void GenerateMap(int iterations, bool newMap)
   {
-    width = (int) tileMapSize.x;
-    height = (int) tileMapSize.y;
 
     if(newMap)
     {
+      width = (int) tileMapSize.x;
+      height = (int) tileMapSize.y;
       ClearMap();
       terrainMap = new int[width, height];
       initPositions();
@@ -1088,11 +1133,13 @@ public class TestLevelGeneration : Node2D
     {
       GenerateMap(iterations, newMap);
     }
+  }
 
+  private void UpdateInternalMaps()
+  {
     CCLGen.UpdateInternalMap(width, height, ref terrainMap);
     CPF.UpdateInternalMap(width, height, ref terrainMap);
     WFCSTM.UpdateInternalMap(width, height, ref terrainMap);
-
   }
 
   //seeds the terrain map with random dead or alive values
@@ -1119,7 +1166,7 @@ public class TestLevelGeneration : Node2D
   }
 
   //Sets the foreground map to the tile data of the terrain map
-  public void UpdateMapData()
+  public void UpdateForegroundMapData()
   {
     //Update the cells
     for(int x = 0; x < width; ++x)
