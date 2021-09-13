@@ -1620,7 +1620,7 @@ birthLimit = 4
 maxIterations = 100
 TopTile = 2
 BottomTile = 1
-tileMapSize = Vector2( 200, 100 )
+tileMapSize = Vector2( 100, 50 )
 
 [node name="ForegroundMap" type="TileMap" parent="."]
 show_behind_parent = true
@@ -2116,6 +2116,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GenAllAndSpawnOreAndPlayer" type="Button" parent="Camera2D/GUI/VBoxContainer"]
+margin_top = 649.0
+margin_right = 337.0
+margin_bottom = 670.0
+text = "Gen Map + Ore + Player Spawn"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MouseInfoUI" type="MarginContainer" parent="Camera2D"]
 margin_left = -1268.0
 margin_top = 462.0
@@ -2282,3 +2291,4 @@ __meta__ = {
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer8/RunRoomFinder" to="." method="GenerateRoomsFromFloodFillAndAdjacency"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/HSplitContainer8/RunFarthestRoomFinder" to="." method="FindFarthestRooms"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/RunFarthestRoomFinder2" to="." method="SpawnPlayerAtStartRoom"]
+[connection signal="pressed" from="Camera2D/GUI/VBoxContainer/GenAllAndSpawnOreAndPlayer" to="." method="GenAllAndSpawnOreAndPlayer"]

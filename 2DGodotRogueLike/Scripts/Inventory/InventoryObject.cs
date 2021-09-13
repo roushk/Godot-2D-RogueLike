@@ -24,7 +24,7 @@ public class InventoryObject : Node2D
   Area2D area2D;
   CollisionShape2D collisionShape2D;
   CPUParticles2D cpuParticles2D;
-  PlayerTopDown player;
+  PlayerManager playerManager;
 
   //be alive for 1 second before enabling collision
   float timeToCollide = 0.5f;
@@ -39,12 +39,8 @@ public class InventoryObject : Node2D
     collisionShape2D = GetNode("Area2D/CollisionShape2D") as CollisionShape2D;
     cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
     //To get nodes in main scene from instanced scene need to use this instead of root.getnode
-    player = GetTree().CurrentScene.FindNode("Player") as PlayerTopDown;
+    playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
     collisionShape2D.Disabled = true;
-    if(player == null)
-    {
-      throw new Exception ("Error: Player is null in InventoryObject");
-    }
     animatedSprite.Frame = (int)material;
   }
 
@@ -63,11 +59,11 @@ public class InventoryObject : Node2D
     {
       collisionShape2D.Disabled = false;
     }
-    if(timeToCollide < 0 && GlobalPosition.DistanceSquaredTo(player.GlobalPosition) < vaccumRadius*vaccumRadius
-    && GlobalPosition.DistanceSquaredTo(player.GlobalPosition) > minRadius * minRadius)
+    if(timeToCollide < 0 && GlobalPosition.DistanceSquaredTo(playerManager.topDownPlayer.GlobalPosition) < vaccumRadius*vaccumRadius
+    && GlobalPosition.DistanceSquaredTo(playerManager.topDownPlayer.GlobalPosition) > minRadius * minRadius)
     {
       //Have the lerp speed up the closer to the player the objects are
-      GlobalPosition = GlobalPosition.LinearInterpolate(player.GlobalPosition, 0.02f);
+      GlobalPosition = GlobalPosition.LinearInterpolate(playerManager.topDownPlayer.GlobalPosition, 0.02f);
     }
   }
 }

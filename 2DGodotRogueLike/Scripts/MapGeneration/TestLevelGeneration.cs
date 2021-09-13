@@ -164,6 +164,11 @@ public class TestLevelGeneration : Node2D
       playerCamera = newPlayer.GetNode("Camera2D") as Camera2D;
       newPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
       SetPlayerMode(true);
+      playerManager.SetTopDownPlayer(ref newPlayer);
+    }
+    else
+    {
+      Console.WriteLine("Start Room not set");
     }
   }
 
@@ -173,12 +178,16 @@ public class TestLevelGeneration : Node2D
     if(playerMode)
     {
       debugCamera.Current = false;
+      (debugCamera as CameraMovement).movementEnabled = false;
+      DebugUI.Visible = false;
       if(playerCamera != null)
         playerCamera.Current = true;
     }
     else
     {
+      (debugCamera as CameraMovement).movementEnabled = true;
       debugCamera.Current = true;
+      DebugUI.Visible = true;
       if(playerCamera != null)
         playerCamera.Current = false;
     }
@@ -394,6 +403,15 @@ public class TestLevelGeneration : Node2D
     GenerateRoomsFromFloodFillAndAdjacency();
   }
 
+  //Generated everything, finds farthest rooms, spawns chunks, spawns player
+  public void GenAllAndSpawnOreAndPlayer()
+  {
+    GenAll();
+    FindFarthestRooms();
+    SpawnOreChunksEdge_pressed();
+    SpawnPlayerAtStartRoom();
+  }
+
   public void Generate_CCL_Select_Largest_Adj()
   {
     GenerateMap(maxIterations, true);
@@ -492,6 +510,7 @@ public class TestLevelGeneration : Node2D
   Label currentMouseSelectionAStar_ParentNodeCoords;
   Label currentMouseSelectionAStar_NodeState;
   AStar.AStarNode currentMouseSelectionNode = new AStar.AStarNode();
+  MarginContainer DebugUI;
 
   //0 to 1
   float oreChunkEdgeSpawnChance = 0.1f;
@@ -600,6 +619,8 @@ public class TestLevelGeneration : Node2D
   Camera2D playerCamera;
 
   InputManager inputManager;
+  PlayerManager playerManager;
+
   bool playerMode = false;
   
 
@@ -924,6 +945,10 @@ public class TestLevelGeneration : Node2D
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
+        
+    inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
+    playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+
     debugCamera = GetNode("Camera2D") as Camera2D;
 
     MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
@@ -937,8 +962,8 @@ public class TestLevelGeneration : Node2D
     currentMouseSelectionAStar_Heuristic = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General9") as Label;
     currentMouseSelectionAStar_ParentNodeCoords = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General10") as Label;
     currentMouseSelectionAStar_NodeState = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General11") as Label;
-    
-    inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
+
+    DebugUI = GetNode("Camera2D/GUI") as MarginContainer;
 
     random = new Random();
 
