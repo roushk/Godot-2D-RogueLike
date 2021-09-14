@@ -8,7 +8,7 @@
 [ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=6]
 [ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=7]
 
-[node name="RootNode" type="Node2D"]
+[node name="TestLevelGenNode" type="Node2D"]
 script = ExtResource( 1 )
 initialDeadChance = 40
 deathLimit = 3

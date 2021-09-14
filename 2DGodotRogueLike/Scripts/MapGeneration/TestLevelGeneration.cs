@@ -161,9 +161,9 @@ public class TestLevelGeneration : Node2D
       PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;
       
       GetTree().Root.AddChild(newPlayer);
-      playerCamera = newPlayer.GetNode("Camera2D") as Camera2D;
+      debugManager.playerCamera = newPlayer.GetNode("Camera2D") as Camera2D;
       newPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
-      SetPlayerMode(true);
+      debugManager.SetPlayerMode(true);
       playerManager.SetTopDownPlayer(ref newPlayer);
     }
     else
@@ -172,26 +172,6 @@ public class TestLevelGeneration : Node2D
     }
   }
 
-  public void SetPlayerMode(bool _playerMode)
-  {
-    playerMode = _playerMode;
-    if(playerMode)
-    {
-      debugCamera.Current = false;
-      (debugCamera as CameraMovement).movementEnabled = false;
-      DebugUI.Visible = false;
-      if(playerCamera != null)
-        playerCamera.Current = true;
-    }
-    else
-    {
-      (debugCamera as CameraMovement).movementEnabled = true;
-      debugCamera.Current = true;
-      DebugUI.Visible = true;
-      if(playerCamera != null)
-        playerCamera.Current = false;
-    }
-  }
 
   //Calculates the distances from each room to each other room
   public void FindFarthestRooms()
@@ -452,13 +432,8 @@ public class TestLevelGeneration : Node2D
       {
         item.Value.Visible = false;
       }
-      VisualizationMaps[ActiveOverlayOptions.GetItemText(index)].Visible = true;
+      VisualizationMaps[debugManager.ActiveOverlayOptions.GetItemText(index)].Visible = true;
     }
-  }
-
-  public void MouseOptionsSelected_Callback(int index)
-  {
-    currentMouseOption = (MouseOptions)index;
   }
 
   public void RunKMeansOnLargestSet()
@@ -493,11 +468,11 @@ public class TestLevelGeneration : Node2D
   public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
   Node MapGenColorListNode;
 
-  ChokePointFinder.CPFNode cpfRootNode = new ChokePointFinder.CPFNode();
+  public ChokePointFinder.CPFNode cpfRootNode = new ChokePointFinder.CPFNode();
 
   //init with terrain map
-  AStar.AStarMap AStarMap;
-  AStar.AStarPather AStarPather = new AStar.AStarPather();
+  public AStar.AStarMap AStarMap;
+  public AStar.AStarPather AStarPather = new AStar.AStarPather();
   //Flood Fill Vars
   int numDirectedGraphFromFloodFillIter = 1;
   bool realtimeFloodFill = false;
@@ -507,24 +482,9 @@ public class TestLevelGeneration : Node2D
   int iterKMeans = 100;
 
   //AStar Vars
-  bool realtimeAStar = false;
+  public bool realtimeAStar = false;
   int realtimeAStarIter = 1;
 
-  bool setAStarStart = false;
-  bool setAStarDest = false;
-  AStar.PathState AStarState = AStar.PathState.None;
-  Vector2 AStarStart;
-  Vector2 AStarDest;
-
-  MouseOptions currentMouseOption = MouseOptions.AStar_Pathfind;
-
-  Label currentMouseSelectionAStar_NodeCoords;
-  Label currentMouseSelectionAStar_GivenCost;
-  Label currentMouseSelectionAStar_Heuristic;
-  Label currentMouseSelectionAStar_ParentNodeCoords;
-  Label currentMouseSelectionAStar_NodeState;
-  AStar.AStarNode currentMouseSelectionNode = new AStar.AStarNode();
-  MarginContainer DebugUI;
 
   //0 to 1
   float oreChunkEdgeSpawnChance = 0.1f;
@@ -562,15 +522,6 @@ public class TestLevelGeneration : Node2D
   public Godot.TileMap ForegroundMap;
 
   public Dictionary<string,Godot.TileMap> VisualizationMaps; 
-
-  public enum MouseOptions
-  {
-    AStar_Pathfind,
-    AStar_NodeInfo,
-    DirectedGraph_ToParent,
-  };
-
-  public Dictionary<MouseOptions,string> mouseOptionsDir = new Dictionary<MouseOptions, string>();
 
   //range of 0 to 100 with step range of 5
   [Export(PropertyHint.Range,"0,100,1")]
@@ -618,28 +569,23 @@ public class TestLevelGeneration : Node2D
   List<HashSet<Vector2>>  neighborsToCheck;
   Vector2[] neighborsToCheckSingle;
 
-  int [,] terrainMap;
+  public int [,] terrainMap;
 
   //Dict of pixel to distance from closest wall
   Dictionary<KeyValuePair<int,int>, int> adjacencyMap = new Dictionary<KeyValuePair<int, int>, int>();
 
-  OptionButton ActiveOverlayOptions;
-  OptionButton MouseOptionsButton;
-
-
-  Camera2D debugCamera;
-  Camera2D playerCamera;
-
   InputManager inputManager;
   PlayerManager playerManager;
+  DebugManager debugManager;
 
-  bool playerMode = false;
 
   //Final scale of the map, upscales initial caves by this amt
   int mapFinalScale = 1;
   int mapRoomMinDist = 2; 
   //mapFinalScale of 1 should have a mapRoomMinDist of 2
   //mapFinalScale of 2 should have a mapRoomMinDist of 5
+
+  bool ranFirstTimeInit = false;
 
 #endregion
 
@@ -766,7 +712,7 @@ public class TestLevelGeneration : Node2D
     return points;
   }
 
-  bool FindNodeAtPos(Vector2 pos, ChokePointFinder.CPFNode node, out ChokePointFinder.CPFNode foundNode)
+  public bool FindNodeAtPos(Vector2 pos, ChokePointFinder.CPFNode node, out ChokePointFinder.CPFNode foundNode)
   {
     
     if(node.pos == pos.Round())
@@ -806,12 +752,12 @@ public class TestLevelGeneration : Node2D
       }
     }
 
-    if(realtimeAStar == true && AStarState == AStar.PathState.Searching)
+    if(realtimeAStar == true && debugManager.AStarState == AStar.PathState.Searching)
     {
       for (int i = 0; i < realtimeAStarIter; i++)
       {
-        AStarState = AStarPather.GeneratePath(realtimeAStar);
-        if(AStarState == AStar.PathState.Found)
+        debugManager.AStarState = AStarPather.GeneratePath(realtimeAStar);
+        if(debugManager.AStarState == AStar.PathState.Found)
           break;
       }
       AStarPather.UpdateMapVisual();
@@ -819,7 +765,7 @@ public class TestLevelGeneration : Node2D
   }
 
   //Draw parent tree with simple parent follow set to the tile to show the path to the parent
-  void DrawParentTree(ChokePointFinder.CPFNode currNode)
+  public void DrawParentTree(ChokePointFinder.CPFNode currNode)
   {
     VisualizationMaps["Directed Graph Overlay"].SetCell((int)currNode.pos.x , (int)currNode.pos.y , 10);
     if(currNode.parent == null)
@@ -832,156 +778,14 @@ public class TestLevelGeneration : Node2D
     }
   }
 
-  void UpdateMouseInfoUI()
-  {
-    //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
-    //5 points after decimal
-    currentMouseSelectionAStar_NodeCoords.Text = currentMouseSelectionNode.pos.ToString("F5");
-    currentMouseSelectionAStar_GivenCost.Text = currentMouseSelectionNode.givenCost.ToString("F5");
-    currentMouseSelectionAStar_Heuristic.Text = currentMouseSelectionNode.heuristic.ToString("F5");
-    if(currentMouseSelectionNode.parent != null)  
-      currentMouseSelectionAStar_ParentNodeCoords.Text = currentMouseSelectionNode.parent.pos.ToString("F5");
-    currentMouseSelectionAStar_NodeState.Text = currentMouseSelectionNode.state.ToString();
-  }
-
-  //Select with mouse position
-  public override void _UnhandledInput(InputEvent inputEvent)
-  {
-    if(currentMouseOption == MouseOptions.DirectedGraph_ToParent)
-    {
-      if (@inputEvent is InputEventMouseButton mouseClick && (mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left))
-      {
-        //World space -> Map space where coordinates are
-        Vector2 clickedPos = ForegroundMap.WorldToMap(ForegroundMap.GetLocalMousePosition());
-        ChokePointFinder.CPFNode foundNode;
-        if(FindNodeAtPos(clickedPos, cpfRootNode, out foundNode))
-        {
-          //Reset the visuals
-          CPF.UpdateDirectedMapVis(cpfRootNode);
-          DrawParentTree(foundNode);
-          //Console.WriteLine("Found Node! at " + clickedPos.ToString() + " Where node exists at " + foundNode.pos.ToString());
-        }
-      }
-    }
-    else if (currentMouseOption == MouseOptions.AStar_Pathfind)
-    {
-      if(@inputEvent is InputEventMouseButton mouseClick && mouseClick.Pressed)
-      {
-        if (mouseClick.ButtonIndex == (int)Godot.ButtonList.Right)
-        {
-          AStarState = AStar.PathState.None;
-          Vector2 newAStarDest = ForegroundMap.WorldToMap(ForegroundMap.GetLocalMousePosition());
-
-          if(newAStarDest.x >= width || newAStarDest.x <= 0)
-            return;
-          if(newAStarDest.y >= height || newAStarDest.y <= 0)
-            return;
-            
-          //Dont allow walls to be set as dest or start
-          if(terrainMap[(int)newAStarDest.x,(int)newAStarDest.y] == 0)
-          {
-            //Remove old one
-            VisualizationMaps["AStar Overlay"].SetCell((int)AStarDest.x,(int)AStarDest.y, -1);
-
-            AStarDest = newAStarDest;
-            //Set dest
-            setAStarDest = true;
-            VisualizationMaps["AStar Overlay"].SetCell((int)AStarDest.x,(int)AStarDest.y, 11);
-          }
-          else
-          {
-            AStarDest = Vector2.Zero;
-            setAStarDest = false;
-          }
-        }
-
-        if (mouseClick.ButtonIndex == (int)Godot.ButtonList.Left)
-        {
-          AStarState = AStar.PathState.None;
-          Vector2 newAStarStart = ForegroundMap.WorldToMap(ForegroundMap.GetLocalMousePosition());
-
-          if(newAStarStart.x >= width || newAStarStart.x <= 0)
-            return;
-          if(newAStarStart.y >= height || newAStarStart.y <= 0)
-            return;
-            
-          //Dont allow walls to be set as dest or start
-          if(terrainMap[(int)newAStarStart.x,(int)newAStarStart.y] == 0)
-          {
-            VisualizationMaps["AStar Overlay"].SetCell((int)AStarStart.x,(int)AStarStart.y, -1);
-
-            AStarStart = newAStarStart;
-            //Set start
-            setAStarStart = true;
-            VisualizationMaps["AStar Overlay"].SetCell((int)AStarStart.x,(int)AStarStart.y, 4);
-          }
-          else
-          {
-            AStarStart = Vector2.Zero;
-            setAStarStart = false;
-          }
-        }
-      }
-      if(setAStarStart && setAStarDest && AStarState == AStar.PathState.None)
-      {
-        AStarMap = new AStar.AStarMap(terrainMap, width, height);
-        //World space -> Map space where coordinates are
-        AStarPather.InitPather(AStarStart, AStarDest, AStarMap);
-        //if not realtime then just generate the path
-        
-        if(!realtimeAStar)
-        {
-          AStarState = AStarPather.GeneratePath(realtimeAStar);
-          AStarPather.UpdateMapVisual();
-        }
-        else
-        {
-          AStarState = AStar.PathState.Searching;
-        }
-      }
-    }
-    else if (currentMouseOption == MouseOptions.AStar_NodeInfo)
-    {
-      if(@inputEvent is InputEventMouseButton mouseClick && mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left)
-      {
-        if(AStarPather.map != null)
-        {
-          currentMouseSelectionNode = AStarPather.map.GetNodeAt(ForegroundMap.WorldToMap(ForegroundMap.GetLocalMousePosition()));
-        }
-
-        UpdateMouseInfoUI();
-      }
-    }
-
-    if(inputManager.IsKeyPressed(KeyList.M))
-    {
-      SetPlayerMode(!playerMode);
-    }
-  }
-
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
         
     inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
-
-    debugCamera = GetNode("Camera2D") as Camera2D;
-
-    MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
-
-    ActiveOverlayOptions = GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer5/SelectedOverlay") as OptionButton;
-
-    MouseOptionsButton = GetNode("Camera2D/GUI/VBoxContainer/HSplitContainer6/MouseOptions") as OptionButton;
-
-    currentMouseSelectionAStar_NodeCoords = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General7") as Label;
-    currentMouseSelectionAStar_GivenCost = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General8") as Label;
-    currentMouseSelectionAStar_Heuristic = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General9") as Label;
-    currentMouseSelectionAStar_ParentNodeCoords = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General10") as Label;
-    currentMouseSelectionAStar_NodeState = GetNode("Camera2D/MouseInfoUI/VBoxContainer/HSplitContainer/VBoxContainer2/General11") as Label;
-
-    DebugUI = GetNode("Camera2D/GUI") as MarginContainer;
-
+    debugManager = GetNode<DebugManager>("/root/DebugManagerSingletonNode");
+    
     random = new Random();
 
     //fill neighbors offset for any arbitrary vector, precalced into a container
@@ -1008,19 +812,8 @@ public class TestLevelGeneration : Node2D
     VisualizationMaps["Room Overlay"] = GetNode("Room Overlay") as TileMap;
     VisualizationMaps["KMeans Overlay"] = GetNode("KMeans Overlay") as TileMap;
     VisualizationMaps["AStar Overlay"] = GetNode("AStar Overlay") as TileMap;
-    
 
-    //Generate the options menu from the dict keys to make sure they are good with 0 still being no overlays
-    foreach (var item in VisualizationMaps)
-    {
-      ActiveOverlayOptions.AddItem(item.Key);
-    }
-
-    //Generate the options menu from the dict keys to make sure they are good with 0 still being no overlays
-    foreach (var item in Enum.GetNames(typeof(MouseOptions)))
-    {
-      MouseOptionsButton.AddItem(item);
-    }
+    MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
 
     //Set the CCLGen Adjacency Overlay map to output adjacency data to
     CCLGen.SetVisualizationMap(ref VisualizationMaps, "Adjacency Overlay");
@@ -1028,13 +821,18 @@ public class TestLevelGeneration : Node2D
     CPF.SetRoomVisualizationMap(ref VisualizationMaps, "Room Overlay");
     CPF.SetKMeansVisMap(ref VisualizationMaps, "KMeans Overlay");
     AStarPather.SetAStarVisualizationMap(ref VisualizationMaps, "AStar Overlay");
-    
+
+    //debugManager.PostLevelGenInit();
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
   {
-
+    if(ranFirstTimeInit == false)
+    {
+      debugManager.PostLevelGenInit();
+      ranFirstTimeInit = true;
+    }
   }
 
   //clears the map

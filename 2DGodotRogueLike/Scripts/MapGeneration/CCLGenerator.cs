@@ -21,13 +21,13 @@ public class CCLGenerator
   Godot.TileMap mapIDVisualization = new TileMap();
 
   //This long line is a dictionary from Id's to a hashset (unique list) of integer x,y coords as a keypair
-  Dictionary<KeyValuePair<int, int>, int> dictIDToListofCoords = new Dictionary<KeyValuePair<int, int>, int>();
+  Dictionary<KeyValuePair<int, int>, int> dictIDToListOfCoords = new Dictionary<KeyValuePair<int, int>, int>();
 
   //This dictionary is a list of the final connected sets (caves) ID's to a list of x/y values, basically an invert of the dictIDToListofCoords
   Dictionary<int, List<KeyValuePair<int, int>>> connectedSets = new Dictionary<int, List<KeyValuePair<int, int>>>();
 
   //dictionary of int ID of set to ID of parent set 
-  //Needs to support N to N values guarenteed unique so using a HastSet of Pairs
+  //Needs to support N to N values guaranteed unique so using a HastSet of Pairs
   //key = ID of node, value = ID of parent
   HashSet<KeyValuePair<int,int>> IDToParent = new HashSet<KeyValuePair<int,int>>();
   
@@ -54,7 +54,7 @@ public class CCLGenerator
   {
     mapIDVisualization.Clear();
     IDToParent.Clear();
-    dictIDToListofCoords.Clear();
+    dictIDToListOfCoords.Clear();
 
     for(int i = 0; i < maxNumGroups; i++)
     {
@@ -96,10 +96,10 @@ public class CCLGenerator
     //Dictionary<KeyValuePair<int, int>, int> listOfCoords = new Dictionary<KeyValuePair<int, int>, int>(dictIDToListofCoords);
 
     //for every pixel
-    for(int i = 0; i < dictIDToListofCoords.Count; ++i)
+    for(int i = 0; i < dictIDToListOfCoords.Count; ++i)
     {
       
-      var element = dictIDToListofCoords.ElementAt(i);
+      var element = dictIDToListOfCoords.ElementAt(i);
       var key = element.Key;
       var value = element.Value;
 
@@ -170,8 +170,8 @@ public class CCLGenerator
         // X p ?
         // ? ? ?
         
-        bool leftPixelExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out leftPixelID);
-        bool abovePixelExists = dictIDToListofCoords.TryGetValue(new KeyValuePair<int, int>(x, y - 1), out abovePixelID);
+        bool leftPixelExists = dictIDToListOfCoords.TryGetValue(new KeyValuePair<int, int>(x - 1, y), out leftPixelID);
+        bool abovePixelExists = dictIDToListOfCoords.TryGetValue(new KeyValuePair<int, int>(x, y - 1), out abovePixelID);
 
         if(leftPixelExists && abovePixelExists)
         {
@@ -191,13 +191,13 @@ public class CCLGenerator
           {
             //Add to the larger set
             sizeOfPixelGroup[leftPixelID]++;
-            dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
+            dictIDToListOfCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
           }
           else //leftPixelID size <= abovePixelID size
           {
             //Add to either set
             sizeOfPixelGroup[abovePixelID]++;
-            dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
+            dictIDToListOfCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
           }
         }
         //now we decide to add to leftPixelID first if possible
@@ -205,19 +205,19 @@ public class CCLGenerator
         {
           sizeOfPixelGroup[leftPixelID]++;
           //if left key than set to left key
-          dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
+          dictIDToListOfCoords[new KeyValuePair<int, int>(x,y)] = leftPixelID;
         }
         //If cannot get left key than check up key
         else if(abovePixelExists && !leftPixelExists)  //redundant !leftPixelExists for clarity
         {
           sizeOfPixelGroup[abovePixelID]++;
           //if up key than set to up key
-          dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
+          dictIDToListOfCoords[new KeyValuePair<int, int>(x,y)] = abovePixelID;
         }
         //if cannot get left OR up key than create new key
         else
         {
-          dictIDToListofCoords[new KeyValuePair<int, int>(x,y)] = nextNewPixelID++;
+          dictIDToListOfCoords[new KeyValuePair<int, int>(x,y)] = nextNewPixelID++;
           sizeOfPixelGroup[nextNewPixelID] = 1;
         }
       }
@@ -270,7 +270,7 @@ public class CCLGenerator
     //first clear
     connectedSets.Clear();
 
-    foreach (var item in dictIDToListofCoords)
+    foreach (var item in dictIDToListOfCoords)
     {
       //If the ID's set is null create it
       if(!connectedSets.ContainsKey(item.Value))
@@ -308,7 +308,7 @@ public class CCLGenerator
     List<KeyValuePair<KeyValuePair<int, int>, int>> newValuesToInsert = new List<KeyValuePair<KeyValuePair<int, int>, int>>();
 
     //Get list of new values
-    foreach (var item in dictIDToListofCoords)
+    foreach (var item in dictIDToListOfCoords)
     {
       //If the ID of the coordinates is the current ID then reinsert that pair with the new ID
       if(item.Value == oldID)
@@ -354,7 +354,7 @@ public class CCLGenerator
     //Update Dictionary
     foreach (var item in newValuesToInsert)
     {
-      dictIDToListofCoords[item.Key] = item.Value;
+      dictIDToListOfCoords[item.Key] = item.Value;
     }
   }
 }
