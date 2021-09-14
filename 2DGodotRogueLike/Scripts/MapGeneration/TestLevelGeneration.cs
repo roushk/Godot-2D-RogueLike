@@ -8,6 +8,11 @@ public class TestLevelGeneration : Node2D
 
 #region Signals
 
+  public void MouseOptionsSelected_Callback(int index)
+  {
+    debugManager.currentMouseOption = (MouseOptions)index;
+  }
+
   public void FloodFillToDirectedGraph_Callback()
   {
     CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), null, false, true);
@@ -822,12 +827,12 @@ public class TestLevelGeneration : Node2D
     CPF.SetKMeansVisMap(ref VisualizationMaps, "KMeans Overlay");
     AStarPather.SetAStarVisualizationMap(ref VisualizationMaps, "AStar Overlay");
 
-    //debugManager.PostLevelGenInit();
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
   {
+    //Delay init until process step, need a more granular way to setup and show dependencies of internal systems
     if(ranFirstTimeInit == false)
     {
       debugManager.PostLevelGenInit();

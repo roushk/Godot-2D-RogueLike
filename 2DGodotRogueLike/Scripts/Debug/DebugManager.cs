@@ -1,29 +1,21 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public enum MouseOptions
 {
   AStar_Pathfind,
   AStar_NodeInfo,
   DirectedGraph_ToParent,
+  Character_Select,
 };
 
 
-public class DebugManager : Node
+public class DebugManager : Node2D
 {
-  #region Callbacks
-  public void MouseOptionsSelected_Callback(int index)
-  {
-    currentMouseOption = (MouseOptions)index;
-  }
-
-  #endregion
-
 #region Variables
 
-  public MouseOptions currentMouseOption = MouseOptions.AStar_Pathfind;
-
-  
+  public MouseOptions currentMouseOption = MouseOptions.AStar_Pathfind;  
   public OptionButton ActiveOverlayOptions;
   public OptionButton MouseOptionsButton;
 
@@ -50,6 +42,8 @@ public class DebugManager : Node
   public bool playerMode = false;
 
   InputManager inputManager;
+
+  Physics2DDirectSpaceState spaceState;
 
 #endregion
 
@@ -123,6 +117,7 @@ public class DebugManager : Node
   //Select with mouse position
   public override void _UnhandledInput(InputEvent inputEvent)
   {
+
     if(currentMouseOption == MouseOptions.DirectedGraph_ToParent)
     {
       if (@inputEvent is InputEventMouseButton mouseClick && (mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left))
@@ -228,10 +223,30 @@ public class DebugManager : Node
         UpdateMouseInfoUI();
       }
     }
+    else if(currentMouseOption == MouseOptions.Character_Select)
+    {
+      if(@inputEvent is InputEventMouseButton mouseClick && mouseClick.Pressed && mouseClick.ButtonIndex == (int)Godot.ButtonList.Left)
+      {
+        //Returns some JSON type stuff????
+        var result = spaceState.IntersectPoint(GetGlobalMousePosition(),32, new Godot.Collections.Array { this });
+
+        
+        foreach (Godot.Collections.Dictionary item in result)
+        {
+          Console.WriteLine("Point intersected with: " + item.ToString() + " Is of type " + item["collider"].GetType().ToString());
+        }
+      }
+    }
 
     if(inputManager.IsKeyPressed(KeyList.M))
     {
       SetPlayerMode(!playerMode);
     }
+  }
+  
+  public override void _PhysicsProcess(float delta)
+  {
+    spaceState = GetWorld2d().DirectSpaceState;
+
   }
 }
