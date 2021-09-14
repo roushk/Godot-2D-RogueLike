@@ -65,7 +65,7 @@ public class ChokePointFinder
 #endregion
 
 #region Variables
-  public const int maxColors = 112;
+  public const int maxColors = 47;
 
   //0 is floor
   int [,] terrainMap;

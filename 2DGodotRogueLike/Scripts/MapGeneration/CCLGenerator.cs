@@ -13,7 +13,7 @@ public class CCLGenerator
     Individual
   }
 
-  public const int maxColors = 112;
+  public const int maxColors = 47;
   int [,] terrainMap;
   int width;
   int height;

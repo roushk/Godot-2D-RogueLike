@@ -127,7 +127,7 @@ public class TestLevelGeneration : Node2D
     {
       foreach (var item in pointList)
       {
-        VisualizationMaps["Room Overlay"].SetCell(item.Key, item.Value, (currListValue * 2) % maxColors);
+        VisualizationMaps["Room Overlay"].SetCell(item.Key, item.Value, currListValue % maxColors);
       }
       currListValue++;
     }
@@ -488,7 +488,7 @@ public class TestLevelGeneration : Node2D
 
   List<KeyValuePair<int, int>> largestSet = new List<KeyValuePair<int, int>>();
 
-  public const int maxColors = 112;
+  public const int maxColors = 47;
 
   public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
   Node MapGenColorListNode;
@@ -1329,7 +1329,7 @@ public class TestLevelGeneration : Node2D
 
     foreach (var item in largestSet)
     {
-      VisualizationMaps["Adjacency Overlay"].SetCell(item.Key , item.Value , (adjacencyMap[item] * 4) % maxColors);
+      VisualizationMaps["Adjacency Overlay"].SetCell(item.Key , item.Value , (adjacencyMap[item] * 3) % maxColors);
     }
   }
 }

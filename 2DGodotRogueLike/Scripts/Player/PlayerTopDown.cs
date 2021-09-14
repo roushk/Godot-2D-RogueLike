@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class PlayerTopDown : KinematicBody2D
+public class PlayerTopDown : CombatCharacter
 {
   // Declare member variables here. Examples:
   // private int a = 2;
@@ -161,26 +161,26 @@ public class PlayerTopDown : KinematicBody2D
 		if(Godot.Input.IsActionPressed("PlayerUp"))
 		{
 			currentFacing = FacingDir.Up;
-			movingDirection.y -= 1;
+			movingDirection.y -= movementSpeed / 100.0f;
 			//velocity += new Vector2(0,-verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerDown"))
 		{
 			currentFacing = FacingDir.Down;
-			movingDirection.y += 1;
+			movingDirection.y += movementSpeed / 100.0f;
 			//velocity += new Vector2(0,verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerRight"))
 		{
 			//Prioritize left and right attacks more than up and down
 			currentFacing = FacingDir.Right;
-			movingDirection.x += 1;
+			movingDirection.x += movementSpeed / 100.0f;
 			//velocity += new Vector2(horizontalMovementPower,0) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerLeft"))
 		{
-			movingDirection.x -= 1;
 			currentFacing = FacingDir.Left;
+			movingDirection.x -= movementSpeed / 100.0f;
 			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
 		}
 

@@ -17,7 +17,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\Characters\CombatCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\Characters\Enemy.cs" />
     <Compile Include="Scripts\Player\PlayerManager.cs" />
     <Compile Include="Scripts\AI\Pathfinding\AStar.cs" />
     <Compile Include="Scripts\Animation\AnimatedTilesetTileSettings.cs" />
@@ -37,6 +39,7 @@
     <Compile Include="Scripts\Player\PlayerTopDown.cs" />
     <Compile Include="Scripts\Inventory\InventoryObject.cs" />
     <Compile Include="Scripts\Inventory\OreWorldObject.cs" />
+    <Compile Include="Scripts\UI\HealthBar.cs" />
     <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
     <Compile Include="Scripts\Utils.cs" />
     <Compile Include="Scripts\MapGeneration\TestLevelGeneration.cs" />
