@@ -111,6 +111,12 @@ MouseWheelDown={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Walls"
+2d_physics/layer_2="Enemies"
+2d_physics/layer_3="Interactables"
+
 [memory]
 
 limits/message_queue/max_size_kb=2048

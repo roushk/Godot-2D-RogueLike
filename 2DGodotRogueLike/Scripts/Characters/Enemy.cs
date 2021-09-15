@@ -6,8 +6,10 @@ public class Enemy : CombatCharacter
   public AStar.AStarPather pather = new AStar.AStarPather();
   public float minMovementDistance = 10.0f;
   AnimatedSprite sprite;
-  CollisionPolygon2D attackCollider;
+
   CollisionShape2D movementCollider;
+  CollisionShape2D touchCollider;
+  CollisionPolygon2D attackCollider;
 
   public List<Vector2> movementPath = new List<Vector2>();
   
@@ -16,8 +18,10 @@ public class Enemy : CombatCharacter
   public override void _Ready()
   {
     sprite = GetNode("AnimatedSprite") as AnimatedSprite;
-    attackCollider = GetNode("MovementCollider") as CollisionPolygon2D;
-    movementCollider = GetNode("AttackSwingCollider") as CollisionShape2D;
+    movementCollider = GetNode("MovementCollider") as CollisionShape2D;
+    attackCollider = GetNode("AttackArea/AttackAreaCollider") as CollisionPolygon2D;
+    touchCollider = GetNode("TouchArea/TouchAreaCollider") as CollisionShape2D;
+    
     sprite.Playing = true;
     globalMovementPosGoal = GlobalPosition;
     movementSpeed *= 50f;

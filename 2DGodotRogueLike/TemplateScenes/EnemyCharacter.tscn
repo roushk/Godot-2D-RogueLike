@@ -1,23 +1,34 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Art/SpriteSheets/SlimeSpriteFrames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://TemplateScenes/EnemyHealthUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Characters/Enemy.cs" type="Script" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 9.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 15.0
 
 [node name="Enemy" type="KinematicBody2D"]
-collision_layer = 8
-collision_mask = 31
 script = ExtResource( 3 )
 
 [node name="MovementCollider" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="AttackSwingCollider" type="CollisionPolygon2D" parent="."]
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="AttackAreaCollider" type="CollisionPolygon2D" parent="AttackArea"]
 visible = false
 polygon = PoolVector2Array( 9.66387, -6.9804, 4.93917, -10.6814, -21.4404, -8.63405, -23.5665, -6.1142, -22.4641, -0.91703, -19.9443, 3.57144, -6.16389, 5.30383, 8.08897, 5.0676, 12.0262, 0.0279121 )
+
+[node name="TouchArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 3
+
+[node name="TouchAreaCollider" type="CollisionShape2D" parent="TouchArea"]
+shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -11 )

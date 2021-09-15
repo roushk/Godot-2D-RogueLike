@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Scripts/UI/OptionsMenuPopupFix.cs" type="Script" id=5]
 [ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=6]
 [ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=7]
+[ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=8]
 
 [node name="TestLevelGenNode" type="Node2D"]
 script = ExtResource( 1 )
@@ -77,8 +78,11 @@ cell_size = Vector2( 32, 32 )
 cell_quadrant_size = 32
 format = 1
 
+[node name="Player" parent="." instance=ExtResource( 8 )]
+position = Vector2( 790.998, 685.11 )
+
 [node name="Enemy" parent="." instance=ExtResource( 7 )]
-position = Vector2( 709.666, 509.611 )
+position = Vector2( 930.034, 696.076 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 1309.99, 658.979 )
