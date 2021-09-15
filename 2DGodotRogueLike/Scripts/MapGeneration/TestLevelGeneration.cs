@@ -8,10 +8,18 @@ public class TestLevelGeneration : Node2D
 
 #region Signals
 
+  //Pass through to debug manager
   public void MouseOptionsSelected_Callback(int index)
   {
-    debugManager.currentMouseOption = (MouseOptions)index;
+    debugManager.MouseOptionsSelected_Callback(index);
   }
+
+  public void PathfindToPlayerFromSelectedCharacter()
+  {
+    debugManager.PathfindToPlayerFromSelectedCharacter();
+  }
+
+
 
   public void FloodFillToDirectedGraph_Callback()
   {
@@ -161,6 +169,11 @@ public class TestLevelGeneration : Node2D
 
   public void SpawnPlayerAtStartRoom()
   {
+    //clear old player
+    if(playerManager.topDownPlayer != null)
+    {
+      playerManager.topDownPlayer.QueueFree();
+    }
     if(startRoom != -1)
     {
       PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;

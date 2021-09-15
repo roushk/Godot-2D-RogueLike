@@ -8,6 +8,8 @@
 radius = 9.0
 
 [node name="Enemy" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 31
 script = ExtResource( 3 )
 
 [node name="MovementCollider" type="CollisionShape2D" parent="."]
