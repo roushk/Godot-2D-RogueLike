@@ -120,6 +120,88 @@ public class TestLevelGeneration : Node2D
     }
   }
 
+
+  float OctileDistanceCalc(Vector2 a, Vector2 b)
+  {
+    Vector2 diff = new Vector2(Mathf.Abs(a.x - b.x), Mathf.Abs(a.y - b.y));
+
+    //1.41421356237 is sqrt of 2
+    return (Mathf.Min(diff.x, diff.y) * 1.41421356237f) + Mathf.Max(diff.x, diff.y) - Math.Min(diff.x, diff.y);
+  }
+
+  float ManhattanDistanceCalc(Vector2 a, Vector2 b)
+  {
+    //1.41421356237 is sqrt of 2
+    return Mathf.Abs(a.x-b.x) + Math.Abs(a.y-b.y);
+  }
+
+
+  public void GenerateVoronoiDiagram()
+  {
+    int numPoints = 50;
+    int maxPointDistance = 125;
+    List<Vector2> points = new List<Vector2>();
+
+    for (int i = 0; i < numPoints; i++)
+    {
+      points.Add(new Vector2(random.Next(0,maxPointDistance), random.Next(0,maxPointDistance)));
+    }
+
+    width = maxPointDistance;
+    height = maxPointDistance;
+    ClearMap();
+    terrainMap = new int[width, height];
+
+    //Map of distance to closest point
+    voronoiPoints = new int [width, height];
+
+    //Brute force distance of each grid point to each voronoi point
+    for(int y = 0; y < height; ++y)
+    {
+      for(int x = 0; x < width; ++x)
+      { 
+        int closestPoint = 0;
+        float closestDistanceSq = float.MaxValue;
+        for (int i = 0; i < points.Count; i++)
+        {
+          //TODO support manhattan distance also, caves look a bit more like I want, octagonal
+          //float distSq = OctileDistanceCalc(points[i],new Vector2(x,y));
+          //float distSq = ManhattanDistanceCalc(points[i],new Vector2(x,y));
+          float distSq = points[i].DistanceSquaredTo(new Vector2(x,y));
+          if(distSq < closestDistanceSq)
+          {
+            closestPoint = i;
+            closestDistanceSq = distSq;
+          }
+          voronoiPoints[x,y] = closestPoint;
+        }
+      }
+    }
+
+    VisualizationMaps["Voronoi Overlay"].Clear();
+
+    for(int y = 0; y < height; ++y)
+    {
+      for(int x = 0; x < width; ++x)
+      {  
+        if(x == 0 || y == 0 || x == width - 1 || y == height - 1)
+        {
+          terrainMap[x,y] = 1;
+        }
+      }
+    }
+
+    for(int y = 0; y < height; ++y)
+    {
+      for(int x = 0; x < width; ++x)
+      {  
+        VisualizationMaps["Voronoi Overlay"].SetCell(x,y,voronoiPoints[x,y]);
+      }
+    }
+
+
+  }
+
   public void GenerateRoomsFromFloodFillAndAdjacency()
   {
     //Select every point in the adjacency man that has a adjacency value >= 2 and returns those points into a IEnumerable
@@ -503,7 +585,8 @@ public class TestLevelGeneration : Node2D
   public bool realtimeAStar = false;
   int realtimeAStarIter = 1;
 
-
+  int [,] voronoiPoints;
+  
   //0 to 1
   float oreChunkEdgeSpawnChance = 0.1f;
 
@@ -830,6 +913,7 @@ public class TestLevelGeneration : Node2D
     VisualizationMaps["Room Overlay"] = GetNode("Room Overlay") as TileMap;
     VisualizationMaps["KMeans Overlay"] = GetNode("KMeans Overlay") as TileMap;
     VisualizationMaps["AStar Overlay"] = GetNode("AStar Overlay") as TileMap;
+    VisualizationMaps["Voronoi Overlay"] = GetNode("Voronoi Overlay") as TileMap;
 
     MapGenColorListNode = GetTree().Root.FindNode("MapGenColorList/VBoxContainer2");
 
