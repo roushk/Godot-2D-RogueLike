@@ -10,22 +10,25 @@
 radius = 15.0
 
 [node name="Enemy" type="KinematicBody2D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource( 3 )
 
 [node name="MovementCollider" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="AttackArea" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 3
+collision_layer = 16
+collision_mask = 17
 
 [node name="AttackAreaCollider" type="CollisionPolygon2D" parent="AttackArea"]
 visible = false
 polygon = PoolVector2Array( 9.66387, -6.9804, 4.93917, -10.6814, -21.4404, -8.63405, -23.5665, -6.1142, -22.4641, -0.91703, -19.9443, 3.57144, -6.16389, 5.30383, 8.08897, 5.0676, 12.0262, 0.0279121 )
+disabled = true
 
 [node name="TouchArea" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 3
+collision_layer = 16
+collision_mask = 17
 
 [node name="TouchAreaCollider" type="CollisionShape2D" parent="TouchArea"]
 shape = SubResource( 2 )
@@ -46,3 +49,6 @@ margin_left = -20.0
 margin_top = -20.0
 margin_right = -20.0
 margin_bottom = -20.0
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_PunchArea_body_entered"]
+[connection signal="body_entered" from="TouchArea" to="." method="_on_TouchArea_body_entered"]

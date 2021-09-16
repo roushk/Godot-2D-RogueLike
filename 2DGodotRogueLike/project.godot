@@ -116,6 +116,8 @@ MouseWheelDown={
 2d_physics/layer_1="Walls"
 2d_physics/layer_2="Enemies"
 2d_physics/layer_3="Interactables"
+2d_physics/layer_4="PlayerDealtDamage"
+2d_physics/layer_5="EnemyDealtDamage"
 
 [memory]
 

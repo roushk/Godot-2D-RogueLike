@@ -57,14 +57,26 @@ public class PlayerTopDown : CombatCharacter
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 
+
+	//TODO change to crafted/selected weapon
+	public Parts.PartStats weapon = new Parts.PartStats();
+
   public override void _Ready()
   {
+		characterType = CharacterType.Player;
 		//GetNode("OreWorldObject");
 		playerArea = GetNode<Area2D>("PlayerInteractionArea");
 		animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
 		weaponAnimPlayer = GetNode("WeaponSprite/WeaponAnimPlayer") as AnimationPlayer;
 		raycast2D = GetNode("RayCast2D") as RayCast2D;
 		weaponSprite = GetNode("WeaponSprite") as Sprite;
+
+		//Reset attacking sprite
+		weaponAnimPlayer.Stop(true);
+		attacking = false;
+
+		weapon.baseSlashDamage = 10;
+		weapon.baseStabDamage = 10;
   }
 
 
@@ -98,6 +110,37 @@ public class PlayerTopDown : CombatCharacter
 		}
 	}
 
+	//When the punch area overlaps
+  public void _on_SlashArea_body_entered(Node body)
+  {
+    CombatCharacter character = body as CombatCharacter;
+    if(character != null && character.characterType == CharacterType.Enemy)
+    {
+      //If character can take damage
+      if(character.invincibilityTimeLeft <= 0)
+      {
+        //Take damage and reset invincibility timer
+				character.DamageCharacter(weapon.baseSlashDamage);
+        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
+      }
+    }
+  }
+
+	//When the punch area overlaps
+  public void _on_StabArea_body_entered(Node body)
+  {
+    CombatCharacter character = body as CombatCharacter;
+    if(character != null && character.characterType == CharacterType.Enemy)
+    {
+      //If character can take damage
+      if(character.invincibilityTimeLeft <= 0)
+      {
+        //Take damage and reset invincibility timer
+				character.DamageCharacter(weapon.baseStabDamage);
+        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
+      }
+    }
+  }
 
   public void _on_PlayerInteractionArea_area_entered(Area2D body)
   {
