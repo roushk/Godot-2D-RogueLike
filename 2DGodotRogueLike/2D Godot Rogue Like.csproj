@@ -21,6 +21,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Characters\Enemy.cs" />
     <Compile Include="Scripts\Debug\DebugManager.cs" />
+    <Compile Include="Scripts\Interactables\Interactable.cs" />
     <Compile Include="Scripts\Player\PlayerManager.cs" />
     <Compile Include="Scripts\AI\Pathfinding\AStar.cs" />
     <Compile Include="Scripts\Animation\AnimatedTilesetTileSettings.cs" />

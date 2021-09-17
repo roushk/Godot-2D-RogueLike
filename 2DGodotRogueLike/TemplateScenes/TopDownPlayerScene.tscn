@@ -42,36 +42,36 @@ atlas = ExtResource( 3 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 64, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 96, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 128, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=14]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 4 )
 region = Rect2( 160, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=15]
-atlas = ExtResource( 1 )
-region = Rect2( 192, 0, 32, 32 )
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=16]
-atlas = ExtResource( 1 )
-region = Rect2( 224, 0, 32, 32 )
+atlas = ExtResource( 2 )
+region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 5 )
@@ -106,36 +106,36 @@ atlas = ExtResource( 5 )
 region = Rect2( 48, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 32, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 64, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 96, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 128, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 4 )
+atlas = ExtResource( 1 )
 region = Rect2( 160, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 32, 32 )
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 32, 32 )
 
 [sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 2 )
-region = Rect2( 32, 0, 32, 32 )
+atlas = ExtResource( 1 )
+region = Rect2( 224, 0, 32, 32 )
 
 [sub_resource type="SpriteFrames" id=33]
 animations = [ {
@@ -149,9 +149,14 @@ animations = [ {
 "name": "Character Jump",
 "speed": 8.0
 }, {
-"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
-"name": "Character Run",
+"name": "Character Idle",
+"speed": 8.0
+}, {
+"frames": [ SubResource( 15 ), SubResource( 16 ) ],
+"loop": true,
+"name": "Character Fall",
 "speed": 8.0
 }, {
 "frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
@@ -159,14 +164,9 @@ animations = [ {
 "name": "Coin Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
+"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
 "loop": true,
-"name": "Character Idle",
-"speed": 8.0
-}, {
-"frames": [ SubResource( 31 ), SubResource( 32 ) ],
-"loop": true,
-"name": "Character Fall",
+"name": "Character Run",
 "speed": 8.0
 } ]
 
@@ -193,8 +193,7 @@ animation = "Character Run"
 frame = 2
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
-enabled = true
-cast_to = Vector2( 0, 2 )
+cast_to = Vector2( 0, 0 )
 collision_mask = 2
 
 [node name="PlayerInteractionArea" type="Area2D" parent="."]
@@ -231,5 +230,6 @@ disabled = true
 [connection signal="area_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_entered"]
 [connection signal="area_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_exited"]
 [connection signal="body_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_body_entered"]
+[connection signal="body_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_body_exited"]
 [connection signal="body_entered" from="WeaponSprite/SlashArea" to="." method="_on_SlashArea_body_entered"]
 [connection signal="body_entered" from="WeaponSprite/StabArea" to="." method="_on_StabArea_body_entered"]

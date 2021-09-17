@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class PlayerTopDown : CombatCharacter
 {
@@ -57,6 +58,7 @@ public class PlayerTopDown : CombatCharacter
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 
+	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
 
 	//TODO change to crafted/selected weapon
 	public Parts.PartStats weapon = new Parts.PartStats();
@@ -110,7 +112,23 @@ public class PlayerTopDown : CombatCharacter
 		if(inv != null)
 		{
 			CollidingWithInvObject(inv);
+			return;
 		}
+
+		//Interactable interactable = body.GetParent() as Interactable;
+		//if(interactable != null)
+		//{
+		//	interactablesInRange.Add(interactable);
+		//}
+	}
+
+	public void _on_PlayerInteractionArea_body_exited(Node body)
+	{
+		//Interactable interactable = body.GetParent() as Interactable;
+		//if(interactable != null)
+		//{
+		//	interactablesInRange.Add(interactable);
+		//}
 	}
 
 	//When the punch area overlaps

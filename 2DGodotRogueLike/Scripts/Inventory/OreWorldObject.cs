@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class OreWorldObject : Node2D
+public class OreWorldObject : Interactable
 {
   [Signal]
   public delegate void OreOverlappingSignal(bool overlapping,OreWorldObject oreNode);
@@ -20,7 +20,6 @@ public class OreWorldObject : Node2D
   [Export]
   public float timeToMine = 3;
 
-  public AnimatedSprite animatedSprite;
   Area2D area2D;
   CollisionShape2D collisionShape2D;
   CPUParticles2D cpuParticles2D;
@@ -29,7 +28,7 @@ public class OreWorldObject : Node2D
 
   public override void _Ready()
   {
-    animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
+    base._Ready();
     area2D = GetNode("Area2D") as Area2D;
     collisionShape2D = GetNode("Area2D/CollisionShape2D") as CollisionShape2D;
     cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
@@ -58,5 +57,10 @@ public class OreWorldObject : Node2D
   public override void _Process(float delta)
   {
 
+  }
+
+  public override void _PhysicsProcess(float delta)
+  {
+    UpdateSelf(delta);
   }
 }

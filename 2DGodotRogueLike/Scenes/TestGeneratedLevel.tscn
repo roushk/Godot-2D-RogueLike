@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=6]
 [ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=8]
+[ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=9]
 
 [node name="TestLevelGenNode" type="Node2D"]
 script = ExtResource( 1 )
@@ -839,6 +840,15 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Ore" parent="." instance=ExtResource( 9 )]
+position = Vector2( 720.119, 624.165 )
+
+[node name="Ore2" parent="." instance=ExtResource( 9 )]
+position = Vector2( 690.226, 657.935 )
+
+[node name="Ore3" parent="." instance=ExtResource( 9 )]
+position = Vector2( 659.92, 753.063 )
 
 [connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/ProcGenTechnique/SelectedOverlay" to="." method="OverlaySelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/VoronoiDiagram" to="." method="GenerateVoronoiDiagram"]

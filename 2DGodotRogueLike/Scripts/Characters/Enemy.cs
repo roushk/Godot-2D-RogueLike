@@ -7,6 +7,8 @@ public class Enemy : CombatCharacter
 
   //TODO move out this to a MapManager singleton
   public TestLevelGeneration testLevelGeneration;
+  PlayerManager playerManager;
+
 
   public float minMovementDistance = 2.0f;
   AnimatedSprite sprite;
@@ -31,7 +33,6 @@ public class Enemy : CombatCharacter
 
   public List<Vector2> movementPath = new List<Vector2>();
   
-  PlayerManager playerManager;
 
   Vector2 globalMovementPosGoal;
   // Called when the node enters the scene tree for the first time.
