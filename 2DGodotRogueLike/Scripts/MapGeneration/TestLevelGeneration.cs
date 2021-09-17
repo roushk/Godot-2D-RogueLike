@@ -924,7 +924,23 @@ public class TestLevelGeneration : Node2D
     CPF.SetKMeansVisMap(ref VisualizationMaps, "KMeans Overlay");
     AStarPather.SetAStarVisualizationMap(ref VisualizationMaps, "AStar Overlay");
 
-    GenerateMap(maxIterations, true);
+
+    //use initial map as stuff
+    width = (int)(ForegroundMap.GetUsedRect().Size.x);
+    height = (int)(ForegroundMap.GetUsedRect().Size.y);
+
+    terrainMap = new int [width,height];
+
+    //Populate terrain map
+    for(int i = 0; i <= 1; ++i)  
+    {
+      for(int j = 0; j <= 1; ++j)  
+      {
+        terrainMap[i,j] = ForegroundMap.GetCell(i,j);
+      }
+    }
+
+    UpdateInternalMaps();
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
