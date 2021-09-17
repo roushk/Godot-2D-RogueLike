@@ -98,7 +98,8 @@ public class DebugManager : Node2D
 
   public void PostLevelGenInit()
   {
-    testLevelGeneration = this.GetParent().GetNode("TestLevelGenNode") as TestLevelGeneration;
+    testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
+    
     DebugUI = testLevelGeneration.GetNode("Camera2D/GUI") as MarginContainer;
     debugCamera = testLevelGeneration.GetNode("Camera2D") as Camera2D;
 

@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 15.0
+radius = 100.0
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 3
@@ -41,8 +41,7 @@ frame = 1
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 0, 2 )
-collision_mask = 2
+cast_to = Vector2( 0, 10 )
 
 [node name="HealthBar" parent="." instance=ExtResource( 2 )]
 margin_left = -20.0

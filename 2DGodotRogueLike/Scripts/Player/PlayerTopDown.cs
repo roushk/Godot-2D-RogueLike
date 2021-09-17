@@ -66,10 +66,10 @@ public class PlayerTopDown : CombatCharacter
 		characterType = CharacterType.Player;
 		//GetNode("OreWorldObject");
 		playerArea = GetNode<Area2D>("PlayerInteractionArea");
-		animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
-		weaponAnimPlayer = GetNode("WeaponSprite/WeaponAnimPlayer") as AnimationPlayer;
-		raycast2D = GetNode("RayCast2D") as RayCast2D;
-		weaponSprite = GetNode("WeaponSprite") as Sprite;
+		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
+		raycast2D = GetNode<RayCast2D>("RayCast2D");
+		weaponSprite = GetNode<Sprite>("WeaponSprite");
 
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);
@@ -77,6 +77,9 @@ public class PlayerTopDown : CombatCharacter
 
 		weapon.baseSlashDamage = 10;
 		weapon.baseStabDamage = 10;
+
+	  GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
+
   }
 
 

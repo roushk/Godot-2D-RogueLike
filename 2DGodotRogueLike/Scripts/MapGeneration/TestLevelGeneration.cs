@@ -924,6 +924,7 @@ public class TestLevelGeneration : Node2D
     CPF.SetKMeansVisMap(ref VisualizationMaps, "KMeans Overlay");
     AStarPather.SetAStarVisualizationMap(ref VisualizationMaps, "AStar Overlay");
 
+    GenerateMap(maxIterations, true);
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -932,8 +933,11 @@ public class TestLevelGeneration : Node2D
     //Delay init until process step, need a more granular way to setup and show dependencies of internal systems
     if(ranFirstTimeInit == false)
     {
-      debugManager.PostLevelGenInit();
       ranFirstTimeInit = true;
+      debugManager.PostLevelGenInit();
+
+      debugManager.playerCamera = playerManager.topDownPlayer.GetNode("Camera2D") as Camera2D;
+      debugManager.SetPlayerMode(true);
     }
   }
 
