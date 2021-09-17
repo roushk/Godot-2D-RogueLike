@@ -20,8 +20,6 @@ public class OreWorldObject : Interactable
   [Export]
   public float timeToMine = 3;
 
-  Area2D area2D;
-  CollisionShape2D collisionShape2D;
   CPUParticles2D cpuParticles2D;
   
   private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/InventoryObject.tscn");
@@ -29,8 +27,6 @@ public class OreWorldObject : Interactable
   public override void _Ready()
   {
     base._Ready();
-    area2D = GetNode("Area2D") as Area2D;
-    collisionShape2D = GetNode("Area2D/CollisionShape2D") as CollisionShape2D;
     cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
   }
 
@@ -62,5 +58,30 @@ public class OreWorldObject : Interactable
   public override void _PhysicsProcess(float delta)
   {
     UpdateSelf(delta);
+
+    //TODO move this elseware
+		if(playerInteracting)
+		{
+			cpuParticles2D.Emitting = true;
+			timeToMine -= delta;
+
+			//if spent enough time mining ore
+			if(timeToMine <= 0)
+			{
+				//Spawn ore item
+				CreateInventoryObject();
+
+        //Clean up interactables stuff
+        ObjectBeingRemoved();
+
+				//Destroy ore object
+				QueueFree();
+
+			}
+		}
+    else
+    {
+			cpuParticles2D.Emitting = false;
+    }
   }
 }

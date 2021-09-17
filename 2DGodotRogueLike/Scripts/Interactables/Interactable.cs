@@ -14,6 +14,8 @@ public class Interactable : Node2D
 
   public AnimatedSprite animatedSprite;
 
+  public bool playerInteracting = false;
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -22,11 +24,42 @@ public class Interactable : Node2D
     animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
   }
 
+  
+
+	//Called when player starts interaction with the object
+	public virtual void StartInteract()
+	{
+    playerInteracting = true;
+	}
+
+	//Called when player ends interaction with the object
+	public virtual void EndInteract()
+	{
+    //Dont run end interaction if player isn't interacting and is like walking around with the key down
+    if(!playerInteracting)
+      return;
+
+    playerInteracting = false;
+	}
 
   public override void _PhysicsProcess(float delta)
   {
-    UpdateSelf(delta);
+    
   }
+
+  public void ObjectBeingRemoved()
+  {
+    //Safely remove this object from the player's interactables if they exist 
+    if(playerManager.topDownPlayer.closestInteractable == this)
+      playerManager.topDownPlayer.closestInteractable = null;
+    
+    if(playerManager.topDownPlayer.currentlyInteractingWith == this)
+      playerManager.topDownPlayer.currentlyInteractingWith = null;
+
+    playerManager.topDownPlayer.interactablesInRange.Remove(this);
+  }
+
+
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   protected  void UpdateSelf(float delta)
   {
@@ -39,17 +72,21 @@ public class Interactable : Node2D
     if(distanceToPlayerSquared < interactionRadius * interactionRadius)
     {
       //Make UI visible
-
-      inRange = true;
-      //Enable Interaction
-      playerManager.topDownPlayer.interactablesInRange.Add(this);
-      animatedSprite.Modulate = new Color(0.5f,1,0.5f,1);
+      if(inRange == false)
+      {
+        inRange = true;
+        //Enable Interaction
+        playerManager.topDownPlayer.interactablesInRange.Add(this);
+        Modulate = new Color(0.5f,1,0.5f,1);
+      }
+      //Do nothing if already in range
     }
+    //else if interactionR
     else if(inRange)  //Else if not within range and we think we are then remove from the list
     {
       playerManager.topDownPlayer.interactablesInRange.Remove(this);
-      animatedSprite.Modulate = new Color(1,1,1,1);
+      Modulate = new Color(1,1,1,1);
+      inRange = false;
     }
   }
-
 }

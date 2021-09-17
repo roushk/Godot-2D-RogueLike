@@ -19,6 +19,8 @@ public class PlayerTopDown : CombatCharacter
 
 	//Scaled multiplier for movespeed to make base 100 a decent speed
 	const float movespeedScalar = 50.0f;
+
+	float dashSpeed = 10.0f;
   
   float idleEpsilon = 10;
 
@@ -26,6 +28,8 @@ public class PlayerTopDown : CombatCharacter
 
 	[Export]
   bool attacking = false;
+
+	bool currentlyInteracting = false;
 	
 	//Bool to stop player movement if holding down/spamming the attack button as the anim player is updated after the player so the player can move slightly between each and don't want that
 	bool attackingThisFrame = false;
@@ -50,8 +54,6 @@ public class PlayerTopDown : CombatCharacter
   bool OnTile = false;
   // Called when the node enters the scene tree for the first time.
 
-  OreWorldObject currentlyOverlappedOre;
-  bool overlappingOre = false;
 	Area2D playerArea;
 	AnimatedSprite animatedSprite;
 	AnimationPlayer weaponAnimPlayer;
@@ -60,13 +62,18 @@ public class PlayerTopDown : CombatCharacter
 
 	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
 
+	public Interactable closestInteractable = null;
+
+	//save incase the player walks away somehow
+	public Interactable currentlyInteractingWith = null;
+	
+
 	//TODO change to crafted/selected weapon
 	public Parts.PartStats weapon = new Parts.PartStats();
 
   public override void _Ready()
   {
 		characterType = CharacterType.Player;
-		//GetNode("OreWorldObject");
 		playerArea = GetNode<Area2D>("PlayerInteractionArea");
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
@@ -83,6 +90,7 @@ public class PlayerTopDown : CombatCharacter
 	  GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
 
   }
+
 
 
 	void CollidingWithInvObject(InventoryObject inv)
@@ -165,12 +173,6 @@ public class PlayerTopDown : CombatCharacter
 
   public void _on_PlayerInteractionArea_area_entered(Area2D body)
   {
-		OreWorldObject ore = body.GetParent() as OreWorldObject;
-		if(ore != null)
-		{
-			overlappingOre = true;
-			currentlyOverlappedOre = ore;
-		}
 		InventoryObject inv = body.GetParent() as InventoryObject;
 		if(inv != null)
 		{
@@ -181,12 +183,6 @@ public class PlayerTopDown : CombatCharacter
   public void _on_PlayerInteractionArea_area_exited(Area2D body)
   {
 
-		OreWorldObject ore = body.GetParent() as OreWorldObject;
-		if(ore != null)
-		{
-			overlappingOre = false;
-			currentlyOverlappedOre = ore; 
-		}
   }
 
   public override void _Draw()
@@ -225,6 +221,25 @@ public class PlayerTopDown : CombatCharacter
 		//	}
 		//}
 
+		Interactable closest = null;
+		float closestInteractableDistance = float.MaxValue;
+
+		foreach(var inter in interactablesInRange)
+		{
+      float distanceToPlayerSquared = GlobalPosition.DistanceSquaredTo(inter.GlobalPosition);
+			if(distanceToPlayerSquared < closestInteractableDistance)
+			{
+				closestInteractableDistance = distanceToPlayerSquared;
+				closest = inter;
+			}
+			inter.Modulate = new Color(0.5f,1,0.5f,1);
+		}
+
+		if(closest != null)	
+			closest.Modulate = new Color(0.5f,0.5f,1,1);
+
+		closestInteractable = closest;
+
 		raycast2D.CastTo = new Vector2(0,50);
 
 		//the raycast only collides with the second layer so only the floors
@@ -256,6 +271,37 @@ public class PlayerTopDown : CombatCharacter
 			movingDirection.x -= 1;
 			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
 		}
+
+		if(Godot.Input.IsActionJustPressed("PlayerInteract"))
+		{
+			if(closestInteractable != null)
+			{
+				currentlyInteractingWith = closestInteractable;
+				currentlyInteractingWith.StartInteract();
+			}
+		}
+
+		if(Godot.Input.IsActionPressed("PlayerInteract"))
+		{
+			//Deal with the cast that the object we were interacting with is destroyed (i.e. ore mined) then find new one
+			if(closestInteractable != null && currentlyInteractingWith == null)
+			{
+				currentlyInteractingWith = closestInteractable;
+				currentlyInteractingWith.StartInteract();
+			}
+		}
+
+		if(Godot.Input.IsActionJustReleased("PlayerInteract"))
+		{
+			if(currentlyInteractingWith != null)
+			{
+				currentlyInteractingWith.EndInteract();
+				currentlyInteractingWith = null;
+			}
+		}
+
+		//Set the currently interacting bool whether we have something valid we are interacting with
+		currentlyInteracting = currentlyInteractingWith != null;
 
 		
 		//Only if larger than unit vector than scale down MovingDirection
@@ -297,34 +343,13 @@ public class PlayerTopDown : CombatCharacter
 			attackingThisFrame = true;
 		}
 
-		//Don't move while attacking
-		if(attacking || attackingThisFrame)
+		//Don't move while attacking or interacting with objects
+		if(attacking || attackingThisFrame || currentlyInteracting)
 		{
 			velocity = new Vector2(0,0);
 		}
 	
-		//TODO move this elseware
-		if(currentlyOverlappedOre != null && overlappingOre && attacking)
-		{
-			currentlyOverlappedOre.GetNode<CPUParticles2D>("CPUParticles2D").Emitting = true;
-			currentlyOverlappedOre.timeToMine -= delta;
-
-			//if spent enough time mining ore
-			if(currentlyOverlappedOre.timeToMine <= 0)
-			{
-				//Spawn ore item
-				currentlyOverlappedOre.CreateInventoryObject();
-				//Destroy ore object
-				currentlyOverlappedOre.QueueFree();
-				currentlyOverlappedOre = null;
-				overlappingOre = false;
-			}
-		}
-
-		if(IsInstanceValid(currentlyOverlappedOre) && !attacking)
-		{
-			currentlyOverlappedOre.GetNode<CPUParticles2D>("CPUParticles2D").Emitting = false;
-		}
+		
 
 		//velocity.y += gravity * delta;
 		
@@ -341,11 +366,20 @@ public class PlayerTopDown : CombatCharacter
 			}
 		}
 
+		
+		//Player Dash, only resolve if not attacking
+		if(Godot.Input.IsActionJustReleased("PlayerMovementAbility") && velocity.LengthSquared() != 0)
+		{
+			velocity *= dashSpeed;
+			//Play dash animation
+			//Stop change of movement direction for a bit?
+		}
+
 		//Slow down movement and normalize evert frame
 		movingDirection *= 0.6f;
 
 		//Update velocity last
-		velocity = MoveAndSlide(velocity, new Vector2(0,-1)) * 0.80f;
+		velocity = MoveAndSlide(velocity) * 0.80f;
 		attackingThisFrame = false;
   }
 }

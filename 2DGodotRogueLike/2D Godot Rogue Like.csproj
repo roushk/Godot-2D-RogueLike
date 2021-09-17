@@ -21,6 +21,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Characters\Enemy.cs" />
     <Compile Include="Scripts\Debug\DebugManager.cs" />
+    <Compile Include="Scripts\Interactables\Forge.cs" />
     <Compile Include="Scripts\Interactables\Interactable.cs" />
     <Compile Include="Scripts\Player\PlayerManager.cs" />
     <Compile Include="Scripts\AI\Pathfinding\AStar.cs" />
@@ -40,7 +41,7 @@
     <Compile Include="Scripts\Player\Player.cs" />
     <Compile Include="Scripts\Player\PlayerTopDown.cs" />
     <Compile Include="Scripts\Inventory\InventoryObject.cs" />
-    <Compile Include="Scripts\Inventory\OreWorldObject.cs" />
+    <Compile Include="Scripts\Interactables\OreWorldObject.cs" />
     <Compile Include="Scripts\UI\HealthBar.cs" />
     <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
     <Compile Include="Scripts\Utils.cs" />

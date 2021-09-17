@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=7]
 [ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=9]
+[ext_resource path="res://TemplateScenes/Forge.tscn" type="PackedScene" id=10]
 
 [node name="TestLevelGenNode" type="Node2D"]
 script = ExtResource( 1 )
@@ -84,6 +85,9 @@ position = Vector2( 790.998, 685.11 )
 
 [node name="Enemy" parent="." instance=ExtResource( 7 )]
 position = Vector2( 922.907, 690.731 )
+
+[node name="Forge" parent="." instance=ExtResource( 10 )]
+position = Vector2( 756.025, 584.827 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 1309.99, 658.979 )
@@ -843,6 +847,12 @@ __meta__ = {
 
 [node name="Ore" parent="." instance=ExtResource( 9 )]
 position = Vector2( 720.119, 624.165 )
+
+[node name="Ore4" parent="." instance=ExtResource( 9 )]
+position = Vector2( 714.616, 630.638 )
+
+[node name="Ore5" parent="." instance=ExtResource( 9 )]
+position = Vector2( 725.617, 621.273 )
 
 [node name="Ore2" parent="." instance=ExtResource( 9 )]
 position = Vector2( 690.226, 657.935 )
