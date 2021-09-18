@@ -13,20 +13,59 @@ public class Interactable : Node2D
   protected PlayerManager playerManager;
 
   public AnimatedSprite animatedSprite;
+  public ShaderMaterial shaderMaterial;
 
   public bool playerInteracting = false;
 
   public bool toggleableInteractable = false;
+  
+  bool ModulateColorDebug = false;
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
     testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
-    animatedSprite = GetNode("AnimatedSprite") as AnimatedSprite;
+    animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+    shaderMaterial = animatedSprite.Material as ShaderMaterial;
   }
 
-  
+  protected void StartSparkling()
+  {
+    if(shaderMaterial != null)
+    {
+      shaderMaterial.SetShaderParam("blinking", true);
+    }
+  }
+
+  protected void StopSparkling()
+  {
+    if(shaderMaterial != null)
+    {
+      shaderMaterial.SetShaderParam("blinking", false);
+    }
+  }
+
+  public void EnteredInteractionRadius()
+  {
+    StartSparkling();
+    inRange = true;
+    //Enable Interaction
+    playerManager.topDownPlayer.interactablesInRange.Add(this);
+
+    if(ModulateColorDebug)
+      Modulate = new Color(0.5f,1,0.5f,1);
+    }
+
+  public void ExitedInteractionRadius()
+  {
+    StopSparkling();
+    playerManager.topDownPlayer.interactablesInRange.Remove(this);
+
+    if(ModulateColorDebug)
+      Modulate = new Color(1,1,1,1);
+    inRange = false;
+  }
 
 	//Called when player starts interaction with the object
 	public virtual void StartInteract()
@@ -50,12 +89,14 @@ public class Interactable : Node2D
       playerInteracting = true;
     }
 
-    //Dont run end interaction if player isn't interacting and is like walking around with the key down
+    //Don't run end interaction if player isn't interacting and is like walking around with the key down
     if(!playerInteracting)
       return;
 
     if(!toggleableInteractable)
+    {
       playerInteracting = false;
+    }
 
 	}
 
@@ -83,22 +124,16 @@ public class Interactable : Node2D
     //If player within aggro radius
     if(distanceToPlayerSquared < interactionRadius * interactionRadius)
     {
-      //Make UI visible
       if(inRange == false)
       {
-        inRange = true;
-        //Enable Interaction
-        playerManager.topDownPlayer.interactablesInRange.Add(this);
-        Modulate = new Color(0.5f,1,0.5f,1);
+        EnteredInteractionRadius();
       }
       //Do nothing if already in range
     }
     //else if interactionR
     else if(inRange)  //Else if not within range and we think we are then remove from the list
     {
-      playerManager.topDownPlayer.interactablesInRange.Remove(this);
-      Modulate = new Color(1,1,1,1);
-      inRange = false;
+      ExitedInteractionRadius();
     }
   }
 }

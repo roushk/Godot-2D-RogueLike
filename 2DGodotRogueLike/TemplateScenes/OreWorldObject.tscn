@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Art/SpriteSheets/OreWorldObjectSpriteFrames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Shaders/SparklingItemShader.tres" type="Material" id=2]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_55.png" type="Texture" id=3]
 [ext_resource path="res://Scripts/Interactables/OreWorldObject.cs" type="Script" id=4]
 
@@ -8,6 +9,7 @@
 script = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = ExtResource( 2 )
 frames = ExtResource( 1 )
 animation = "Iron Ores"
 

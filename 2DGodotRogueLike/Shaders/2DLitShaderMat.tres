@@ -6,6 +6,7 @@ render_mode blend_mix;
 
 uniform vec4 materialColor : hint_color;
 uniform vec4 ambientColor : hint_color;
+//Fragment shader
 void fragment()
 {
 	vec4 albedo = texture(TEXTURE, UV);
@@ -19,6 +20,7 @@ void fragment()
 		COLOR = vec4(0,0,0,0);
 }
 
+//Run per light affecting the object
 void light()
 {
 	LIGHT_HEIGHT = 1.0f;

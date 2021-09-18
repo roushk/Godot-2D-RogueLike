@@ -282,11 +282,11 @@ public class PlayerTopDown : CombatCharacter
 				closestInteractableDistance = distanceToPlayerSquared;
 				closest = inter;
 			}
-			inter.Modulate = new Color(0.5f,1,0.5f,1);
+			//inter.Modulate = new Color(0.5f,1,0.5f,1);
 		}
 
-		if(closest != null)	
-			closest.Modulate = new Color(0.5f,0.5f,1,1);
+		//if(closest != null)	
+		//	closest.Modulate = new Color(0.5f,0.5f,1,1);
 
 		closestInteractable = closest;
 
