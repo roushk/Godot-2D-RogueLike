@@ -12,6 +12,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+defaultColor = Color( 1, 1, 1, 1 )
 
 [connection signal="button_down" from="." to="." method="OnButtonPressedStart"]
 [connection signal="button_up" from="." to="." method="OnButtonPressedEnd"]

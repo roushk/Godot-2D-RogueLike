@@ -140,8 +140,6 @@ public class PlayerTopDown : CombatCharacter
 		currentlySelectedUI = CurrentlySelectedUI.None;
   }
 
-
-
 	void CollidingWithInvObject(InventoryObject inv)
 	{
 		Console.WriteLine("Overlapping Inventory Object" + inv.ToString());

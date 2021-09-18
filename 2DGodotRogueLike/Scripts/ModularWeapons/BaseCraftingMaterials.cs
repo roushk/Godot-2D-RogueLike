@@ -99,6 +99,8 @@ namespace Materials
       tints[Materials.Material.Cobalt] =      new Color("a2aee8");
       tints[Materials.Material.Darksteel] =   new Color("696969");
       tints[Materials.Material.Titanium] =    new Color("ffffff");
+      tints[Materials.Material.Undefined] =   new Color(1,1,1,0.5f); //transparent 50%, also ffffff7e doesnt work??
+      
     }
   }
 

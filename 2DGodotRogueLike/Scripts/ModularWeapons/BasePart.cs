@@ -186,6 +186,8 @@ namespace Parts
     [Export]
     public int materialCost { get; set; } = 5;
 
+    public Materials.Material currentMaterial = Materials.Material.Undefined;
+
     [Export]
     public PartType partType { get; set; } = PartType.Undefined;
     

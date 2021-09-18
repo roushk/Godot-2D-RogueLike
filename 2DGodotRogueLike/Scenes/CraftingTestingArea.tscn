@@ -52,6 +52,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CurrentWeaponInfo" type="RichTextLabel" parent="ParchmentBackground"]
+anchor_left = 0.06
+anchor_top = 0.883
+anchor_right = 0.956
+anchor_bottom = 0.949
+margin_left = 5.568
+margin_top = -32.1584
+margin_right = 4.31677
+margin_bottom = 1.68478
+rect_min_size = Vector2( 110, 16 )
+rect_clip_content = false
+mouse_filter = 1
+bbcode_enabled = true
+bbcode_text = "[center][b]Current Weapon Stats"
+text = "Parts Missing Material Selection"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AvailableBlueprints" type="ScrollContainer" parent="."]
 visible = false
 anchor_left = 0.26
@@ -75,7 +94,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BlueprintBackground" type="NinePatchRect" parent="."]
+[node name="PartSelection" type="NinePatchRect" parent="."]
 anchor_right = 0.4
 anchor_bottom = 1.0
 margin_right = 1.2
@@ -91,7 +110,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BlueprintStuff" type="VBoxContainer" parent="BlueprintBackground"]
+[node name="BlueprintStuff" type="VBoxContainer" parent="PartSelection"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -102,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
+[node name="CurrentBPTitle" type="RichTextLabel" parent="PartSelection/BlueprintStuff"]
 margin_right = 195.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 110, 16 )
@@ -115,7 +134,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
+[node name="PartDetailContainer" type="VBoxContainer" parent="PartSelection/BlueprintStuff"]
 margin_top = 20.0
 margin_right = 195.0
 margin_bottom = 40.0
@@ -125,7 +144,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HoveredPartInfo" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
+[node name="HoveredPartInfo" type="RichTextLabel" parent="PartSelection/BlueprintStuff"]
 margin_top = 44.0
 margin_right = 195.0
 margin_bottom = 60.0
@@ -139,7 +158,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PartSelectionScrollContainer" type="ScrollContainer" parent="BlueprintBackground/BlueprintStuff"]
+[node name="PartSelectionScrollContainer" type="ScrollContainer" parent="PartSelection/BlueprintStuff"]
 margin_top = 64.0
 margin_right = 195.0
 margin_bottom = 224.0
@@ -147,7 +166,7 @@ rect_min_size = Vector2( 160, 160 )
 theme = ExtResource( 8 )
 scroll_horizontal_enabled = false
 
-[node name="NewPartSelectionContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff/PartSelectionScrollContainer"]
+[node name="NewPartSelectionContainer" type="VBoxContainer" parent="PartSelection/BlueprintStuff/PartSelectionScrollContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
@@ -156,13 +175,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="BlueprintBackground/BlueprintStuff/PartSelectionScrollContainer/NewPartSelectionContainer"]
+[node name="HSeparator" type="HSeparator" parent="PartSelection/BlueprintStuff/PartSelectionScrollContainer/NewPartSelectionContainer"]
 self_modulate = Color( 1, 1, 1, 0 )
 margin_right = 32.0
 margin_bottom = 5.0
 rect_min_size = Vector2( 5, 5 )
 
-[node name="PartSelectionDetail" type="NinePatchRect" parent="."]
+[node name="MaterialSelection" type="NinePatchRect" parent="."]
 visible = false
 anchor_right = 0.4
 anchor_bottom = 1.0
@@ -180,7 +199,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Inventory" type="VBoxContainer" parent="PartSelectionDetail"]
+[node name="Inventory" type="VBoxContainer" parent="MaterialSelection"]
 anchor_left = 0.05
 anchor_top = 0.03
 anchor_right = 0.05
@@ -189,7 +208,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ore In Inventory" type="RichTextLabel" parent="PartSelectionDetail/Inventory"]
+[node name="Ore In Inventory" type="RichTextLabel" parent="MaterialSelection/Inventory"]
 margin_right = 140.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 80, 16 )
@@ -204,14 +223,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ores" type="ScrollContainer" parent="PartSelectionDetail/Inventory"]
+[node name="Ores" type="ScrollContainer" parent="MaterialSelection/Inventory"]
 margin_top = 20.0
 margin_right = 140.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 140, 220 )
 scroll_horizontal_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="PartSelectionDetail/Inventory/Ores"]
+[node name="GridContainer" type="GridContainer" parent="MaterialSelection/Inventory/Ores"]
 margin_right = 140.0
 margin_bottom = 220.0
 rect_min_size = Vector2( 140, 220 )
@@ -229,6 +248,7 @@ margin_top = 0.130234
 margin_right = -0.202271
 margin_bottom = 0.130219
 rect_min_size = Vector2( 10, 24 )
+disabled = true
 text = "Craft Weapon"
 __meta__ = {
 "_edit_use_anchors_": false

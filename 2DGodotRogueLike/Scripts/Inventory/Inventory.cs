@@ -55,6 +55,18 @@ public class Inventory : Control
     Console.WriteLine("Added Unique Item " + inventoryObjectName + " to Inventory");
   }
 
+
+  //Returns count of material
+  public int GetMaterialCount(Materials.Material material)
+  {
+    int currVal = 0;
+
+    //ignore return result, default is already 0
+    stackableItems.TryGetValue(material, out currVal);
+
+    return currVal;
+  }
+
   //Returns whether the inventory has the material
   public bool HasMaterial(Materials.Material material, int count)
   {
@@ -98,7 +110,7 @@ public class Inventory : Control
     }
   }
 
-  public HBoxContainer CreateStackableItemInventoryUI(Materials.Material material)
+  public HBoxContainer CreateStackableItemInventoryUI(Materials.Material material, BasicCallback callback = null, bool changeColors = false)
   {
     HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance<HBoxContainer>();
 
@@ -108,7 +120,10 @@ public class Inventory : Control
     texButton.TextureNormal = materialSpriteFrames.GetFrame("Ore Chunks", (int)material);
     texButton.Modulate = Colors.White;
     texButton.SelfModulate = Colors.White;
-    texButton.changeColors = false;
+    texButton.changeColors = changeColors;
+    texButton.Disabled = false;
+    //Set material selection callback
+    texButton.onButtonPressedCallback = callback;
 
     text.BbcodeText = material.ToString() + "\n" + "Amount: 0";
     text.BbcodeEnabled = true;
@@ -121,8 +136,8 @@ public class Inventory : Control
   public override void _Ready()
   {
     //Set up containers
-    stackablesGridContainer = GetNode<GridContainer>("PartSelectionDetail/Inventory/InventoryTabs/Ores/GridContainer");
-    uniqueGridContainer = GetNode<GridContainer>("PartSelectionDetail/Inventory/InventoryTabs/Weapons/GridContainer");
+    stackablesGridContainer = GetNode<GridContainer>("InventoryRect/Inventory/InventoryTabs/Ores/GridContainer");
+    uniqueGridContainer = GetNode<GridContainer>("InventoryRect/Inventory/InventoryTabs/Weapons/GridContainer");
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
   }
 
@@ -148,7 +163,24 @@ public class Inventory : Control
         stackableItemsUI.Add(material, hBox);
         stackablesGridContainer.AddChild(hBox);
 
-        HBoxContainer hBox2 = CreateStackableItemInventoryUI(material);
+        //Change colors and set selected material for the inventory items in the crafting menu
+        HBoxContainer hBox2 = CreateStackableItemInventoryUI(material, () => 
+        {
+          //Update the cost of the weapon
+          playerManager.topDownPlayer.playerCraftingUI.selectedInventoryMaterial = material;
+          playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode.part.currentMaterial = material;
+
+          //Set selected material of part
+          if(playerManager.topDownPlayer.playerCraftingUI.selectedPart != null)
+            playerManager.topDownPlayer.playerCraftingUI.selectedPart.defaultColor = Materials.MaterialTints.tints[material];
+
+          //Set currently selected part to null
+          playerManager.topDownPlayer.playerCraftingUI.UpdateCurrentlySelectedPart(null);
+
+          //updates interally if we are done selecting materials
+          playerManager.topDownPlayer.playerCraftingUI.GetWeaponMaterialCost(this);
+
+        }, true);
 
         playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI.Add(material, hBox2);
         playerManager.topDownPlayer.playerCraftingUI.inventoryOres.AddChild(hBox2);

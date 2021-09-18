@@ -3,7 +3,7 @@
         "partName": "Big Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Large.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 10,
         "partAttributes":
         {
             "baseSlashDamage": 200,
@@ -29,7 +29,7 @@
         "partName": "Medium Sword",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Medium.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 7,
         "partAttributes":
         {
             "baseSlashDamage": 110,
@@ -55,7 +55,7 @@
         "partName": "Hammer",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Hammer.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 7,
         "partAttributes":
         {
             "baseSlashDamage": 120,
@@ -98,7 +98,7 @@
         "partName": "Small Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Small.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 2,
         "partAttributes":
         {
             "baseSlashDamage": 60,
@@ -124,7 +124,7 @@
         "partName": "Large Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Large.png",
         "partType": "Guard",
-        "partCost": 5,
+        "partCost": 3,
         "partAttributes":
         {
             "baseSlashDamage": 150,
@@ -145,7 +145,7 @@
         "partName": "Small Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Small.png",
         "partType": "Guard",
-        "partCost": 5,
+        "partCost": 1,
         "partAttributes":
         {
             "baseSlashDamage": 80,
@@ -166,7 +166,7 @@
         "partName": "Simple Pommel",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Pommel_Simple.png",
         "partType": "Pommel",
-        "partCost": 5,
+        "partCost": 2,
         "partAttributes":
         {
             "baseSlashDamage": 110,
@@ -188,7 +188,7 @@
         "partName": "Small Handle",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Small.png",
         "partType": "Handle",
-        "partCost": 5,
+        "partCost": 2,
         "partAttributes":
         {
             "baseSlashDamage": 100,
@@ -251,7 +251,7 @@
         "partName": "Large Handle",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Large.png",
         "partType": "Handle",
-        "partCost": 5,
+        "partCost": 8,
         "partAttributes":
         {
             "baseSlashDamage": 100,
@@ -282,7 +282,7 @@
         "partName": "Rapier",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Rapier.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 4,
         "partAttributes":
         {
             "baseSlashDamage": 80,
@@ -308,7 +308,7 @@
         "partName": "Medium Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Medium.png",
         "partType": "Guard",
-        "partCost": 5,
+        "partCost": 3,
         "partAttributes":
         {
             "baseSlashDamage": 110,
@@ -329,7 +329,7 @@
         "partName": "Rapier Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Rapier.png",
         "partType": "Guard",
-        "partCost": 5,
+        "partCost": 4,
         "partAttributes":
         {
             "baseSlashDamage": 80,
@@ -350,7 +350,7 @@
         "partName": "Falchion Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Falchion.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 7,
         "partAttributes":
         {
             "baseSlashDamage": 150,
@@ -376,7 +376,7 @@
         "partName": "Axe Head",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Axe.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 4,
         "partAttributes":
         {
             "baseSlashDamage": 120,
@@ -397,7 +397,7 @@
         "partName": "Pickaxe Head",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Pickaxe.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 4,
         "partAttributes":
         {
             "baseSlashDamage": 120,
@@ -418,7 +418,7 @@
         "partName": "TBD",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/TBD.png",
         "partType": "Blade",
-        "partCost": 5,
+        "partCost": 1,
         "partAttributes":
         {
             "baseSlashDamage": 100,

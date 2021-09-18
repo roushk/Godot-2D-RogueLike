@@ -16,7 +16,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PartSelectionDetail" type="NinePatchRect" parent="."]
+[node name="InventoryRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 8.0
@@ -36,7 +36,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Inventory" type="VBoxContainer" parent="PartSelectionDetail"]
+[node name="Inventory" type="VBoxContainer" parent="InventoryRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -48,7 +48,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InvName" type="RichTextLabel" parent="PartSelectionDetail/Inventory"]
+[node name="InvName" type="RichTextLabel" parent="InventoryRect/Inventory"]
 margin_right = 484.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 80, 16 )
@@ -63,7 +63,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InventoryTabs" type="TabContainer" parent="PartSelectionDetail/Inventory"]
+[node name="InventoryTabs" type="TabContainer" parent="InventoryRect/Inventory"]
 margin_top = 20.0
 margin_right = 484.0
 margin_bottom = 257.0
@@ -74,7 +74,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ores" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+[node name="Ores" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -84,7 +84,7 @@ margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
 scroll_horizontal_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Ores"]
+[node name="GridContainer" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/Ores"]
 margin_right = 464.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 464, 240 )
@@ -93,7 +93,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Weapons" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+[node name="Weapons" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -104,7 +104,7 @@ margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
 scroll_horizontal_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Weapons"]
+[node name="GridContainer" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/Weapons"]
 margin_right = 464.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 464, 240 )
@@ -113,7 +113,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="More" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+[node name="More" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -124,7 +124,7 @@ margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
 scroll_horizontal_enabled = false
 
-[node name="More" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/More"]
+[node name="More" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/More"]
 margin_right = 464.0
 margin_bottom = 240.0
 rect_min_size = Vector2( 464, 240 )

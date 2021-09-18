@@ -79,6 +79,8 @@ public class DebugManager : Node2D
 
   public MarginContainer DebugUI;
 
+  public MarginContainer MouseInfoUI;
+
   public TestLevelGeneration testLevelGeneration;
 
   public bool playerMode = false;
@@ -101,6 +103,7 @@ public class DebugManager : Node2D
     testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
     
     DebugUI = testLevelGeneration.GetNode("Camera2D/GUI") as MarginContainer;
+    MouseInfoUI = testLevelGeneration.GetNode("Camera2D/MouseInfoUI") as MarginContainer; 
     debugCamera = testLevelGeneration.GetNode("Camera2D") as Camera2D;
 
     currentMouseSelection_AStar_NodeCoords =        testLevelGeneration.GetNode("Camera2D/MouseInfoUI/VBoxContainer/AStarInfo/VBoxContainer2/General7") as Label;
@@ -188,6 +191,7 @@ public class DebugManager : Node2D
       debugCamera.Current = false;
       (debugCamera as CameraMovement).movementEnabled = false;
       DebugUI.Visible = false;
+      MouseInfoUI.Visible = false;
       if(playerCamera != null)
         playerCamera.Current = true;
     }
@@ -196,6 +200,7 @@ public class DebugManager : Node2D
       (debugCamera as CameraMovement).movementEnabled = true;
       debugCamera.Current = true;
       DebugUI.Visible = true;
+      MouseInfoUI.Visible = true;
       if(playerCamera != null)
         playerCamera.Current = false;
     }
