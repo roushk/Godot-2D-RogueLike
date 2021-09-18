@@ -82,6 +82,7 @@ margin_top = 33.0
 margin_right = -4.0
 margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Ores"]
 margin_right = 464.0
@@ -101,6 +102,7 @@ margin_top = 33.0
 margin_right = -4.0
 margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
 
 [node name="GridContainer" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Weapons"]
 margin_right = 464.0
@@ -120,6 +122,7 @@ margin_top = 33.0
 margin_right = -4.0
 margin_bottom = -4.0
 rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
 
 [node name="More" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/More"]
 margin_right = 464.0

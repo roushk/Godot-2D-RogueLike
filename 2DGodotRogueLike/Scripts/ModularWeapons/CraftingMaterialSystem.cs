@@ -51,6 +51,9 @@ public class CraftingMaterialSystem : Control
 
   RichTextLabel currentBlueprintText;
 
+  public Dictionary<Materials.Material, HBoxContainer> stackableItemsUI = new Dictionary<Materials.Material, HBoxContainer>();
+  public GridContainer inventoryOres;
+
   string fontBBcodePrefix = "[center][b]";
 
   Texture attachPointTex;
@@ -541,6 +544,7 @@ public class CraftingMaterialSystem : Control
     blueprintContainer = FindNode("GridBlueprints") as HBoxContainer;
     newPartSelectionContainer = FindNode("NewPartSelectionContainer");
     currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
+    inventoryOres = GetNode<GridContainer>("PartSelectionDetail/Inventory/Ores/GridContainer");
 
     LoadAllParts();
     //Start the current part as a empty handle
@@ -583,7 +587,7 @@ public class CraftingMaterialSystem : Control
     Update();
   }
 
-  int GetMinYSizeFromRichTextLabel(RichTextLabel label)
+  public static int GetMinYSizeFromRichTextLabel(RichTextLabel label)
   {
     //min size is num lines * font size + spacings
     return (1 + label.BbcodeText.Count("\n")) * ((label.Theme.DefaultFont as DynamicFont).Size + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingBottom + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingTop);
@@ -619,13 +623,13 @@ public class CraftingMaterialSystem : Control
       //Generate Detail Sprites
       HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
-      Node node = hBox.GetChild(0);
-      hBox.RemoveChild(hBox.GetChild(0));     //Remove current selection button
+      CallbackTextureButton node = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
+      hBox.RemoveChild(hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon"));     //Remove current selection button
       node.QueueFree();                       //Free node
       hBox.AddChild(partSelectionButton);     //add constructed obj
       hBox.MoveChild(partSelectionButton,0);  //move to pos 0
 
-      RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
+      RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
       detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part);
       detailText.BbcodeEnabled = true;
       detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
@@ -660,13 +664,13 @@ public class CraftingMaterialSystem : Control
         //Generate Detail Sprites
         HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
-        Node node = hBox.GetChild(0);
-        hBox.RemoveChild(hBox.GetChild(0));     //Remove current selection button
+        CallbackTextureButton node = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
+        hBox.RemoveChild(hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon"));     //Remove current selection button
         node.QueueFree();                       //Free node
         hBox.AddChild(partSelectionButton);     //add constructed obj
         hBox.MoveChild(partSelectionButton,0);  //move to pos 0
 
-        RichTextLabel detailText = hBox.GetChild(1) as RichTextLabel;
+        RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
         detailText.BbcodeText = part.stats.GenerateStatText();
         detailText.BbcodeEnabled = true;
         detailText.RectMinSize = new Vector2(detailText.RectMinSize.x, GetMinYSizeFromRichTextLabel(detailText));

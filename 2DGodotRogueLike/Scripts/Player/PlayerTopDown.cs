@@ -60,7 +60,7 @@ public class PlayerTopDown : CombatCharacter
 	HealthBar healthBar;
 	Inventory playerInventory;
 	PlayerUI playerUI;
-	CraftingMaterialSystem playerCraftingUI;
+	public CraftingMaterialSystem playerCraftingUI;
 
 	private CurrentlySelectedUI _currentlySelectedUI;
 
