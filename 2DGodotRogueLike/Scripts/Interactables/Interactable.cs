@@ -59,11 +59,6 @@ public class Interactable : Node2D
 
 	}
 
-  public override void _PhysicsProcess(float delta)
-  {
-    
-  }
-
   public void ObjectBeingRemoved()
   {
     //Safely remove this object from the player's interactables if they exist 
@@ -78,7 +73,7 @@ public class Interactable : Node2D
 
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
-  protected  void UpdateSelf(float delta)
+  public override void _PhysicsProcess(float delta)
   {
     float distanceToPlayerSquared = float.MaxValue;
 

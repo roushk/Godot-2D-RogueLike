@@ -77,6 +77,31 @@ namespace Materials
     Health,
   }
 
+  //Static class of colors tints
+  public static class MaterialTints
+  {
+    public static Dictionary<Materials.Material, Color> tints = new Dictionary<Materials.Material, Color>();
+
+    static MaterialTints()
+    {
+
+      tints[Materials.Material.Iron] =        new Color("e8e8e8");
+      tints[Materials.Material.Silver] =      new Color("e6f2ff");  //TODO update silver so its not just platinum
+      tints[Materials.Material.Coal] =        new Color("404040");
+      tints[Materials.Material.Copper] =      new Color("e8a25d");
+      tints[Materials.Material.Tin] =         new Color("faf4dc");
+      tints[Materials.Material.Bronze] =      new Color("e8c774");
+      tints[Materials.Material.Steel] =       new Color("a2e8b7");
+      tints[Materials.Material.Gold] =        new Color("e8dc5d");
+      tints[Materials.Material.Platinum] =    new Color("e6f2ff");
+      tints[Materials.Material.Adamantite] =  new Color("e86868");
+      tints[Materials.Material.Mithril] =     new Color("a2e8b7");
+      tints[Materials.Material.Cobalt] =      new Color("a2aee8");
+      tints[Materials.Material.Darksteel] =   new Color("696969");
+      tints[Materials.Material.Titanium] =    new Color("ffffff");
+    }
+  }
+
   //Material Stat Data Piece
   public class MaterialStatData : Resource
   {

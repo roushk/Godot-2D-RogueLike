@@ -848,18 +848,150 @@ __meta__ = {
 
 [node name="Ore" parent="." instance=ExtResource( 9 )]
 position = Vector2( 720.119, 624.165 )
+amountInOre = 3
+timeToMine = 2.0
 
 [node name="Ore4" parent="." instance=ExtResource( 9 )]
 position = Vector2( 714.616, 630.638 )
+amountInOre = 3
+timeToMine = 2.0
 
 [node name="Ore5" parent="." instance=ExtResource( 9 )]
 position = Vector2( 725.617, 621.273 )
+amountInOre = 3
+timeToMine = 2.0
 
 [node name="Ore2" parent="." instance=ExtResource( 9 )]
-position = Vector2( 690.226, 657.935 )
+material = 4
+position = Vector2( 682.545, 650.784 )
+material = 4
+amountInOre = 3
+
+[node name="Ore13" parent="." instance=ExtResource( 9 )]
+material = 4
+position = Vector2( 680.161, 662.173 )
+material = 4
+amountInOre = 3
+
+[node name="Ore14" parent="." instance=ExtResource( 9 )]
+material = 4
+position = Vector2( 694.199, 651.048 )
+material = 4
+amountInOre = 3
 
 [node name="Ore3" parent="." instance=ExtResource( 9 )]
+material = 5
 position = Vector2( 659.92, 753.063 )
+material = 5
+amountInOre = 7
+
+[node name="Ore15" parent="." instance=ExtResource( 9 )]
+material = 5
+position = Vector2( 647.736, 744.852 )
+material = 5
+amountInOre = 7
+
+[node name="Ore16" parent="." instance=ExtResource( 9 )]
+material = 5
+position = Vector2( 648.531, 758.625 )
+material = 5
+amountInOre = 7
+
+[node name="Ore17" parent="." instance=ExtResource( 9 )]
+material = 5
+position = Vector2( 657.801, 742.998 )
+material = 5
+amountInOre = 7
+
+[node name="Ore18" parent="." instance=ExtResource( 9 )]
+material = 5
+position = Vector2( 658.596, 761.539 )
+material = 5
+amountInOre = 7
+
+[node name="Ore19" parent="." instance=ExtResource( 9 )]
+material = 5
+position = Vector2( 646.412, 751.474 )
+material = 5
+amountInOre = 7
+
+[node name="Ore20" parent="." instance=ExtResource( 9 )]
+material = 6
+position = Vector2( 915.414, 789.517 )
+material = 6
+amountInOre = 3
+
+[node name="Ore21" parent="." instance=ExtResource( 9 )]
+material = 6
+position = Vector2( 914.572, 779.976 )
+material = 6
+amountInOre = 3
+
+[node name="Ore22" parent="." instance=ExtResource( 9 )]
+material = 6
+position = Vector2( 900.822, 789.798 )
+material = 6
+amountInOre = 3
+
+[node name="Ore6" parent="." instance=ExtResource( 9 )]
+material = 1
+position = Vector2( 712.395, 785.614 )
+material = 1
+amountInOre = 3
+
+[node name="Ore23" parent="." instance=ExtResource( 9 )]
+material = 1
+position = Vector2( 725.303, 791.507 )
+material = 1
+amountInOre = 3
+
+[node name="Ore24" parent="." instance=ExtResource( 9 )]
+material = 1
+position = Vector2( 715.201, 792.91 )
+material = 1
+amountInOre = 3
+
+[node name="Ore25" parent="." instance=ExtResource( 9 )]
+material = 1
+position = Vector2( 710.992, 774.951 )
+material = 1
+amountInOre = 3
+
+[node name="Ore7" parent="." instance=ExtResource( 9 )]
+material = 2
+position = Vector2( 777.779, 820.972 )
+material = 2
+amountInOre = 3
+
+[node name="Ore11" parent="." instance=ExtResource( 9 )]
+material = 2
+position = Vector2( 790.779, 824.472 )
+material = 2
+amountInOre = 3
+
+[node name="Ore12" parent="." instance=ExtResource( 9 )]
+material = 2
+position = Vector2( 774.779, 811.472 )
+material = 2
+amountInOre = 3
+
+[node name="Ore8" parent="." instance=ExtResource( 9 )]
+material = 3
+position = Vector2( 871.785, 810.028 )
+material = 3
+amountInOre = 3
+
+[node name="Ore9" parent="." instance=ExtResource( 9 )]
+material = 3
+position = Vector2( 882.448, 815.079 )
+material = 3
+amountInOre = 3
+
+[node name="Ore10" parent="." instance=ExtResource( 9 )]
+material = 3
+position = Vector2( 869.54, 820.411 )
+material = 3
+amountInOre = 3
 
 [connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/ProcGenTechnique/SelectedOverlay" to="." method="OverlaySelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/VoronoiDiagram" to="." method="GenerateVoronoiDiagram"]

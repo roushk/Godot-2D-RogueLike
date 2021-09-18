@@ -664,7 +664,7 @@ public class TestLevelGeneration : Node2D
   public int width { get; private set; }
   public int height { get; private set; }
 
-  Random random;
+  public Random random = new Random();
 
   //bounds of cell for neighbor check, one for each radius 0 to n
   List<HashSet<Vector2>>  neighborsToCheck;
@@ -887,7 +887,6 @@ public class TestLevelGeneration : Node2D
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
     debugManager = GetNode<DebugManager>("/root/DebugManagerSingletonNode");
     
-    random = new Random();
 
     //fill neighbors offset for any arbitrary vector, precalced into a container
     neighborsToCheck = GenerateMidPointCircle(50);

@@ -12,6 +12,7 @@ public class Forge : Interactable
   {
     base._Ready();
     toggleableInteractable = true;
+    interactionRadius *= 2.0f;
   }
 
   public override void StartInteract()
@@ -41,6 +42,6 @@ public class Forge : Interactable
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
-    UpdateSelf(delta);
+    base._PhysicsProcess(delta);
   }
 }

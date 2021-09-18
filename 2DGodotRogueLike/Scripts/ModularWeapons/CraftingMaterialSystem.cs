@@ -8,26 +8,25 @@ public class CraftingMaterialSystem : Control
 
   public void SwitchToIronOnButtonPressed()
   {
-    ingot.Modulate = materialTints[Materials.Material.Iron];
+    ingot.Modulate = Materials.MaterialTints.tints[Materials.Material.Iron];
   }
 
   public void SwitchToCopperOnButtonPressed()
   {
-    ingot.Modulate = materialTints[Materials.Material.Copper];
+    ingot.Modulate = Materials.MaterialTints.tints[Materials.Material.Copper];
   }
   
   public void SwitchToTinOnButtonPressed()
   {
-    ingot.Modulate = materialTints[Materials.Material.Tin];
+    ingot.Modulate = Materials.MaterialTints.tints[Materials.Material.Tin];
   }
 
   public void SwitchToAdamantiteOnButtonPressed()
   {
-    ingot.Modulate = materialTints[Materials.Material.Adamantite];
+    ingot.Modulate = Materials.MaterialTints.tints[Materials.Material.Adamantite];
   }
 
   //Dict of material tints to lookup of pieces
-  Dictionary<Materials.Material, Color> materialTints = new Dictionary<Materials.Material, Color>();
 
   //Dict of type to list of pieces
   Dictionary<Parts.PartType, Array<Parts.PartBlueprint>> allPartsDict = new Dictionary<Parts.PartType, Array<Parts.PartBlueprint>>();
@@ -48,7 +47,7 @@ public class CraftingMaterialSystem : Control
 
   //Load packed scenes 
   PackedScene CallbackTextureButtonScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/CallbackTextureButtonScene.tscn");
-  PackedScene BPPartDetailScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/BPPartDetail.tscn");
+  PackedScene CallbackTextureButtonWithTextScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/CallbackTextureButtonWithTextScene.tscn");
 
   RichTextLabel currentBlueprintText;
 
@@ -553,21 +552,9 @@ public class CraftingMaterialSystem : Control
     //LoadBlueprints();
 
     Color ironBaseColor = new Color("e8e8e8");
-    //materialTints = data from file
+    //Materials.MaterialTints.tints = data from file
     //Pieces = data from file
     //genuinely using hex str to int lmaoo
-    materialTints[Materials.Material.Iron] =        new Color("e8e8e8");
-    materialTints[Materials.Material.Copper] =      new Color("e8a25d");
-    materialTints[Materials.Material.Tin] =         new Color("faf4dc");
-    materialTints[Materials.Material.Bronze] =      new Color("e8c774");
-    materialTints[Materials.Material.Steel] =       new Color("a2e8b7");
-    materialTints[Materials.Material.Gold] =        new Color("e8dc5d");
-    materialTints[Materials.Material.Platinum] =    new Color("e6f2ff");
-    materialTints[Materials.Material.Adamantite] =  new Color("e86868");
-    materialTints[Materials.Material.Mithril] =     new Color("a2e8b7");
-    materialTints[Materials.Material.Cobalt] =      new Color("a2aee8");
-    materialTints[Materials.Material.Darksteel] =   new Color("696969");
-    materialTints[Materials.Material.Titanium] =    new Color("ffffff");
 
     //For each BP in BP folder, load them
     Directory blueprintDir = new Directory();
@@ -630,7 +617,7 @@ public class CraftingMaterialSystem : Control
 
       /////////////////////////////////////////////////////////////////////////////////////////////////
       //Generate Detail Sprites
-      HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
+      HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
       Node node = hBox.GetChild(0);
       hBox.RemoveChild(hBox.GetChild(0));     //Remove current selection button
@@ -671,7 +658,7 @@ public class CraftingMaterialSystem : Control
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         //Generate Detail Sprites
-        HBoxContainer hBox = BPPartDetailScene.Instance() as HBoxContainer;
+        HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
         Node node = hBox.GetChild(0);
         hBox.RemoveChild(hBox.GetChild(0));     //Remove current selection button

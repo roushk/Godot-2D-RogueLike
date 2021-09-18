@@ -28,6 +28,14 @@ public class OreWorldObject : Interactable
   {
     base._Ready();
     cpuParticles2D = GetNode("CPUParticles2D") as CPUParticles2D;
+
+    animatedSprite.Animation = "Iron Ores";
+    
+    //Modulate the ore to the tint of the material
+    //TODO unique sprites for each material type
+    animatedSprite.Modulate = Materials.MaterialTints.tints[material];
+    
+    animatedSprite.Frame = testLevelGeneration.random.Next(0,10);
   }
 
   public void CreateInventoryObject()
@@ -50,14 +58,9 @@ public class OreWorldObject : Interactable
     //InventoryObject.Get
   }
 
-  public override void _Process(float delta)
-  {
-
-  }
-
   public override void _PhysicsProcess(float delta)
   {
-    UpdateSelf(delta);
+    base._PhysicsProcess(delta);
 
     //TODO move this elseware
 		if(playerInteracting)

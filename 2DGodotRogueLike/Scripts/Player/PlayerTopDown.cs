@@ -48,8 +48,6 @@ public class PlayerTopDown : CombatCharacter
 		return (int)dir * 90;
   }
 
-	Inventory inventory = new Inventory();
-
   //todo Doesnt quite work, need better way to detect if above fallable block
   bool OnTile = false;
   // Called when the node enters the scene tree for the first time.
@@ -60,7 +58,7 @@ public class PlayerTopDown : CombatCharacter
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 	HealthBar healthBar;
-	Control playerInventoryUI;
+	Inventory playerInventory;
 	PlayerUI playerUI;
 	CraftingMaterialSystem playerCraftingUI;
 
@@ -75,7 +73,7 @@ public class PlayerTopDown : CombatCharacter
 		{
 			playerUI.Visible = false;
 			playerCraftingUI.Visible = false;
-			playerInventoryUI.Visible = false;
+			playerInventory.Visible = false;
 			if(value == CurrentlySelectedUI.None)
 			{
 				playerUI.Visible = true;
@@ -86,7 +84,7 @@ public class PlayerTopDown : CombatCharacter
 			}
 			else if(value == CurrentlySelectedUI.InventoryScreen)
 			{
-				playerInventoryUI.Visible = true;
+				playerInventory.Visible = true;
 			}
 			_currentlySelectedUI = value;
 		}
@@ -126,7 +124,7 @@ public class PlayerTopDown : CombatCharacter
 		healthBar = testLevelGeneration.GetNode<HealthBar>("Player/Camera2D/PlayerUI/HealthBar");
 
 		//Link UI's
-		playerInventoryUI = GetNode<Control>("Camera2D/PlayerInventoryUI");
+		playerInventory = GetNode<Inventory>("Camera2D/PlayerInventoryUI");
 		playerCraftingUI = GetNode<CraftingMaterialSystem>("Camera2D/CraftingScreen");
 		playerUI = GetNode<PlayerUI>("Camera2D/PlayerUI"); 
 
@@ -150,13 +148,11 @@ public class PlayerTopDown : CombatCharacter
 		//Add to relevent material
 		if(inv.isMaterial)
 		{
-			int currVal = 0;
-			if(inventory.stackableItems.TryGetValue(inv.material, out currVal))
-				inventory.stackableItems[inv.material] = currVal + inv.numMaterials;
+			playerInventory.AddMaterial(inv.material, inv.numMaterials);
 		}
 		else
 		{
-			inventory.uniqueItems.Add(new Tuple<string,	BaseBlueprint>(inv.inventoryObjectName,inv.blueprint));
+			playerInventory.AddUniqueItem(inv.inventoryObjectName,inv.blueprint);
 		}
 
 		//TODO setup callback if needed
@@ -448,8 +444,8 @@ public class PlayerTopDown : CombatCharacter
 		}
 
 		
-		//Player Dash, only resolve if not attacking
-		if(Godot.Input.IsActionJustReleased("PlayerMovementAbility") && velocity.LengthSquared() != 0)
+		//Player Dash, only resolve if can move
+		if(Godot.Input.IsActionJustPressed("PlayerMovementAbility") && velocity.LengthSquared() != 0)
 		{
 			velocity *= dashSpeed;
 			//Play dash animation

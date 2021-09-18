@@ -37,7 +37,7 @@ public class CallbackTextureButton : TextureButton
     {
         defaultColor = Modulate;
 
-        if(Disabled)
+        if(Disabled && changeColors)
         {
             Modulate = disabledColor;
         }
