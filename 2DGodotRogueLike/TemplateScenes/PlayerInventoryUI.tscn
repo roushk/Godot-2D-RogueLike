@@ -1,0 +1,1097 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=1]
+[ext_resource path="res://Assets/Art/My_Art/Base_Ingot.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/BlueprintSystem/CallbackTextureButtonScene.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Fonts/Centurion_Mono.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Fonts/Centurion_Bold.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Assets/Fonts/Centurion.tres" type="DynamicFont" id=7]
+
+[node name="PlayerInventoryUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 512, 288 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PartSelectionDetail" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+rect_min_size = Vector2( 496, 272 )
+mouse_filter = 1
+theme = ExtResource( 1 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 4, 4, 24, 24 )
+patch_margin_left = 13
+patch_margin_top = 13
+patch_margin_right = 13
+patch_margin_bottom = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventory" type="VBoxContainer" parent="PartSelectionDetail"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = -6.0
+rect_min_size = Vector2( 472, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InvName" type="RichTextLabel" parent="PartSelectionDetail/Inventory"]
+margin_right = 484.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 80, 16 )
+mouse_filter = 1
+custom_fonts/mono_font = ExtResource( 5 )
+custom_fonts/bold_font = ExtResource( 6 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Inventory"
+text = "Inventory"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryTabs" type="TabContainer" parent="PartSelectionDetail/Inventory"]
+margin_top = 20.0
+margin_right = 484.0
+margin_bottom = 257.0
+rect_min_size = Vector2( 96, 0 )
+mouse_filter = 1
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Metal" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+
+[node name="Metal" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal"]
+margin_right = 464.0
+margin_bottom = 248.0
+rect_min_size = Vector2( 464, 240 )
+columns = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CallbackTextureButtonScene2" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_right = 32.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene3" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene4" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene5" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene6" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene7" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene8" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene9" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_right = 284.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene10" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_right = 320.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene11" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_right = 356.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene12" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_right = 392.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene13" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_right = 428.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene14" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_right = 464.0
+margin_bottom = 32.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene15" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene16" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene17" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene18" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 36.0
+margin_right = 140.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene19" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 36.0
+margin_right = 176.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene20" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 36.0
+margin_right = 212.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene21" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 36.0
+margin_right = 248.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene22" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 36.0
+margin_right = 284.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene23" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene24" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 36.0
+margin_right = 356.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene25" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 36.0
+margin_right = 392.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene26" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_top = 36.0
+margin_right = 428.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene27" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_top = 36.0
+margin_right = 464.0
+margin_bottom = 68.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene28" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 72.0
+margin_right = 32.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene29" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 72.0
+margin_right = 68.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene30" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 72.0
+margin_right = 104.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene31" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 72.0
+margin_right = 140.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene32" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 72.0
+margin_right = 176.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene33" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 72.0
+margin_right = 212.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene34" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 72.0
+margin_right = 248.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene35" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 72.0
+margin_right = 284.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene36" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 72.0
+margin_right = 320.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene37" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 72.0
+margin_right = 356.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene38" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 72.0
+margin_right = 392.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene39" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_top = 72.0
+margin_right = 428.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene40" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_top = 72.0
+margin_right = 464.0
+margin_bottom = 104.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene41" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 108.0
+margin_right = 32.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene42" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 108.0
+margin_right = 68.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene43" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 108.0
+margin_right = 104.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene44" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 108.0
+margin_right = 140.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene45" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 108.0
+margin_right = 176.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene46" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 108.0
+margin_right = 212.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene47" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 108.0
+margin_right = 248.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene48" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 108.0
+margin_right = 284.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene49" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 108.0
+margin_right = 320.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene50" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 108.0
+margin_right = 356.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene51" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 108.0
+margin_right = 392.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene52" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_top = 108.0
+margin_right = 428.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene53" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_top = 108.0
+margin_right = 464.0
+margin_bottom = 140.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene54" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 144.0
+margin_right = 32.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene55" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 144.0
+margin_right = 68.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene56" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 144.0
+margin_right = 104.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene57" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 144.0
+margin_right = 140.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene58" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 144.0
+margin_right = 176.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene59" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 144.0
+margin_right = 212.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene60" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 144.0
+margin_right = 248.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene61" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 144.0
+margin_right = 284.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene62" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 144.0
+margin_right = 320.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene63" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 144.0
+margin_right = 356.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene64" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 144.0
+margin_right = 392.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene65" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_top = 144.0
+margin_right = 428.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene66" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_top = 144.0
+margin_right = 464.0
+margin_bottom = 176.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene67" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 180.0
+margin_right = 32.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene68" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 180.0
+margin_right = 68.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene69" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 180.0
+margin_right = 104.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene70" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 180.0
+margin_right = 140.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene71" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 180.0
+margin_right = 176.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene72" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 180.0
+margin_right = 212.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene73" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 180.0
+margin_right = 248.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene74" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 180.0
+margin_right = 284.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene75" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 180.0
+margin_right = 320.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene76" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 180.0
+margin_right = 356.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene77" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 180.0
+margin_right = 392.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene78" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_top = 180.0
+margin_right = 428.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene79" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_top = 180.0
+margin_right = 464.0
+margin_bottom = 212.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene80" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_top = 216.0
+margin_right = 32.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene81" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 216.0
+margin_right = 68.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene82" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 216.0
+margin_right = 104.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene83" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 216.0
+margin_right = 140.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene84" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 216.0
+margin_right = 176.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene85" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 216.0
+margin_right = 212.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="CallbackTextureButtonScene86" parent="PartSelectionDetail/Inventory/InventoryTabs/Metal/Metal" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 216.0
+margin_right = 248.0
+margin_bottom = 248.0
+texture_normal = ExtResource( 2 )
+changeColors = true
+
+[node name="Wood" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+
+[node name="Wood" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood"]
+margin_right = 464.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 464, 240 )
+columns = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CallbackTextureButtonScene26" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_right = 32.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene27" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene28" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene29" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene30" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene31" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene32" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene33" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_right = 284.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene34" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_right = 320.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene35" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_right = 356.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene36" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_right = 392.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene37" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_right = 428.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene38" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_right = 464.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene39" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene40" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene41" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene42" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 36.0
+margin_right = 140.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene43" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 36.0
+margin_right = 176.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene44" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 36.0
+margin_right = 212.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene45" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 36.0
+margin_right = 248.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene46" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 36.0
+margin_right = 284.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene47" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene48" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 36.0
+margin_right = 356.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene49" parent="PartSelectionDetail/Inventory/InventoryTabs/Wood/Wood" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 36.0
+margin_right = 392.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="More" type="ScrollContainer" parent="PartSelectionDetail/Inventory/InventoryTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+
+[node name="More" type="GridContainer" parent="PartSelectionDetail/Inventory/InventoryTabs/More"]
+margin_right = 464.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 464, 240 )
+columns = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CallbackTextureButtonScene26" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_right = 32.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene27" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene28" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_right = 104.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene29" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene30" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene31" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene32" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_right = 248.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene33" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_right = 284.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene34" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_right = 320.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene35" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_right = 356.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene36" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_right = 392.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene37" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 396.0
+margin_right = 428.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene38" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 432.0
+margin_right = 464.0
+margin_bottom = 32.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene39" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_top = 36.0
+margin_right = 32.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene40" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene41" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 72.0
+margin_top = 36.0
+margin_right = 104.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene42" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 108.0
+margin_top = 36.0
+margin_right = 140.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene43" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 144.0
+margin_top = 36.0
+margin_right = 176.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene44" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 180.0
+margin_top = 36.0
+margin_right = 212.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene45" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 216.0
+margin_top = 36.0
+margin_right = 248.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene46" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 252.0
+margin_top = 36.0
+margin_right = 284.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene47" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 288.0
+margin_top = 36.0
+margin_right = 320.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene48" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 324.0
+margin_top = 36.0
+margin_right = 356.0
+margin_bottom = 68.0
+changeColors = true
+
+[node name="CallbackTextureButtonScene49" parent="PartSelectionDetail/Inventory/InventoryTabs/More/More" instance=ExtResource( 4 )]
+margin_left = 360.0
+margin_top = 36.0
+margin_right = 392.0
+margin_bottom = 68.0
+changeColors = true

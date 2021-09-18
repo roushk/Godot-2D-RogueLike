@@ -16,6 +16,8 @@ public class Interactable : Node2D
 
   public bool playerInteracting = false;
 
+  public bool toggleableInteractable = false;
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -29,17 +31,32 @@ public class Interactable : Node2D
 	//Called when player starts interaction with the object
 	public virtual void StartInteract()
 	{
-    playerInteracting = true;
+    if(!toggleableInteractable)
+    {
+      playerInteracting = true;
+    }
 	}
 
 	//Called when player ends interaction with the object
 	public virtual void EndInteract()
 	{
+    //if toggleable then do it on the end of an interaction
+    if(toggleableInteractable && playerInteracting)
+    {
+      playerInteracting = false;
+    }
+    else if(toggleableInteractable && !playerInteracting)
+    {
+      playerInteracting = true;
+    }
+
     //Dont run end interaction if player isn't interacting and is like walking around with the key down
     if(!playerInteracting)
       return;
 
-    playerInteracting = false;
+    if(!toggleableInteractable)
+      playerInteracting = false;
+
 	}
 
   public override void _PhysicsProcess(float delta)

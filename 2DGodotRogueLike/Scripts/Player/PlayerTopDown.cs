@@ -54,11 +54,52 @@ public class PlayerTopDown : CombatCharacter
   bool OnTile = false;
   // Called when the node enters the scene tree for the first time.
 
+	public AnimatedSprite animatedSprite;
 	Area2D playerArea;
-	AnimatedSprite animatedSprite;
 	AnimationPlayer weaponAnimPlayer;
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
+	HealthBar healthBar;
+	Control playerInventoryUI;
+	PlayerUI playerUI;
+	CraftingMaterialSystem playerCraftingUI;
+
+	private CurrentlySelectedUI _currentlySelectedUI;
+
+	//overload get/set instead of function call
+	public CurrentlySelectedUI currentlySelectedUI 
+	{
+		get{return _currentlySelectedUI;}
+	
+		set
+		{
+			playerUI.Visible = false;
+			playerCraftingUI.Visible = false;
+			playerInventoryUI.Visible = false;
+			if(value == CurrentlySelectedUI.None)
+			{
+				playerUI.Visible = true;
+			}
+			else if(value == CurrentlySelectedUI.CraftingScreen)
+			{
+				playerCraftingUI.Visible = true;
+			}
+			else if(value == CurrentlySelectedUI.InventoryScreen)
+			{
+				playerInventoryUI.Visible = true;
+			}
+			_currentlySelectedUI = value;
+		}
+	}
+
+	public enum CurrentlySelectedUI
+	{
+		None,
+		CraftingScreen,
+		InventoryScreen
+	}
+
+	public TestLevelGeneration testLevelGeneration;
 
 	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
 
@@ -73,12 +114,21 @@ public class PlayerTopDown : CombatCharacter
 
   public override void _Ready()
   {
+		base._Ready();
 		characterType = CharacterType.Player;
 		playerArea = GetNode<Area2D>("PlayerInteractionArea");
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
 		raycast2D = GetNode<RayCast2D>("RayCast2D");
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
+		testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
+
+		healthBar = testLevelGeneration.GetNode<HealthBar>("Player/Camera2D/PlayerUI/HealthBar");
+
+		//Link UI's
+		playerInventoryUI = GetNode<Control>("Camera2D/PlayerInventoryUI");
+		playerCraftingUI = GetNode<CraftingMaterialSystem>("Camera2D/CraftingScreen");
+		playerUI = GetNode<PlayerUI>("Camera2D/PlayerUI"); 
 
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);
@@ -88,7 +138,8 @@ public class PlayerTopDown : CombatCharacter
 		weapon.baseStabDamage = 10;
 
 	  GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
-
+		
+		currentlySelectedUI = CurrentlySelectedUI.None;
   }
 
 
@@ -194,6 +245,7 @@ public class PlayerTopDown : CombatCharacter
   //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
+		base._PhysicsProcess(delta);
 		//For some reason Godot's on entered func just straight up doesnt work if the bodies are moving so 
 		//we make them stop moving in their script and run this to verify we got everything and it works most of the time
 		//var bodies = playerArea.GetOverlappingBodies();
@@ -220,6 +272,8 @@ public class PlayerTopDown : CombatCharacter
 		//		}
 		//	}
 		//}
+
+		healthBar.SetHealth(currentHealth);
 
 		Interactable closest = null;
 		float closestInteractableDistance = float.MaxValue;
@@ -296,12 +350,26 @@ public class PlayerTopDown : CombatCharacter
 			if(currentlyInteractingWith != null)
 			{
 				currentlyInteractingWith.EndInteract();
-				currentlyInteractingWith = null;
+				if(currentlyInteractingWith.playerInteracting == false)
+					currentlyInteractingWith = null;
 			}
 		}
 
-		//Set the currently interacting bool whether we have something valid we are interacting with
-		currentlyInteracting = currentlyInteractingWith != null;
+		if(Godot.Input.IsActionJustReleased("PlayerInventory") && currentlySelectedUI == CurrentlySelectedUI.InventoryScreen)
+		{
+			//Pause stuff somehow
+			currentlySelectedUI = CurrentlySelectedUI.None;
+		}
+		else if(Godot.Input.IsActionJustReleased("PlayerInventory") && currentlySelectedUI == CurrentlySelectedUI.None)
+		{
+			//Pause stuff somehow
+			currentlySelectedUI = CurrentlySelectedUI.InventoryScreen;
+		}
+
+
+		//Set the currently interacting based on what the interator thinks and if not null
+		currentlyInteracting = currentlyInteractingWith != null && currentlyInteractingWith.playerInteracting;
+		
 
 		
 		//Only if larger than unit vector than scale down MovingDirection
@@ -321,11 +389,24 @@ public class PlayerTopDown : CombatCharacter
 		{
 			animatedSprite.FlipH = true;
 		}
+
+		//if no UI selected then player is visible
+		if(currentlySelectedUI == CurrentlySelectedUI.None)
+		{
+			GetTree().Paused = false;
+			animatedSprite.Visible = true;
+		}
+		else
+		{
+			//Pause game
+			GetTree().Paused = true;
+			animatedSprite.Visible = false;
+		}
 				
 		//Attacking
 		
-		//Allow the player to skip the last few frames to attack quickly again
-		if(Godot.Input.IsActionPressed("PlayerAttack") && attacking == false)
+		//Allow the player to skip the last few frames to attack quickly again and player is not in a UI
+		if(Godot.Input.IsActionPressed("PlayerAttack") && attacking == false && currentlySelectedUI == CurrentlySelectedUI.None)
 		{
 
 			//if currently playing then reset the animation cancel the rest of the anim
@@ -343,8 +424,8 @@ public class PlayerTopDown : CombatCharacter
 			attackingThisFrame = true;
 		}
 
-		//Don't move while attacking or interacting with objects
-		if(attacking || attackingThisFrame || currentlyInteracting)
+		//Don't move while attacking or interacting with objects or in UI
+		if(attacking || attackingThisFrame || currentlyInteracting || currentlySelectedUI != CurrentlySelectedUI.None)
 		{
 			velocity = new Vector2(0,0);
 		}

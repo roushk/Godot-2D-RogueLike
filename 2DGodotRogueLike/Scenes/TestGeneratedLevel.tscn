@@ -12,6 +12,7 @@
 [ext_resource path="res://TemplateScenes/Forge.tscn" type="PackedScene" id=10]
 
 [node name="TestLevelGenNode" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )
 initialDeadChance = 40
 deathLimit = 3

@@ -11,13 +11,14 @@ public class Forge : Interactable
   public override void _Ready()
   {
     base._Ready();
+    toggleableInteractable = true;
   }
 
   public override void StartInteract()
 	{
     base.StartInteract();
-
     Console.WriteLine("Player Started Interacting with Anvil");
+    
     //Spawn Player Crafting UI
 	}
 
@@ -26,6 +27,15 @@ public class Forge : Interactable
 	{
     base.EndInteract();
     Console.WriteLine("Player Stopped Interacting with Anvil");
+    //Check after EndInteract updates the current state
+    if(playerInteracting)
+    {
+      playerManager.topDownPlayer.currentlySelectedUI = PlayerTopDown.CurrentlySelectedUI.CraftingScreen;
+    }
+    else
+    {
+      playerManager.topDownPlayer.currentlySelectedUI = PlayerTopDown.CurrentlySelectedUI.None;
+    }
 	}
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.

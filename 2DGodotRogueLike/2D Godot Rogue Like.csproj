@@ -44,6 +44,7 @@
     <Compile Include="Scripts\Interactables\OreWorldObject.cs" />
     <Compile Include="Scripts\UI\HealthBar.cs" />
     <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
+    <Compile Include="Scripts\UI\PlayerUI.cs" />
     <Compile Include="Scripts\Utils.cs" />
     <Compile Include="Scripts\MapGeneration\TestLevelGeneration.cs" />
     <Compile Include="Scripts\MapGeneration\CCLGenerator.cs" />

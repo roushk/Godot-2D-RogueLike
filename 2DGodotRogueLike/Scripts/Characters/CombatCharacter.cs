@@ -47,8 +47,8 @@ public class CombatCharacter : KinematicBody2D
     
   }
 
-  //use this instead
-  protected void CombatCharacterProcess(float delta)
+  // Called every frame. 'delta' is the elapsed time since the previous frame.
+  public override void _PhysicsProcess(float delta)
   {
     if(invincibilityTimeLeft > 0)
       invincibilityTimeLeft -= delta;
@@ -56,11 +56,5 @@ public class CombatCharacter : KinematicBody2D
       //For some reason its begins set to negative number thats *not* <= 0
     if(invincibilityTimeLeft < 0)
       invincibilityTimeLeft = 0;
-  }
-
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
-  public override void _Process(float delta)
-  {
-
   }
 }

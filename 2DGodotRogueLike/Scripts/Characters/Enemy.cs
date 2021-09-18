@@ -38,6 +38,7 @@ public class Enemy : CombatCharacter
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
+    base._Ready();
     characterType = CharacterType.Enemy;
     sprite = GetNode("AnimatedSprite") as AnimatedSprite;
     movementCollider = GetNode("MovementCollider") as CollisionShape2D;
@@ -139,7 +140,7 @@ public class Enemy : CombatCharacter
       }
     }
     
-    CombatCharacterProcess(delta);
+    base._PhysicsProcess(delta);
     
     healthBar.SetHealth(currentHealth);
 
