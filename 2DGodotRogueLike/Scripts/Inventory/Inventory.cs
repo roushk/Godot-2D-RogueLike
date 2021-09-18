@@ -128,6 +128,7 @@ public class Inventory : Control
     text.BbcodeText = material.ToString() + "\n" + "Amount: 0";
     text.BbcodeEnabled = true;
     text.RectMinSize = new Vector2(text.RectMinSize.x,CraftingMaterialSystem.GetMinYSizeFromRichTextLabel(text));
+    text.RectSize = text.RectMinSize;
     hBox.Visible = false;
 
     return hBox;
@@ -168,7 +169,8 @@ public class Inventory : Control
         {
           //Update the cost of the weapon
           playerManager.topDownPlayer.playerCraftingUI.selectedInventoryMaterial = material;
-          playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode.part.currentMaterial = material;
+          if(playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode != null)
+            playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode.part.currentMaterial = material;
 
           //Set selected material of part
           if(playerManager.topDownPlayer.playerCraftingUI.selectedPart != null)

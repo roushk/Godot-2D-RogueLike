@@ -7,7 +7,7 @@
 margin_right = 40.0
 margin_bottom = 40.0
 texture_normal = ExtResource( 1 )
-stretch_mode = 5
+stretch_mode = 3
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false

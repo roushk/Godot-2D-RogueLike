@@ -27,25 +27,16 @@ public class CraftingMaterialSystem : Control
     ingot.Modulate = Materials.MaterialTints.tints[Materials.Material.Adamantite];
   }
 
-  
+
   public void _on_SelectMaterialsButton_toggled(bool toggled)
   {
     if(toggled)
     {
-      currentMode = CraftingSystemMode.MaterialSelection;
-      ClearPartSelection();
-      GeneratePartVisualizerUIFromCurrentParts();
-
-      GetNode<NinePatchRect>("MaterialSelection").Visible = true;
-      GetNode<NinePatchRect>("PartSelection").Visible = false;
+      SetModeMaterialSelection();
     }
     else
     {
-      currentMode = CraftingSystemMode.PartSelection;
-      ClearPartSelection();
-      GeneratePartVisualizerUIFromCurrentParts();
-      GetNode<NinePatchRect>("MaterialSelection").Visible = false;
-      GetNode<NinePatchRect>("PartSelection").Visible = true;
+      SetModePartSelection();
     }
   }
 
@@ -94,6 +85,9 @@ public class CraftingMaterialSystem : Control
 
   Vector2 partVisualizerScale = new Vector2(4,4);
 
+  //Minimum box size for each sprite, also means the max sprite size is 30x30 with 1 pixel border
+  Vector2 MinPartSelectionSize = new Vector2(32,32);
+
   float basePartVisualizerScale = 8.0f;
 
   public enum CraftingSystemMode
@@ -115,6 +109,32 @@ public class CraftingMaterialSystem : Control
   const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
 
   #endregion
+
+  void SetModeMaterialSelection()
+  {
+    currentMode = CraftingSystemMode.MaterialSelection;
+    ClearPartSelection();
+    GeneratePartVisualizerUIFromCurrentParts();
+
+    GetNode<RichTextLabel>("PartSelection/BlueprintStuff/PartInformationTitle").Visible = false;
+    GetNode<ScrollContainer>("PartSelection/BlueprintStuff/PartSelectionScrollContainer").Visible = false;
+
+    GetNode<RichTextLabel>("PartSelection/BlueprintStuff/OreInInventoryTitle").Visible = true;
+    GetNode<ScrollContainer>("PartSelection/BlueprintStuff/OreInventorySelection").Visible = true;
+  }
+
+  void SetModePartSelection()
+  {
+    currentMode = CraftingSystemMode.PartSelection;
+    ClearPartSelection();
+    GeneratePartVisualizerUIFromCurrentParts();
+
+    GetNode<RichTextLabel>("PartSelection/BlueprintStuff/PartInformationTitle").Visible = true;
+    GetNode<ScrollContainer>("PartSelection/BlueprintStuff/PartSelectionScrollContainer").Visible = true;
+
+    GetNode<RichTextLabel>("PartSelection/BlueprintStuff/OreInInventoryTitle").Visible = false;
+    GetNode<ScrollContainer>("PartSelection/BlueprintStuff/OreInventorySelection").Visible = false;
+  }
 
   //Load parts into parts dictionary
   void LoadAllParts()
@@ -237,7 +257,7 @@ public class CraftingMaterialSystem : Control
     BPPieceButton.RectSize = blueprint.texture.GetSize();  //size of tex
     BPPieceButton.RectScale = size;   //new scale
     BPPieceButton.Expand = true;
-    BPPieceButton.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
+    //BPPieceButton.StretchMode = TextureButton.StretchModeEnum.KeepAspectCentered;
     //
     if(setMinSize)
       BPPieceButton.RectMinSize = BPPieceButton.RectSize * BPPieceButton.RectScale;
@@ -270,7 +290,7 @@ public class CraftingMaterialSystem : Control
     newAttachpoint.RectSize = attachPointTex.GetSize();  //size of tex
     newAttachpoint.RectScale = partVisualizerScale;   //new scale
     newAttachpoint.Expand = true;
-    newAttachpoint.StretchMode = TextureButton.StretchModeEnum.KeepAspect;
+    //newAttachpoint.StretchMode = TextureButton.StretchModeEnum.KeepAspect;
 
     if(setMinSize)
       newAttachpoint.RectMinSize = newAttachpoint.RectSize * newAttachpoint.RectScale;
@@ -284,14 +304,17 @@ public class CraftingMaterialSystem : Control
 
     //TODO need to fix the usage of currentOffset for the 
     //if odd then move a bit
-    if(newAttachpoint.RectSize.x % 2 == 1 && (maxWeaponUIExtents.x-minWeaponUIExtents.x) % 2 == 0)
-    {
-      newAttachpoint.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0);
-    }
-    if(newAttachpoint.RectSize.y % 2 == 1 && (maxWeaponUIExtents.y-minWeaponUIExtents.y) % 2 == 0)
-    {
-      newAttachpoint.RectPosition += new Vector2(0,0.5f * partVisualizerScale.y);
-    }
+    //if(newAttachpoint.RectSize.x % 2 == 1 && (maxWeaponUIExtents.x-minWeaponUIExtents.x) % 2 == 0)
+    //{
+    //  newAttachpoint.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0);
+    //}
+    //if(newAttachpoint.RectSize.y % 2 == 1 && (maxWeaponUIExtents.y-minWeaponUIExtents.y) % 2 == 0)
+    //{
+    //  newAttachpoint.RectPosition += new Vector2(0,0.5f * partVisualizerScale.y);
+    //}
+
+    //This fixed everything???
+    newAttachpoint.RectPosition += new Vector2(0.5f * partVisualizerScale.x,0.5f * partVisualizerScale.y);
 
     
     newAttachpoint.onButtonPressedCallback = callback;
@@ -508,7 +531,7 @@ public class CraftingMaterialSystem : Control
 
     partVisualizerContainer.AddChild(BPPieceButton);
 
-    
+
     //Don't place attachment points in the material selection
     if(currentMode == CraftingSystemMode.PartSelection)
     {
@@ -617,7 +640,7 @@ public class CraftingMaterialSystem : Control
     blueprintContainer = FindNode("GridBlueprints") as HBoxContainer;
     newPartSelectionContainer = FindNode("NewPartSelectionContainer");
     currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
-    inventoryOres = GetNode<GridContainer>("MaterialSelection/Inventory/Ores/GridContainer");
+    inventoryOres = FindNode("OreInventoryGridContainer") as GridContainer;
 
     LoadAllParts();
     //Start the current part as a empty handle
@@ -646,7 +669,9 @@ public class CraftingMaterialSystem : Control
     {
       GenerateBlueprintButton(blueprint.Value);
     }
-    GeneratePartVisualizerUIFromCurrentParts();
+
+    //Set initial state to MaterialSelection
+    SetModePartSelection();
   }
   
   
@@ -780,6 +805,8 @@ public class CraftingMaterialSystem : Control
       partIconParentNode.AddChild(partSelectionButton);     //add constructed obj
       partIconParentNode.MoveChild(partSelectionButton,0);  //move to pos 0
 
+      partSelectionButton.RectMinSize = MinPartSelectionSize;
+
       RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
       detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part);
       detailText.BbcodeEnabled = true;
@@ -821,6 +848,8 @@ public class CraftingMaterialSystem : Control
         node.QueueFree();                       //Free node
         partIconParentNode.AddChild(partSelectionButton);     //add constructed obj
         partIconParentNode.MoveChild(partSelectionButton,0);  //move to pos 0
+
+        partSelectionButton.RectMinSize = MinPartSelectionSize;
 
         RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
         detailText.BbcodeText = part.stats.GenerateStatText();

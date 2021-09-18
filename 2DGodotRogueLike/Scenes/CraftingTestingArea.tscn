@@ -1,10 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/ModularWeapons/CraftingMaterialSystem.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Fonts/Centurion_Bold.tres" type="DynamicFont" id=5]
-[ext_resource path="res://Assets/Fonts/Centurion.tres" type="DynamicFont" id=6]
-[ext_resource path="res://Assets/Fonts/Centurion_Mono.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Assets/Fonts/SmallFontInventoryTheme.theme" type="Theme" id=8]
 [ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=9]
 
@@ -66,7 +63,7 @@ rect_clip_content = false
 mouse_filter = 1
 bbcode_enabled = true
 bbcode_text = "[center][b]Current Weapon Stats"
-text = "Parts Missing Material Selection"
+text = "Current Weapon Stats"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -144,7 +141,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HoveredPartInfo" type="RichTextLabel" parent="PartSelection/BlueprintStuff"]
+[node name="PartInformationTitle" type="RichTextLabel" parent="PartSelection/BlueprintStuff"]
 margin_top = 44.0
 margin_right = 195.0
 margin_bottom = 60.0
@@ -165,6 +162,9 @@ margin_bottom = 224.0
 rect_min_size = Vector2( 160, 160 )
 theme = ExtResource( 8 )
 scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NewPartSelectionContainer" type="VBoxContainer" parent="PartSelection/BlueprintStuff/PartSelectionScrollContainer"]
 margin_right = 32.0
@@ -181,41 +181,13 @@ margin_right = 32.0
 margin_bottom = 5.0
 rect_min_size = Vector2( 5, 5 )
 
-[node name="MaterialSelection" type="NinePatchRect" parent="."]
-visible = false
-anchor_right = 0.4
-anchor_bottom = 1.0
-margin_right = 1.2
-rect_min_size = Vector2( 206, 288 )
+[node name="OreInInventoryTitle" type="RichTextLabel" parent="PartSelection/BlueprintStuff"]
+margin_top = 228.0
+margin_right = 195.0
+margin_bottom = 244.0
+rect_min_size = Vector2( 160, 16 )
+rect_clip_content = false
 mouse_filter = 1
-theme = ExtResource( 9 )
-texture = ExtResource( 4 )
-region_rect = Rect2( 4, 4, 24, 24 )
-patch_margin_left = 13
-patch_margin_top = 13
-patch_margin_right = 13
-patch_margin_bottom = 13
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Inventory" type="VBoxContainer" parent="MaterialSelection"]
-anchor_left = 0.05
-anchor_top = 0.03
-anchor_right = 0.05
-anchor_bottom = 0.05
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Ore In Inventory" type="RichTextLabel" parent="MaterialSelection/Inventory"]
-margin_right = 140.0
-margin_bottom = 16.0
-rect_min_size = Vector2( 80, 16 )
-mouse_filter = 1
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 5 )
-custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
 bbcode_text = "[center][b]Inventory"
 text = "Inventory"
@@ -223,14 +195,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ores" type="ScrollContainer" parent="MaterialSelection/Inventory"]
-margin_top = 20.0
-margin_right = 140.0
-margin_bottom = 240.0
+[node name="OreInventorySelection" type="ScrollContainer" parent="PartSelection/BlueprintStuff"]
+margin_top = 248.0
+margin_right = 195.0
+margin_bottom = 468.0
 rect_min_size = Vector2( 140, 220 )
 scroll_horizontal_enabled = false
 
-[node name="GridContainer" type="GridContainer" parent="MaterialSelection/Inventory/Ores"]
+[node name="OreInventoryGridContainer" type="GridContainer" parent="PartSelection/BlueprintStuff/OreInventorySelection"]
 margin_right = 140.0
 margin_bottom = 220.0
 rect_min_size = Vector2( 140, 220 )
