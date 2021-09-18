@@ -23,11 +23,11 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ParchmentBackground" type="NinePatchRect" parent="."]
-anchor_left = 0.33
-anchor_right = 0.33
-margin_top = 46.5
-margin_right = 180.0
-margin_bottom = 226.5
+anchor_left = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.85
+margin_left = -0.594604
+margin_right = -0.594604
 mouse_filter = 1
 texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 32, 32 )
@@ -46,12 +46,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.9
 anchor_bottom = 0.9
+rect_min_size = Vector2( 32, 32 )
 mouse_filter = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AvailableBlueprints" type="ScrollContainer" parent="."]
+visible = false
 anchor_left = 0.26
 anchor_right = 0.26
 margin_left = 56.88
@@ -74,9 +76,10 @@ __meta__ = {
 }
 
 [node name="BlueprintBackground" type="NinePatchRect" parent="."]
-anchor_right = 0.33
+anchor_right = 0.4
 anchor_bottom = 1.0
-margin_right = 1.75999
+margin_right = 1.2
+rect_min_size = Vector2( 206, 288 )
 mouse_filter = 1
 texture = ExtResource( 4 )
 region_rect = Rect2( 4, 4, 24, 24 )
@@ -100,7 +103,7 @@ __meta__ = {
 }
 
 [node name="CurrentBPTitle" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
-margin_right = 160.0
+margin_right = 195.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 110, 16 )
 rect_clip_content = false
@@ -114,7 +117,7 @@ __meta__ = {
 
 [node name="PartDetailContainer" type="VBoxContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 20.0
-margin_right = 160.0
+margin_right = 195.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 0, 20 )
 theme = ExtResource( 8 )
@@ -124,7 +127,7 @@ __meta__ = {
 
 [node name="HoveredPartInfo" type="RichTextLabel" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 44.0
-margin_right = 160.0
+margin_right = 195.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 160, 16 )
 rect_clip_content = false
@@ -138,7 +141,7 @@ __meta__ = {
 
 [node name="PartSelectionScrollContainer" type="ScrollContainer" parent="BlueprintBackground/BlueprintStuff"]
 margin_top = 64.0
-margin_right = 160.0
+margin_right = 195.0
 margin_bottom = 224.0
 rect_min_size = Vector2( 160, 160 )
 theme = ExtResource( 8 )
@@ -160,10 +163,11 @@ margin_bottom = 5.0
 rect_min_size = Vector2( 5, 5 )
 
 [node name="PartSelectionDetail" type="NinePatchRect" parent="."]
-anchor_left = 0.68
-anchor_right = 1.0
+visible = false
+anchor_right = 0.4
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 288 )
+margin_right = 1.2
+rect_min_size = Vector2( 206, 288 )
 mouse_filter = 1
 theme = ExtResource( 9 )
 texture = ExtResource( 4 )
@@ -216,13 +220,32 @@ __meta__ = {
 }
 
 [node name="CraftButton" type="Button" parent="."]
-anchor_left = 0.41
-anchor_top = 0.85
-anchor_right = 0.41
-anchor_bottom = 0.95
-margin_right = 103.0
+anchor_left = 0.751
+anchor_top = 0.864
+anchor_right = 0.953
+anchor_bottom = 0.964
+margin_left = 0.221741
+margin_top = 0.130234
+margin_right = -0.202271
+margin_bottom = 0.130219
 rect_min_size = Vector2( 10, 24 )
 text = "Craft Weapon"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectMaterialsButton" type="Button" parent="."]
+anchor_left = 0.429
+anchor_top = 0.864
+anchor_right = 0.663
+anchor_bottom = 0.964
+margin_left = -0.214294
+margin_top = 0.130234
+margin_right = -0.0223083
+margin_bottom = 0.130219
+rect_min_size = Vector2( 10, 24 )
+toggle_mode = true
+text = "Select Materials"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -297,6 +320,7 @@ margin_top = 250.0
 margin_right = 589.0
 margin_bottom = 271.0
 
+[connection signal="toggled" from="SelectMaterialsButton" to="." method="_on_SelectMaterialsButton_toggled"]
 [connection signal="pressed" from="OldInv/Button" to="." method="SwitchToIronOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button2" to="." method="SwitchToCopperOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button3" to="." method="SwitchToTinOnButtonPressed"]

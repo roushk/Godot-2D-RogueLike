@@ -67,6 +67,33 @@ public class CraftingMaterialSystem : Control
 
   Vector2 partVisualizerScale = new Vector2(4,4);
 
+  float basePartVisualizerScale = 8.0f;
+
+  public enum CraftingSystemMode
+  {
+    PartSelection,
+    MaterialSelection
+  }
+
+  public CraftingSystemMode currentMode = CraftingSystemMode.PartSelection;
+
+  public void _on_SelectMaterialsButton_toggled(bool toggled)
+  {
+    if(toggled)
+    {
+      currentMode = CraftingSystemMode.MaterialSelection;
+      GetNode<NinePatchRect>("PartSelectionDetail").Visible = true;
+      GetNode<NinePatchRect>("BlueprintBackground").Visible = false;
+    }
+    else
+    {
+      currentMode = CraftingSystemMode.PartSelection;
+      GetNode<NinePatchRect>("PartSelectionDetail").Visible = false;
+      GetNode<NinePatchRect>("BlueprintBackground").Visible = true;
+    }
+  }
+
+
   //Todo replace this with something significantly better..
   //It will help to change the type from TextureButton to derived class like the other BP thing with callbacks
   int partNum = 0;
@@ -500,7 +527,7 @@ public class CraftingMaterialSystem : Control
     Console.WriteLine("Weapon UI Extents Scale is " + weaponUIMaxScale.ToString());
     //hardcoded expected 32 to be the largest size so divide the max by the current to get the multiplier * the scale at 32 length gives us the new scalar (instead of 4)
     //And round it so that we don't have any float shenannagins 
-    float newScale = Mathf.Round((32.0f/weaponUIMaxScale) * 4.0f * 100.0f)/100.0f;
+    float newScale = Mathf.Round((32.0f/weaponUIMaxScale) * basePartVisualizerScale * 100.0f)/100.0f;
 
     partVisualizerScale = new Vector2(newScale,newScale);
 
@@ -623,11 +650,12 @@ public class CraftingMaterialSystem : Control
       //Generate Detail Sprites
       HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
-      CallbackTextureButton node = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
-      hBox.RemoveChild(hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon"));     //Remove current selection button
+      Node partIconParentNode = hBox.GetNode("VBoxContainer/HSplitContainer");
+      Node node = partIconParentNode.GetNode("PartIcon");
+      partIconParentNode.RemoveChild(partIconParentNode.GetNode("PartIcon"));     //Remove current selection button
       node.QueueFree();                       //Free node
-      hBox.AddChild(partSelectionButton);     //add constructed obj
-      hBox.MoveChild(partSelectionButton,0);  //move to pos 0
+      partIconParentNode.AddChild(partSelectionButton);     //add constructed obj
+      partIconParentNode.MoveChild(partSelectionButton,0);  //move to pos 0
 
       RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
       detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part);
@@ -664,11 +692,12 @@ public class CraftingMaterialSystem : Control
         //Generate Detail Sprites
         HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance() as HBoxContainer;
 
-        CallbackTextureButton node = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
-        hBox.RemoveChild(hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon"));     //Remove current selection button
+        Node partIconParentNode = hBox.GetNode("VBoxContainer/HSplitContainer");
+        Node node = partIconParentNode.GetNode("PartIcon");
+        partIconParentNode.RemoveChild(partIconParentNode.GetNode("PartIcon"));     //Remove current selection button
         node.QueueFree();                       //Free node
-        hBox.AddChild(partSelectionButton);     //add constructed obj
-        hBox.MoveChild(partSelectionButton,0);  //move to pos 0
+        partIconParentNode.AddChild(partSelectionButton);     //add constructed obj
+        partIconParentNode.MoveChild(partSelectionButton,0);  //move to pos 0
 
         RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
         detailText.BbcodeText = part.stats.GenerateStatText();
