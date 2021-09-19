@@ -1,0 +1,38 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;	//For spatial you can override vertex, frag, and light shaders
+render_mode blend_mix;
+
+const float timeScale = 8f;
+
+uniform bool flashing;
+uniform vec4 flashColor : hint_color;
+
+float advancedAbsSin(float timeMult, float maxValue, float minValue, float time)
+{
+	return (((maxValue - minValue) * abs(sin(time))) + minValue);
+}
+
+void fragment()
+{
+	vec4 albedo = texture(TEXTURE, UV);
+
+	//RGB color space [0,1] to normalized vector color space [-1,1]
+	NORMALMAP = normalize((texture(NORMAL_TEXTURE, UV).xyz * 2.0f) - 1.0f);
+	
+	COLOR = albedo;
+	if(flashing && albedo.w > 0.1f)
+		COLOR += flashColor * advancedAbsSin(timeScale, 0.8f, 0.4f, TIME * timeScale);//vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
+
+
+}
+
+
+"
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/flashing = false
+shader_param/flashColor = Color( 0.988235, 0.211765, 0.211765, 1 )

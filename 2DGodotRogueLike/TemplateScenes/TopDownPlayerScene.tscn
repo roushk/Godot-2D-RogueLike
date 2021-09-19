@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://Assets/Art/Characters/CharacterRunNoSword.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Art/Characters/CharacterFallNoSword.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Art/Characters/CharacterAttack.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Art/My_Art/SpriteSheets/Basic_Animated_Sword_Slash-Sheet.png" type="Texture" id=8]
 [ext_resource path="res://Animations/BasicWeaponAttackAnim.tres" type="Animation" id=9]
+[ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=10]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -184,6 +185,7 @@ attacking = true
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = ExtResource( 10 )
 position = Vector2( 0, -2.20371 )
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 33 )

@@ -951,7 +951,7 @@ public class TestLevelGeneration : Node2D
       ranFirstTimeInit = true;
       debugManager.PostLevelGenInit();
 
-      debugManager.playerCamera = playerManager.topDownPlayer.GetNode("Camera2D") as Camera2D;
+      debugManager.playerCamera = GetNode("PlayerCamera") as Camera2D;
       debugManager.SetPlayerMode(true);
     }
   }

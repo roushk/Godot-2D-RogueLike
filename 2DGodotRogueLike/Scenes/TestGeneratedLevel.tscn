@@ -92,6 +92,7 @@ position = Vector2( 922.907, 690.731 )
 position = Vector2( 756.025, 584.827 )
 
 [node name="PlayerCamera" parent="." instance=ExtResource( 11 )]
+z_index = 10
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_priority = 1

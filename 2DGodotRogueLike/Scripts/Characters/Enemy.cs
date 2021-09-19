@@ -17,6 +17,7 @@ public class Enemy : CombatCharacter
   CollisionShape2D touchCollider;
   CollisionPolygon2D attackCollider;
 
+  HashSet<CombatCharacter> collidingCharacters = new HashSet<CombatCharacter>();
 
   //Collides with walls only
   RayCast2D rayCast;
@@ -54,7 +55,7 @@ public class Enemy : CombatCharacter
 
     sprite.Playing = true;
     globalMovementPosGoal = GlobalPosition;
-    movementSpeed *= 20f;
+    movementSpeed *= 10f;
   }
 
   //When the touch area overlaps something
@@ -63,13 +64,16 @@ public class Enemy : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Player)
     {
-      //If character can take damage
-      if(character.invincibilityTimeLeft <= 0)
-      {
-        //Take damage and reset invincibility timer
-        character.DamageCharacter(touchDamage);
-        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
-      }
+      collidingCharacters.Add(character);
+    }
+  }
+
+  public void _on_TouchArea_body_exited(Node body)
+  {
+    CombatCharacter character = body as CombatCharacter;
+    if(character != null && character.characterType == CharacterType.Player)
+    {
+      collidingCharacters.Remove(character);
     }
   }
 
@@ -79,19 +83,44 @@ public class Enemy : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Player)
     {
-      //If character can take damage
-      if(character.invincibilityTimeLeft <= 0)
+      //If character can take damage & this character can give damage/isn't stunned
+      if(currentStunDuration <= 0)
       {
         //Take damage and reset invincibility timer
-        character.DamageCharacter(punchAttackDamage);
-        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
+        character.DamageCharacter(punchAttackDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
       }
     }
   }
 
+  
+
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
+    base._PhysicsProcess(delta);    
+    healthBar.SetHealth(currentHealth);
+
+    foreach (var item in collidingCharacters)
+    {
+      //If character can take damage & this character can give damage/isn't stunned
+      if(currentStunDuration <= 0)
+      {
+        //Take damage and reset invincibility timer
+        item.DamageCharacter(touchDamage, (item.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+      }
+    }
+
+    currentStunDuration -= delta;
+
+    if(currentStunDuration >= 0)
+    {
+      //Stunned
+    }
+    else
+    {
+      //notStunned
+    }
+
     float distanceToPlayerSquared = float.MaxValue;
     if(playerManager.topDownPlayer != null)
       distanceToPlayerSquared = playerManager.topDownPlayer.GlobalPosition.DistanceSquaredTo(GlobalPosition);
@@ -140,10 +169,8 @@ public class Enemy : CombatCharacter
       }
     }
     
-    base._PhysicsProcess(delta);
-    
-    healthBar.SetHealth(currentHealth);
 
+    
     //TODO patrol route that goes between multiple points without removing them, maybe pops from and pushes it back if patroling
     if(GlobalPosition != globalMovementPosGoal || movementPath.Count != 0)
     {
@@ -156,7 +183,8 @@ public class Enemy : CombatCharacter
         deltaMoveToGoal = deltaMoveToGoal.Normalized();
         //Move towards the goal position
         //GlobalPosition = GlobalPosition + deltaMoveToGoal * movementSpeed * delta;
-        MoveAndSlide(deltaMoveToGoal * movementSpeed * delta, new Vector2(0,-1));
+        if(currentStunDuration <= 0)
+          velocity += deltaMoveToGoal * movementSpeed * delta;
       }
       //If we still have path to go 
       else if (movementPath.Count > 1)
@@ -166,5 +194,7 @@ public class Enemy : CombatCharacter
         movementPath.Remove(movementPath[0]);
       }
     }
+    
+    velocity = MoveAndSlide(velocity) * 0.6f;
   }
 }

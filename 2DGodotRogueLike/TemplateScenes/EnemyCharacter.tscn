@@ -1,14 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Art/SpriteSheets/SlimeSpriteFrames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://TemplateScenes/EnemyHealthUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Characters/Enemy.cs" type="Script" id=3]
+[ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.0
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 12.0
 
 [node name="Enemy" type="KinematicBody2D"]
 pause_mode = 1
@@ -36,6 +36,7 @@ collision_mask = 17
 shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = ExtResource( 4 )
 position = Vector2( 0, -11 )
 frames = ExtResource( 1 )
 animation = "Idle"
@@ -53,3 +54,4 @@ margin_bottom = -20.0
 
 [connection signal="body_entered" from="AttackArea" to="." method="_on_PunchArea_body_entered"]
 [connection signal="body_entered" from="TouchArea" to="." method="_on_TouchArea_body_entered"]
+[connection signal="body_exited" from="TouchArea" to="." method="_on_TouchArea_body_exited"]

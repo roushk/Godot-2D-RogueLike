@@ -8,7 +8,6 @@ public class PlayerTopDown : CombatCharacter
   // private int a = 2;
   // private string b = "text";
 
-  Vector2 velocity;
   Vector2 movingDirection = Vector2.Zero;
 	
 
@@ -18,9 +17,9 @@ public class PlayerTopDown : CombatCharacter
 
 
 	//Scaled multiplier for movespeed to make base 100 a decent speed
-	const float movespeedScalar = 50.0f;
+	const float movespeedScalar = 25.0f;
 
-	float dashSpeed = 10.0f;
+	float dashSpeed = 15.0f;
   
   float idleEpsilon = 10;
 
@@ -115,6 +114,9 @@ public class PlayerTopDown : CombatCharacter
 	//TODO change to crafted/selected weapon
 	public Parts.PartStats weapon = new Parts.PartStats();
 
+	float playerBaseKnockBack = 100.0f;
+	float playerWeaponKnockback = 1.0f;
+
   public override void _Ready()
   {
 		base._Ready();
@@ -198,13 +200,7 @@ public class PlayerTopDown : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Enemy)
     {
-      //If character can take damage
-      if(character.invincibilityTimeLeft <= 0)
-      {
-        //Take damage and reset invincibility timer
-				character.DamageCharacter(weapon.baseSlashDamage);
-        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
-      }
+			character.DamageCharacter(weapon.baseSlashDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 
@@ -214,13 +210,7 @@ public class PlayerTopDown : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Enemy)
     {
-      //If character can take damage
-      if(character.invincibilityTimeLeft <= 0)
-      {
-        //Take damage and reset invincibility timer
-				character.DamageCharacter(weapon.baseStabDamage);
-        character.invincibilityTimeLeft = character.damageMaxInvincibilityTimeLeft;
-      }
+			character.DamageCharacter(weapon.baseStabDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 
@@ -248,6 +238,8 @@ public class PlayerTopDown : CombatCharacter
   public override void _PhysicsProcess(float delta)
   {
 		base._PhysicsProcess(delta);
+
+		movingDirection = Vector2.Zero;
 		//For some reason Godot's on entered func just straight up doesnt work if the bodies are moving so 
 		//we make them stop moving in their script and run this to verify we got everything and it works most of the time
 		//var bodies = playerArea.GetOverlappingBodies();
@@ -368,29 +360,8 @@ public class PlayerTopDown : CombatCharacter
 			currentlySelectedUI = CurrentlySelectedUI.InventoryScreen;
 		}
 
-
 		//Set the currently interacting based on what the interator thinks and if not null
 		currentlyInteracting = currentlyInteractingWith != null && currentlyInteractingWith.playerInteracting;
-		
-
-		
-		//Only if larger than unit vector than scale down MovingDirection
-		if(movingDirection.LengthSquared() > movingDirection.Normalized().LengthSquared())
-		{
-			movingDirection = movingDirection.Normalized();
-		}
-
-		velocity = movingDirection * movementSpeed * movespeedScalar * delta;  
-
-		//if velocity x == 0 then dont change
-		if(velocity.x > 0)
-		{
-			animatedSprite.FlipH = false;
-		}
-		else if(velocity.x < 0)
-		{
-			animatedSprite.FlipH = true;
-		}
 
 		//if no UI selected then player is visible
 		if(currentlySelectedUI == CurrentlySelectedUI.None)
@@ -429,10 +400,21 @@ public class PlayerTopDown : CombatCharacter
 		//Don't move while attacking or interacting with objects or in UI
 		if(attacking || attackingThisFrame || currentlyInteracting || currentlySelectedUI != CurrentlySelectedUI.None)
 		{
-			velocity = new Vector2(0,0);
+			movingDirection = new Vector2(0,0);
 		}
-	
-		
+
+		velocity += movingDirection.Normalized() * movementSpeed * movespeedScalar * delta;  
+
+		//if velocity x == 0 then dont change
+		if(velocity.x > 0)
+		{
+			animatedSprite.FlipH = false;
+		}
+		else if(velocity.x < 0)
+		{
+			animatedSprite.FlipH = true;
+		}
+
 
 		//velocity.y += gravity * delta;
 		
@@ -453,16 +435,18 @@ public class PlayerTopDown : CombatCharacter
 		//Player Dash, only resolve if can move
 		if(Godot.Input.IsActionJustPressed("PlayerMovementAbility") && velocity.LengthSquared() != 0)
 		{
-			velocity *= dashSpeed;
+			velocity = dashSpeed * movementSpeed * movespeedScalar * delta * movingDirection.Normalized();
+
+			rollInvincibilityTimeLeft = rollMaxInvincibilityTimeLeft;
 			//Play dash animation
 			//Stop change of movement direction for a bit?
 		}
 
 		//Slow down movement and normalize evert frame
-		movingDirection *= 0.6f;
+		
 
 		//Update velocity last
-		velocity = MoveAndSlide(velocity) * 0.80f;
+		velocity = MoveAndSlide(velocity) * 0.6f;
 		attackingThisFrame = false;
   }
 }
