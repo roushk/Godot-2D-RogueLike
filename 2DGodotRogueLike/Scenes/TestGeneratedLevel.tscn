@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=8]
 [ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=9]
 [ext_resource path="res://TemplateScenes/Forge.tscn" type="PackedScene" id=10]
+[ext_resource path="res://TemplateScenes/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=11]
 
 [node name="TestLevelGenNode" type="Node2D"]
 pause_mode = 2
@@ -89,6 +90,8 @@ position = Vector2( 922.907, 690.731 )
 
 [node name="Forge" parent="." instance=ExtResource( 10 )]
 position = Vector2( 756.025, 584.827 )
+
+[node name="PlayerCamera" parent="." instance=ExtResource( 11 )]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_priority = 1

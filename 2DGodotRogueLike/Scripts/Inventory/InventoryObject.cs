@@ -15,7 +15,7 @@ public class InventoryObject : Node2D
   [Export]
   public int numMaterials = 0;
 
-  public BaseBlueprint blueprint;
+  public Parts.ConstructedWeapon weapon;
 
   float vaccumRadius = 50.0f;
   float minRadius = 10.0f;

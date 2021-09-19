@@ -50,14 +50,11 @@ __meta__ = {
 }
 
 [node name="CurrentWeaponInfo" type="RichTextLabel" parent="ParchmentBackground"]
-anchor_left = 0.06
-anchor_top = 0.883
-anchor_right = 0.956
-anchor_bottom = 0.949
-margin_left = 5.568
-margin_top = -32.1584
-margin_right = 4.31677
-margin_bottom = 1.68478
+anchor_left = 0.05
+anchor_top = 0.8
+anchor_right = 0.95
+anchor_bottom = 0.95
+margin_left = 0.567999
 rect_min_size = Vector2( 110, 16 )
 rect_clip_content = false
 mouse_filter = 1
@@ -198,14 +195,14 @@ __meta__ = {
 [node name="OreInventorySelection" type="ScrollContainer" parent="PartSelection/BlueprintStuff"]
 margin_top = 248.0
 margin_right = 195.0
-margin_bottom = 468.0
-rect_min_size = Vector2( 140, 220 )
+margin_bottom = 398.0
+rect_min_size = Vector2( 140, 150 )
 scroll_horizontal_enabled = false
 
 [node name="OreInventoryGridContainer" type="GridContainer" parent="PartSelection/BlueprintStuff/OreInventorySelection"]
 margin_right = 140.0
-margin_bottom = 220.0
-rect_min_size = Vector2( 140, 220 )
+margin_bottom = 150.0
+rect_min_size = Vector2( 140, 150 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -238,6 +235,22 @@ margin_bottom = 0.130219
 rect_min_size = Vector2( 10, 24 )
 toggle_mode = true
 text = "Select Materials"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResetWeapon" type="Button" parent="."]
+anchor_left = 0.429
+anchor_top = 0.864
+anchor_right = 0.663
+anchor_bottom = 0.964
+margin_left = -5.64799
+margin_top = -240.832
+margin_right = -77.456
+margin_bottom = -245.632
+rect_min_size = Vector2( 10, 24 )
+toggle_mode = true
+text = "Reset"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -312,7 +325,9 @@ margin_top = 250.0
 margin_right = 589.0
 margin_bottom = 271.0
 
+[connection signal="pressed" from="CraftButton" to="." method="CreateWeapon"]
 [connection signal="toggled" from="SelectMaterialsButton" to="." method="_on_SelectMaterialsButton_toggled"]
+[connection signal="pressed" from="ResetWeapon" to="." method="ResetWeapon"]
 [connection signal="pressed" from="OldInv/Button" to="." method="SwitchToIronOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button2" to="." method="SwitchToCopperOnButtonPressed"]
 [connection signal="pressed" from="OldInv/Button3" to="." method="SwitchToTinOnButtonPressed"]

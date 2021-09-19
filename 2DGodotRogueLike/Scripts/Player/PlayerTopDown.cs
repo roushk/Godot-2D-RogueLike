@@ -58,7 +58,7 @@ public class PlayerTopDown : CombatCharacter
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 	HealthBar healthBar;
-	Inventory playerInventory;
+	public Inventory playerInventory;
 	PlayerUI playerUI;
 	public CraftingMaterialSystem playerCraftingUI;
 
@@ -88,6 +88,11 @@ public class PlayerTopDown : CombatCharacter
 			}
 			_currentlySelectedUI = value;
 		}
+	}
+
+	public void SetCurrentWeapon(Parts.ConstructedWeapon _weapon)
+	{
+		weapon = _weapon.stats;
 	}
 
 	public enum CurrentlySelectedUI
@@ -121,23 +126,26 @@ public class PlayerTopDown : CombatCharacter
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
 		testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
 
-		healthBar = testLevelGeneration.GetNode<HealthBar>("Player/Camera2D/PlayerUI/HealthBar");
+		healthBar = testLevelGeneration.GetNode<HealthBar>("PlayerCamera/PlayerUI/HealthBar");
 
 		//Link UI's
-		playerInventory = GetNode<Inventory>("Camera2D/PlayerInventoryUI");
-		playerCraftingUI = GetNode<CraftingMaterialSystem>("Camera2D/CraftingScreen");
-		playerUI = GetNode<PlayerUI>("Camera2D/PlayerUI"); 
+		playerInventory = testLevelGeneration.GetNode<Inventory>("PlayerCamera/PlayerInventoryUI");
+		playerCraftingUI = testLevelGeneration.GetNode<CraftingMaterialSystem>("PlayerCamera/CraftingScreen");
+		playerUI = testLevelGeneration.GetNode<PlayerUI>("PlayerCamera/PlayerUI"); 
 
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);
 		attacking = false;
 
-		weapon.baseSlashDamage = 10;
-		weapon.baseStabDamage = 10;
-
 	  GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
 		
 		currentlySelectedUI = CurrentlySelectedUI.None;
+
+		//TODO set default weapon
+		//weapon = 
+
+		weapon.baseSlashDamage = 10;
+		weapon.baseStabDamage = 10;
   }
 
 	void CollidingWithInvObject(InventoryObject inv)
@@ -150,7 +158,7 @@ public class PlayerTopDown : CombatCharacter
 		}
 		else
 		{
-			playerInventory.AddUniqueItem(inv.inventoryObjectName,inv.blueprint);
+			playerInventory.AddUniqueItem(inv.inventoryObjectName, inv.weapon);
 		}
 
 		//TODO setup callback if needed

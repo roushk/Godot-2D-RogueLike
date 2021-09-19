@@ -52,15 +52,15 @@ namespace Parts
   public class PartStats 
   {
     //Slash damage is damage in slashing attack
-    public int baseSlashDamage = 100;
+    public int baseSlashDamage = 0;
     //Stab damage is damage in stab attack
-    public int baseStabDamage = 100;
+    public int baseStabDamage = 0;
     //Attack speed is howhow many attacks per second
-    public int baseAttackSpeed = 100;
+    public int baseAttackSpeed = 0;
     //Swing speed affects how fast the blade is swung, more is fast swing and stab
-    public int baseSwingSpeed = 100;
+    public int baseSwingSpeed = 0;
     //Length is the reach of the weapon
-    public int baseLength = 100;
+    public int baseLength = 0;
     //Special stat is a special stat
     public string specialStat = "None";
 
@@ -68,12 +68,11 @@ namespace Parts
     public static PartStats GetCombinationOfStats(PartStats lhs, PartStats rhs)
     {
       PartStats result = new PartStats();
-      //-200 cause base is 100 and we want the extras of each 
-      result.baseSlashDamage += lhs.baseSlashDamage + rhs.baseSlashDamage - 200;
-      result.baseStabDamage += lhs.baseStabDamage + rhs.baseStabDamage - 200;
-      result.baseAttackSpeed += lhs.baseAttackSpeed + rhs.baseAttackSpeed - 200;
-      result.baseSwingSpeed += lhs.baseSwingSpeed + rhs.baseSwingSpeed - 200;
-      result.baseLength += lhs.baseLength + rhs.baseLength - 200;
+      result.baseSlashDamage += lhs.baseSlashDamage + rhs.baseSlashDamage;
+      result.baseStabDamage += lhs.baseStabDamage + rhs.baseStabDamage;
+      result.baseAttackSpeed += lhs.baseAttackSpeed + rhs.baseAttackSpeed;
+      result.baseSwingSpeed += lhs.baseSwingSpeed + rhs.baseSwingSpeed;
+      result.baseLength += lhs.baseLength + rhs.baseLength;
 
       if(lhs.specialStat != "None" && rhs.specialStat != "None")
         result.specialStat = lhs.specialStat + " and " + rhs.specialStat;
@@ -129,7 +128,7 @@ namespace Parts
       return baseStat;
     }
     //Generates text of the stats
-    public string GenerateStatText(PartBlueprint oldPart = null, int threshold = 100, bool relativeNum = true)
+    public string GenerateStatText(PartBlueprint oldPart = null, int threshold = 0, bool relativeNum = true)
     {
       int oldPartSlashDamage = 0;
       int oldPartStabDamage = 0;
@@ -210,11 +209,24 @@ namespace Parts
       texture = rhs.texture;
       bitMask = rhs.bitMask;
     }
+
+    public void ResetPart()
+    {
+      currentMaterial = Materials.Material.Undefined;
+    }
   }
-  public class PartConstructed : PartBlueprint
+  public class ConstructedWeapon
   {
-    [Export]
-    public Materials.MaterialType materialType { get; private set; } = Materials.MaterialType.Undefined;
-    public PartConstructed() : base(){}
+    public PartStats stats = new PartStats();
+    public Texture texture;
+    public string detailText;
+    public string name;
+    public ConstructedWeapon(string _name,PartStats _stats, Texture _sprite, string _detailText)
+    {
+      name = _name;
+      stats = _stats;
+      texture = _sprite;
+      detailText = _detailText;
+    }
   }
 }

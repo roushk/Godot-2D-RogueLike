@@ -46,6 +46,7 @@ public class CraftingMaterialSystem : Control
   //Dict of type to list of pieces
   Dictionary<Parts.PartType, Godot.Collections.Array<Parts.PartBlueprint>> allPartsDict = new Dictionary<Parts.PartType,Godot.Collections. Array<Parts.PartBlueprint>>();
 
+  [Obsolete]
   System.Collections.Generic.List<Parts.PartBlueprint> currentParts = new System.Collections.Generic.List<Parts.PartBlueprint>();
 
   Parts.WeaponBlueprintNode weaponRootNode = new Parts.WeaponBlueprintNode();
@@ -107,6 +108,15 @@ public class CraftingMaterialSystem : Control
   //Paths
   const string FullBPDir = "res://Data/Blueprints/";
   const string FullSpriteDir = "res://Assets/Art/My_Art/BlueprintIcons/";
+  
+  Vector2 maxWeaponUIExtents = Vector2.Zero;
+  Vector2 minWeaponUIExtents = Vector2.Inf;
+
+  Dictionary<Materials.Material, int> costOfWeapon = null;
+
+  Parts.PartStats summationStats;
+
+  protected PlayerManager playerManager;
 
   #endregion
 
@@ -368,6 +378,7 @@ public class CraftingMaterialSystem : Control
   }
 
   //Generate a blueprint button from
+  [Obsolete]
   void GenerateBlueprintButton(BaseBlueprint loadedBP)
   {
 
@@ -545,9 +556,6 @@ public class CraftingMaterialSystem : Control
     }
   }
 
-  Vector2 maxWeaponUIExtents = Vector2.Zero;
-  Vector2 minWeaponUIExtents = Vector2.Inf;
-
   //recursively get the largest UI extents
   void GetLargestUIExtents(Parts.WeaponBlueprintNode node)
   {
@@ -581,7 +589,7 @@ public class CraftingMaterialSystem : Control
     ClearPartsVisualizer();
     ClearCurrentBlueprintDetails();
 
-    Parts.PartStats summationStats = new Parts.PartStats();
+    summationStats = new Parts.PartStats();
 
     Console.WriteLine("Max Weapon UI Extents Part Visualizer Scale is " + maxWeaponUIExtents.ToString());
     Console.WriteLine("Min Weapon UI Extents Part Visualizer Scale is " + minWeaponUIExtents.ToString());
@@ -613,7 +621,7 @@ public class CraftingMaterialSystem : Control
     //Only write text if we have parts
     //if(currentParts.Count >= 1)
     bpDetails.BbcodeText = summationStats.GenerateStatText(null, 0, false);
-    
+
     bpDetails.RectMinSize = new Vector2(32,50);
     bpDetails.RectClipContent = false;
   }
@@ -642,9 +650,11 @@ public class CraftingMaterialSystem : Control
     currentBlueprintText = FindNode("CurrentBPTitle") as RichTextLabel;
     inventoryOres = FindNode("OreInventoryGridContainer") as GridContainer;
 
+    playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+
     LoadAllParts();
     //Start the current part as a empty handle
-    currentParts.Add(allPartsDict[Parts.PartType.Handle][0]);
+    //currentParts.Add(allPartsDict[Parts.PartType.Handle][0]);
     weaponRootNode.part = allPartsDict[Parts.PartType.Handle][0];
 
     Color ironBaseColor = new Color("e8e8e8");
@@ -684,7 +694,7 @@ public class CraftingMaterialSystem : Control
   //Updates dict with material cost
   public void GetWeaponMaterialCost(Inventory playerInventory)
   {
-    Dictionary<Materials.Material, int> costOfWeapon = new Dictionary<Materials.Material, int>();
+    costOfWeapon = new Dictionary<Materials.Material, int>();
     List<string> partsMissingMaterials = new List<string>();
     if(IsWeaponsMaterialsSelected(weaponRootNode, ref partsMissingMaterials))
     {
@@ -769,6 +779,64 @@ public class CraftingMaterialSystem : Control
     return (1 + label.BbcodeText.Count("\n")) * ((label.Theme.DefaultFont as DynamicFont).Size + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingBottom + (label.Theme.DefaultFont as DynamicFont).ExtraSpacingTop);
   }
 
+  //callback from create weapon button, only available when the player can craft a weapon
+  public void CreateWeapon()
+  {
+    string weaponName = "New Created Weapon";
+    //For now just set a basic sprite as the image
+    Parts.ConstructedWeapon newWeapon = new Parts.ConstructedWeapon(weaponName, summationStats, ResourceLoader.Load<Texture>("res://Assets/Art/My_Art/BlueprintIcons/Medium_Sword.png"), summationStats.GenerateStatText(null, 0, false));
+    playerManager.topDownPlayer.playerInventory.AddUniqueItem(weaponName, newWeapon);
+
+    Dictionary<Materials.Material, int> weaponCost =  GetCostOfWeaponNode(weaponRootNode);
+
+    //When crafting then weapon charge the player
+    foreach (var cost in weaponCost)
+    {
+      playerManager.topDownPlayer.playerInventory.RemoveMaterial(cost.Key, cost.Value);
+    }
+
+    //Reset the weaponRootNode
+    ResetWeapon();
+    //Close the inventory??
+  }
+
+  public void ResetWeapon()
+  {
+    weaponRootNode = new Parts.WeaponBlueprintNode();
+    weaponRootNode.part = allPartsDict[Parts.PartType.Handle][0];
+    GetNode<RichTextLabel>("ParchmentBackground/CurrentWeaponInfo").Text = string.Empty;
+
+    //Reset attach points
+    foreach (var attachPt in weaponRootNode.part.partAttachPoints)
+    {
+      attachPt.attachedPart = false;
+    }  
+    SetModePartSelection();
+  }
+
+  class SpriteInformation
+  {
+    public Vector2 size = Vector2.Zero;
+    public Vector2 bottomLeft = Vector2.Zero;
+  }
+
+  //TODO
+  Image CreateWeaponSprite()
+  {
+    return GetWeaponSpriteInfo(weaponRootNode);
+  }
+
+
+  //Need data + size + offset
+  Image GetWeaponSpriteInfo(Parts.WeaponBlueprintNode node)
+  {
+    Image weaponSprite = new Image();
+        //TODO construct weapon sprite stuff here, the pain of finding the bounds of the weapon and placing the pixels correctly
+
+    return weaponSprite;
+  }
+
+
   //Loads the list of all possible parts of the passed part blueprint
   public void LoadPartSelection(Parts.WeaponBlueprintNode currentNode)
   {
@@ -808,7 +876,7 @@ public class CraftingMaterialSystem : Control
       partSelectionButton.RectMinSize = MinPartSelectionSize;
 
       RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
-      detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part);
+      detailText.BbcodeText = part.stats.GenerateStatText(currentNode.part, 0);
       detailText.BbcodeEnabled = true;
       detailText.RectMinSize = new Vector2(detailText.RectMinSize.x,GetMinYSizeFromRichTextLabel(detailText));
       //Dont change colors with the callbacks
@@ -852,7 +920,7 @@ public class CraftingMaterialSystem : Control
         partSelectionButton.RectMinSize = MinPartSelectionSize;
 
         RichTextLabel detailText = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData") as RichTextLabel;
-        detailText.BbcodeText = part.stats.GenerateStatText();
+        detailText.BbcodeText = part.stats.GenerateStatText(null, 0);
         detailText.BbcodeEnabled = true;
         detailText.RectMinSize = new Vector2(detailText.RectMinSize.x, GetMinYSizeFromRichTextLabel(detailText));
         //Dont change colors with the callbacks

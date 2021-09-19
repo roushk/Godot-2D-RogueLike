@@ -8,9 +8,9 @@
         {
             "baseSlashDamage": 200,
             "baseStabDamage": 120,
-            "baseAttackSpeed": 60,
-            "baseSwingSpeed": 80,
-            "baseLength": 200,
+            "baseAttackSpeed": -40,
+            "baseSwingSpeed": -20,
+            "baseLength": 100,
             "specialStat": "+ Knockback"
         },
         "baseAttachPoint":
@@ -34,9 +34,9 @@
         {
             "baseSlashDamage": 110,
             "baseStabDamage": 90,
-            "baseAttackSpeed": 100,
-            "baseSwingSpeed": 100,
-            "baseLength": 120,
+            "baseAttackSpeed": 0,
+            "baseSwingSpeed": 0,
+            "baseLength": 60,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -60,9 +60,9 @@
         {
             "baseSlashDamage": 120,
             "baseStabDamage": 120,
-            "baseAttackSpeed": 80,
-            "baseSwingSpeed": 80,
-            "baseLength": 100,
+            "baseAttackSpeed": -20,
+            "baseSwingSpeed": -20,
+            "baseLength": 30,
             "specialStat": "Smash"
         },
         "baseAttachPoint":
@@ -82,9 +82,9 @@
         {
             "baseSlashDamage": 140,
             "baseStabDamage": 60,
-            "baseAttackSpeed": 110,
-            "baseSwingSpeed": 110,
-            "baseLength": 90,
+            "baseAttackSpeed": 10,
+            "baseSwingSpeed": 10,
+            "baseLength": 20,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -103,9 +103,9 @@
         {
             "baseSlashDamage": 60,
             "baseStabDamage": 80,
-            "baseAttackSpeed": 120,
-            "baseSwingSpeed": 120,
-            "baseLength": 70,
+            "baseAttackSpeed": 20,
+            "baseSwingSpeed": 20,
+            "baseLength": 20,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -127,11 +127,11 @@
         "partCost": 3,
         "partAttributes":
         {
-            "baseSlashDamage": 150,
-            "baseStabDamage": 150,
-            "baseAttackSpeed": 50,
-            "baseSwingSpeed": 80,
-            "baseLength": 100,
+            "baseSlashDamage": 50,
+            "baseStabDamage": 50,
+            "baseAttackSpeed": -50,
+            "baseSwingSpeed": -20,
+            "baseLength": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -148,11 +148,11 @@
         "partCost": 1,
         "partAttributes":
         {
-            "baseSlashDamage": 80,
-            "baseStabDamage": 80,
-            "baseAttackSpeed": 120,
-            "baseSwingSpeed": 120,
-            "baseLength": 100,
+            "baseSlashDamage": -20,
+            "baseStabDamage": -20,
+            "baseAttackSpeed": 20,
+            "baseSwingSpeed": 20,
+            "baseLength": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -169,11 +169,11 @@
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 110,
-            "baseStabDamage": 110,
-            "baseAttackSpeed": 90,
-            "baseSwingSpeed": 90,
-            "baseLength": 100,
+            "baseSlashDamage": 10,
+            "baseStabDamage": 10,
+            "baseAttackSpeed": -10,
+            "baseSwingSpeed": -10,
+            "baseLength": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -191,11 +191,11 @@
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 100,
-            "baseStabDamage": 100,
-            "baseAttackSpeed": 130,
-            "baseSwingSpeed": 130,
-            "baseLength": 20,
+            "baseSlashDamage": 20,
+            "baseStabDamage": 20,
+            "baseAttackSpeed": 80,
+            "baseSwingSpeed": 80,
+            "baseLength": 30,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -222,11 +222,11 @@
         "partCost": 5,
         "partAttributes":
         {
-            "baseSlashDamage": 100,
-            "baseStabDamage": 100,
-            "baseAttackSpeed": 90,
-            "baseSwingSpeed": 90,
-            "baseLength": 110,
+            "baseSlashDamage": 20,
+            "baseStabDamage": 20,
+            "baseAttackSpeed": 50,
+            "baseSwingSpeed": 50,
+            "baseLength": 60,
             "specialStat": "None"
 
         },
@@ -254,11 +254,11 @@
         "partCost": 8,
         "partAttributes":
         {
-            "baseSlashDamage": 100,
-            "baseStabDamage": 100,
-            "baseAttackSpeed": 80,
-            "baseSwingSpeed": 50,
-            "baseLength": 200,
+            "baseSlashDamage": 20,
+            "baseStabDamage": 20,
+            "baseAttackSpeed": 20,
+            "baseSwingSpeed": 20,
+            "baseLength": 100,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -285,11 +285,11 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": 80,
-            "baseStabDamage": 120,
-            "baseAttackSpeed": 120,
-            "baseSwingSpeed": 120,
-            "baseLength": 90,
+            "baseSlashDamage": -20,
+            "baseStabDamage": 20,
+            "baseAttackSpeed": 20,
+            "baseSwingSpeed": 20,
+            "baseLength": 60,
             "specialStat": "Riposte"
         },
         "baseAttachPoint":
@@ -311,11 +311,11 @@
         "partCost": 3,
         "partAttributes":
         {
-            "baseSlashDamage": 110,
-            "baseStabDamage": 110,
-            "baseAttackSpeed": 90,
-            "baseSwingSpeed": 90,
-            "baseLength": 100,
+            "baseSlashDamage": 10,
+            "baseStabDamage": 10,
+            "baseAttackSpeed": -10,
+            "baseSwingSpeed": -10,
+            "baseLength": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -332,11 +332,11 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": 80,
-            "baseStabDamage": 120,
-            "baseAttackSpeed": 110,
-            "baseSwingSpeed": 110,
-            "baseLength": 90,
+            "baseSlashDamage": -40,
+            "baseStabDamage": 20,
+            "baseAttackSpeed": 10,
+            "baseSwingSpeed": 10,
+            "baseLength": 0,
             "specialStat": "Riposte"
         },
         "baseAttachPoint":
@@ -354,10 +354,10 @@
         "partAttributes":
         {
             "baseSlashDamage": 150,
-            "baseStabDamage": 50,
-            "baseAttackSpeed": 80,
-            "baseSwingSpeed": 80,
-            "baseLength": 140,
+            "baseStabDamage": 60,
+            "baseAttackSpeed": -20,
+            "baseSwingSpeed": -20,
+            "baseLength": 100,
             "specialStat": "Bleed"
         },
         "baseAttachPoint":
@@ -381,9 +381,9 @@
         {
             "baseSlashDamage": 120,
             "baseStabDamage": 50,
-            "baseAttackSpeed": 70,
-            "baseSwingSpeed": 120,
-            "baseLength": 110,
+            "baseAttackSpeed": -30,
+            "baseSwingSpeed": 20,
+            "baseLength": 20,
             "specialStat": "Axe"
         },
         "baseAttachPoint":
@@ -402,9 +402,9 @@
         {
             "baseSlashDamage": 120,
             "baseStabDamage": 50,
-            "baseAttackSpeed": 70,
-            "baseSwingSpeed": 120,
-            "baseLength": 110,
+            "baseAttackSpeed": -30,
+            "baseSwingSpeed": 20,
+            "baseLength": 20,
             "specialStat": "Pickaxe"
         },
         "baseAttachPoint":
@@ -421,11 +421,11 @@
         "partCost": 1,
         "partAttributes":
         {
-            "baseSlashDamage": 100,
-            "baseStabDamage": 100,
-            "baseAttackSpeed": 100,
-            "baseSwingSpeed": 100,
-            "baseLength": 100,
+            "baseSlashDamage": 0,
+            "baseStabDamage": 0,
+            "baseAttackSpeed": 0,
+            "baseSwingSpeed": 0,
+            "baseLength": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":

@@ -15,35 +15,53 @@ public class CameraMovement : Camera2D
   [Export(PropertyHint.Range,"0,10")]
   public float cameraLerpWeight = 5f;
 
+  [Export]
   public bool movementEnabled = true;
 
+  [Export]
+  public bool zoomEnabled = true;
+
+  [Export]
+  public bool followPlayer = false;
+  
   InputManager inputManager;
   Vector2 cameraGoalPos = new Vector2(0,0);
+
+  PlayerManager playerManager;
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
     inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
-    cameraGoalPos = Position;
+    playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+    cameraGoalPos = GlobalPosition;
   }
 
   public override void _Input(InputEvent inputEvent)
   {
-    if(inputEvent.IsActionPressed("MouseWheelDown"))
+    if(zoomEnabled)
     {
-      //make the zoom sensitivity a scale so 1 seems reasonable as a default
-      this.Zoom = this.Zoom * (1.0f + 0.1f * zoomSensitivity);
+      if(inputEvent.IsActionPressed("MouseWheelDown"))
+      {
+        //make the zoom sensitivity a scale so 1 seems reasonable as a default
+        this.Zoom = this.Zoom * (1.0f + 0.1f * zoomSensitivity);
+      }
+      if(inputEvent.IsActionPressed("MouseWheelUp"))
+      {
+        this.Zoom = this.Zoom * (1.0f - 0.1f * zoomSensitivity);
+      }
+      this.Scale = this.Zoom / 5.0f;
     }
-    if(inputEvent.IsActionPressed("MouseWheelUp"))
-    {
-      this.Zoom = this.Zoom * (1.0f - 0.1f * zoomSensitivity);
-    }
-    this.Scale = this.Zoom/5.0f;
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
-  public override void _Process(float delta)
+  public override void _PhysicsProcess(float delta)
   {
-    this.Position = this.Position.LinearInterpolate(cameraGoalPos, cameraLerpWeight * delta);
+    if(followPlayer)
+    {
+      cameraGoalPos = playerManager.topDownPlayer.GlobalPosition;
+    }
+
+    this.GlobalPosition = this.GlobalPosition.LinearInterpolate(cameraGoalPos, cameraLerpWeight * delta);
 
     if(movementEnabled)
     {

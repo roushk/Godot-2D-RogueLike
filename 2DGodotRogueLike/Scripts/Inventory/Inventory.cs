@@ -6,7 +6,7 @@ public class Inventory : Control
 {
   //How to deal with stack sizes?
   Dictionary<Materials.Material, int> stackableItems = new Dictionary<Materials.Material, int>();
-  System.Collections.Generic.List<Tuple<string, BaseBlueprint>> uniqueItems = new System.Collections.Generic.List<Tuple<string, BaseBlueprint>>();
+  System.Collections.Generic.List<Tuple<string, Parts.ConstructedWeapon>> uniqueItems = new System.Collections.Generic.List<Tuple<string, Parts.ConstructedWeapon>>();
   
   Dictionary<Materials.Material, HBoxContainer> stackableItemsUI = new Dictionary<Materials.Material, HBoxContainer>();
 
@@ -48,11 +48,32 @@ public class Inventory : Control
     Console.WriteLine("Added " + count.ToString() + " of Material " + material.ToString() + " to Inventory");
   }
 
-  public void AddUniqueItem(string inventoryObjectName,	BaseBlueprint blueprint)
+  public void AddUniqueItem(string inventoryObjectName,	Parts.ConstructedWeapon weapon)
   {
     //TODO later selecting weapon brings up weapon menu to change stance/combo/special etc 
-    uniqueItems.Add(new Tuple<string,	BaseBlueprint>(inventoryObjectName,blueprint));
+    uniqueItems.Add(new Tuple<string,	Parts.ConstructedWeapon>(inventoryObjectName, weapon));
     Console.WriteLine("Added Unique Item " + inventoryObjectName + " to Inventory");
+
+    HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance<HBoxContainer>();
+
+    CallbackTextureButton texButton = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
+    RichTextLabel text = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData");
+    
+    texButton.TextureNormal = weapon.texture;
+    texButton.Modulate = Colors.White;
+    texButton.SelfModulate = Colors.White;
+    texButton.changeColors = true;
+    texButton.Disabled = false;
+
+    //Set material selection callback
+    texButton.onButtonPressedCallback = () => {playerManager.topDownPlayer.SetCurrentWeapon(weapon);};
+
+    text.BbcodeText = inventoryObjectName + "\n" + weapon.detailText;
+    text.BbcodeEnabled = true;
+    text.RectMinSize = new Vector2(text.RectMinSize.x,CraftingMaterialSystem.GetMinYSizeFromRichTextLabel(text));
+    text.RectSize = text.RectMinSize;
+
+    uniqueGridContainer.AddChild(hBox);
   }
 
 
@@ -98,14 +119,14 @@ public class Inventory : Control
       if(stackableItems[material] == 0)
       {
         //TODO convert this to a function call
-        stackableItemsUI[material].GetChild<RichTextLabel>(1).BbcodeText = material.ToString() + "\n" + "Amount: 0";
+        stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: 0";
         stackableItemsUI[material].Visible = false;
         playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].Visible = true;
         playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: 0";
 
         //Make UI not visible
       }
-      stackableItemsUI[material].GetChild<RichTextLabel>(1).BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
+      stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
       playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
     }
   }
