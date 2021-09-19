@@ -6,14 +6,18 @@ using System;
 //Get the Player Manager
 //playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
 public class PlayerManager : Node
-{
-
+{  
   public PlayerTopDown topDownPlayer;
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
     
   }
+
+  //Do this later, for now can just teleport player object
+  //public void SavePlayerData()
+  //{
+  //}
 
   //Sets the player ref
   public void SetTopDownPlayer(ref PlayerTopDown player)

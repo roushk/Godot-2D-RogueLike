@@ -241,13 +241,15 @@ public class TestLevelGeneration : Node2D
     //=================================================================================
   }
 
+  #region Spawn In Objects
+
   //Translates grid vec to center of vec in world pos
   public Vector2 MapPointToWorldPos(Vector2 pos)
   {
     return pos * ForegroundMap.CellSize * ForegroundMap.Scale + (ForegroundMap.CellSize * ForegroundMap.Scale * 0.5f);
   }
 
-  public void SpawnPlayerAtStartRoom()
+  public void SpawnPlayerAtStartRoom(bool resetPlayerCharacter = false)
   {
     //clear old player
     if(playerManager.topDownPlayer != null)
@@ -256,11 +258,25 @@ public class TestLevelGeneration : Node2D
     }
     if(startRoom != -1)
     {
-      PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;
-      
-      GetTree().Root.AddChild(newPlayer);
-      newPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
-      playerManager.SetTopDownPlayer(ref newPlayer);
+      //If player doesn't exist or is set to reset then spawn a new player
+      if(resetPlayerCharacter || playerManager.topDownPlayer == null)
+      {
+        if(playerManager.topDownPlayer != null)
+        {
+          QueueFreeNodeChildren(playerManager.topDownPlayer, true);
+          playerManager.topDownPlayer = null;
+        }
+
+        PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;
+        GetTree().Root.AddChild(newPlayer);
+        playerManager.SetTopDownPlayer(ref newPlayer);
+        
+      }
+
+      playerManager.topDownPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
+
+      //Don't know if debug camera is initialized here or not so we want to just set the camera position change bool and updated when possible
+      setCameraPositionToPlayer = true;
     }
     else
     {
@@ -275,8 +291,10 @@ public class TestLevelGeneration : Node2D
     int randomSlimeVariation = random.Next(3,6);
     HashSet<KeyValuePair<int,int>> tilesWithEnemies = new HashSet<KeyValuePair<int, int>>();
 
-    while(slimesAdded < minSlimesToSpawn + randomSlimeVariation)
+    int maxIterations = 200;
+    while(slimesAdded < minSlimesToSpawn + randomSlimeVariation && maxIterations > 0)
     {
+      maxIterations--;
       int roomToChoose = random.Next() % rooms.Count;
       
       //Ignore starting room
@@ -291,7 +309,7 @@ public class TestLevelGeneration : Node2D
         //Spawn slime
         CombatCharacter newSlime = slimeEnemyScene.Instance() as CombatCharacter;
         newSlime.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[roomToChoose][tileToChoose].Key, rooms[roomToChoose][tileToChoose].Value));
-        AddChild(newSlime);
+        EnemiesNode.AddChild(newSlime);
         slimesAdded++;
         tilesWithEnemies.Add(rooms[roomToChoose][tileToChoose]);
       }
@@ -320,7 +338,7 @@ public class TestLevelGeneration : Node2D
         //Spawn slime
         Interactable newForge = ForgeScene.Instance() as Interactable;
         newForge.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[roomToChoose][tileToChoose].Key, rooms[roomToChoose][tileToChoose].Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
-        AddChild(newForge);
+        InteractablesNode.AddChild(newForge);
         forgesAdded++;
         tilesWithForges.Add(rooms[roomToChoose][tileToChoose]);
       }
@@ -344,13 +362,57 @@ public class TestLevelGeneration : Node2D
       //Spawn slime
       DownwardLadder newLadder = endOfLevelLadderScene.Instance() as DownwardLadder;
       newLadder.GlobalPosition = MapPointToWorldPos(new Vector2(roomToUse.Key, roomToUse.Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
-      AddChild(newLadder);
+      InteractablesNode.AddChild(newLadder);
       //Select a tile with the highest adjacency inside of the room
       //Spawn End of level ladder
 
     }
   }
 
+  public void SpawnOreChunkAt(Vector2 pos)
+  {
+    OreWorldObject newObj = oreWorldObjectScene.Instance() as OreWorldObject;
+
+    //Spawn ore chunk at item.Key * scale + offset (0,0 is upper left corner) so they are centered
+    newObj.Position = pos * ForegroundMap.CellSize * ForegroundMap.Scale + (ForegroundMap.CellSize * ForegroundMap.Scale * 0.5f);
+    newObj.material = (Materials.Material)random.Next(0,6);
+    newObj.amountInOre = random.Next(1,6);
+    newObj.timeToMine = random.Next(2,4);
+
+    //Calls _Ready func
+    InteractablesNode.AddChild(newObj);
+
+    if(newObj.material == Materials.Material.Copper)
+      newObj.animatedSprite.Animation = "Copper Ores";
+    if(newObj.material == Materials.Material.Cobalt)
+      newObj.animatedSprite.Animation = "Cobalt Ores";
+
+    newObj.animatedSprite.Frame = random.Next(0,10);
+    newObj.ZIndex = -1;
+  }
+
+#endregion
+
+
+  //Simple recursive func to queue free node's children and all its children and bool to free this node
+  public void QueueFreeNodeChildren(Node node, bool freeThisNode = false)
+  {
+    foreach (Node child in node.GetChildren())
+    {
+      QueueFreeNodeChildren(child);
+      child.QueueFree();
+    }
+
+    if(freeThisNode)
+      node.QueueFree();
+  }
+
+  public void RemoveLevelEntities()
+  {
+    //Free all nodes children but not the nodes themselves 
+    QueueFreeNodeChildren(InteractablesNode);
+    QueueFreeNodeChildren(EnemiesNode);
+  }
 
   //Calculates the distances from each room to each other room
   public void FindFarthestRooms()
@@ -439,27 +501,7 @@ public class TestLevelGeneration : Node2D
     endRoom = longestEndRoom;
   }
 
-  public void SpawnOreChunkAt(Vector2 pos)
-  {
-    OreWorldObject newObj = oreWorldObjectScene.Instance() as OreWorldObject;
-
-    //Spawn ore chunk at item.Key * scale + offset (0,0 is upper left corner) so they are centered
-    newObj.Position = pos * ForegroundMap.CellSize * ForegroundMap.Scale + (ForegroundMap.CellSize * ForegroundMap.Scale * 0.5f);
-    newObj.material = (Materials.Material)random.Next(0,6);
-    newObj.amountInOre = random.Next(1,6);
-    newObj.timeToMine = random.Next(2,4);
-
-    //Calls _Ready func
-    GetTree().Root.AddChild(newObj);
-
-    if(newObj.material == Materials.Material.Copper)
-      newObj.animatedSprite.Animation = "Copper Ores";
-    if(newObj.material == Materials.Material.Cobalt)
-      newObj.animatedSprite.Animation = "Cobalt Ores";
-
-    newObj.animatedSprite.Frame = random.Next(0,10);
-    newObj.ZIndex = -1;
-  }
+ 
 
 
   //General Signals
@@ -576,12 +618,14 @@ public class TestLevelGeneration : Node2D
   }
 
   //Generated everything, finds farthest rooms, spawns chunks, spawns player
-  public void GenAllAndSpawnOreAndPlayer()
+  public void GenAllAndSpawnOreAndPlayer(bool resetPlayerCharacter = false)
   {
+    //Removes current entities
+    RemoveLevelEntities();
     GenAll();
     FindFarthestRooms();
     SpawnOreChunksEdge_pressed();
-    SpawnPlayerAtStartRoom();
+    SpawnPlayerAtStartRoom(resetPlayerCharacter);
     SpawnEndOfLevelAreas();
     SpawnEnemiesInLevel();
     SpawnForgesInLevel();
@@ -776,6 +820,12 @@ public class TestLevelGeneration : Node2D
   //mapFinalScale of 2 should have a mapRoomMinDist of 5
 
   bool ranFirstTimeInit = false;
+
+  bool setCameraPositionToPlayer = true;
+
+  //Nodes that hold the interactables and enemies so they can be easily removed
+  Node InteractablesNode;
+  Node EnemiesNode;
 
 #endregion
 
@@ -1029,6 +1079,12 @@ public class TestLevelGeneration : Node2D
     }
 
     UpdateInternalMaps();
+
+    InteractablesNode = new Node();
+    EnemiesNode = new Node();
+    
+    AddChild(InteractablesNode);
+    AddChild(EnemiesNode);
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -1045,6 +1101,13 @@ public class TestLevelGeneration : Node2D
 
       debugManager.playerCamera = GetNode("PlayerCamera") as Camera2D;
       debugManager.SetPlayerMode(true);
+      debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
+    }
+
+    if(setCameraPositionToPlayer)
+    {
+      debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
+      setCameraPositionToPlayer = false;
     }
   }
 

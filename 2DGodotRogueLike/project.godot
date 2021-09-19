@@ -140,6 +140,7 @@ limits/message_queue/max_size_kb=2048
 
 [rendering]
 
+2d/options/use_nvidia_rect_flicker_workaround=true
 quality/intended_usage/framebuffer_allocation=0
 quality/intended_usage/framebuffer_allocation.mobile=0
 environment/default_environment="res://default_env.tres"

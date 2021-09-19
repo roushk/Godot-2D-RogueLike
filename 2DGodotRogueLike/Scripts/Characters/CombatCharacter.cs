@@ -40,7 +40,7 @@ public class CombatCharacter : KinematicBody2D
 
   protected Vector2 velocity;
 
-  public void CharacterDeadCallback(int damageTakenThatKilled)
+  public virtual void CharacterDeadCallback(int damageTakenThatKilled)
   {
     //TODO play actual death animation here
     this.QueueFree();

@@ -12,7 +12,7 @@ public class Forge : Interactable
   {
     base._Ready();
     toggleableInteractable = true;
-    interactionRadius *= 2.0f;
+    interactionRadius *= 1.5f;
   }
 
   public override void StartInteract()

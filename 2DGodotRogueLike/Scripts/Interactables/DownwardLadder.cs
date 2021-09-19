@@ -8,7 +8,6 @@ public class DownwardLadder : Interactable
   public override void _Ready()
   {
     base._Ready();
-    interactionRadius *= 2.0f;
   }
 
   public override void StartInteract()

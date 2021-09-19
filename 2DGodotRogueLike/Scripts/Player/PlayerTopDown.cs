@@ -96,6 +96,15 @@ public class PlayerTopDown : CombatCharacter
 		}
 	}
 
+	public override void CharacterDeadCallback(int damageTakenThatKilled)
+  {
+		//Play character death animation
+		currentlySelectedUI = CurrentlySelectedUI.EndLevelUI;
+		endOfLevelUI.resetPlayerOnContinue = true;
+    //TODO play actual death animation here
+    //this.QueueFree();
+  }
+
 	public void SetCurrentWeapon(Parts.ConstructedWeapon _weapon)
 	{
 		weapon = _weapon.stats;
@@ -432,11 +441,28 @@ public class PlayerTopDown : CombatCharacter
 		{
 			if((Mathf.Abs(velocity.x) > idleEpsilon || Mathf.Abs(velocity.y) > idleEpsilon))
 			{
-				animatedSprite.Play("Character Run");
+				//If more X than Y
+				if(Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y))
+				{
+					animatedSprite.Play("Sideways_Walking");
+				}
+				else	//More Y Than X
+				{
+					//TODO once added walking up then swap depending on the dir
+					animatedSprite.Play("Down_Walking");
+				}
 			}
 			else
 			{
-				animatedSprite.Play("Character Idle");
+				if(Mathf.Abs(velocity.x) > Mathf.Abs(velocity.y))
+				{
+					animatedSprite.Play("Sideways_Idle");
+				}
+				else	//More Y Than X
+				{
+					//TODO once added idle up then swap depending on the dir
+					animatedSprite.Play("Down_Idle");
+				}
 			}
 		}
 
