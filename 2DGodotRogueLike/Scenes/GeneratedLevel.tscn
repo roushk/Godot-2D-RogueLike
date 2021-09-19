@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/DebugTiles.tres" type="TileSet" id=3]
 [ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=4]
-[ext_resource path="res://TemplateScenes/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TemplateScenes/Player/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scripts/UI/OptionsMenuPopupFix.cs" type="Script" id=6]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=7]
 

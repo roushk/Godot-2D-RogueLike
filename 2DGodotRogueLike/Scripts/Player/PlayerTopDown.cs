@@ -168,7 +168,7 @@ public class PlayerTopDown : CombatCharacter
 		weapon.baseStabDamage = 10;
   }
 
-	void CollidingWithInvObject(InventoryObject inv)
+	void CollidingWithInvObject(InventoryPickupWorldObject inv)
 	{
 		Console.WriteLine("Overlapping Inventory Object" + inv.ToString());
 		//Add to relevent material
@@ -189,7 +189,7 @@ public class PlayerTopDown : CombatCharacter
 
 	public void _on_PlayerInteractionArea_body_entered(Node body)
   {
-		InventoryObject inv = body.GetParent() as InventoryObject;
+		InventoryPickupWorldObject inv = body.GetParent() as InventoryPickupWorldObject;
 		if(inv != null)
 		{
 			CollidingWithInvObject(inv);
@@ -234,7 +234,7 @@ public class PlayerTopDown : CombatCharacter
 
   public void _on_PlayerInteractionArea_area_entered(Area2D body)
   {
-		InventoryObject inv = body.GetParent() as InventoryObject;
+		InventoryPickupWorldObject inv = body.GetParent() as InventoryPickupWorldObject;
 		if(inv != null)
 		{
 			CollidingWithInvObject(inv);

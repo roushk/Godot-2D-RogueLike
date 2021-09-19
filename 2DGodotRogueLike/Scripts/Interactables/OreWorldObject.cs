@@ -22,7 +22,7 @@ public class OreWorldObject : Interactable
 
   CPUParticles2D cpuParticles2D;
   
-  private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/InventoryObject.tscn");
+  private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/PickupWorldObjects/InventoryPickupWorldObject.tscn");
 
   public override void _Ready()
   {
@@ -46,7 +46,7 @@ public class OreWorldObject : Interactable
     //adds the new object as a child to the parent of this object so they are not tetherd together.
     
     newInvObject.GlobalPosition = this.GlobalPosition;
-    var invObj = (newInvObject as InventoryObject);
+    var invObj = (newInvObject as InventoryPickupWorldObject);
     invObj.inventoryObjectName = material.ToString();
     invObj.material = material;
     invObj.numMaterials = amountInOre;

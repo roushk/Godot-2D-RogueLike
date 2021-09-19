@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 InputManagerSingletonNode="*res://Scenes/Singletons/InputManagerSingletonNode.tscn"
 PlayerManagerSingletonNode="*res://Scenes/Singletons/PlayerManagerSingletonNode.tscn"
 DebugManagerSingletonNode="*res://Scenes/Singletons/DebugManagerSingletonNode.tscn"
+AudioManagerSingletonNode="*res://Scenes/Singletons/AudioManagerSingletonNode.tscn"
 
 [display]
 

@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_55.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Art/SpriteSheets/OreChunkSpriteFrames.tres" type="SpriteFrames" id=2]
+[ext_resource path="res://Scripts/Inventory/InventoryPickupWorldObject.cs" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[node name="Object" type="Node2D"]
+z_index = 1
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 2 )
+animation = "Ore Chunks"
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 10
+lifetime = 1.5
+speed_scale = 2.0
+explosiveness = 1.0
+texture = ExtResource( 1 )
+direction = Vector2( 0, -1 )
+spread = 36.66
+initial_velocity = 80.0
+initial_velocity_random = 0.6
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+linear_accel = 10.0
+scale_amount = 0.37
+scale_amount_random = 0.05
+color = Color( 1, 1, 1, 0.352941 )
+
+[node name="Area2D" type="Area2D" parent="."]
+input_pickable = false
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )

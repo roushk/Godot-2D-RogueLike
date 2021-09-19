@@ -1,0 +1,134 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=1]
+[ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Fonts/Centurion_Mono.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Assets/Fonts/Centurion_Bold.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Assets/Fonts/Centurion.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scripts/Inventory/Inventory.cs" type="Script" id=8]
+
+[node name="PlayerInventoryUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 512, 288 )
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryRect" type="NinePatchRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+rect_min_size = Vector2( 496, 272 )
+mouse_filter = 1
+theme = ExtResource( 1 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 4, 4, 24, 24 )
+patch_margin_left = 13
+patch_margin_top = 13
+patch_margin_right = 13
+patch_margin_bottom = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventory" type="VBoxContainer" parent="InventoryRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 6.0
+margin_right = -6.0
+margin_bottom = -6.0
+rect_min_size = Vector2( 472, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InvName" type="RichTextLabel" parent="InventoryRect/Inventory"]
+margin_right = 484.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 80, 16 )
+mouse_filter = 1
+custom_fonts/mono_font = ExtResource( 5 )
+custom_fonts/bold_font = ExtResource( 6 )
+custom_fonts/normal_font = ExtResource( 7 )
+bbcode_enabled = true
+bbcode_text = "[center][b]Inventory"
+text = "Inventory"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryTabs" type="TabContainer" parent="InventoryRect/Inventory"]
+margin_top = 20.0
+margin_right = 484.0
+margin_bottom = 257.0
+rect_min_size = Vector2( 96, 0 )
+mouse_filter = 1
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ores" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/Ores"]
+margin_right = 464.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 464, 240 )
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weapons" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
+
+[node name="GridContainer" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/Weapons"]
+margin_right = 464.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 464, 240 )
+columns = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="More" type="ScrollContainer" parent="InventoryRect/Inventory/InventoryTabs"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 33.0
+margin_right = -4.0
+margin_bottom = -4.0
+rect_min_size = Vector2( 464, 200 )
+scroll_horizontal_enabled = false
+
+[node name="More" type="GridContainer" parent="InventoryRect/Inventory/InventoryTabs/More"]
+margin_right = 464.0
+margin_bottom = 240.0
+rect_min_size = Vector2( 464, 240 )
+columns = 13
+__meta__ = {
+"_edit_use_anchors_": false
+}
