@@ -19,8 +19,6 @@ public class TestLevelGeneration : Node2D
     debugManager.PathfindToPlayerFromSelectedCharacter();
   }
 
-
-
   public void FloodFillToDirectedGraph_Callback()
   {
     CPF.GenerateDirectedGraphFromFloodFill(out cpfRootNode, new Vector2(largestSet[0].Key, largestSet[0].Value), null, false, true);
@@ -261,14 +259,95 @@ public class TestLevelGeneration : Node2D
       PlayerTopDown newPlayer = playerObjectScene.Instance() as PlayerTopDown;
       
       GetTree().Root.AddChild(newPlayer);
-      debugManager.playerCamera = newPlayer.GetNode("Camera2D") as Camera2D;
       newPlayer.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[startRoom][0].Key, rooms[startRoom][0].Value));
-      debugManager.SetPlayerMode(true);
       playerManager.SetTopDownPlayer(ref newPlayer);
     }
     else
     {
       Console.WriteLine("Start Room not set");
+    }
+  }
+
+  public void SpawnEnemiesInLevel()
+  {
+    int slimesAdded = 0;
+    int minSlimesToSpawn = 20;
+    int randomSlimeVariation = random.Next(3,6);
+    HashSet<KeyValuePair<int,int>> tilesWithEnemies = new HashSet<KeyValuePair<int, int>>();
+
+    while(slimesAdded < minSlimesToSpawn + randomSlimeVariation)
+    {
+      int roomToChoose = random.Next() % rooms.Count;
+      
+      //Ignore starting room
+      if(roomToChoose == startRoom)
+        continue;
+      
+      int tileToChoose = random.Next() % rooms[roomToChoose].Count;
+      
+      //make sure we havent spawned a slime on this tile
+      if(!tilesWithEnemies.Contains(rooms[roomToChoose][tileToChoose]))
+      {
+        //Spawn slime
+        CombatCharacter newSlime = slimeEnemyScene.Instance() as CombatCharacter;
+        newSlime.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[roomToChoose][tileToChoose].Key, rooms[roomToChoose][tileToChoose].Value));
+        AddChild(newSlime);
+        slimesAdded++;
+        tilesWithEnemies.Add(rooms[roomToChoose][tileToChoose]);
+      }
+    }
+  }
+
+  public void SpawnForgesInLevel()
+  {
+    int forgesAdded = 0;
+    int minForgesToSpawn = 5;
+    HashSet<KeyValuePair<int,int>> tilesWithForges = new HashSet<KeyValuePair<int, int>>();
+
+    while(forgesAdded < minForgesToSpawn)
+    {
+      int roomToChoose = random.Next() % rooms.Count;
+      
+      //Ignore starting room
+      if(roomToChoose == startRoom)
+        continue;
+      
+      int tileToChoose = random.Next() % rooms[roomToChoose].Count;
+      
+      //make sure we haven't spawned a slime on this tile
+      if(!tilesWithForges.Contains(rooms[roomToChoose][tileToChoose]))
+      {
+        //Spawn slime
+        Interactable newForge = ForgeScene.Instance() as Interactable;
+        newForge.GlobalPosition = MapPointToWorldPos(new Vector2(rooms[roomToChoose][tileToChoose].Key, rooms[roomToChoose][tileToChoose].Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
+        AddChild(newForge);
+        forgesAdded++;
+        tilesWithForges.Add(rooms[roomToChoose][tileToChoose]);
+      }
+    }
+  }
+
+  public void SpawnEndOfLevelAreas()
+  {
+    //Spawn an exit in every potential end rooms for now
+    foreach(var room in potentialEndRooms)
+    {
+
+      int maxAdjacency = 7;
+      //Pick a room of one of the highest adjacency levels
+      KeyValuePair<int,int> roomToUse = default;
+      while(roomToUse.Equals(default(KeyValuePair<int,int>)))
+      {
+        roomToUse = rooms[room].Where(x => adjacencyMap[x] >= maxAdjacency--).FirstOrDefault();
+      }
+
+      //Spawn slime
+      DownwardLadder newLadder = endOfLevelLadderScene.Instance() as DownwardLadder;
+      newLadder.GlobalPosition = MapPointToWorldPos(new Vector2(roomToUse.Key, roomToUse.Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
+      AddChild(newLadder);
+      //Select a tile with the highest adjacency inside of the room
+      //Spawn End of level ladder
+
     }
   }
 
@@ -360,7 +439,7 @@ public class TestLevelGeneration : Node2D
     endRoom = longestEndRoom;
   }
 
-  public void SpawnOreChunkAt(Vector2 pos )
+  public void SpawnOreChunkAt(Vector2 pos)
   {
     OreWorldObject newObj = oreWorldObjectScene.Instance() as OreWorldObject;
 
@@ -503,6 +582,9 @@ public class TestLevelGeneration : Node2D
     FindFarthestRooms();
     SpawnOreChunksEdge_pressed();
     SpawnPlayerAtStartRoom();
+    SpawnEndOfLevelAreas();
+    SpawnEnemiesInLevel();
+    SpawnForgesInLevel();
   }
 
   public void Generate_CCL_Select_Largest_Adj()
@@ -565,7 +647,14 @@ public class TestLevelGeneration : Node2D
 
   public const int maxColors = 47;
 
-  public PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
+  //Scenes
+  private PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/IDAndColorUIElement.tscn");
+  private PackedScene oreWorldObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/OreWorldObject.tscn");
+  private PackedScene playerObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/TopDownPlayerScene.tscn");
+  private PackedScene slimeEnemyScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/EnemyCharacter.tscn");
+  private PackedScene endOfLevelLadderScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/DownwardLadderScene.tscn");
+  private PackedScene ForgeScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Forge.tscn");
+
   Node MapGenColorListNode;
 
   public ChokePointFinder.CPFNode cpfRootNode = new ChokePointFinder.CPFNode();
@@ -592,9 +681,6 @@ public class TestLevelGeneration : Node2D
 
   //0 to 1
   float oreChunkRoomSpawnChance = 0.2f;
-
-  private PackedScene oreWorldObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/OreWorldObject.tscn");
-  private PackedScene playerObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/TopDownPlayerScene.tscn");
 
   List<List<KeyValuePair<int,int>>> rooms = new List<List<KeyValuePair<int, int>>>();
 
@@ -660,6 +746,9 @@ public class TestLevelGeneration : Node2D
 
   [Export]
   public Vector2 tileMapSize;
+
+  [Export]
+  public bool GenerateNewLevelOnStartup = false;
 
   public int width { get; private set; }
   public int height { get; private set; }
@@ -948,6 +1037,9 @@ public class TestLevelGeneration : Node2D
     //Delay init until process step, need a more granular way to setup and show dependencies of internal systems
     if(ranFirstTimeInit == false)
     {
+      if(GenerateNewLevelOnStartup)
+        GenAllAndSpawnOreAndPlayer();
+      
       ranFirstTimeInit = true;
       debugManager.PostLevelGenInit();
 

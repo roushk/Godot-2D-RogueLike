@@ -1,16 +1,17 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/MapGeneration/TestLevelGeneration.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=2]
 [ext_resource path="res://Assets/Art/Debug/DebugTiles.tres" type="TileSet" id=3]
-[ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=4]
-[ext_resource path="res://Scripts/UI/OptionsMenuPopupFix.cs" type="Script" id=5]
-[ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=6]
-[ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=7]
-[ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=8]
-[ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=9]
-[ext_resource path="res://TemplateScenes/Forge.tscn" type="PackedScene" id=10]
-[ext_resource path="res://TemplateScenes/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Assets/Art/Debug/DebugTileDirections.tres" type="TileSet" id=4]
+[ext_resource path="res://TemplateScenes/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TemplateScenes/OreWorldObject.tscn" type="PackedScene" id=6]
+[ext_resource path="res://TemplateScenes/DownwardLadderScene.tscn" type="PackedScene" id=7]
+[ext_resource path="res://TemplateScenes/EnemyCharacter.tscn" type="PackedScene" id=8]
+[ext_resource path="res://TemplateScenes/Forge.tscn" type="PackedScene" id=9]
+[ext_resource path="res://TemplateScenes/TopDownPlayerScene.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scripts/UI/OptionsMenuPopupFix.cs" type="Script" id=11]
+[ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=12]
 
 [node name="TestLevelGenNode" type="Node2D"]
 pause_mode = 2
@@ -53,7 +54,7 @@ format = 1
 [node name="Directed Graph Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
-tile_set = ExtResource( 6 )
+tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
 cell_quadrant_size = 32
 format = 1
@@ -77,21 +78,22 @@ format = 1
 [node name="AStar Overlay" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
-tile_set = ExtResource( 6 )
+tile_set = ExtResource( 4 )
 cell_size = Vector2( 32, 32 )
 cell_quadrant_size = 32
 format = 1
 
-[node name="Player" parent="." instance=ExtResource( 8 )]
+[node name="Player" parent="." instance=ExtResource( 10 )]
 position = Vector2( 790.998, 685.11 )
 
-[node name="Enemy" parent="." instance=ExtResource( 7 )]
+[node name="Enemy" parent="." instance=ExtResource( 8 )]
 position = Vector2( 922.907, 690.731 )
 
-[node name="Forge" parent="." instance=ExtResource( 10 )]
+[node name="Forge" parent="." instance=ExtResource( 9 )]
 position = Vector2( 756.025, 584.827 )
 
-[node name="PlayerCamera" parent="." instance=ExtResource( 11 )]
+[node name="PlayerCamera" parent="." instance=ExtResource( 5 )]
+position = Vector2( 784.682, 678.484 )
 z_index = 10
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -99,7 +101,7 @@ process_priority = 1
 position = Vector2( 1309.99, 658.979 )
 current = true
 zoom = Vector2( 5, 5 )
-script = ExtResource( 4 )
+script = ExtResource( 12 )
 
 [node name="GUI" type="MarginContainer" parent="Camera2D"]
 margin_left = 600.0
@@ -148,7 +150,7 @@ text = "No Overlay"
 align = 1
 items = [ "No Overlay", null, false, 0, null ]
 selected = 0
-script = ExtResource( 5 )
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -217,7 +219,7 @@ text = "No Overlay"
 align = 1
 items = [ "No Overlay", null, false, 0, null ]
 selected = 0
-script = ExtResource( 5 )
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -246,7 +248,7 @@ margin_right = 337.0
 margin_bottom = 21.0
 text = "No Overlay"
 align = 1
-script = ExtResource( 5 )
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -274,7 +276,7 @@ margin_left = 136.0
 margin_right = 337.0
 margin_bottom = 21.0
 align = 1
-script = ExtResource( 5 )
+script = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -851,174 +853,177 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ore" parent="." instance=ExtResource( 9 )]
+[node name="Ore" parent="." instance=ExtResource( 6 )]
 position = Vector2( 720.119, 624.165 )
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore4" parent="." instance=ExtResource( 9 )]
+[node name="Ore4" parent="." instance=ExtResource( 6 )]
 position = Vector2( 714.616, 630.638 )
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore5" parent="." instance=ExtResource( 9 )]
+[node name="Ore5" parent="." instance=ExtResource( 6 )]
 position = Vector2( 725.617, 621.273 )
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore2" parent="." instance=ExtResource( 9 )]
+[node name="Ore2" parent="." instance=ExtResource( 6 )]
 material = 4
 position = Vector2( 682.545, 650.784 )
 material = 4
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore13" parent="." instance=ExtResource( 9 )]
+[node name="Ore13" parent="." instance=ExtResource( 6 )]
 material = 4
 position = Vector2( 680.161, 662.173 )
 material = 4
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore14" parent="." instance=ExtResource( 9 )]
+[node name="Ore14" parent="." instance=ExtResource( 6 )]
 material = 4
 position = Vector2( 694.199, 651.048 )
 material = 4
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore3" parent="." instance=ExtResource( 9 )]
+[node name="Ore3" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 659.92, 753.063 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore15" parent="." instance=ExtResource( 9 )]
+[node name="Ore15" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 647.736, 744.852 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore16" parent="." instance=ExtResource( 9 )]
+[node name="Ore16" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 648.531, 758.625 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore17" parent="." instance=ExtResource( 9 )]
+[node name="Ore17" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 657.801, 742.998 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore18" parent="." instance=ExtResource( 9 )]
+[node name="Ore18" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 658.596, 761.539 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore19" parent="." instance=ExtResource( 9 )]
+[node name="Ore19" parent="." instance=ExtResource( 6 )]
 material = 5
 position = Vector2( 646.412, 751.474 )
 material = 5
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore20" parent="." instance=ExtResource( 9 )]
+[node name="Ore20" parent="." instance=ExtResource( 6 )]
 material = 6
 position = Vector2( 915.414, 789.517 )
 material = 6
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore21" parent="." instance=ExtResource( 9 )]
+[node name="Ore21" parent="." instance=ExtResource( 6 )]
 material = 6
 position = Vector2( 914.572, 779.976 )
 material = 6
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore22" parent="." instance=ExtResource( 9 )]
+[node name="Ore22" parent="." instance=ExtResource( 6 )]
 material = 6
 position = Vector2( 900.822, 789.798 )
 material = 6
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore6" parent="." instance=ExtResource( 9 )]
+[node name="Ore6" parent="." instance=ExtResource( 6 )]
 material = 1
 position = Vector2( 712.395, 785.614 )
 material = 1
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore23" parent="." instance=ExtResource( 9 )]
+[node name="Ore23" parent="." instance=ExtResource( 6 )]
 material = 1
 position = Vector2( 725.303, 791.507 )
 material = 1
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore24" parent="." instance=ExtResource( 9 )]
+[node name="Ore24" parent="." instance=ExtResource( 6 )]
 material = 1
 position = Vector2( 715.201, 792.91 )
 material = 1
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore25" parent="." instance=ExtResource( 9 )]
+[node name="Ore25" parent="." instance=ExtResource( 6 )]
 material = 1
 position = Vector2( 710.992, 774.951 )
 material = 1
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore7" parent="." instance=ExtResource( 9 )]
+[node name="Ore7" parent="." instance=ExtResource( 6 )]
 material = 2
 position = Vector2( 777.779, 820.972 )
 material = 2
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore11" parent="." instance=ExtResource( 9 )]
+[node name="Ore11" parent="." instance=ExtResource( 6 )]
 material = 2
 position = Vector2( 790.779, 824.472 )
 material = 2
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore12" parent="." instance=ExtResource( 9 )]
+[node name="Ore12" parent="." instance=ExtResource( 6 )]
 material = 2
 position = Vector2( 774.779, 811.472 )
 material = 2
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore8" parent="." instance=ExtResource( 9 )]
+[node name="Ore8" parent="." instance=ExtResource( 6 )]
 material = 3
 position = Vector2( 871.785, 810.028 )
 material = 3
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore9" parent="." instance=ExtResource( 9 )]
+[node name="Ore9" parent="." instance=ExtResource( 6 )]
 material = 3
 position = Vector2( 882.448, 815.079 )
 material = 3
 amountInOre = 5
 timeToMine = 0.5
 
-[node name="Ore10" parent="." instance=ExtResource( 9 )]
+[node name="Ore10" parent="." instance=ExtResource( 6 )]
 material = 3
 position = Vector2( 869.54, 820.411 )
 material = 3
 amountInOre = 5
 timeToMine = 0.5
+
+[node name="DownwardLadderNode" parent="." instance=ExtResource( 7 )]
+position = Vector2( 865.836, 591.79 )
 
 [connection signal="item_selected" from="Camera2D/GUI/VBoxContainer/ProcGenTechnique/SelectedOverlay" to="." method="OverlaySelected_Callback"]
 [connection signal="pressed" from="Camera2D/GUI/VBoxContainer/VoronoiDiagram" to="." method="GenerateVoronoiDiagram"]

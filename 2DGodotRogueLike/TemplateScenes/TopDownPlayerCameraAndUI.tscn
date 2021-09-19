@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://TemplateScenes/EndLevelUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=2]
 [ext_resource path="res://Scenes/CraftingTestingArea.tscn" type="PackedScene" id=5]
 [ext_resource path="res://TemplateScenes/PlayerUI.tscn" type="PackedScene" id=6]
@@ -23,6 +24,11 @@ margin_left = -256.0
 margin_top = -144.0
 
 [node name="CraftingScreen" parent="." instance=ExtResource( 5 )]
+visible = false
+margin_left = -256.0
+margin_top = -144.0
+
+[node name="EndLevelUI" parent="." instance=ExtResource( 1 )]
 visible = false
 margin_left = -256.0
 margin_top = -144.0

@@ -137,7 +137,6 @@ public class DebugManager : Node2D
       ActiveOverlayOptions.AddItem(item.Key);
     }
 
-    currentMouseSelectionCharacter = testLevelGeneration.GetNode("Enemy") as CombatCharacter;
     UpdateCharacterInfoUI();
   }
 
@@ -176,11 +175,14 @@ public class DebugManager : Node2D
 
   public void UpdateCharacterInfoUI()
   {
-    currentMouseSelection_Character_Name.Text       = currentMouseSelectionCharacter.Name.ToString();
-    currentMouseSelection_Character_Location.Text   = currentMouseSelectionCharacter.GlobalPosition.ToString("F5");
-    currentMouseSelection_Character_MaxHP.Text      = currentMouseSelectionCharacter.maxHealth.ToString();
-    currentMouseSelection_Character_CurrentHP.Text  = currentMouseSelectionCharacter.currentHealth.ToString();
-    currentMouseSelection_Character_MoveSpeed.Text  = currentMouseSelectionCharacter.movementSpeed.ToString();
+    if(currentMouseSelectionCharacter != null)
+    {
+      currentMouseSelection_Character_Name.Text       = currentMouseSelectionCharacter.Name.ToString();
+      currentMouseSelection_Character_Location.Text   = currentMouseSelectionCharacter.GlobalPosition.ToString("F5");
+      currentMouseSelection_Character_MaxHP.Text      = currentMouseSelectionCharacter.maxHealth.ToString();
+      currentMouseSelection_Character_CurrentHP.Text  = currentMouseSelectionCharacter.currentHealth.ToString();
+      currentMouseSelection_Character_MoveSpeed.Text  = currentMouseSelectionCharacter.movementSpeed.ToString();
+    }
   }
 
   public void SetPlayerMode(bool _playerMode)

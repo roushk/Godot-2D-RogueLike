@@ -51,13 +51,14 @@ public class PlayerTopDown : CombatCharacter
   bool OnTile = false;
   // Called when the node enters the scene tree for the first time.
 
-	public AnimatedSprite animatedSprite;
 	Area2D playerArea;
 	AnimationPlayer weaponAnimPlayer;
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 	HealthBar healthBar;
 	public Inventory playerInventory;
+	EndOfLevelUI endOfLevelUI;
+
 	PlayerUI playerUI;
 	public CraftingMaterialSystem playerCraftingUI;
 
@@ -73,6 +74,8 @@ public class PlayerTopDown : CombatCharacter
 			playerUI.Visible = false;
 			playerCraftingUI.Visible = false;
 			playerInventory.Visible = false;
+			endOfLevelUI.Visible = false;
+
 			if(value == CurrentlySelectedUI.None)
 			{
 				playerUI.Visible = true;
@@ -84,6 +87,10 @@ public class PlayerTopDown : CombatCharacter
 			else if(value == CurrentlySelectedUI.InventoryScreen)
 			{
 				playerInventory.Visible = true;
+			}
+			else if(value == CurrentlySelectedUI.EndLevelUI)
+			{
+				endOfLevelUI.Visible = true;
 			}
 			_currentlySelectedUI = value;
 		}
@@ -98,7 +105,8 @@ public class PlayerTopDown : CombatCharacter
 	{
 		None,
 		CraftingScreen,
-		InventoryScreen
+		InventoryScreen,
+		EndLevelUI
 	}
 
 	public TestLevelGeneration testLevelGeneration;
@@ -134,6 +142,7 @@ public class PlayerTopDown : CombatCharacter
 		playerInventory = testLevelGeneration.GetNode<Inventory>("PlayerCamera/PlayerInventoryUI");
 		playerCraftingUI = testLevelGeneration.GetNode<CraftingMaterialSystem>("PlayerCamera/CraftingScreen");
 		playerUI = testLevelGeneration.GetNode<PlayerUI>("PlayerCamera/PlayerUI"); 
+		endOfLevelUI = testLevelGeneration.GetNode<EndOfLevelUI>("PlayerCamera/EndLevelUI"); 
 
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);

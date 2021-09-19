@@ -249,7 +249,6 @@ margin_top = -240.832
 margin_right = -77.456
 margin_bottom = -245.632
 rect_min_size = Vector2( 10, 24 )
-toggle_mode = true
 text = "Reset"
 __meta__ = {
 "_edit_use_anchors_": false

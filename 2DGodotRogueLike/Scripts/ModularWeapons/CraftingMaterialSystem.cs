@@ -673,12 +673,13 @@ public class CraftingMaterialSystem : Control
     {
       throw(new Exception("Yo shit broke loading BP sprite Icons"));
     }
-
+    
+    //Blueprints are deprecated
     //Load blueprint resources 
-    foreach (var blueprint in blueprints)
-    {
-      GenerateBlueprintButton(blueprint.Value);
-    }
+    //foreach (var blueprint in blueprints)
+    //{
+    //  GenerateBlueprintButton(blueprint.Value);
+    //}
 
     //Set initial state to MaterialSelection
     SetModePartSelection();

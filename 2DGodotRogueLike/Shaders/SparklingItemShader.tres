@@ -21,8 +21,8 @@ void fragment()
 	NORMALMAP = normalize((texture(NORMAL_TEXTURE, UV).xyz * 2.0f) - 1.0f);
 	
 	COLOR = albedo;
-	if(blinking)
-		COLOR *= advancedAbsSin(timeScale, 1.3f, 0.8f, TIME * timeScale);//vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
+	if(blinking && albedo.w > 0.1f)
+		COLOR += vec4(1,1,1,1) * advancedAbsSin(timeScale, 0.4f, 0.1f, TIME * timeScale);//vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
 
 
 }

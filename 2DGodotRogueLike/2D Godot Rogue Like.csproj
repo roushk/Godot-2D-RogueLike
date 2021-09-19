@@ -42,6 +42,8 @@
     <Compile Include="Scripts\Player\PlayerTopDown.cs" />
     <Compile Include="Scripts\Inventory\InventoryObject.cs" />
     <Compile Include="Scripts\Interactables\OreWorldObject.cs" />
+    <Compile Include="Scripts\Interactables\DownwardLadder.cs" />
+    <Compile Include="Scripts\UI\EndOfLevelUI.cs" />
     <Compile Include="Scripts\UI\HealthBar.cs" />
     <Compile Include="Scripts\UI\OptionsMenuPopupFix.cs" />
     <Compile Include="Scripts\UI\PlayerUI.cs" />

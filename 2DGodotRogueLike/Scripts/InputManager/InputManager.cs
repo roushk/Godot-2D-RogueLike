@@ -60,12 +60,13 @@ public class InputManager : Node
       {
         if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.None)
           keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Pressed;
-          
-        else if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Pressed)
-          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Held;
-
       }
-      else  //key not pressed this frame
+      else if(eventKey.Echo)
+      {
+        if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Pressed)
+          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Held;
+      }
+      else if(eventKey.Pressed == false && eventKey.Echo == false)  //key not pressed this frame
       {
         if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Pressed || keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Held)
           keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Released;
@@ -75,5 +76,10 @@ public class InputManager : Node
           keys[(Godot.KeyList)eventKey.Scancode] = KeyState.None;
       }
     }
+  }
+
+  public override void _PhysicsProcess(float delta)
+  {
+    
   }
 }
