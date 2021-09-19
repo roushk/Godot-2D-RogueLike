@@ -1,9 +1,13 @@
+![ForgeBladeTitle03_Large](https://user-images.githubusercontent.com/34784335/133919503-7d513c56-414d-4e0d-8df5-f4d6c6fc3864.png)
 
-# Godot 2D RogueLike
+# ForgeBlade the Godot 2D RogueLike
 
-(Name TBD) is a 2D side scrolling RogueLike Dungeon Crawler made in Godot where the player will delve into a randomly generated dungeon to gather materials and experience to upgrade their skills and weapons. 
+ForgeBlade is a 2D Top Down RogueLike Dungeon Crawler made in Godot where the player will delve into a randomly generated dungeon to gather materials to craft their own weapons. 
 
 The game engine is Godot using C# scripting and I am doing everything myself besides most of the assets, which are from various licensed sources. I use this as a playground for various ideas of gameplay systems that I would like to implement.
+
+Milestone 1 is the barebones of the game, level generation, enemies, crafting, mining and the bare minimum of the core systems. 
+Milestone 1 Gameplay Video: https://www.youtube.com/watch?v=3Q63uLhpGAI
 
 ## Table of Contents
 ### [Level World Generation](#world-generation)
@@ -73,7 +77,12 @@ The change in the core mechanics of the builder I decided to completely refactor
 
 The best part of the system is that the entire thing is driven by a single json file now instead of multiple. I have a single file that registers the icon and statistics of the part along with the node connection points and the type of part that can be attached to it such as a blade or a pommel or guard. This more abstract design allows for very different weapons to be created. 
 
-Currently I am fixing some UI placement issues with the Weapon Crafting System as I refactor the underlying system to be more straightforward and follow best practices and become easier to debug and iterate upon. 
+After refactoring the UI placement of the weapons it works as expected. I have also added the material selection menu, this is visible in the Milestone 1 Video above. The internals of the system work and the player can mine resources and use them to craft weapons. The weapons are then placed in their inventory and they can click on them to "equip" them and gain their stats. 
+
+Currently working on loads of player feedback for this as well as figuring out a way to composite the sprites of the weapons in the crafting menu to create a single sprite for the player's inventory icon as well as how to somehow create an in game model for the custom weapons without creating tens or even hundreds of animations for each part in each swing/stab motion and compositing those. 
+
+The next goal is to update the weapon stats to not be broken and make the materials have an effect on the weapons stats and not just be the color in the crafting menu.
+
 
 ### Weapon Crafting System Screenshots
 
@@ -115,6 +124,8 @@ The other algorithm that I am going to implement is [Wave Function Collapse](htt
 There is a paper called [Automatic Generation of Game Levels Based on Controllable Wave Function Collapse Algorithm](https://www.researchgate.net/publication/348204502_Automatic_Generation_of_Game_Levels_Based_on_Controllable_Wave_Function_Collapse_Algorithm) that delves deeper into using the WFC Simple Tiled Model for game level generation. They introduce the idea of constraints and layering to the model along with the idea of symmetry of tiles and the ways to transform the tile images to generate more effective tiles from a single art asset. What I think was most interesting is their usage of a multi staged level generation system where they would constrain and generate the ground level of a world and then on top of it add other levels such as the road, chests, keys, and enemies in different stages and used the stages beforehand as additional constraints for the later stages. 
 
 My goal is to have a multi staged WFC Simple Tiled Model level generator that builds upon the stages before and leverage this with the AutoTile system in Godot to automatically tile the entire map. 
+
+Currently working on several Top Down room generation methods. Right now I have a Voronoi Diagram generated from Octile and exact distance and plan to add Manhattan distance as well as a method to create rooms. The main goal is to have a BVH abstract generation so I can swap out the initial room and map generation systems to create different types of levels. 
 
 Other great sources for WFC:
 [Wave Function Collapse](https://github.com/mxgmn/WaveFunctionCollapse)
