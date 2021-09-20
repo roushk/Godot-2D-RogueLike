@@ -64,6 +64,8 @@ public class PlayerTopDown : CombatCharacter
 
 	private CurrentlySelectedUI _currentlySelectedUI;
 
+	bool firstTimeInit = true;
+
 	//overload get/set instead of function call
 	public CurrentlySelectedUI currentlySelectedUI 
 	{
@@ -146,21 +148,12 @@ public class PlayerTopDown : CombatCharacter
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
 		testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
 
-		healthBar = testLevelGeneration.GetNode<HealthBar>("PlayerCamera/PlayerUI/HealthBar");
+		GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
 
-		//Link UI's
-		playerInventory = testLevelGeneration.GetNode<Inventory>("PlayerCamera/PlayerInventoryUI");
-		playerCraftingUI = testLevelGeneration.GetNode<CraftingMaterialSystem>("PlayerCamera/CraftingScreen");
-		playerUI = testLevelGeneration.GetNode<PlayerUI>("PlayerCamera/PlayerUI"); 
-		endOfLevelUI = testLevelGeneration.GetNode<EndOfLevelUI>("PlayerCamera/EndLevelUI"); 
 
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);
 		attacking = false;
-
-	  GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
-		
-		currentlySelectedUI = CurrentlySelectedUI.None;
 
 		//TODO set default weapon
 		//weapon = 
@@ -256,6 +249,21 @@ public class PlayerTopDown : CombatCharacter
   //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
+		if(firstTimeInit)
+		{
+			firstTimeInit = false;
+
+			Node camera = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").playerCamera;
+
+			//Link UI's
+			healthBar = camera.GetNode<HealthBar>("PlayerUI/HealthBar");
+			playerInventory = camera.GetNode<Inventory>("PlayerInventoryUI");
+			playerCraftingUI = camera.GetNode<CraftingMaterialSystem>("CraftingScreen");
+			playerUI = camera.GetNode<PlayerUI>("PlayerUI"); 
+			endOfLevelUI = camera.GetNode<EndOfLevelUI>("EndLevelUI");
+			currentlySelectedUI = CurrentlySelectedUI.None;
+		}
+		
 		base._PhysicsProcess(delta);
 
 		movingDirection = Vector2.Zero;
@@ -285,8 +293,8 @@ public class PlayerTopDown : CombatCharacter
 		//		}
 		//	}
 		//}
-
-		healthBar.SetHealth(currentHealth);
+		if(!firstTimeInit)
+			healthBar.SetHealth(currentHealth);
 
 		Interactable closest = null;
 		float closestInteractableDistance = float.MaxValue;

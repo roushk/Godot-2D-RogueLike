@@ -33,6 +33,7 @@ public class CameraMovement : Camera2D
   {
     inputManager = GetNode<InputManager>("/root/InputManagerSingletonNode");
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+    playerManager.playerCamera = this;
     cameraGoalPos = GlobalPosition;
   }
 

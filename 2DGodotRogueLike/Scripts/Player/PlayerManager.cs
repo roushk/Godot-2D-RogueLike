@@ -8,6 +8,7 @@ using System;
 public class PlayerManager : Node
 {  
   public PlayerTopDown topDownPlayer;
+  public Camera2D playerCamera;
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -24,6 +25,12 @@ public class PlayerManager : Node
   {
     topDownPlayer = player;
   }
+
+  public void SetPlayerCamera(ref Camera2D _playerCamera)
+  {
+    playerCamera = _playerCamera;
+  }
+
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)

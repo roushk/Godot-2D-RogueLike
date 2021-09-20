@@ -3,7 +3,7 @@ using System;
 
 public class MainMenuUI : Control
 {
-  PackedScene generatedLevelScene = (PackedScene)ResourceLoader.Load("res://Scenes/GeneratedLevel.tscn");
+  PackedScene generatedLevelScene = (PackedScene)ResourceLoader.Load("res://Scenes/Levels/GeneratedLevel.tscn");
 
   public void _on_ExitGameButton_pressed()
   {
