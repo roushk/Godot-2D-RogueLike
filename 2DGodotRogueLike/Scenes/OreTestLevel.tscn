@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=1]
-[ext_resource path="res://TemplateScenes/Player/TopDownPlayerScene.tscn" type="PackedScene" id=2]
-[ext_resource path="res://TemplateScenes/Interactables/OreWorldObject.tscn" type="PackedScene" id=3]
-[ext_resource path="res://TemplateScenes/PickupWorldObjects/InventoryPickupWorldObject.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Player/TopDownPlayerScene.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Interactables/OreWorldObject.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/PickupWorldObjects/InventoryPickupWorldObject.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=5]
 
 [node name="Node2D" type="Node2D"]

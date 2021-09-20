@@ -22,7 +22,7 @@ public class OreWorldObject : Interactable
 
   CPUParticles2D cpuParticles2D;
   
-  private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/PickupWorldObjects/InventoryPickupWorldObject.tscn");
+  private PackedScene inventoryObjectScene = (PackedScene)ResourceLoader.Load("res://Scenes/PickupWorldObjects/InventoryPickupWorldObject.tscn");
 
   public override void _Ready()
   {

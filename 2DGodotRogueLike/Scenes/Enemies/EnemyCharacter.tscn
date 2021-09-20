@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Art/SpriteSheets/SlimeSpriteFrames.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://TemplateScenes/InGameUI/EnemyHealthUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/InGameUI/EnemyHealthUI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/Characters/Enemy.cs" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
