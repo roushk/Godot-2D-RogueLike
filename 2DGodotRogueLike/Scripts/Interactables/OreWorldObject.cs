@@ -4,7 +4,7 @@ using System;
 public class OreWorldObject : Interactable
 {
   [Signal]
-  public delegate void OreOverlappingSignal(bool overlapping,OreWorldObject oreNode);
+  public delegate void OreOverlappingSignal(bool overlapping, OreWorldObject oreNode);
   
   // Declare member variables here. Examples:
   // private int a = 2;

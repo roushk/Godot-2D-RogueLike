@@ -693,11 +693,11 @@ public class TestLevelGeneration : Node2D
 
   //Scenes
   private PackedScene IDColorMapScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/DebugUI/IDAndColorUIElement.tscn");
-  private PackedScene oreWorldObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Interactables/OreWorldObject.tscn");
-  private PackedScene playerObjectScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Player/TopDownPlayerScene.tscn");
-  private PackedScene slimeEnemyScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Enemies/EnemyCharacter.tscn");
-  private PackedScene endOfLevelLadderScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Interactables/DownwardLadderScene.tscn");
-  private PackedScene ForgeScene = (PackedScene)ResourceLoader.Load("res://TemplateScenes/Interactables/Forge.tscn");
+  private PackedScene oreWorldObjectScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/Interactables/OreWorldObject.tscn");
+  private PackedScene playerObjectScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/Player/TopDownPlayerScene.tscn");
+  private PackedScene slimeEnemyScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/Enemies/EnemyCharacter.tscn");
+  private PackedScene endOfLevelLadderScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/Interactables/DownwardLadderScene.tscn");
+  private PackedScene ForgeScene = ResourceLoader.Load<PackedScene>("res://TemplateScenes/Interactables/Forge.tscn");
 
   Node MapGenColorListNode;
 
