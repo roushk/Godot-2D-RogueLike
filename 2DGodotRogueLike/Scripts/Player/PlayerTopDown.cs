@@ -108,6 +108,7 @@ public class PlayerTopDown : CombatCharacter
 	public void SetCurrentWeapon(Parts.ConstructedWeapon _weapon)
 	{
 		weapon = _weapon.stats;
+		
 	}
 
 	public enum CurrentlySelectedUI

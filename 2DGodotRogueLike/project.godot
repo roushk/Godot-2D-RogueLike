@@ -15,7 +15,7 @@ _global_script_class_icons={
 [application]
 
 config/name="2D Godot Rogue Like"
-run/main_scene="res://Scenes/GeneratedLevel.tscn"
+run/main_scene="res://TemplateScenes/Menus/MainMenuUI.tscn"
 config/icon="res://icon.png"
 
 [autoload]

@@ -101,8 +101,8 @@
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 60,
-            "baseStabDamage": 80,
+            "baseSlashDamage": 40,
+            "baseStabDamage": 40,
             "baseAttackSpeed": 20,
             "baseSwingSpeed": 20,
             "baseLength": 20,
@@ -285,8 +285,8 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": -20,
-            "baseStabDamage": 20,
+            "baseSlashDamage": 60,
+            "baseStabDamage": 80,
             "baseAttackSpeed": 20,
             "baseSwingSpeed": 20,
             "baseLength": 60,

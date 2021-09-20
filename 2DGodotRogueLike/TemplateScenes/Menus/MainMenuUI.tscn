@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Art/My_Art/ForgeBladeTitle03.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/UI/MainMenuUI.cs" type="Script" id=2]
+
+[node name="MainMenuUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 512, 288 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.627451, 0.87451, 0.976471, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitGameButton" type="Button" parent="."]
+anchor_left = 0.2
+anchor_top = 0.7
+anchor_right = 0.4
+anchor_bottom = 0.8
+text = "Exit Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartGameButton" type="Button" parent="."]
+anchor_left = 0.6
+anchor_top = 0.7
+anchor_right = 0.8
+anchor_bottom = 0.8
+text = "Start Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 2.0
+anchor_bottom = 0.6
+margin_right = -512.0
+margin_bottom = 0.199997
+texture = ExtResource( 1 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="ExitGameButton" to="." method="_on_ExitGameButton_pressed"]
+[connection signal="pressed" from="StartGameButton" to="." method="_on_StartGameButton_pressed"]

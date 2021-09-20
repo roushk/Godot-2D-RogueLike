@@ -1,0 +1,3 @@
+The first four frames are idle, the next four walk.
+
+Each block is in the size 32x48.
