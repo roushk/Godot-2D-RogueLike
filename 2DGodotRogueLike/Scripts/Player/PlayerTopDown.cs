@@ -58,8 +58,8 @@ public class PlayerTopDown : CombatCharacter
 	HealthBar healthBar;
 
 	public InventoryUI playerInventoryUI;
-	EndOfLevelUI endOfLevelUI;
-	PlayerUI playerUI;
+	public EndOfLevelUI endOfLevelUI;
+	public PlayerUI playerUI;
 	public CraftingMaterialSystem playerCraftingUI;
 
 	private CurrentlySelectedUI _currentlySelectedUI;
@@ -148,7 +148,7 @@ public class PlayerTopDown : CombatCharacter
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
 
 		Node camera = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").playerCamera;
-
+		
 		//Link UI's
 		healthBar = camera.GetNode<HealthBar>("PlayerUI/HealthBar");
 		playerInventoryUI = camera.GetNode<InventoryUI>("PlayerInventoryUI");
@@ -157,13 +157,15 @@ public class PlayerTopDown : CombatCharacter
 		endOfLevelUI = camera.GetNode<EndOfLevelUI>("EndLevelUI");
 		currentlySelectedUI = CurrentlySelectedUI.None;
 
-
 		//Reset attacking sprite
 		weaponAnimPlayer.Stop(true);
 		attacking = false;
 
 		//TODO set default weapon
 		//weapon = 
+
+		playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+
 
 		weapon.baseSlashDamage = 10;
 		weapon.baseStabDamage = 10;

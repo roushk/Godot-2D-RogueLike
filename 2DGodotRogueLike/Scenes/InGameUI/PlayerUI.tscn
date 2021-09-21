@@ -47,3 +47,16 @@ stretch_margin_bottom = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ReturnToTownButton" type="Button" parent="."]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 118.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 115, 21 )
+text = "Return To Town"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="ReturnToTownButton" to="." method="_on_ReturnToTownButton_pressed"]

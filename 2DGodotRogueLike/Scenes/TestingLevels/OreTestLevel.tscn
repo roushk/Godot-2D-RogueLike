@@ -1,10 +1,110 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Assets/Art/Tilesets/TopDownTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Player/TopDownPlayerScene.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Interactables/OreWorldObject.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/PickupWorldObjects/InventoryPickupWorldObject.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Art/Tilesets/Generated/Walls01-autotile/Walls01-autotile.tres" type="TileSet" id=5]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;	//For spatial you can override vertex, frag, and light shaders
+render_mode blend_mix;
+
+const float timeScale = 2f;
+
+uniform bool blinking;
+
+float advancedAbsSin(float timeMult, float maxValue, float minValue, float time)
+{
+	return (((maxValue - minValue) * abs(sin(time))) + minValue);
+}
+
+void fragment()
+{
+	vec4 albedo = texture(TEXTURE, UV);
+
+	//RGB color space [0,1] to normalized vector color space [-1,1]
+	NORMALMAP = normalize((texture(NORMAL_TEXTURE, UV).xyz * 2.0f) - 1.0f);
+	
+	COLOR = albedo;
+	if(blinking && albedo.w > 0.1f)
+		COLOR += vec4(1,1,1,1) * advancedAbsSin(timeScale, 0.4f, 0.1f, TIME * timeScale);//vec4((materialColor * albedo * clamp(dot(normLightDir.xyz, normal.xyz), 0.0f,5.0f)).xyz,1);
+
+
+}
+
+
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=5]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=6]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=7]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=8]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=9]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=12]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=13]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=14]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
+
+[sub_resource type="ShaderMaterial" id=15]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/blinking = false
 
 [node name="Node2D" type="Node2D"]
 
@@ -28,41 +128,29 @@ tile_data = PoolIntArray( -1769468, 2, 0, -1769467, 2, 0, -1769466, 2, 0, -17694
 [node name="Iron Ore 1" parent="." instance=ExtResource( 3 )]
 position = Vector2( -89.3805, 67.8423 )
 
-[node name="Area2D" parent="Iron Ore 1" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Iron Ore 1/Area2D" index="0"]
-visible = false
+[node name="AnimatedSprite" parent="Iron Ore 1" index="0"]
+material = SubResource( 2 )
 
 [node name="Iron Ore 2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 341.461, -135.564 )
 amountInOre = 2
 
-[node name="Area2D" parent="Iron Ore 2" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Iron Ore 2/Area2D" index="0"]
-visible = false
+[node name="AnimatedSprite" parent="Iron Ore 2" index="0"]
+material = SubResource( 3 )
 
 [node name="Iron Ore 3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 473.69, -17.4769 )
 amountInOre = 2
 
-[node name="Area2D" parent="Iron Ore 3" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Iron Ore 3/Area2D" index="0"]
-visible = false
+[node name="AnimatedSprite" parent="Iron Ore 3" index="0"]
+material = SubResource( 4 )
 
 [node name="Iron Ore 4" parent="." instance=ExtResource( 3 )]
 position = Vector2( 122.258, -178.697 )
 amountInOre = 3
 
-[node name="Area2D" parent="Iron Ore 4" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Iron Ore 4/Area2D" index="0"]
-visible = false
+[node name="AnimatedSprite" parent="Iron Ore 4" index="0"]
+material = SubResource( 5 )
 
 [node name="Cobalt Ore 1" parent="." instance=ExtResource( 3 )]
 material = 6
@@ -70,13 +158,8 @@ position = Vector2( -196.331, 82.3664 )
 material = 6
 
 [node name="AnimatedSprite" parent="Cobalt Ore 1" index="0"]
+material = SubResource( 6 )
 animation = "Cobalt Ores"
-
-[node name="Area2D" parent="Cobalt Ore 1" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Cobalt Ore 1/Area2D" index="0"]
-visible = false
 
 [node name="Cobalt Ore 2" parent="." instance=ExtResource( 3 )]
 material = 6
@@ -84,14 +167,9 @@ position = Vector2( -39.5328, 326.473 )
 material = 6
 
 [node name="AnimatedSprite" parent="Cobalt Ore 2" index="0"]
+material = SubResource( 7 )
 animation = "Cobalt Ores"
 frame = 5
-
-[node name="Area2D" parent="Cobalt Ore 2" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Cobalt Ore 2/Area2D" index="0"]
-visible = false
 
 [node name="Copper Ore 1" parent="." instance=ExtResource( 3 )]
 material = 1
@@ -99,13 +177,8 @@ position = Vector2( 565.368, 122.656 )
 material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 1" index="0"]
+material = SubResource( 8 )
 animation = "Copper Ores"
-
-[node name="Area2D" parent="Copper Ore 1" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Copper Ore 1/Area2D" index="0"]
-visible = false
 
 [node name="Copper Ore 2" parent="." instance=ExtResource( 3 )]
 material = 1
@@ -113,14 +186,9 @@ position = Vector2( 509.602, 252.152 )
 material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 2" index="0"]
+material = SubResource( 9 )
 animation = "Copper Ores"
 frame = 4
-
-[node name="Area2D" parent="Copper Ore 2" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Copper Ore 2/Area2D" index="0"]
-visible = false
 
 [node name="Copper Ore 3" parent="." instance=ExtResource( 3 )]
 material = 1
@@ -128,14 +196,9 @@ position = Vector2( -115.575, 244.986 )
 material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 3" index="0"]
+material = SubResource( 10 )
 animation = "Copper Ores"
 frame = 2
-
-[node name="Area2D" parent="Copper Ore 3" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Copper Ore 3/Area2D" index="0"]
-visible = false
 
 [node name="Silver Ore 1" parent="." instance=ExtResource( 3 )]
 material = 2
@@ -143,13 +206,8 @@ position = Vector2( -242.985, 194.159 )
 material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 1" index="0"]
+material = SubResource( 11 )
 frame = 5
-
-[node name="Area2D" parent="Silver Ore 1" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Silver Ore 1/Area2D" index="0"]
-visible = false
 
 [node name="Silver Ore 2" parent="." instance=ExtResource( 3 )]
 material = 2
@@ -157,13 +215,8 @@ position = Vector2( 356.975, 254.21 )
 material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 2" index="0"]
+material = SubResource( 12 )
 frame = 6
-
-[node name="Area2D" parent="Silver Ore 2" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Silver Ore 2/Area2D" index="0"]
-visible = false
 
 [node name="Silver Ore 3" parent="." instance=ExtResource( 3 )]
 material = 2
@@ -171,13 +224,8 @@ position = Vector2( 337.684, 335.865 )
 material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 3" index="0"]
+material = SubResource( 13 )
 frame = 4
-
-[node name="Area2D" parent="Silver Ore 3" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Silver Ore 3/Area2D" index="0"]
-visible = false
 
 [node name="Silver Ore 4" parent="." instance=ExtResource( 3 )]
 material = 2
@@ -185,25 +233,15 @@ position = Vector2( -236.21, 316.336 )
 material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 4" index="0"]
+material = SubResource( 14 )
 frame = 3
-
-[node name="Area2D" parent="Silver Ore 4" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Silver Ore 4/Area2D" index="0"]
-visible = false
 
 [node name="Ore" parent="." instance=ExtResource( 3 )]
 position = Vector2( 14.2438, 221.293 )
 
 [node name="AnimatedSprite" parent="Ore" index="0"]
+material = SubResource( 15 )
 animation = "Crystal Ores"
-
-[node name="Area2D" parent="Ore" index="2"]
-visible = false
-
-[node name="CollisionShape2D" parent="Ore/Area2D" index="0"]
-visible = false
 
 [node name="Object" parent="." instance=ExtResource( 4 )]
 material = 1

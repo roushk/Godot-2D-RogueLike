@@ -36,7 +36,10 @@ public class PlayerManager : Node
   //{
   //}
 
-  public void ChangeLevelTo(PackedScene newScene)
+  string nodeToSpawnPlayerAt = "/root/TownRootNode/PlayerSpawnLocation_MaxwellsHouse";
+
+  //Changes the level to a new scene, also can set a node to search for to set the players initial pos to
+  public void ChangeLevelTo(PackedScene newScene, string _nodeToSpawnPlayerAt = "")
   {
     //SAVE PLAYER DATA HERE
     topDownPlayer.QueueFree();
@@ -45,6 +48,7 @@ public class PlayerManager : Node
     playerCamera = null;
     GetTree().ChangeSceneTo(newScene);
     createPlayerAndCamera = true;
+    nodeToSpawnPlayerAt = _nodeToSpawnPlayerAt;
   }
 
   //Sets the player ref
@@ -75,6 +79,17 @@ public class PlayerManager : Node
       GetTree().Root.AddChild(topDownPlayer);
       //Load player data as this is only when changing levels
       createPlayerAndCamera = false;
+
+      if(nodeToSpawnPlayerAt != "")
+      {
+        if(GetNode(nodeToSpawnPlayerAt) == null)
+        {
+          Console.WriteLine("Cannot find node " + nodeToSpawnPlayerAt);
+          throw new Exception ("Cannot find node " + nodeToSpawnPlayerAt);
+        }
+        topDownPlayer.GlobalPosition = (GetNode(nodeToSpawnPlayerAt) as Node2D).GlobalPosition;
+        playerCamera.GlobalPosition = (GetNode(nodeToSpawnPlayerAt) as Node2D).GlobalPosition;
+      }
     }
   }
 }

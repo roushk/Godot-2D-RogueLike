@@ -20,7 +20,7 @@ public class EndOfLevelUI : Control
   public void _on_ContinueGameButton_pressed()
   {
     //TODO change to MapManager.ContinueGame() or something
-    playerManager.ChangeLevelTo(newGameLevel);
+    playerManager.ChangeLevelTo(newGameLevel, "/root/TownRootNode/PlayerSpawnLocation_MaxwellsHouse");
     Visible = false;
 
     //Reset after used the reset

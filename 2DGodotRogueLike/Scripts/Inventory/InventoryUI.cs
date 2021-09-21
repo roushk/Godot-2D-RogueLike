@@ -143,6 +143,9 @@ public class InventoryUI : Control
 
         playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI.Add(material, hBox2);
         playerManager.topDownPlayer.playerCraftingUI.inventoryOres.AddChild(hBox2);
+
+        //update the material in case we already have some
+        playerManager.topDownPlayer.playerInventoryUI.UpdateMaterialVisual(material, playerManager.playerInventory.GetMaterialCount(material));
       }
     }
   }

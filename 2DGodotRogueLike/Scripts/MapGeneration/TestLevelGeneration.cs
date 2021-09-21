@@ -618,7 +618,6 @@ public class TestLevelGeneration : Node2D
     SpawnPlayerAtStartRoom(resetPlayerCharacter);
     SpawnEndOfLevelAreas();
     SpawnEnemiesInLevel();
-    SpawnForgesInLevel();
   }
 
   public void Generate_CCL_Select_Largest_Adj()
@@ -1083,6 +1082,7 @@ public class TestLevelGeneration : Node2D
     //Delay init until process step, need a more granular way to setup and show dependencies of internal systems
     if(ranFirstTimeInit == false)
     {
+
       if(GenerateNewLevelOnStartup)
         GenAllAndSpawnOreAndPlayer();
       
@@ -1092,6 +1092,8 @@ public class TestLevelGeneration : Node2D
       debugManager.playerCamera = playerManager.playerCamera;
       debugManager.SetPlayerMode(true);
       debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
+
+      playerManager.topDownPlayer.playerUI.returnToTownButton.Visible = true;
     }
 
     if(setCameraPositionToPlayer)

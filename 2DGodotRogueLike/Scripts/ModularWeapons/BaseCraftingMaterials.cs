@@ -47,9 +47,9 @@ namespace Materials
     Silver,     //Ore Chunks 2
     Gold,       //Ore Chunks 3
     Mithril,    //Ore Chunks 4
-    Coal,       //Ore Chunks 5
     Cobalt,     //Ore Chunks 6
-    Bronze,
+    Bronze,     //Currently do everything before bronze
+    Coal,       //Ore Chunks 5
     Tin,
     Steel,
     Platinum,

@@ -8,6 +8,7 @@
 [ext_resource path="res://Assets/Fonts/Centurion.tres" type="DynamicFont" id=7]
 
 [node name="PlayerInventoryUI" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 512, 288 )

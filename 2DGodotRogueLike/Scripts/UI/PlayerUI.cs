@@ -3,19 +3,23 @@ using System;
 
 public class PlayerUI : Control
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
+	PlayerManager playerManager;
+	private PackedScene townScene = ResourceLoader.Load<PackedScene>("res://Scenes/Levels/Town.tscn");
+
+	public Button returnToTownButton;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		
+		playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+		returnToTownButton = GetNode<Button>("ReturnToTownButton");
+		returnToTownButton.Visible = false;
 	}
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+	public void _on_ReturnToTownButton_pressed()
+	{
+		playerManager.ChangeLevelTo(townScene, "/root/TownRootNode/PlayerSpawnLocation_DungeonExit");
+	}
+
+
 }
