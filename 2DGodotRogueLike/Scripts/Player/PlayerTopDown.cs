@@ -56,13 +56,14 @@ public class PlayerTopDown : CombatCharacter
 	RayCast2D raycast2D;
 	Sprite weaponSprite;
 	HealthBar healthBar;
-	public Inventory playerInventory;
-	EndOfLevelUI endOfLevelUI;
 
+	public InventoryUI playerInventoryUI;
+	EndOfLevelUI endOfLevelUI;
 	PlayerUI playerUI;
 	public CraftingMaterialSystem playerCraftingUI;
 
 	private CurrentlySelectedUI _currentlySelectedUI;
+	protected PlayerManager playerManager;
 
 	bool firstTimeInit = true;
 
@@ -75,7 +76,7 @@ public class PlayerTopDown : CombatCharacter
 		{
 			playerUI.Visible = false;
 			playerCraftingUI.Visible = false;
-			playerInventory.Visible = false;
+			playerInventoryUI.Visible = false;
 			endOfLevelUI.Visible = false;
 
 			if(value == CurrentlySelectedUI.None)
@@ -88,7 +89,7 @@ public class PlayerTopDown : CombatCharacter
 			}
 			else if(value == CurrentlySelectedUI.InventoryScreen)
 			{
-				playerInventory.Visible = true;
+				playerInventoryUI.Visible = true;
 			}
 			else if(value == CurrentlySelectedUI.EndLevelUI)
 			{
@@ -121,8 +122,6 @@ public class PlayerTopDown : CombatCharacter
 		EndLevelUI
 	}
 
-	public TestLevelGeneration testLevelGeneration;
-
 	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
 
 	public Interactable closestInteractable = null;
@@ -146,7 +145,6 @@ public class PlayerTopDown : CombatCharacter
 		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
 		raycast2D = GetNode<RayCast2D>("RayCast2D");
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
-		testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
 
 		GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
 
@@ -168,11 +166,11 @@ public class PlayerTopDown : CombatCharacter
 		//Add to relevent material
 		if(inv.isMaterial)
 		{
-			playerInventory.AddMaterial(inv.material, inv.numMaterials);
+			playerManager.playerInventory.AddMaterial(inv.material, inv.numMaterials);
 		}
 		else
 		{
-			playerInventory.AddUniqueItem(inv.inventoryObjectName, inv.weapon);
+			playerManager.playerInventory.AddUniqueItem(inv.inventoryObjectName, inv.weapon);
 		}
 
 		//TODO setup callback if needed
@@ -257,9 +255,9 @@ public class PlayerTopDown : CombatCharacter
 
 			//Link UI's
 			healthBar = camera.GetNode<HealthBar>("PlayerUI/HealthBar");
-			playerInventory = camera.GetNode<Inventory>("PlayerInventoryUI");
+			playerInventoryUI = camera.GetNode<InventoryUI>("PlayerInventoryUI");
 			playerCraftingUI = camera.GetNode<CraftingMaterialSystem>("CraftingScreen");
-			playerUI = camera.GetNode<PlayerUI>("PlayerUI"); 
+			playerUI = camera.GetNode<PlayerUI>("PlayerUI");
 			endOfLevelUI = camera.GetNode<EndOfLevelUI>("EndLevelUI");
 			currentlySelectedUI = CurrentlySelectedUI.None;
 		}

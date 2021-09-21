@@ -1,22 +1,36 @@
-[gd_resource type="SpriteFrames" load_steps=6 format=2]
+[gd_resource type="SpriteFrames" load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_HousesAndInt_v1.1/decorative_props.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_GrassLand_v2.01/DungeonEntrance.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_GrassLand_v2.01/DungeonEntranceDoorway.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_HousesAndInt_v1.1/Door.png" type="Texture" id=4]
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
 region = Rect2( 160, 168, 32, 42 )
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 192, 168, 32, 42 )
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 32, 39 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 4 )
+region = Rect2( 32, 0, 32, 39 )
+
 [resource]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "Anvil",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "DungeonEntrance",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 3 ) ],
@@ -24,8 +38,8 @@ animations = [ {
 "name": "DungeonEntranceDoorway",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 2 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
 "loop": true,
-"name": "DungeonEntrance",
+"name": "Door",
 "speed": 5.0
 } ]

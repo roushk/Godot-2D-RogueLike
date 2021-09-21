@@ -17,6 +17,7 @@ public class EndOfLevelUI : Control
   //Spawn new level
   public void _on_ContinueGameButton_pressed()
   {
+    //TODO change to MapManager.ContinueGame() or something
     testLevelGeneration.GenAllAndSpawnOreAndPlayer(resetPlayerOnContinue);
 
     //Reset after used the reset
@@ -26,6 +27,8 @@ public class EndOfLevelUI : Control
   public override void _Ready()
   {
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
+
+    //TODO map manager 
     testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
   }
 

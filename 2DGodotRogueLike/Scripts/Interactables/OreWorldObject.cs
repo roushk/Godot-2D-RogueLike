@@ -35,7 +35,7 @@ public class OreWorldObject : Interactable
     //TODO unique sprites for each material type
     animatedSprite.Modulate = Materials.MaterialTints.tints[material];
     
-    animatedSprite.Frame = testLevelGeneration.random.Next(0,10);
+    animatedSprite.Frame = random.Next(0,10);
   }
 
   public void CreateInventoryObject()

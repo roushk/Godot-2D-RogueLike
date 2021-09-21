@@ -6,11 +6,10 @@ public class Interactable : Node2D
 
   [Export]
   public float interactionRadius = 20.0f;
-  protected bool inRange = false;
 
-  //TODO move out this to a MapManager singleton
-  public TestLevelGeneration testLevelGeneration;
   protected PlayerManager playerManager;
+  protected Random random = new Random();
+  protected bool inRange = false;
 
   public AnimatedSprite animatedSprite;
   public ShaderMaterial shaderMaterial;
@@ -21,11 +20,12 @@ public class Interactable : Node2D
   
   bool ModulateColorDebug = false;
 
+
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
     playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
-    testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
     animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
     shaderMaterial = animatedSprite.Material as ShaderMaterial;
   }

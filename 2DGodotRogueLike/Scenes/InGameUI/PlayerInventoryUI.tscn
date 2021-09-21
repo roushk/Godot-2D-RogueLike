@@ -1,17 +1,17 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Fonts/InventoryTheme.theme" type="Theme" id=1]
+[ext_resource path="res://Scripts/Inventory/InventoryUI.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Art/My_Art/UI/PaperUI_9Slice.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Fonts/Centurion_Mono.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Assets/Fonts/Centurion_Bold.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Assets/Fonts/Centurion.tres" type="DynamicFont" id=7]
-[ext_resource path="res://Scripts/Inventory/Inventory.cs" type="Script" id=8]
 
 [node name="PlayerInventoryUI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 512, 288 )
-script = ExtResource( 8 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

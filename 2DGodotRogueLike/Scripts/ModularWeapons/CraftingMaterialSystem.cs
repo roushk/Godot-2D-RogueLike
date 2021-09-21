@@ -786,14 +786,14 @@ public class CraftingMaterialSystem : Control
     string weaponName = "New Created Weapon";
     //For now just set a basic sprite as the image
     Parts.ConstructedWeapon newWeapon = new Parts.ConstructedWeapon(weaponName, summationStats, ResourceLoader.Load<Texture>("res://Assets/Art/My_Art/BlueprintIcons/Medium_Sword.png"), summationStats.GenerateStatText(null, 0, false));
-    playerManager.topDownPlayer.playerInventory.AddUniqueItem(weaponName, newWeapon);
+    playerManager.playerInventory.AddUniqueItem(weaponName, newWeapon);
 
     Dictionary<Materials.Material, int> weaponCost =  GetCostOfWeaponNode(weaponRootNode);
 
     //When crafting then weapon charge the player
     foreach (var cost in weaponCost)
     {
-      playerManager.topDownPlayer.playerInventory.RemoveMaterial(cost.Key, cost.Value);
+      playerManager.playerInventory.RemoveMaterial(cost.Key, cost.Value);
     }
 
     //Reset the weaponRootNode

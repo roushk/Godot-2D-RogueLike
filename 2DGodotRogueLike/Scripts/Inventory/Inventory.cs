@@ -1,24 +1,14 @@
 using Godot;
 using System;
-using Godot.Collections;
+using System.Collections.Generic;
 
-public class Inventory : Control
+public class Inventory
 {
   //How to deal with stack sizes?
   Dictionary<Materials.Material, int> stackableItems = new Dictionary<Materials.Material, int>();
   System.Collections.Generic.List<Tuple<string, Parts.ConstructedWeapon>> uniqueItems = new System.Collections.Generic.List<Tuple<string, Parts.ConstructedWeapon>>();
-  
-  Dictionary<Materials.Material, HBoxContainer> stackableItemsUI = new Dictionary<Materials.Material, HBoxContainer>();
-
-  PackedScene CallbackTextureButtonWithTextScene = (PackedScene)ResourceLoader.Load("res://Scenes/BlueprintSystem/CallbackTextureButtonWithTextScene.tscn");
-
-  //Load sprite frames to populate inventory with
-  SpriteFrames materialSpriteFrames = ResourceLoader.Load<SpriteFrames>("res://Assets/Art/SpriteSheets/OreChunkSpriteFrames.tres");
 
   protected PlayerManager playerManager;
-  
-  GridContainer stackablesGridContainer;
-  GridContainer uniqueGridContainer;
 
   bool ranFirstTimeInit = false;
 
@@ -27,25 +17,16 @@ public class Inventory : Control
     int currVal = 0;
     if(stackableItems.TryGetValue(material, out currVal))
     {
-      stackableItemsUI[material].Visible = true;
       stackableItems[material] = currVal + count;
-      stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
-
-      playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].Visible = true;
-      playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
     }
     else  //if material doesn't exist then make a new one and add it
-    {
-      stackableItemsUI[material].Visible = true;
-      //Make UI visible
+    { 
       stackableItems.Add(material, count);
-      stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
-
-      playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].Visible = true;
-      playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
-      
     }
     Console.WriteLine("Added " + count.ToString() + " of Material " + material.ToString() + " to Inventory");
+
+    //Simply update the UI
+    playerManager.topDownPlayer.playerInventoryUI.UpdateMaterialVisual(material, stackableItems[material]);
   }
 
   public void AddUniqueItem(string inventoryObjectName,	Parts.ConstructedWeapon weapon)
@@ -54,26 +35,8 @@ public class Inventory : Control
     uniqueItems.Add(new Tuple<string,	Parts.ConstructedWeapon>(inventoryObjectName, weapon));
     Console.WriteLine("Added Unique Item " + inventoryObjectName + " to Inventory");
 
-    HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance<HBoxContainer>();
-
-    CallbackTextureButton texButton = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
-    RichTextLabel text = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData");
-    
-    texButton.TextureNormal = weapon.texture;
-    texButton.Modulate = Colors.White;
-    texButton.SelfModulate = Colors.White;
-    texButton.changeColors = true;
-    texButton.Disabled = false;
-
-    //Set material selection callback
-    texButton.onButtonPressedCallback = () => {playerManager.topDownPlayer.SetCurrentWeapon(weapon);};
-
-    text.BbcodeText = inventoryObjectName + "\n" + weapon.detailText;
-    text.BbcodeEnabled = true;
-    text.RectMinSize = new Vector2(text.RectMinSize.x,CraftingMaterialSystem.GetMinYSizeFromRichTextLabel(text));
-    text.RectSize = text.RectMinSize;
-
-    uniqueGridContainer.AddChild(hBox);
+    //Simply update the UI
+    playerManager.topDownPlayer.playerInventoryUI.AddUniqueItemVisual(inventoryObjectName, weapon);
   }
 
 
@@ -115,99 +78,27 @@ public class Inventory : Control
     if(stackableItems.TryGetValue(material, out currVal))
     {
       stackableItems[material] -= count;
-
-      if(stackableItems[material] == 0)
-      {
-        //TODO convert this to a function call
-        stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: 0";
-        stackableItemsUI[material].Visible = false;
-        playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].Visible = true;
-        playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: 0";
-
-        //Make UI not visible
-      }
-      stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
-      playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI[material].GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData").BbcodeText = material.ToString() + "\n" + "Amount: " + stackableItems[material].ToString();
     }
+    //Simply update the UI
+    playerManager.topDownPlayer.playerInventoryUI.UpdateMaterialVisual(material, stackableItems[material]);
   }
 
-  public HBoxContainer CreateStackableItemInventoryUI(Materials.Material material, BasicCallback callback = null, bool changeColors = false)
+
+  //Ctor to construct base inv
+  public Inventory(PlayerManager _playerManager)
   {
-    HBoxContainer hBox = CallbackTextureButtonWithTextScene.Instance<HBoxContainer>();
-
-    CallbackTextureButton texButton = hBox.GetNode<CallbackTextureButton>("VBoxContainer/HSplitContainer/PartIcon");
-    RichTextLabel text = hBox.GetNode<RichTextLabel>("VBoxContainer/HSplitContainer/PartData");
-
-    texButton.TextureNormal = materialSpriteFrames.GetFrame("Ore Chunks", (int)material);
-    texButton.Modulate = Colors.White;
-    texButton.SelfModulate = Colors.White;
-    texButton.changeColors = changeColors;
-    texButton.Disabled = false;
-    //Set material selection callback
-    texButton.onButtonPressedCallback = callback;
-
-    text.BbcodeText = material.ToString() + "\n" + "Amount: 0";
-    text.BbcodeEnabled = true;
-    text.RectMinSize = new Vector2(text.RectMinSize.x,CraftingMaterialSystem.GetMinYSizeFromRichTextLabel(text));
-    text.RectSize = text.RectMinSize;
-    hBox.Visible = false;
-
-    return hBox;
-  }
-
-  public override void _Ready()
-  {
-    //Set up containers
-    stackablesGridContainer = GetNode<GridContainer>("InventoryRect/Inventory/InventoryTabs/Ores/GridContainer");
-    uniqueGridContainer = GetNode<GridContainer>("InventoryRect/Inventory/InventoryTabs/Weapons/GridContainer");
-    playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
-  }
-
-  public override void _Process(float delta)
-  {
-    if(ranFirstTimeInit == false)
+    playerManager = _playerManager;
+    //iterate every material
+    foreach(Materials.Material material in Enum.GetValues(typeof(Materials.Material)))
     {
-      ranFirstTimeInit = true;
-
-      //iterate every material
-      foreach(Materials.Material material in Enum.GetValues(typeof(Materials.Material)))
+      //For now just break when at bronze, only generate Iron -> Cobalt
+      if(material == Materials.Material.Bronze)
       {
-        //For now just break when at bronze, only generate Iron -> Cobalt
-        if(material == Materials.Material.Bronze)
-        {
-          break;
-        }
-        
-        //Init to zero
-        stackableItems.Add(material, 0);
-
-        HBoxContainer hBox = CreateStackableItemInventoryUI(material);
-        stackableItemsUI.Add(material, hBox);
-        stackablesGridContainer.AddChild(hBox);
-
-        //Change colors and set selected material for the inventory items in the crafting menu
-        HBoxContainer hBox2 = CreateStackableItemInventoryUI(material, () => 
-        {
-          //Update the cost of the weapon
-          playerManager.topDownPlayer.playerCraftingUI.selectedInventoryMaterial = material;
-          if(playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode != null)
-            playerManager.topDownPlayer.playerCraftingUI.selectedWeaponBPNode.part.currentMaterial = material;
-
-          //Set selected material of part
-          if(playerManager.topDownPlayer.playerCraftingUI.selectedPart != null)
-            playerManager.topDownPlayer.playerCraftingUI.selectedPart.defaultColor = Materials.MaterialTints.tints[material];
-
-          //Set currently selected part to null
-          playerManager.topDownPlayer.playerCraftingUI.UpdateCurrentlySelectedPart(null);
-
-          //updates interally if we are done selecting materials
-          playerManager.topDownPlayer.playerCraftingUI.GetWeaponMaterialCost(this);
-
-        }, true);
-
-        playerManager.topDownPlayer.playerCraftingUI.stackableItemsUI.Add(material, hBox2);
-        playerManager.topDownPlayer.playerCraftingUI.inventoryOres.AddChild(hBox2);
+        break;
       }
+      
+      //Init to zero
+      stackableItems.Add(material, 0);
     }
   }
 }
