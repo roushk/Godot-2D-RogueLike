@@ -3,4 +3,5 @@
 [ext_resource path="res://Scripts/Debug/DebugManager.cs" type="Script" id=1]
 
 [node name="DebugManagerSingleton" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 1 )

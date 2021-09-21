@@ -4,6 +4,7 @@
 [ext_resource path="res://Scripts/UI/MainMenuUI.cs" type="Script" id=2]
 
 [node name="MainMenuUI" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 512, 288 )

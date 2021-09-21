@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Art/RPGWorld/Tilesets/TownTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Art/RPGWorld/Tilesets/BuildingsParts.tres" type="TileSet" id=2]
@@ -6,14 +6,13 @@
 [ext_resource path="res://Assets/Art/RPGWorld/Tilesets/PropsTileSet.tres" type="TileSet" id=4]
 [ext_resource path="res://Scenes/Interactables/Forge.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Art/RPGWorld/Tilesets/GroundTileset.tres" type="TileSet" id=6]
-[ext_resource path="res://Scenes/Player/TopDownPlayerCameraAndUI.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Scenes/Player/TopDownPlayerScene.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Art/RPGWorld/Tilesets/CaveOutsideTileset.tres" type="TileSet" id=9]
 [ext_resource path="res://Scenes/Interactables/DungeonEntrance.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Player/PlayerSceneSpawnPoint.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Scenes/Interactables/HouseDoor.tscn" type="PackedScene" id=12]
 
 [node name="TownRootNode" type="Node2D"]
+pause_mode = 2
 
 [node name="Terrain" type="TileMap" parent="."]
 z_index = -10
@@ -70,13 +69,6 @@ position = Vector2( 992, -528 )
 [node name="Forge" parent="." instance=ExtResource( 5 )]
 position = Vector2( 851.777, 669.039 )
 
-[node name="PlayerCamera" parent="." instance=ExtResource( 7 )]
-position = Vector2( 900.528, 725.233 )
-z_index = 100
-
-[node name="Player" parent="." instance=ExtResource( 8 )]
-position = Vector2( 851.862, 730.586 )
-
 [node name="PlayerSpawnLocation_MaxwellsHouse" parent="." instance=ExtResource( 11 )]
 position = Vector2( 785.745, 661.789 )
 
@@ -97,3 +89,4 @@ position = Vector2( 160.009, -478.716 )
 
 [node name="HouseDoor" parent="." instance=ExtResource( 12 )]
 position = Vector2( 786, 635 )
+interactionRadius = 30.0

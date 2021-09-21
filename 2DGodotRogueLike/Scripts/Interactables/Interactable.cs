@@ -55,7 +55,7 @@ public class Interactable : Node2D
 
     if(ModulateColorDebug)
       Modulate = new Color(0.5f,1,0.5f,1);
-    }
+  }
 
   public void ExitedInteractionRadius()
   {

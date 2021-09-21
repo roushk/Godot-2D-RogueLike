@@ -105,6 +105,7 @@ public class PlayerTopDown : CombatCharacter
 		currentlySelectedUI = CurrentlySelectedUI.EndLevelUI;
 		endOfLevelUI.resetPlayerOnContinue = true;
     //TODO play actual death animation here
+		//MapManager.RemoveEntities;
     //this.QueueFree();
   }
 
@@ -146,7 +147,15 @@ public class PlayerTopDown : CombatCharacter
 		raycast2D = GetNode<RayCast2D>("RayCast2D");
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
 
-		GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").topDownPlayer = this;
+		Node camera = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").playerCamera;
+
+		//Link UI's
+		healthBar = camera.GetNode<HealthBar>("PlayerUI/HealthBar");
+		playerInventoryUI = camera.GetNode<InventoryUI>("PlayerInventoryUI");
+		playerCraftingUI = camera.GetNode<CraftingMaterialSystem>("CraftingScreen");
+		playerUI = camera.GetNode<PlayerUI>("PlayerUI");
+		endOfLevelUI = camera.GetNode<EndOfLevelUI>("EndLevelUI");
+		currentlySelectedUI = CurrentlySelectedUI.None;
 
 
 		//Reset attacking sprite
@@ -188,20 +197,11 @@ public class PlayerTopDown : CombatCharacter
 			return;
 		}
 
-		//Interactable interactable = body.GetParent() as Interactable;
-		//if(interactable != null)
-		//{
-		//	interactablesInRange.Add(interactable);
-		//}
 	}
 
 	public void _on_PlayerInteractionArea_body_exited(Node body)
 	{
-		//Interactable interactable = body.GetParent() as Interactable;
-		//if(interactable != null)
-		//{
-		//	interactablesInRange.Add(interactable);
-		//}
+
 	}
 
 	//When the punch area overlaps
@@ -251,15 +251,7 @@ public class PlayerTopDown : CombatCharacter
 		{
 			firstTimeInit = false;
 
-			Node camera = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").playerCamera;
 
-			//Link UI's
-			healthBar = camera.GetNode<HealthBar>("PlayerUI/HealthBar");
-			playerInventoryUI = camera.GetNode<InventoryUI>("PlayerInventoryUI");
-			playerCraftingUI = camera.GetNode<CraftingMaterialSystem>("CraftingScreen");
-			playerUI = camera.GetNode<PlayerUI>("PlayerUI");
-			endOfLevelUI = camera.GetNode<EndOfLevelUI>("EndLevelUI");
-			currentlySelectedUI = CurrentlySelectedUI.None;
 		}
 		
 		base._PhysicsProcess(delta);
@@ -296,6 +288,8 @@ public class PlayerTopDown : CombatCharacter
 
 		Interactable closest = null;
 		float closestInteractableDistance = float.MaxValue;
+
+		interactablesInRange.RemoveWhere(node => !IsInstanceValid(node));
 
 		foreach(var inter in interactablesInRange)
 		{

@@ -7,6 +7,10 @@ using System;
 //playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
 public class PlayerManager : Node
 {  
+
+  private PackedScene playerObjectScene = ResourceLoader.Load<PackedScene>("res://Scenes/Player/TopDownPlayerScene.tscn");
+  private PackedScene playerCameraAndUI = ResourceLoader.Load<PackedScene>("res://Scenes/Player/TopDownPlayerCameraAndUI.tscn");
+
   public PlayerTopDown topDownPlayer;
 
   //TODO move player inventory here
@@ -16,7 +20,8 @@ public class PlayerManager : Node
   
   public Camera2D playerCamera;
 
-  bool changedSceneThisFrame = false;
+  bool createPlayerAndCamera = true;
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -35,9 +40,11 @@ public class PlayerManager : Node
   {
     //SAVE PLAYER DATA HERE
     topDownPlayer.QueueFree();
+    playerCamera.QueueFree();
     topDownPlayer = null;
+    playerCamera = null;
     GetTree().ChangeSceneTo(newScene);
-    changedSceneThisFrame = true;
+    createPlayerAndCamera = true;
   }
 
   //Sets the player ref
@@ -51,13 +58,23 @@ public class PlayerManager : Node
     playerCamera = _playerCamera;
   }
 
+  //PlayerSpawnLocation_MaxwellsHouse
+
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
   {
-    if(changedSceneThisFrame)
+    if(createPlayerAndCamera)
     {
+      //Add player camera to the scene
+      playerCamera = playerCameraAndUI.Instance<Camera2D>();
+      GetTree().Root.AddChild(playerCamera);
+
+      //Add player to the scene
+      topDownPlayer = playerObjectScene.Instance<PlayerTopDown>();
+      GetTree().Root.AddChild(topDownPlayer);
       //Load player data as this is only when changing levels
+      createPlayerAndCamera = false;
     }
   }
 }

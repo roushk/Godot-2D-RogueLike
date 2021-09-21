@@ -251,11 +251,6 @@ public class TestLevelGeneration : Node2D
 
   public void SpawnPlayerAtStartRoom(bool resetPlayerCharacter = false)
   {
-    //clear old player
-    if(playerManager.topDownPlayer != null)
-    {
-      playerManager.topDownPlayer.QueueFree();
-    }
     if(startRoom != -1)
     {
       //If player doesn't exist or is set to reset then spawn a new player
@@ -263,7 +258,7 @@ public class TestLevelGeneration : Node2D
       {
         if(playerManager.topDownPlayer != null)
         {
-          QueueFreeNodeChildren(playerManager.topDownPlayer, true);
+          playerManager.topDownPlayer.QueueFree();
           playerManager.topDownPlayer = null;
         }
 
@@ -394,24 +389,19 @@ public class TestLevelGeneration : Node2D
 #endregion
 
 
-  //Simple recursive func to queue free node's children and all its children and bool to free this node
-  public void QueueFreeNodeChildren(Node node, bool freeThisNode = false)
-  {
-    foreach (Node child in node.GetChildren())
-    {
-      QueueFreeNodeChildren(child);
-      child.QueueFree();
-    }
-
-    if(freeThisNode)
-      node.QueueFree();
-  }
 
   public void RemoveLevelEntities()
   {
     //Free all nodes children but not the nodes themselves 
-    QueueFreeNodeChildren(InteractablesNode);
-    QueueFreeNodeChildren(EnemiesNode);
+    foreach (Node child in InteractablesNode.GetChildren())
+    {
+      child.QueueFree();
+    }
+
+    foreach (Node child in EnemiesNode.GetChildren())
+    {
+      child.QueueFree();
+    }
   }
 
   //Calculates the distances from each room to each other room
@@ -1099,7 +1089,7 @@ public class TestLevelGeneration : Node2D
       ranFirstTimeInit = true;
       debugManager.PostLevelGenInit();
 
-      debugManager.playerCamera = GetNode("PlayerCamera") as Camera2D;
+      debugManager.playerCamera = playerManager.playerCamera;
       debugManager.SetPlayerMode(true);
       debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
     }
