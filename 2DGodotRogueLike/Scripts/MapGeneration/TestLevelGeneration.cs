@@ -579,9 +579,10 @@ public class TestLevelGeneration : Node2D
     GenerateMap(maxIterations, true);
     if(mapFinalScale > 1)
     {
-      UpscaleMap(mapFinalScale);  //3 so the player can go through stuff
+      UpscaleMap(mapFinalScale, mapFinalScale);  //3 so the player can go through stuff
       GenerateMap(1, false);
     }
+    //UpscaleMap(1, 2);  
     
     UpdateInternalMaps();
     UpdateForegroundMapData();
@@ -769,10 +770,10 @@ public class TestLevelGeneration : Node2D
 
   //for tileset
   [Export]
-  public int TopTile;
+  public int WallTile;
 
   [Export]
-  public int BottomTile;
+  public int GroundTile;
 
   [Export]
   public int TestTile;
@@ -803,8 +804,8 @@ public class TestLevelGeneration : Node2D
 
 
   //Final scale of the map, upscales initial caves by this amt
-  int mapFinalScale = 1;
-  int mapRoomMinDist = 2; 
+  int mapFinalScale = 2;
+  int mapRoomMinDist = 5; 
   //mapFinalScale of 1 should have a mapRoomMinDist of 2
   //mapFinalScale of 2 should have a mapRoomMinDist of 5
 
@@ -1116,29 +1117,29 @@ public class TestLevelGeneration : Node2D
 #region Game of Life
 
   //for each tile places scaleMultiplier tiles for each current tile
-  private void UpscaleMap(int scaleMultiplier)
+  private void UpscaleMap(int xScaleMult, int yScaleMult)
   {
-    int [,] newTerrainMap = new int[width*scaleMultiplier, height*scaleMultiplier];
+    int [,] newTerrainMap = new int[width*xScaleMult, height*yScaleMult];
     
     for (int i = 0; i < width; i++)
     {
       for (int j = 0; j < height; j++)
       {
         //X increase
-        for (int k = 0; k < scaleMultiplier; k++)
+        for (int k = 0; k < xScaleMult; k++)
         {
           //Y increase
-          for (int l = 0; l < scaleMultiplier; l++)
+          for (int l = 0; l < yScaleMult; l++)
           {
-            newTerrainMap[i*scaleMultiplier+k, j*scaleMultiplier+l] = terrainMap[i,j];
+            newTerrainMap[i*xScaleMult+k, j*yScaleMult+l] = terrainMap[i,j];
           }
         }
       }
     }
 
     //Update current stuff
-    width = width*scaleMultiplier;
-    height = height*scaleMultiplier;
+    width = width*xScaleMult;
+    height = height*yScaleMult;
     terrainMap = newTerrainMap; 
   }
 
@@ -1244,11 +1245,11 @@ public class TestLevelGeneration : Node2D
         {
           //range of -x to x amd -y to y to center the tile map;
           //set to the top tile
-          ForegroundMap.SetCell(x , y , TopTile);
+          ForegroundMap.SetCell(x , y , WallTile);
         }
         else  //Bottom Tile = 0 = Grass Wall
         {
-          ForegroundMap.SetCell(x , y , BottomTile);
+          ForegroundMap.SetCell(x , y , GroundTile);
 
         }
 
