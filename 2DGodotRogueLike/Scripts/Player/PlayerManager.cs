@@ -21,12 +21,11 @@ public class PlayerManager : Node
   public Camera2D playerCamera;
 
   bool createPlayerAndCamera = true;
+  bool selectedLevelToChangeTo = false;
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    Console.WriteLine("Initialized PlayerManager");
-
     playerInventory = new Inventory(this);
     playerTownInventory = new Inventory(this);
   }
@@ -42,13 +41,17 @@ public class PlayerManager : Node
   public void ChangeLevelTo(PackedScene newScene, string _nodeToSpawnPlayerAt = "")
   {
     //SAVE PLAYER DATA HERE
-    topDownPlayer.QueueFree();
-    playerCamera.QueueFree();
+    if(topDownPlayer != null)
+      topDownPlayer.QueueFree();
+    if(playerCamera != null)
+      playerCamera.QueueFree();
+  
     topDownPlayer = null;
     playerCamera = null;
     GetTree().ChangeSceneTo(newScene);
     createPlayerAndCamera = true;
     nodeToSpawnPlayerAt = _nodeToSpawnPlayerAt;
+    selectedLevelToChangeTo = true;
   }
 
   //Sets the player ref
@@ -68,8 +71,10 @@ public class PlayerManager : Node
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(float delta)
   {
-    if(createPlayerAndCamera)
+    if(createPlayerAndCamera && selectedLevelToChangeTo)
     {
+      selectedLevelToChangeTo = false;
+
       //Add player camera to the scene
       playerCamera = playerCameraAndUI.Instance<Camera2D>();
       GetTree().Root.AddChild(playerCamera);
