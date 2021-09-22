@@ -1,6 +1,7 @@
-[gd_resource type="TileSet" load_steps=2 format=2]
+[gd_resource type="TileSet" load_steps=3 format=2]
 
 [ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_GrassLand_v2.01/MainLev2.0.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Art/RPGWorld/Source/RPGW_DeepCave_v1.0/Caves.png" type="Texture" id=2]
 
 [resource]
 1/name = "StoneWithGrassEdge"
@@ -49,3 +50,17 @@
 2/shape_one_way_margin = 0.0
 2/shapes = [  ]
 2/z_index = 0
+3/name = "Caves.png 3"
+3/texture = ExtResource( 2 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 64, 768, 32, 32 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0

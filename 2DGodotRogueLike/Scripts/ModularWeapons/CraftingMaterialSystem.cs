@@ -174,6 +174,13 @@ public class CraftingMaterialSystem : Control
     //Construct dict of stuff
     Godot.Collections.Array ParsedData = Godot.JSON.Parse(jsonText).Result as Godot.Collections.Array;
 
+
+    //slashDamage": -40,
+    //"stabDamage": 20,
+    //"attackWindUp": 10,
+    //"attackWindDown": 10,
+    //"length": 0,
+    
     //Parse data based on Resource
     foreach (Godot.Collections.Dictionary data in ParsedData)
     {
@@ -197,11 +204,11 @@ public class CraftingMaterialSystem : Control
       partBP.baseAttachPoint = new Vector2((int)(float)basicAttachPt["x"],(int)(float)basicAttachPt["y"]);
 
       Godot.Collections.Dictionary partAttributes = data["partAttributes"] as Godot.Collections.Dictionary;
-      partBP.stats.baseSlashDamage =  (int)(float)partAttributes["baseSlashDamage"];
-      partBP.stats.baseStabDamage =   (int)(float)partAttributes["baseStabDamage"];
-      partBP.stats.baseAttackSpeed =  (int)(float)partAttributes["baseAttackSpeed"];
-      partBP.stats.baseSwingSpeed =   (int)(float)partAttributes["baseSwingSpeed"];
-      partBP.stats.baseLength =       (int)(float)partAttributes["baseLength"];
+      partBP.stats.slashDamage =      (int)(float)partAttributes["slashDamage"];
+      partBP.stats.stabDamage =       (int)(float)partAttributes["stabDamage"];
+      partBP.stats.attackWindUp =     (int)(float)partAttributes["attackWindUp"];
+      partBP.stats.attackWindDown =   (int)(float)partAttributes["attackWindDown"];
+      partBP.stats.length =           (int)(float)partAttributes["length"];
       partBP.stats.specialStat =      partAttributes["specialStat"] as string;
 
       foreach (Godot.Collections.Dictionary partAttachPoints in data["partAttachPoints"] as Godot.Collections.Array)
@@ -660,7 +667,7 @@ public class CraftingMaterialSystem : Control
     Color ironBaseColor = new Color("e8e8e8");
     //Materials.MaterialTints.tints = data from file
     //Pieces = data from file
-    //genuinely using hex str to int lmaoo
+    //genuinely using hex str to int
 
     //For each BP in BP folder, load them
     Directory blueprintDir = new Directory();
@@ -671,7 +678,7 @@ public class CraftingMaterialSystem : Control
     //Load sprites for bp's
     if(spriteDir.Open(FullSpriteDir) != Error.Ok)
     {
-      throw(new Exception("Yo shit broke loading BP sprite Icons"));
+      throw(new Exception("Broke loading BP sprite Icons"));
     }
     
     //Blueprints are deprecated

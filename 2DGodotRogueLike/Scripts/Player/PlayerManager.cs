@@ -28,6 +28,17 @@ public class PlayerManager : Node
   {
     playerInventory = new Inventory(this);
     playerTownInventory = new Inventory(this);
+
+    //check for player camera and player
+    if(GetTree().CurrentScene.FindNode("Player") != null)
+    {
+      topDownPlayer = GetTree().CurrentScene.FindNode("Player") as PlayerTopDown;
+    }
+
+    if(GetTree().CurrentScene.FindNode("PlayerCamera") != null)
+    {
+      playerCamera = GetTree().CurrentScene.FindNode("PlayerCamera") as Camera2D;
+    }
   }
 
   //Do this later, for now can just teleport player object
@@ -40,7 +51,6 @@ public class PlayerManager : Node
   //Changes the level to a new scene, also can set a node to search for to set the players initial pos to
   public void ChangeLevelTo(PackedScene newScene, string _nodeToSpawnPlayerAt = "")
   {
-    //SAVE PLAYER DATA HERE
     if(topDownPlayer != null)
       topDownPlayer.QueueFree();
     if(playerCamera != null)

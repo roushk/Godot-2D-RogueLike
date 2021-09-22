@@ -1,17 +1,17 @@
 [
     {
-        "partName": "Big Blade",
+        "partName": "Large Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Large.png",
         "partType": "Blade",
         "partCost": 10,
         "partAttributes":
         {
-            "baseSlashDamage": 200,
-            "baseStabDamage": 120,
-            "baseAttackSpeed": -40,
-            "baseSwingSpeed": -20,
-            "baseLength": 100,
-            "specialStat": "+ Knockback"
+            "slashDamage": 40,
+            "stabDamage": 10,
+            "attackWindUp": 100,
+            "attackWindDown": 320,
+            "length": 200,
+            "specialStat": "Charging Single Slash"
         },
         "baseAttachPoint":
         {
@@ -26,17 +26,17 @@
         }]
     },
     {
-        "partName": "Medium Sword",
+        "partName": "Medium Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Medium.png",
         "partType": "Blade",
         "partCost": 7,
         "partAttributes":
         {
-            "baseSlashDamage": 110,
-            "baseStabDamage": 90,
-            "baseAttackSpeed": 0,
-            "baseSwingSpeed": 0,
-            "baseLength": 60,
+            "slashDamage": 30,
+            "stabDamage": 10,
+            "attackWindUp": 80,
+            "attackWindDown": 140,
+            "length": 110,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -52,61 +52,18 @@
         }]
     },
     {
-        "partName": "Hammer",
-        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Hammer.png",
-        "partType": "Blade",
-        "partCost": 7,
-        "partAttributes":
-        {
-            "baseSlashDamage": 120,
-            "baseStabDamage": 120,
-            "baseAttackSpeed": -20,
-            "baseSwingSpeed": -20,
-            "baseLength": 30,
-            "specialStat": "Smash"
-        },
-        "baseAttachPoint":
-        {
-
-            "x": 6,
-            "y": 11
-        },
-        "partAttachPoints": []
-    },
-    {
-        "partName": "Mace",
-        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Mace.png",
-        "partType": "Blade",
-        "partCost": 5,
-        "partAttributes":
-        {
-            "baseSlashDamage": 140,
-            "baseStabDamage": 60,
-            "baseAttackSpeed": 10,
-            "baseSwingSpeed": 10,
-            "baseLength": 20,
-            "specialStat": "None"
-        },
-        "baseAttachPoint":
-        {
-            "x": 3,
-            "y": 8
-        },
-        "partAttachPoints": []
-    },
-    {
-        "partName": "Small Blade",
+        "partName": "Dagger",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Small.png",
         "partType": "Blade",
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 40,
-            "baseStabDamage": 40,
-            "baseAttackSpeed": 20,
-            "baseSwingSpeed": 20,
-            "baseLength": 20,
-            "specialStat": "None"
+            "slashDamage": 20,
+            "stabDamage": 20,
+            "attackWindUp": 5,
+            "attackWindDown": 5,
+            "length": 50,
+            "specialStat": "Backstab"
         },
         "baseAttachPoint":
         {
@@ -127,11 +84,11 @@
         "partCost": 3,
         "partAttributes":
         {
-            "baseSlashDamage": 50,
-            "baseStabDamage": 50,
-            "baseAttackSpeed": -50,
-            "baseSwingSpeed": -20,
-            "baseLength": 0,
+            "slashDamage": 50,
+            "stabDamage": 50,
+            "attackWindUp": -50,
+            "attackWindDown": -20,
+            "length": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -148,11 +105,11 @@
         "partCost": 1,
         "partAttributes":
         {
-            "baseSlashDamage": -20,
-            "baseStabDamage": -20,
-            "baseAttackSpeed": 20,
-            "baseSwingSpeed": 20,
-            "baseLength": 0,
+            "slashDamage": -20,
+            "stabDamage": -20,
+            "attackWindUp": 20,
+            "attackWindDown": 20,
+            "length": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -169,11 +126,11 @@
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 10,
-            "baseStabDamage": 10,
-            "baseAttackSpeed": -10,
-            "baseSwingSpeed": -10,
-            "baseLength": 0,
+            "slashDamage": 10,
+            "stabDamage": 10,
+            "attackWindUp": -10,
+            "attackWindDown": -10,
+            "length": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -191,11 +148,11 @@
         "partCost": 2,
         "partAttributes":
         {
-            "baseSlashDamage": 20,
-            "baseStabDamage": 20,
-            "baseAttackSpeed": 80,
-            "baseSwingSpeed": 80,
-            "baseLength": 30,
+            "slashDamage": 20,
+            "stabDamage": 20,
+            "attackWindUp": 80,
+            "attackWindDown": 80,
+            "length": 30,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -222,11 +179,11 @@
         "partCost": 5,
         "partAttributes":
         {
-            "baseSlashDamage": 20,
-            "baseStabDamage": 20,
-            "baseAttackSpeed": 50,
-            "baseSwingSpeed": 50,
-            "baseLength": 60,
+            "slashDamage": 20,
+            "stabDamage": 20,
+            "attackWindUp": 50,
+            "attackWindDown": 50,
+            "length": 60,
             "specialStat": "None"
 
         },
@@ -254,11 +211,11 @@
         "partCost": 8,
         "partAttributes":
         {
-            "baseSlashDamage": 20,
-            "baseStabDamage": 20,
-            "baseAttackSpeed": 20,
-            "baseSwingSpeed": 20,
-            "baseLength": 100,
+            "slashDamage": 20,
+            "stabDamage": 20,
+            "attackWindUp": 20,
+            "attackWindDown": 20,
+            "length": 100,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -285,12 +242,12 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": 60,
-            "baseStabDamage": 80,
-            "baseAttackSpeed": 20,
-            "baseSwingSpeed": 20,
-            "baseLength": 60,
-            "specialStat": "Riposte"
+            "slashDamage": 10,
+            "stabDamage": 30,
+            "attackWindUp": 80,
+            "attackWindDown": 140,
+            "length": 80,
+            "specialStat": "Charged Multi-Stab"
         },
         "baseAttachPoint":
         {
@@ -311,11 +268,11 @@
         "partCost": 3,
         "partAttributes":
         {
-            "baseSlashDamage": 10,
-            "baseStabDamage": 10,
-            "baseAttackSpeed": -10,
-            "baseSwingSpeed": -10,
-            "baseLength": 0,
+            "slashDamage": 10,
+            "stabDamage": 10,
+            "attackWindUp": -10,
+            "attackWindDown": -10,
+            "length": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -332,11 +289,11 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": -40,
-            "baseStabDamage": 20,
-            "baseAttackSpeed": 10,
-            "baseSwingSpeed": 10,
-            "baseLength": 0,
+            "slashDamage": -40,
+            "stabDamage": 20,
+            "attackWindUp": 10,
+            "attackWindDown": 10,
+            "length": 0,
             "specialStat": "Riposte"
         },
         "baseAttachPoint":
@@ -353,12 +310,12 @@
         "partCost": 7,
         "partAttributes":
         {
-            "baseSlashDamage": 150,
-            "baseStabDamage": 60,
-            "baseAttackSpeed": -20,
-            "baseSwingSpeed": -20,
-            "baseLength": 100,
-            "specialStat": "Bleed"
+            "slashDamage": 30,
+            "stabDamage": 10,
+            "attackWindUp": 80,
+            "attackWindDown": 140,
+            "length": 100,
+            "specialStat": "Charged Single Slash"
         },
         "baseAttachPoint":
         {
@@ -373,17 +330,69 @@
         }]
     },
     {
+        "partName": "Spear Blade",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Spear.png",
+        "partType": "Blade",
+        "partCost": 8,
+        "partAttributes":
+        {
+            "slashDamage": 10,
+            "stabDamage": 40,
+            "attackWindUp": 80,
+            "attackWindDown": 140,
+            "length": 300,
+            "specialStat": "Charged Single Stab"
+        },
+        "baseAttachPoint":
+        {
+            "x": 2,
+            "y": 8
+        },
+        "partAttachPoints": [
+        {
+            "x": 2,
+            "y": 8,
+            "types": ["Guard"]
+        }]
+    },
+    {
+        "partName": "Halberd Blade",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Halberd.png",
+        "partType": "Blade",
+        "partCost": 12,
+        "partAttributes":
+        {
+            "slashDamage": 30,
+            "stabDamage": 20,
+            "attackWindUp": 80,
+            "attackWindDown": 140,
+            "length": 250,
+            "specialStat": "Charged Spin"
+        },
+        "baseAttachPoint":
+        {
+            "x": 1,
+            "y": 11
+        },
+        "partAttachPoints": [
+        {
+            "x": 1,
+            "y": 11,
+            "types": ["Guard"]
+        }]
+    },
+    {
         "partName": "Axe Head",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Axe.png",
         "partType": "Blade",
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": 120,
-            "baseStabDamage": 50,
-            "baseAttackSpeed": -30,
-            "baseSwingSpeed": 20,
-            "baseLength": 20,
+            "slashDamage": 120,
+            "stabDamage": 50,
+            "attackWindUp": -30,
+            "attackWindDown": 20,
+            "length": 20,
             "specialStat": "Axe"
         },
         "baseAttachPoint":
@@ -400,11 +409,11 @@
         "partCost": 4,
         "partAttributes":
         {
-            "baseSlashDamage": 120,
-            "baseStabDamage": 50,
-            "baseAttackSpeed": -30,
-            "baseSwingSpeed": 20,
-            "baseLength": 20,
+            "slashDamage": 120,
+            "stabDamage": 50,
+            "attackWindUp": -30,
+            "attackWindDown": 20,
+            "length": 20,
             "specialStat": "Pickaxe"
         },
         "baseAttachPoint":
@@ -421,11 +430,11 @@
         "partCost": 1,
         "partAttributes":
         {
-            "baseSlashDamage": 0,
-            "baseStabDamage": 0,
-            "baseAttackSpeed": 0,
-            "baseSwingSpeed": 0,
-            "baseLength": 0,
+            "slashDamage": 0,
+            "stabDamage": 0,
+            "attackWindUp": 0,
+            "attackWindDown": 0,
+            "length": 0,
             "specialStat": "None"
         },
         "baseAttachPoint":

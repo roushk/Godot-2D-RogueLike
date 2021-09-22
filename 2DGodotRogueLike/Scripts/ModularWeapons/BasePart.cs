@@ -52,15 +52,15 @@ namespace Parts
   public class PartStats 
   {
     //Slash damage is damage in slashing attack
-    public int baseSlashDamage = 0;
+    public int slashDamage = 0;
     //Stab damage is damage in stab attack
-    public int baseStabDamage = 0;
+    public int stabDamage = 0;
     //Attack speed is howhow many attacks per second
-    public int baseAttackSpeed = 0;
+    public int attackWindUp = 0;
     //Swing speed affects how fast the blade is swung, more is fast swing and stab
-    public int baseSwingSpeed = 0;
+    public int attackWindDown = 0;
     //Length is the reach of the weapon
-    public int baseLength = 0;
+    public int length = 0;
     //Special stat is a special stat
     public string specialStat = "None";
 
@@ -68,11 +68,11 @@ namespace Parts
     public static PartStats GetCombinationOfStats(PartStats lhs, PartStats rhs)
     {
       PartStats result = new PartStats();
-      result.baseSlashDamage += lhs.baseSlashDamage + rhs.baseSlashDamage;
-      result.baseStabDamage += lhs.baseStabDamage + rhs.baseStabDamage;
-      result.baseAttackSpeed += lhs.baseAttackSpeed + rhs.baseAttackSpeed;
-      result.baseSwingSpeed += lhs.baseSwingSpeed + rhs.baseSwingSpeed;
-      result.baseLength += lhs.baseLength + rhs.baseLength;
+      result.slashDamage += lhs.slashDamage + rhs.slashDamage;
+      result.stabDamage += lhs.stabDamage + rhs.stabDamage;
+      result.attackWindUp += lhs.attackWindUp + rhs.attackWindUp;
+      result.attackWindDown += lhs.attackWindDown + rhs.attackWindDown;
+      result.length += lhs.length + rhs.length;
 
       if(lhs.specialStat != "None" && rhs.specialStat != "None")
         result.specialStat = lhs.specialStat + " and " + rhs.specialStat;
@@ -137,19 +137,19 @@ namespace Parts
       int oldPartLength = 0;
       if(oldPart != null)
       {
-        oldPartSlashDamage = oldPart.stats.baseSlashDamage;
-        oldPartStabDamage = oldPart.stats.baseStabDamage;
-        oldPartAttackSpeed = oldPart.stats.baseAttackSpeed;
-        oldPartSwingSpeed = oldPart.stats.baseSwingSpeed;
-        oldPartLength = oldPart.stats.baseLength;
+        oldPartSlashDamage = oldPart.stats.slashDamage;
+        oldPartStabDamage = oldPart.stats.stabDamage;
+        oldPartAttackSpeed = oldPart.stats.attackWindUp;
+        oldPartSwingSpeed = oldPart.stats.attackWindDown;
+        oldPartLength = oldPart.stats.length;
         threshold = 0;
       }
       
-      string baseSlashStat =      GenerateSingleStatText("Slash Damage", baseSlashDamage - oldPartSlashDamage, threshold, relativeNum);
-      string baseStabStat =       GenerateSingleStatText("Stab Damage", baseStabDamage - oldPartStabDamage, threshold, relativeNum);
-      string baseAttackSpeedStat =  GenerateSingleStatText("Attack Speed", baseAttackSpeed - oldPartAttackSpeed, threshold, relativeNum);
-      string baseSwingStat =      GenerateSingleStatText("Swing Speed", baseSwingSpeed - oldPartSwingSpeed, threshold, relativeNum);
-      string baseLengthStat =     GenerateSingleStatText("Length", baseLength - oldPartLength, threshold, relativeNum);
+      string baseSlashStat =      GenerateSingleStatText("Slash Damage", slashDamage - oldPartSlashDamage, threshold, relativeNum);
+      string baseStabStat =       GenerateSingleStatText("Stab Damage", stabDamage - oldPartStabDamage, threshold, relativeNum);
+      string baseAttackSpeedStat =  GenerateSingleStatText("Attack Speed", attackWindUp - oldPartAttackSpeed, threshold, relativeNum);
+      string baseSwingStat =      GenerateSingleStatText("Swing Speed", attackWindDown - oldPartSwingSpeed, threshold, relativeNum);
+      string baseLengthStat =     GenerateSingleStatText("Length", length - oldPartLength, threshold, relativeNum);
 
       string specialStatText = "";
       if(specialStat != "None")

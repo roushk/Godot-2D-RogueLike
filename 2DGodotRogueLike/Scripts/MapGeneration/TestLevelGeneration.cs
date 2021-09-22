@@ -108,7 +108,7 @@ public class TestLevelGeneration : Node2D
   {
     foreach (var item in adjacencyMap)
     {
-      if(item.Value == 1)
+      if(item.Value == oreAdjacencyValueSpawnLocation)
       {
         if(random.NextDouble() < oreChunkEdgeSpawnChance)
         {
@@ -606,6 +606,80 @@ public class TestLevelGeneration : Node2D
 
     //Room finder
     GenerateRoomsFromFloodFillAndAdjacency();
+
+    //3 = 3 y to 1 x
+    UpdateForTileSet(3);
+    
+    //Add a border around the map so its all walls
+    AddBorderAroundMap(10);
+  }
+
+
+  public void AddBorderAroundMap(int borderSize)
+  {
+    for(int y = - borderSize; y < height + borderSize; ++y)
+    {
+      for(int x = - borderSize; x < width + borderSize; ++x)
+      {
+        if(y >= 0 && y < height && x >= 0 && x < width)
+        {
+          continue;
+        }
+        ForegroundMap.SetCell(x, y, WallTile);
+        BackgroundMap.SetCell(x, y, BackgroundMapGroundTile);
+      }
+    }
+
+    //update bitmask
+    ForegroundMap.UpdateBitmaskRegion(new Vector2(-borderSize,-borderSize), new Vector2(width + borderSize, height + borderSize));
+    ForegroundMap.UpdateDirtyQuadrants();
+  }
+
+
+
+  //looks for the pattern of 
+  //1
+  //1
+  //1
+  //0
+  //and removes the middle and bottom 1 so that the 3 tall tile starting at the top 1 gets through all of the tiles.
+  //Need to figure out what to do with tiles that are like 01100 or 01000 and if to just remove the islands or move them
+  public void UpdateForTileSet(int tileSetYToXRatio = 1)
+  {
+    //contrain the checked values
+    for(int y = tileSetYToXRatio; y < height; ++y)
+    {
+      for(int x = 1; x < width - 1; ++x)
+      {  
+
+        //if x,y == 1 && x,y-1 == 1 && x,y-2 == 1 && x,y-3 == 0
+        //set x,y-1 = 0 && x,y-2 = 0
+
+        if(terrainMap[x,y] == 1 && terrainMap[x,y-1] == 1 && terrainMap[x,y-2] == 1 && terrainMap[x,y-3] == 0)
+        {
+          terrainMap[x,y-1] = 0;
+          terrainMap[x,y-2] = 0;
+        }
+      }
+    }
+
+    //Do this one 2x
+    for(int u = 0; u < 2; u++)
+    {
+      for(int y = tileSetYToXRatio; y < height; ++y)
+      {
+        for(int x = 1; x < width - 1; ++x)
+        {  
+
+          if(terrainMap[x,y] == 0 && terrainMap[x,y-1] == 1 && terrainMap[x,y-2] == 1 && terrainMap[x,y-3] == 0 && 
+            (terrainMap[x-1,y-1] == 1 || terrainMap[x-1,y-2] == 1 || terrainMap[x+1,y-1] == 1 || terrainMap[x+1,y-2] == 1))
+          {
+            terrainMap[x,y-1] = 0;
+            terrainMap[x,y-2] = 0;
+          }
+        }
+      }
+    }
   }
 
   //Generated everything, finds farthest rooms, spawns chunks, spawns player
@@ -741,6 +815,7 @@ public class TestLevelGeneration : Node2D
 
   //declare Foreground and Background map variables
   public Godot.TileMap ForegroundMap;
+  public Godot.TileMap BackgroundMap;
 
   public Dictionary<string,Godot.TileMap> VisualizationMaps; 
 
@@ -773,8 +848,11 @@ public class TestLevelGeneration : Node2D
   public int WallTile;
 
   [Export]
-  public int GroundTile;
+  public int NoWallTile;
 
+  [Export]
+  public int BackgroundMapGroundTile;
+  
   [Export]
   public int TestTile;
 
@@ -816,6 +894,8 @@ public class TestLevelGeneration : Node2D
   //Nodes that hold the interactables and enemies so they can be easily removed
   Node InteractablesNode;
   Node EnemiesNode;
+
+  int oreAdjacencyValueSpawnLocation = 2;
 
 #endregion
 
@@ -1034,6 +1114,7 @@ public class TestLevelGeneration : Node2D
     }
     VisualizationMaps = new Dictionary<string, TileMap>();
     ForegroundMap = GetNode("ForegroundMap") as TileMap;
+    BackgroundMap = GetNode("BackgroundMap") as TileMap;
 
     //List visualization maps here
     VisualizationMaps["Adjacency Overlay"] = GetNode("AdjacencyMap") as TileMap;
@@ -1249,12 +1330,12 @@ public class TestLevelGeneration : Node2D
         }
         else  //Bottom Tile = 0 = Grass Wall
         {
-          ForegroundMap.SetCell(x , y , GroundTile);
+          ForegroundMap.SetCell(x , y , NoWallTile);
 
         }
 
         //set the background to all bottom tile????
-        //BackgroundMap.SetCell(-x , -y , BottomTile);
+        BackgroundMap.SetCell(x , y , BackgroundMapGroundTile);
       }
     }
 

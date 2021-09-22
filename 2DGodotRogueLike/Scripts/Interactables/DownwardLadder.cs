@@ -13,6 +13,8 @@ public class DownwardLadder : Interactable
   public override void StartInteract()
 	{
     base.StartInteract();
+
+    //Descend into a deeper level 
     playerManager.topDownPlayer.currentlySelectedUI = PlayerTopDown.CurrentlySelectedUI.EndLevelUI;
     //Close the game on interact
     //Popup UI to be like "Do you want Descend??"

@@ -60,7 +60,8 @@ public class Interactable : Node2D
   public void ExitedInteractionRadius()
   {
     StopSparkling();
-    playerManager.topDownPlayer.interactablesInRange.Remove(this);
+    if(playerManager.topDownPlayer != null)
+      playerManager.topDownPlayer.interactablesInRange.Remove(this);
 
     if(ModulateColorDebug)
       Modulate = new Color(1,1,1,1);

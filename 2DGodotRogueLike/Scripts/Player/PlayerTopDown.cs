@@ -167,8 +167,8 @@ public class PlayerTopDown : CombatCharacter
 		playerManager = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode");
 
 
-		weapon.baseSlashDamage = 10;
-		weapon.baseStabDamage = 10;
+		weapon.slashDamage = 10;
+		weapon.stabDamage = 10;
   }
 
 	void CollidingWithInvObject(InventoryPickupWorldObject inv)
@@ -212,7 +212,7 @@ public class PlayerTopDown : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Enemy)
     {
-			character.DamageCharacter(weapon.baseSlashDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+			character.DamageCharacter(weapon.slashDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 
@@ -222,7 +222,7 @@ public class PlayerTopDown : CombatCharacter
     CombatCharacter character = body as CombatCharacter;
     if(character != null && character.characterType == CharacterType.Enemy)
     {
-			character.DamageCharacter(weapon.baseStabDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+			character.DamageCharacter(weapon.stabDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 

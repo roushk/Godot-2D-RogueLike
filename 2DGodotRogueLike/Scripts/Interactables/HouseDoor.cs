@@ -10,7 +10,7 @@ public class HouseDoor : Interactable
   bool startedInteract = false;
 
   //Time before the item interacts
-  float timeLeft = 1.0f;
+  float timeLeft = 0f;
 
 
   // Called when the node enters the scene tree for the first time.
