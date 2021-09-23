@@ -32,6 +32,11 @@ public class PlayerTopDown : CombatCharacter
 	
 	//Bool to stop player movement if holding down/spamming the attack button as the anim player is updated after the player so the player can move slightly between each and don't want that
 	bool attackingThisFrame = false;
+	
+	bool finishWinding = true;
+	Timer windTimer;
+	
+	
   FacingDir currentFacing = FacingDir.Up;
 
   public enum FacingDir
@@ -137,10 +142,16 @@ public class PlayerTopDown : CombatCharacter
 	float playerBaseKnockBack = 100.0f;
 	float playerWeaponKnockback = 1.0f;
 
+	string nextAnim = "SlashAttack";
+
+	[Export]
+	Curve weaponWindCurve = new Curve();
+
   public override void _Ready()
   {
 		base._Ready();
 		characterType = CharacterType.Player;
+		windTimer = GetNode<Timer>("WindTimer");
 		playerArea = GetNode<Area2D>("PlayerInteractionArea");
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
@@ -169,6 +180,10 @@ public class PlayerTopDown : CombatCharacter
 
 		weapon.slashDamage = 10;
 		weapon.stabDamage = 10;
+		weapon.attackWindUp = 10;
+		weapon.attackWindDown = 10;
+		weapon.length = 100;
+
   }
 
 	void CollidingWithInvObject(InventoryPickupWorldObject inv)
@@ -246,14 +261,38 @@ public class PlayerTopDown : CombatCharacter
 	  this.DrawLine(Position,Position + new Vector2(0,50),Color.Color8(0,1,0,1));
   }
 
+	public void onTimerWindTimeOut()
+	{
+		weaponAnimPlayer.Play(nextAnim);
+		finishWinding = true;
+	}
+
+	public void StartedAttacking()
+	{
+		//pause animation
+		//wait for timer to callback continue animation
+		weaponAnimPlayer.Stop();
+		windTimer.WaitTime = Mathf.Max(weaponWindCurve.Interpolate(weapon.attackWindUp/1000.0f),0.001f);
+		nextAnim = "SlashAttack";
+		windTimer.Start();
+		finishWinding = false;
+	}
+
+	public void EndedAttacking()
+	{
+		weaponAnimPlayer.Stop();
+		windTimer.WaitTime = Mathf.Max(weaponWindCurve.Interpolate(weapon.attackWindDown/1000.0f),0.001f);
+		nextAnim = "SlashWindDown";
+		windTimer.Start();
+		finishWinding = false;
+	}
+
   //  // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
 		if(firstTimeInit)
 		{
 			firstTimeInit = false;
-
-
 		}
 		
 		base._PhysicsProcess(delta);
@@ -414,7 +453,8 @@ public class PlayerTopDown : CombatCharacter
 			Vector2 mousePos = GetGlobalMousePosition();
 			//AngleToPoint does what we need, literally dont need to do anything else, sweet
 			weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
-			weaponAnimPlayer.Play("BasicWeaponAttackAnim");
+			weaponAnimPlayer.Play("SlashWindUp");
+			weaponSprite.Scale = new Vector2(weapon.length/100.0f,weapon.length/100.0f);
 			attackingThisFrame = true;
 		}
 

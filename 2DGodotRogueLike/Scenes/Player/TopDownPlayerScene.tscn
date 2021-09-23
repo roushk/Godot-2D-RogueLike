@@ -1,10 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Art/My_Art/SpriteSheets/Basic_Animated_Sword_Slash-Sheet.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Player/PlayerTopDown.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Art/SpriteSheets/CharacterV2TopDownSpriteFrames.tres" type="SpriteFrames" id=4]
-[ext_resource path="res://Animations/BasicWeaponAttackAnim.tres" type="Animation" id=5]
+[ext_resource path="res://Animations/SlashWindUp.tres" type="Animation" id=5]
+[ext_resource path="res://Animations/SlashWindDown.tres" type="Animation" id=6]
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.2 ), 0.208591, 0.0, 0, 0 ]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 5.0
@@ -12,11 +16,91 @@ radius = 5.0
 [sub_resource type="CircleShape2D" id=2]
 radius = 25.0
 
+[sub_resource type="Animation" id=4]
+resource_name = "SlashWindDown"
+length = 0.333333
+step = 0.0833333
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.0833333, 0.166667, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4, 5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("SlashArea/CollisionPolygon2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.166667 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("..:attacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("SlashArea:monitoring")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 1,
+"values": [  ]
+}
+tracks/5/type = "method"
+tracks/5/path = NodePath("..")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.25 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "EndedAttacking"
+} ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 pause_mode = 2
 z_index = 10
 collision_mask = 23
 script = ExtResource( 3 )
+weaponWindCurve = SubResource( 5 )
 
 [node name="MovementCollider" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -43,9 +127,14 @@ shape = SubResource( 2 )
 visible = false
 texture = ExtResource( 2 )
 hframes = 7
+frame = 6
 
 [node name="WeaponAnimPlayer" type="AnimationPlayer" parent="WeaponSprite"]
-anims/BasicWeaponAttackAnim = ExtResource( 5 )
+playback_process_mode = 0
+method_call_mode = 1
+anims/SlashAttack = SubResource( 4 )
+anims/SlashWindDown = ExtResource( 6 )
+anims/SlashWindUp = ExtResource( 5 )
 
 [node name="SlashArea" type="Area2D" parent="WeaponSprite"]
 collision_layer = 8
@@ -64,9 +153,16 @@ collision_mask = 10
 polygon = PoolVector2Array( -21.2419, 2.26004, -21.3653, -6.29518, -20.4723, -12.0495, -16.107, -17.407, -5.98731, -21.9708, 9.78749, -21.8716, 15.7402, -18.2007, 20.5024, -13.7361, 23.082, -5.69991, 23.0954, 2.4705 )
 disabled = true
 
+[node name="WindTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="area_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_entered"]
 [connection signal="area_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_exited"]
 [connection signal="body_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_body_entered"]
 [connection signal="body_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_body_exited"]
 [connection signal="body_entered" from="WeaponSprite/SlashArea" to="." method="_on_SlashArea_body_entered"]
 [connection signal="body_entered" from="WeaponSprite/StabArea" to="." method="_on_StabArea_body_entered"]
+[connection signal="timeout" from="WindTimer" to="." method="onTimerWindTimeOut"]
