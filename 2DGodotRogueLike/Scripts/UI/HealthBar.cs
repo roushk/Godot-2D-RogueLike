@@ -11,7 +11,7 @@ public class HealthBar : Control
   }
   
   //Sets the current health of the UI element
-  public void SetHealth(int health)
+  public void SetHealth(float health)
   {
 	  healthBarUIElement.Value = health;
   }

@@ -204,11 +204,11 @@ public class CraftingMaterialSystem : Control
       partBP.baseAttachPoint = new Vector2((int)(float)basicAttachPt["x"],(int)(float)basicAttachPt["y"]);
 
       Godot.Collections.Dictionary partAttributes = data["partAttributes"] as Godot.Collections.Dictionary;
-      partBP.stats.slashDamage =      (int)(float)partAttributes["slashDamage"];
-      partBP.stats.stabDamage =       (int)(float)partAttributes["stabDamage"];
-      partBP.stats.attackWindUp =     (int)(float)partAttributes["attackWindUp"];
-      partBP.stats.attackWindDown =   (int)(float)partAttributes["attackWindDown"];
-      partBP.stats.length =           (int)(float)partAttributes["length"];
+      partBP.stats.slashDamage =      (float)partAttributes["slashDamage"];
+      partBP.stats.stabDamage =       (float)partAttributes["stabDamage"];
+      partBP.stats.attackWindUp =     (float)partAttributes["attackWindUp"];
+      partBP.stats.attackWindDown =   (float)partAttributes["attackWindDown"];
+      partBP.stats.length =           (float)partAttributes["length"];
       partBP.stats.specialStat =      partAttributes["specialStat"] as string;
 
       foreach (Godot.Collections.Dictionary partAttachPoints in data["partAttachPoints"] as Godot.Collections.Array)
@@ -229,6 +229,8 @@ public class CraftingMaterialSystem : Control
       newBMP.CreateFromImageAlpha(partBP.texture.GetData());
       partBP.bitMask = newBMP;
 
+      if(partBP.name == "TBD")
+        continue;
       //Add to the GRAND parts dictionary
       allPartsDict[partBP.partType].Add(partBP);
     }
@@ -577,14 +579,14 @@ public class CraftingMaterialSystem : Control
 
   void AccumulateStats(Parts.WeaponBlueprintNode node, ref Parts.PartStats summationStats)
   {
-    summationStats = Parts.PartStats.GetCombinationOfStats(summationStats, node.part.stats);
+    summationStats = Parts.PartStats.GetCombinationOfStats(summationStats, node.part.stats, node.part.currentMaterial);
     foreach (var item in node.children)
     {
       AccumulateStats(item.Value, ref summationStats);
     }   
   }
 
-  void GeneratePartVisualizerUIFromCurrentParts()
+  public void GeneratePartVisualizerUIFromCurrentParts()
   {
     maxWeaponUIExtents = Vector2.Zero;  
     minWeaponUIExtents = Vector2.Inf;
@@ -640,9 +642,9 @@ public class CraftingMaterialSystem : Control
     //Vector2 center = (partVisualizerContainer as Control).RectGlobalPosition + (partVisualizerContainer as Control).RectSize * 0.5f;
 
     //Debug lines
-    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(0,100),new Color("fc0303"),2);  //Pos Y
+    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(0,100),new Color("fc0303"),2);   //Pos Y
     //DrawLine(center + maxWeaponUIExtents, center + maxWeaponUIExtents + new Vector2(0,-100),new Color("fcdb03"),2);  //Neg Y
-    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(100,0),new Color("0345fc"),2);  //Pos X
+    //DrawLine(center + minWeaponUIExtents, center + minWeaponUIExtents + new Vector2(100,0),new Color("0345fc"),2);   //Pos X
     //DrawLine(center + maxWeaponUIExtents, center + maxWeaponUIExtents + new Vector2(-100,0),new Color("fc03ce"),2);  //Neg X
   }
   

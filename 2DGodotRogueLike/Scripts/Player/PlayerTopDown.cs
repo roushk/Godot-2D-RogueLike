@@ -99,7 +99,7 @@ public class PlayerTopDown : CombatCharacter
 		}
 	}
 
-	public override void CharacterDeadCallback(int damageTakenThatKilled)
+	public override void CharacterDeadCallback(float damageTakenThatKilled)
   {
 		//Play character death animation
 		currentlySelectedUI = CurrentlySelectedUI.EndLevelUI;

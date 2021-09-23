@@ -52,26 +52,36 @@ namespace Parts
   public class PartStats 
   {
     //Slash damage is damage in slashing attack
-    public int slashDamage = 0;
+    public float slashDamage = 0;
     //Stab damage is damage in stab attack
-    public int stabDamage = 0;
+    public float stabDamage = 0;
     //Attack speed is howhow many attacks per second
-    public int attackWindUp = 0;
+    public float attackWindUp = 0;
     //Swing speed affects how fast the blade is swung, more is fast swing and stab
-    public int attackWindDown = 0;
+    public float attackWindDown = 0;
     //Length is the reach of the weapon
-    public int length = 0;
+    public float length = 0;
     //Special stat is a special stat
     public string specialStat = "None";
 
+    public PartStats(){}
+    public PartStats(float slash, float stab, float windup, float winddown, float _length)
+    {
+      slashDamage = slash;
+      stabDamage = stab;
+      attackWindUp = windup;
+      attackWindDown = winddown;
+      length = _length;
+    }
+
     //Sets special stat to both
-    public static PartStats GetCombinationOfStats(PartStats lhs, PartStats rhs)
+    public static PartStats GetCombinationOfStats(PartStats lhs, PartStats rhs, Materials.Material material)
     {
       PartStats result = new PartStats();
-      result.slashDamage += lhs.slashDamage + rhs.slashDamage;
-      result.stabDamage += lhs.stabDamage + rhs.stabDamage;
-      result.attackWindUp += lhs.attackWindUp + rhs.attackWindUp;
-      result.attackWindDown += lhs.attackWindDown + rhs.attackWindDown;
+      result.slashDamage += (lhs.slashDamage + rhs.slashDamage) * Materials.MaterialStats.stats[material].damageMult;
+      result.stabDamage += (lhs.stabDamage + rhs.stabDamage) * Materials.MaterialStats.stats[material].damageMult;
+      result.attackWindUp += (lhs.attackWindUp + rhs.attackWindUp) * Materials.MaterialStats.stats[material].windMult;
+      result.attackWindDown += (lhs.attackWindDown + rhs.attackWindDown) * Materials.MaterialStats.stats[material].windMult;
       result.length += lhs.length + rhs.length;
 
       if(lhs.specialStat != "None" && rhs.specialStat != "None")
@@ -99,18 +109,18 @@ namespace Parts
       return "[color=#" + color.ToHtml(false) + "]" + str + "[/color]";
     }
 
-    public string GetSignAndValue(int a, int b)
+    public string GetSignAndValue(float a, float b, bool lowNumberGreen = true)
     {
       string str = "";
       if(a - b > 0)
       {
         //if color text then set the color of the text, if not then use the normal color
-        str = BBCodeColorString(" + " + Mathf.Abs(a - b), positiveStatColor);
+        str = BBCodeColorString(" + " + Mathf.Abs(a - b), lowNumberGreen?positiveStatColor:negativeStatColor);
       }
       else if(a - b < 0)
       {
         //if color text then set the color of the text, if not then use the normal color
-        str = BBCodeColorString(" - " + Mathf.Abs(a - b), negativeStatColor);
+        str = BBCodeColorString(" - " + Mathf.Abs(a - b), lowNumberGreen?negativeStatColor:positiveStatColor);
       }
       else
         str = BBCodeColorString(" + 0 ", normalstatcolor);
@@ -118,38 +128,38 @@ namespace Parts
       return str;
     }
 
-    string GenerateSingleStatText(string name, int value, int threshold, bool relativeNum = true)
+    string GenerateSingleStatText(string name, float value, float threshold, bool relativeNum = true, bool lowNumberGreen = true)
     {
       string baseStat = "";
       //if(value != threshold)
       //{
-        baseStat = name + (relativeNum ? GetSignAndValue(value, threshold) : " " + value.ToString()) + "\n";
+        baseStat = name + (relativeNum ? GetSignAndValue(value, threshold, lowNumberGreen) : " " + value.ToString()) + "\n";
       //}
       return baseStat;
     }
     //Generates text of the stats
-    public string GenerateStatText(PartBlueprint oldPart = null, int threshold = 0, bool relativeNum = true)
+    public string GenerateStatText(PartBlueprint oldPart = null, float threshold = 0, bool relativeNum = true)
     {
-      int oldPartSlashDamage = 0;
-      int oldPartStabDamage = 0;
-      int oldPartAttackSpeed = 0;
-      int oldPartSwingSpeed = 0;
-      int oldPartLength = 0;
+      float oldPartSlashDamage = 0;
+      float oldPartStabDamage = 0;
+      float oldPartWindUp = 0;
+      float oldPartWindDown = 0;
+      float oldPartLength = 0;
       if(oldPart != null)
       {
         oldPartSlashDamage = oldPart.stats.slashDamage;
         oldPartStabDamage = oldPart.stats.stabDamage;
-        oldPartAttackSpeed = oldPart.stats.attackWindUp;
-        oldPartSwingSpeed = oldPart.stats.attackWindDown;
+        oldPartWindUp = oldPart.stats.attackWindUp;
+        oldPartWindDown = oldPart.stats.attackWindDown;
         oldPartLength = oldPart.stats.length;
         threshold = 0;
       }
       
-      string baseSlashStat =      GenerateSingleStatText("Slash Damage", slashDamage - oldPartSlashDamage, threshold, relativeNum);
-      string baseStabStat =       GenerateSingleStatText("Stab Damage", stabDamage - oldPartStabDamage, threshold, relativeNum);
-      string baseAttackSpeedStat =  GenerateSingleStatText("Attack Speed", attackWindUp - oldPartAttackSpeed, threshold, relativeNum);
-      string baseSwingStat =      GenerateSingleStatText("Swing Speed", attackWindDown - oldPartSwingSpeed, threshold, relativeNum);
-      string baseLengthStat =     GenerateSingleStatText("Length", length - oldPartLength, threshold, relativeNum);
+      string baseSlashStat =        GenerateSingleStatText("Slash Damage", slashDamage - oldPartSlashDamage, threshold, relativeNum);
+      string baseStabStat =         GenerateSingleStatText("Stab Damage", stabDamage - oldPartStabDamage, threshold, relativeNum);
+      string baseAttackSpeedStat =  GenerateSingleStatText("Wind Up", attackWindUp - oldPartWindUp, threshold, relativeNum, false);
+      string baseSwingStat =        GenerateSingleStatText("Wind Down", attackWindDown - oldPartWindDown, threshold, relativeNum, false);
+      string baseLengthStat =       GenerateSingleStatText("Length", length - oldPartLength, threshold, relativeNum);
 
       string specialStatText = "";
       if(specialStat != "None")
@@ -171,7 +181,7 @@ namespace Parts
       return tempStr;
     }
   }
-
+  
   public class PartBlueprint : Resource
   {
     public static long currentUniquePieceNum = 0;
@@ -215,6 +225,7 @@ namespace Parts
       currentMaterial = Materials.Material.Undefined;
     }
   }
+
   public class ConstructedWeapon
   {
     public PartStats stats = new PartStats();

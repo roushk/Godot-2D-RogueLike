@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 
 //Get the input manager with 
@@ -37,6 +37,12 @@ public class InputManager : Node
   public bool IsKeyPressed(KeyList key)
   {
     return keys[key] == KeyState.Pressed;
+  }
+
+  //pressed this frame
+  public bool IsKeyReleased(KeyList key)
+  {
+    return keys[key] == KeyState.Released;
   }
   
   //Down = pressed this frame or held down
@@ -80,6 +86,6 @@ public class InputManager : Node
 
   public override void _PhysicsProcess(float delta)
   {
-    
+
   }
 }

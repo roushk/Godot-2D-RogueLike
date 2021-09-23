@@ -81,13 +81,13 @@
         "partName": "Large Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Large.png",
         "partType": "Guard",
-        "partCost": 3,
+        "partCost": 6,
         "partAttributes":
         {
-            "slashDamage": 50,
-            "stabDamage": 50,
-            "attackWindUp": -50,
-            "attackWindDown": -20,
+            "slashDamage": 10,
+            "stabDamage": 10,
+            "attackWindUp": 150,
+            "attackWindDown": 150,
             "length": 0,
             "specialStat": "None"
         },
@@ -99,16 +99,58 @@
         "partAttachPoints": []
     },
     {
+        "partName": "Medium Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Medium.png",
+        "partType": "Guard",
+        "partCost": 4,
+        "partAttributes":
+        {
+            "slashDamage": 7,
+            "stabDamage": 7,
+            "attackWindUp": 80,
+            "attackWindDown": 80,
+            "length": 0,
+            "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 5,
+            "y": 7
+        },
+        "partAttachPoints": []
+    },
+    {
+        "partName": "Balanced Guard",
+        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Rapier.png",
+        "partType": "Guard",
+        "partCost": 8,
+        "partAttributes":
+        {
+            "slashDamage": 0,
+            "stabDamage": 0,
+            "attackWindUp": -50,
+            "attackWindDown": -50,
+            "length": 0,
+            "specialStat": "None"
+        },
+        "baseAttachPoint":
+        {
+            "x": 9,
+            "y": 6
+        },
+        "partAttachPoints": []
+    },
+    {
         "partName": "Small Guard",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Small.png",
         "partType": "Guard",
-        "partCost": 1,
+        "partCost": 2,
         "partAttributes":
         {
-            "slashDamage": -20,
-            "stabDamage": -20,
-            "attackWindUp": 20,
-            "attackWindDown": 20,
+            "slashDamage": 5,
+            "stabDamage": 5,
+            "attackWindUp": 30,
+            "attackWindDown": 30,
             "length": 0,
             "specialStat": "None"
         },
@@ -126,10 +168,10 @@
         "partCost": 2,
         "partAttributes":
         {
-            "slashDamage": 10,
-            "stabDamage": 10,
-            "attackWindUp": -10,
-            "attackWindDown": -10,
+            "slashDamage": 5,
+            "stabDamage": 5,
+            "attackWindUp": 30,
+            "attackWindDown": 30,
             "length": 0,
             "specialStat": "None"
         },
@@ -145,14 +187,14 @@
         "partName": "Small Handle",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Small.png",
         "partType": "Handle",
-        "partCost": 2,
+        "partCost": 5,
         "partAttributes":
         {
-            "slashDamage": 20,
-            "stabDamage": 20,
-            "attackWindUp": 80,
-            "attackWindDown": 80,
-            "length": 30,
+            "slashDamage": 10,
+            "stabDamage": 10,
+            "attackWindUp": 20,
+            "attackWindDown": 20,
+            "length": 20,
             "specialStat": "None"
         },
         "baseAttachPoint":
@@ -176,14 +218,14 @@
         "partName": "Medium Handle",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Medium.png",
         "partType": "Handle",
-        "partCost": 5,
+        "partCost": 7,
         "partAttributes":
         {
-            "slashDamage": 20,
-            "stabDamage": 20,
-            "attackWindUp": 50,
-            "attackWindDown": 50,
-            "length": 60,
+            "slashDamage": 15,
+            "stabDamage": 15,
+            "attackWindUp": 80,
+            "attackWindDown": 80,
+            "length": 50,
             "specialStat": "None"
 
         },
@@ -208,13 +250,13 @@
         "partName": "Large Handle",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Handle_Large.png",
         "partType": "Handle",
-        "partCost": 8,
+        "partCost": 10,
         "partAttributes":
         {
             "slashDamage": 20,
             "stabDamage": 20,
-            "attackWindUp": 20,
-            "attackWindDown": 20,
+            "attackWindUp": 160,
+            "attackWindDown": 160,
             "length": 100,
             "specialStat": "None"
         },
@@ -261,48 +303,7 @@
             "types": ["Guard"]
         }]
     },
-    {
-        "partName": "Medium Guard",
-        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Medium.png",
-        "partType": "Guard",
-        "partCost": 3,
-        "partAttributes":
-        {
-            "slashDamage": 10,
-            "stabDamage": 10,
-            "attackWindUp": -10,
-            "attackWindDown": -10,
-            "length": 0,
-            "specialStat": "None"
-        },
-        "baseAttachPoint":
-        {
-            "x": 5,
-            "y": 7
-        },
-        "partAttachPoints": []
-    },
-    {
-        "partName": "Rapier Guard",
-        "partTextureDir": "res://Assets/Art/My_Art/Parts/Guard_Rapier.png",
-        "partType": "Guard",
-        "partCost": 4,
-        "partAttributes":
-        {
-            "slashDamage": -40,
-            "stabDamage": 20,
-            "attackWindUp": 10,
-            "attackWindDown": 10,
-            "length": 0,
-            "specialStat": "Riposte"
-        },
-        "baseAttachPoint":
-        {
-            "x": 9,
-            "y": 6
-        },
-        "partAttachPoints": []
-    },
+
     {
         "partName": "Falchion Blade",
         "partTextureDir": "res://Assets/Art/My_Art/Parts/Blade_Falchion.png",

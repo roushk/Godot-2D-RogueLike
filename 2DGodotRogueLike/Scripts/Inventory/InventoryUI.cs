@@ -138,6 +138,7 @@ public class InventoryUI : Control
 
           //updates interally if we are done selecting materials
           playerManager.topDownPlayer.playerCraftingUI.GetWeaponMaterialCost(playerManager.playerInventory);
+          playerManager.topDownPlayer.playerCraftingUI.GeneratePartVisualizerUIFromCurrentParts();
 
         }, true);
 

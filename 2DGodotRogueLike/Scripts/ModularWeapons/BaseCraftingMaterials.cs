@@ -104,6 +104,49 @@ namespace Materials
     }
   }
 
+
+  public class Stats
+  {
+    public float damageMult {get;private set;} = 1;
+    public float windMult {get;private set;}  = 1;
+    public int tier = 1;
+    public Stats(int _tier, float _damage, float _wind)
+    {
+      tier = _tier;
+      damageMult = _damage;
+      windMult = _wind;
+    }
+    
+  }
+  public static class MaterialStats
+  {
+    
+    public static Dictionary<Materials.Material, Materials.Stats> stats = new Dictionary<Materials.Material, Materials.Stats>();
+
+    static MaterialStats()
+    {
+                                              //tier, damage mult, windup/down mult
+      stats[Materials.Material.Copper] =      new Materials.Stats(1, 1,     1);
+      stats[Materials.Material.Silver] =      new Materials.Stats(2, 1.5f,  1);
+      stats[Materials.Material.Iron] =        new Materials.Stats(2, 2,     1.333f);
+      stats[Materials.Material.Gold] =        new Materials.Stats(3, 3,     1);
+      stats[Materials.Material.Mithril] =     new Materials.Stats(3, 4f,    1.333f);
+      stats[Materials.Material.Cobalt] =      new Materials.Stats(3, 2,     0.666f);
+
+      //TODO other ores later
+      stats[Materials.Material.Tin] =         new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Bronze] =      new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Steel] =       new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Platinum] =    new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Adamantite] =  new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Darksteel] =   new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Titanium] =    new Materials.Stats(1, 1, 1);
+      stats[Materials.Material.Coal] =        new Materials.Stats(1, 0, 0);
+      stats[Materials.Material.Undefined] =   new Materials.Stats(1, 1, 1);
+      
+    }
+  }
+
   //Material Stat Data Piece
   public class MaterialStatData : Resource
   {

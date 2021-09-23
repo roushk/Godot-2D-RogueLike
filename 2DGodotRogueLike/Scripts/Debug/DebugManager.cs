@@ -27,7 +27,7 @@ public class DebugManager : Node2D
     }
     else if(currentMouseOption == MouseOptions.AStar_Pathfind)
     {
-
+      
     }
     else if(currentMouseOption == MouseOptions.Character_Select)
     {

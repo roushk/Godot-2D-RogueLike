@@ -3,8 +3,8 @@ using System;
 
 public class CombatCharacter : KinematicBody2D
 {
-  public int maxHealth = 100;
-  public int currentHealth = 100;
+  public float maxHealth = 100;
+  public float currentHealth = 100;
   public float movementSpeed = 100.0f;
 
   public enum CharacterType
@@ -40,13 +40,13 @@ public class CombatCharacter : KinematicBody2D
 
   protected Vector2 velocity;
 
-  public virtual void CharacterDeadCallback(int damageTakenThatKilled)
+  public virtual void CharacterDeadCallback(float damageTakenThatKilled)
   {
     //TODO play actual death animation here
     this.QueueFree();
   }
 
-  public bool DamageCharacter(int damage, Vector2 knockback)
+  public bool DamageCharacter(float damage, Vector2 knockback)
   { 
     //If character can take damage
     if(Mathf.Max(damageInvincibilityTimeLeft,rollInvincibilityTimeLeft) <= 0)
