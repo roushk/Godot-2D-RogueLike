@@ -144,3 +144,9 @@ It took me a day or two but after digging through Godot's documentation found ou
 
 #### Initial Lighting example
 https://user-images.githubusercontent.com/34784335/132577652-1004471e-d819-494d-b8c5-1cf4db1ea357.mp4
+
+
+
+## Assets
+Thanks to https://quaternius.com/ for many amazing assets!
+Thanks to https://loafbrr.itch.io for the fantastic breakable boxes and barrels!
