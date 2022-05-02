@@ -10,13 +10,6 @@ public class CombatCharacter : KinematicBody
   public AnimatedSprite animatedSprite;
   public ShaderMaterial shaderMaterial;
 
-  public enum CharacterType
-  {
-    Enemy,
-    Player,
-    NonCombat
-  };
-
   public CombatCharacter.CharacterType characterType = CombatCharacter.CharacterType.NonCombat;
 
   public float damageInvincibilityTimeLeft = 0.0f;

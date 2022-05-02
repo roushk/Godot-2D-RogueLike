@@ -251,6 +251,8 @@ public class TestLevelGeneration : Node2D
 
   public void SpawnPlayerAtStartRoom(bool resetPlayerCharacter = false)
   {
+    GD.Print("Update SpawnPlayerAtStartRoom into 3D");
+    /*
     if(startRoom != -1)
     {
       //If player doesn't exist or is set to reset then spawn a new player
@@ -277,10 +279,13 @@ public class TestLevelGeneration : Node2D
     {
       Console.WriteLine("Start Room not set");
     }
+    */
   }
 
   public void SpawnEnemiesInLevel()
   {
+    GD.Print("Update SpawnEnemiesInLevel into 3D");
+    /*
     int slimesAdded = 0;
     int minSlimesToSpawn = 20;
     int randomSlimeVariation = random.Next(3,6);
@@ -309,10 +314,13 @@ public class TestLevelGeneration : Node2D
         tilesWithEnemies.Add(rooms[roomToChoose][tileToChoose]);
       }
     }
+    */
   }
 
   public void SpawnForgesInLevel()
   {
+    GD.Print("Update SpawnForgesInLevel into 3D");
+    /*
     int forgesAdded = 0;
     int minForgesToSpawn = 5;
     HashSet<KeyValuePair<int,int>> tilesWithForges = new HashSet<KeyValuePair<int, int>>();
@@ -338,10 +346,13 @@ public class TestLevelGeneration : Node2D
         tilesWithForges.Add(rooms[roomToChoose][tileToChoose]);
       }
     }
+    */
   }
 
   public void SpawnEndOfLevelAreas()
   {
+    GD.Print("Update SpawnEndOfLevelAreas into 3D");
+    /*
     //Spawn an exit in every potential end rooms for now
     foreach(var room in potentialEndRooms)
     {
@@ -356,16 +367,20 @@ public class TestLevelGeneration : Node2D
 
       //Spawn slime
       DownwardLadder newLadder = endOfLevelLadderScene.Instance() as DownwardLadder;
-      newLadder.GlobalPosition = MapPointToWorldPos(new Vector2(roomToUse.Key, roomToUse.Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
+      Vector2 pos = MapPointToWorldPos(new Vector2(roomToUse.Key, roomToUse.Value)) + new Vector2(random.Next(-10,10), random.Next(-10,10));
+      newLadder.Translation = new Vector3(pos.x, pos.y, 0);
       InteractablesNode.AddChild(newLadder);
       //Select a tile with the highest adjacency inside of the room
       //Spawn End of level ladder
 
     }
+    */
   }
 
   public void SpawnOreChunkAt(Vector2 pos)
   {
+    GD.Print("Update SpawnOreChunkAt into 3D");
+    /*
     OreWorldObject newObj = oreWorldObjectScene.Instance() as OreWorldObject;
 
     //Spawn ore chunk at item.Key * scale + offset (0,0 is upper left corner) so they are centered
@@ -384,6 +399,7 @@ public class TestLevelGeneration : Node2D
 
     newObj.animatedSprite.Frame = random.Next(0,10);
     newObj.ZIndex = -1;
+    */
   }
 
 #endregion
@@ -1173,14 +1189,14 @@ public class TestLevelGeneration : Node2D
 
       debugManager.playerCamera = playerManager.playerCamera;
       debugManager.SetPlayerMode(true);
-      debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
+      debugManager.playerCamera.Translation = playerManager.topDownPlayer.Translation;
 
       playerManager.topDownPlayer.playerUI.returnToTownButton.Visible = true;
     }
 
     if(setCameraPositionToPlayer)
     {
-      debugManager.playerCamera.GlobalPosition = playerManager.topDownPlayer.GlobalPosition;
+      debugManager.playerCamera.Translation = playerManager.topDownPlayer.Translation;
       setCameraPositionToPlayer = false;
     }
   }

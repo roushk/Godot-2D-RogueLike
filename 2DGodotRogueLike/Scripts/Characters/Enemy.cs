@@ -32,10 +32,10 @@ public class Enemy : CombatCharacter
   //distance at which the slime tries to attack the player
   float attackDistance = 10.0f;
 
-  public List<Vector2> movementPath = new List<Vector2>();
+  public List<Vector3> movementPath = new List<Vector3>();
   
 
-  Vector2 globalMovementPosGoal;
+  Vector3 globalMovementPosGoal;
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -54,7 +54,7 @@ public class Enemy : CombatCharacter
     testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
 
     sprite.Playing = true;
-    globalMovementPosGoal = GlobalPosition;
+    globalMovementPosGoal = Translation;
     movementSpeed *= 10f;
   }
 
@@ -87,7 +87,7 @@ public class Enemy : CombatCharacter
       if(currentStunDuration <= 0)
       {
         //Take damage and reset invincibility timer
-        character.DamageCharacter(punchAttackDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+        character.DamageCharacter(punchAttackDamage, (character.Translation - Translation).Normalized() * baseKnockBack * extraKnockback);
       }
     }
   }
@@ -106,7 +106,7 @@ public class Enemy : CombatCharacter
       if(currentStunDuration <= 0)
       {
         //Take damage and reset invincibility timer
-        item.DamageCharacter(touchDamage, (item.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+        item.DamageCharacter(touchDamage, (item.Translation - Translation).Normalized() * baseKnockBack * extraKnockback);
       }
     }
 
@@ -121,14 +121,16 @@ public class Enemy : CombatCharacter
       //notStunned
     }
 
+    GD.Print("Update Enemy::_PhysicsProcess into 3D");
+    /*
     float distanceToPlayerSquared = float.MaxValue;
     if(playerManager.topDownPlayer != null)
-      distanceToPlayerSquared = playerManager.topDownPlayer.GlobalPosition.DistanceSquaredTo(GlobalPosition);
+      distanceToPlayerSquared = playerManager.topDownPlayer.Translation.DistanceSquaredTo(Translation);
 
     //If player within aggro radius
     if(distanceToPlayerSquared < aggroRadius * aggroRadius && distanceToPlayerSquared > attackDistance * attackDistance)
     {
-      Vector2 directionToPlayer = playerManager.topDownPlayer.GlobalPosition - GlobalPosition;
+      Vector2 directionToPlayer = playerManager.topDownPlayer.Translation - Translation;
       //Cast to the direction vector B-A = AB
       rayCast.CastTo = directionToPlayer;
       
@@ -142,14 +144,14 @@ public class Enemy : CombatCharacter
         if(player != null)
         {
           //Set movement goal
-          globalMovementPosGoal = playerManager.topDownPlayer.GlobalPosition;
+          globalMovementPosGoal = playerManager.topDownPlayer.Translation;
           //MoveAndSlide(directionToPlayer.Normalized() * movementSpeed * delta, new Vector2(0,-1));
         }
         //If colliding with wall then try to A* to the player
         //Only do it when we have followed the path already
-        else if (tileMap != null && movementPath.Count == 0 && GlobalPosition != globalMovementPosGoal)
+        else if (tileMap != null && movementPath.Count == 0 && Translation != globalMovementPosGoal)
         {
-          pather.InitPather(testLevelGeneration.ForegroundMap.WorldToMap(GlobalPosition), testLevelGeneration.ForegroundMap.WorldToMap(globalMovementPosGoal),
+          pather.InitPather(testLevelGeneration.ForegroundMap.WorldToMap(Translation), testLevelGeneration.ForegroundMap.WorldToMap(globalMovementPosGoal),
             new AStar.AStarMap(testLevelGeneration.terrainMap, testLevelGeneration.width, testLevelGeneration.height));
 
           if(pather.GeneratePath() == AStar.PathState.Found)
@@ -168,14 +170,15 @@ public class Enemy : CombatCharacter
         }
       }
     }
+      */
     
 
     
     //TODO patrol route that goes between multiple points without removing them, maybe pops from and pushes it back if patroling
-    if(GlobalPosition != globalMovementPosGoal || movementPath.Count != 0)
+    if(Translation != globalMovementPosGoal || movementPath.Count != 0)
     {
 
-      Vector2 deltaMoveToGoal = globalMovementPosGoal - GlobalPosition;
+      Vector3 deltaMoveToGoal = globalMovementPosGoal - Translation;
 
       //If within the minMoveDist than don't move if greater than move
       if(deltaMoveToGoal.Length() > minMovementDistance)

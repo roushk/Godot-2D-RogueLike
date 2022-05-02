@@ -18,34 +18,6 @@
 [ext_resource path="res://Assets/Art/Tiles/FantasyRpg/dungeon.png" type="Texture" id=16]
 [ext_resource path="res://Assets/Art/Items/rpgitems_retropack/Assets/Crafting&Gathering/Crafting_55.png" type="Texture" id=17]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 7 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 11 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 13 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 10 )
-region = Rect2( 0, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 17 )
-region = Rect2( 0, 0, 16, 16 )
-
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 16 )
 region = Rect2( 480, 240, 16, 16 )
@@ -98,13 +70,36 @@ region = Rect2( 0, 0, 16, 16 )
 atlas = ExtResource( 6 )
 region = Rect2( 0, 0, 16, 16 )
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 11 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 17 )
+region = Rect2( 0, 0, 16, 16 )
+
 [resource]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
-"loop": true,
-"name": "Ore Chunks",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
 "loop": true,
 "name": "Tiny Crystals",
@@ -113,5 +108,10 @@ animations = [ {
 "frames": [ SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
 "loop": true,
 "name": "Ingots",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "Ore Chunks",
 "speed": 5.0
 } ]

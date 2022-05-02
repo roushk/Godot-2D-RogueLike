@@ -45,8 +45,8 @@ public class DebugManager : Node2D
   public OptionButton ActiveOverlayOptions;
   public OptionButton MouseOptionsButton;
 
-  public Camera2D debugCamera;
-  public Camera2D playerCamera;
+  public Camera debugCamera;
+  public Camera playerCamera;
 
   public bool setAStarStart = false;
   public bool setAStarDest = false;
@@ -102,9 +102,9 @@ public class DebugManager : Node2D
   {
     testLevelGeneration = GetNode<TestLevelGeneration>("/root/TestLevelGenNode");
     
-    DebugUI = testLevelGeneration.GetNode("Camera2D/GUI") as MarginContainer;
-    MouseInfoUI = testLevelGeneration.GetNode("Camera2D/MouseInfoUI") as MarginContainer; 
-    debugCamera = testLevelGeneration.GetNode("Camera2D") as Camera2D;
+    DebugUI = testLevelGeneration.GetNode("Camera/GUI") as MarginContainer;
+    MouseInfoUI = testLevelGeneration.GetNode("Camera/MouseInfoUI") as MarginContainer; 
+    debugCamera = testLevelGeneration.GetNode("Camera") as Camera;
 
     currentMouseSelection_AStar_NodeCoords =        testLevelGeneration.GetNode("Camera2D/MouseInfoUI/VBoxContainer/AStarInfo/VBoxContainer2/General7") as Label;
     currentMouseSelection_AStar_GivenCost =         testLevelGeneration.GetNode("Camera2D/MouseInfoUI/VBoxContainer/AStarInfo/VBoxContainer2/General8") as Label;
@@ -142,11 +142,13 @@ public class DebugManager : Node2D
 
   public void PathfindToPlayerFromSelectedCharacter()
   {
+    GD.Print("Update PathfindToPlayerFromSelectedCharacter into 3D");
+    /*
     //Path the enemy to the player
     
     (currentMouseSelectionCharacter as Enemy).pather.InitPather(
-      testLevelGeneration.ForegroundMap.WorldToMap(currentMouseSelectionCharacter.GlobalPosition),
-      testLevelGeneration.ForegroundMap.WorldToMap(playerManager.topDownPlayer.GlobalPosition),
+      testLevelGeneration.ForegroundMap.WorldToMap(currentMouseSelectionCharacter.Translation),
+      testLevelGeneration.ForegroundMap.WorldToMap(playerManager.topDownPlayer.Translation),
        new AStar.AStarMap(testLevelGeneration.terrainMap, testLevelGeneration.width, testLevelGeneration.height)); 
     if((currentMouseSelectionCharacter as Enemy).pather.GeneratePath() == AStar.PathState.Found)
     {
@@ -159,6 +161,7 @@ public class DebugManager : Node2D
       }
       (currentMouseSelectionCharacter as Enemy).movementPath = worldPosPath;
     }
+    */
   }
 
   public void UpdateMouseInfoUI()
@@ -178,7 +181,7 @@ public class DebugManager : Node2D
     if(currentMouseSelectionCharacter != null)
     {
       currentMouseSelection_Character_Name.Text       = currentMouseSelectionCharacter.Name.ToString();
-      currentMouseSelection_Character_Location.Text   = currentMouseSelectionCharacter.GlobalPosition.ToString("F5");
+      currentMouseSelection_Character_Location.Text   = currentMouseSelectionCharacter.Translation.ToString("F5");
       currentMouseSelection_Character_MaxHP.Text      = currentMouseSelectionCharacter.maxHealth.ToString();
       currentMouseSelection_Character_CurrentHP.Text  = currentMouseSelectionCharacter.currentHealth.ToString();
       currentMouseSelection_Character_MoveSpeed.Text  = currentMouseSelectionCharacter.movementSpeed.ToString();

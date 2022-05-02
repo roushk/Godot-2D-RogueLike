@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Art/My_Art/SpriteSheets/Basic_Animated_Sword_Slash-Sheet.png" type="Texture" id=2]
@@ -6,15 +6,18 @@
 [ext_resource path="res://Assets/Art/SpriteSheets/CharacterV2TopDownSpriteFrames.tres" type="SpriteFrames" id=4]
 [ext_resource path="res://Animations/SlashWindUp.tres" type="Animation" id=5]
 [ext_resource path="res://Animations/SlashWindDown.tres" type="Animation" id=6]
+[ext_resource path="res://Materials/basic_spatial_material.tres" type="Material" id=7]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.2 ), 0.208591, 0.0, 0, 0 ]
 
+[sub_resource type="CapsuleShape" id=7]
+
 [sub_resource type="CapsuleMesh" id=6]
 
-[sub_resource type="Skin" id=7]
-
 [sub_resource type="CapsuleShape" id=2]
+
+[sub_resource type="CylinderShape" id=8]
 
 [sub_resource type="SphereShape" id=3]
 
@@ -105,24 +108,30 @@ collision_mask = 23
 script = ExtResource( 3 )
 weaponWindCurve = SubResource( 1 )
 
-[node name="Skeleton" type="Skeleton" parent="."]
+[node name="MovementCollider" type="RigidBody" parent="."]
+mode = 2
+continuous_cd = true
 
-[node name="MeshInstance" type="MeshInstance" parent="Skeleton"]
+[node name="CollisionShape" type="CollisionShape" parent="MovementCollider"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 6 )
-skin = SubResource( 7 )
-material/0 = null
+shape = SubResource( 7 )
 
-[node name="MovementCollider" type="CollisionShape" parent="."]
+[node name="MeshInstance" type="MeshInstance" parent="MovementCollider"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00308561, 0.00790763, 0.00797272 )
+mesh = SubResource( 6 )
+material/0 = ExtResource( 7 )
+
+[node name="MovementCollider_old" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 2 )
 
 [node name="RayCast" type="RayCast" parent="."]
 
-[node name="PlayerInteractionArea2" type="Area" parent="."]
+[node name="PlayerInteractionArea3D" type="Area" parent="."]
 
-[node name="CollisionShape" type="CollisionShape" parent="PlayerInteractionArea2"]
-shape = SubResource( 3 )
+[node name="CollisionShape" type="CollisionShape" parent="PlayerInteractionArea3D"]
+transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0 )
+shape = SubResource( 8 )
 
 [node name="SlashArea" type="Area" parent="."]
 
@@ -189,6 +198,10 @@ one_shot = true
 [node name="Tween" type="Tween" parent="."]
 
 [node name="CameraSpringArm" type="SpringArm" parent="."]
+
+[node name="Camera" type="Camera" parent="CameraSpringArm"]
+transform = Transform( 1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 10, 10 )
+current = true
 
 [connection signal="area_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_entered"]
 [connection signal="area_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_exited"]

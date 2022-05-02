@@ -40,12 +40,12 @@ public class OreWorldObject : Interactable
 
   public void CreateInventoryObject()
   {
-    Node2D newInvObject = inventoryObjectScene.Instance() as Node2D; 
+    Spatial newInvObject = inventoryObjectScene.Instance() as Spatial; 
     GetTree().Root.AddChild(newInvObject); 
 
     //adds the new object as a child to the parent of this object so they are not tetherd together.
     
-    newInvObject.GlobalPosition = this.GlobalPosition;
+    newInvObject.Translation = this.Translation;
     var invObj = (newInvObject as InventoryPickupWorldObject);
     invObj.inventoryObjectName = material.ToString();
     invObj.material = material;

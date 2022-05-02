@@ -3,34 +3,6 @@
 [ext_resource path="res://Assets/Art/Tiles/FantasyRpg/outside.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Art/Tiles/FantasyRpg/dungeon.png" type="Texture" id=2]
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 480, 240, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 496, 240, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 2 )
-region = Rect2( 512, 240, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 2 )
-region = Rect2( 528, 240, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 2 )
-region = Rect2( 496, 224, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 2 )
-region = Rect2( 512, 224, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 2 )
-region = Rect2( 528, 224, 16, 16 )
-
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 1 )
 region = Rect2( 16, 144, 16, 16 )
@@ -119,6 +91,18 @@ region = Rect2( 160, 160, 16, 16 )
 atlas = ExtResource( 1 )
 region = Rect2( 176, 160, 16, 16 )
 
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 496, 224, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 512, 224, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 528, 224, 16, 16 )
+
 [sub_resource type="AtlasTexture" id=30]
 atlas = ExtResource( 1 )
 region = Rect2( 16, 176, 16, 16 )
@@ -163,18 +147,24 @@ region = Rect2( 160, 176, 16, 16 )
 atlas = ExtResource( 1 )
 region = Rect2( 176, 176, 16, 16 )
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 480, 240, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 496, 240, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 512, 240, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 528, 240, 16, 16 )
+
 [resource]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
-"loop": true,
-"name": "Tiny Crystals",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
-"loop": true,
-"name": "Crystal Ores",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
 "name": "Copper Ores",
@@ -185,8 +175,18 @@ animations = [ {
 "name": "Iron Ores",
 "speed": 5.0
 }, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "Crystal Ores",
+"speed": 5.0
+}, {
 "frames": [ SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ), SubResource( 40 ) ],
 "loop": true,
 "name": "Cobalt Ores",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "Tiny Crystals",
 "speed": 5.0
 } ]

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 //can be either a unique item or a material
-public class InventoryPickupWorldObject : Node2D
+public class InventoryPickupWorldObject : Spatial
 {
   [Export]
   public string inventoryObjectName;
@@ -44,6 +44,7 @@ public class InventoryPickupWorldObject : Node2D
     animatedSprite.Frame = (int)material;
   }
 
+/*
   public override void _Draw()
   {
     if(DrawDebugInfo)
@@ -51,6 +52,7 @@ public class InventoryPickupWorldObject : Node2D
       DrawCircle(Vector2.Zero, vaccumRadius, new Color(1,0,0,0.5f));
     }
   }
+*/
 
   public override void _Process(float delta)
   {
@@ -59,11 +61,11 @@ public class InventoryPickupWorldObject : Node2D
     {
       collisionShape2D.Disabled = false;
     }
-    if(timeToCollide < 0 && GlobalPosition.DistanceSquaredTo(playerManager.topDownPlayer.GlobalPosition) < vaccumRadius*vaccumRadius
-    && GlobalPosition.DistanceSquaredTo(playerManager.topDownPlayer.GlobalPosition) > minRadius * minRadius)
+    if(timeToCollide < 0 && Translation.DistanceSquaredTo(playerManager.topDownPlayer.Translation) < vaccumRadius*vaccumRadius
+    && Translation.DistanceSquaredTo(playerManager.topDownPlayer.Translation) > minRadius * minRadius)
     {
       //Have the lerp speed up the closer to the player the objects are
-      GlobalPosition = GlobalPosition.LinearInterpolate(playerManager.topDownPlayer.GlobalPosition, 0.02f);
+      Translation = Translation.LinearInterpolate(playerManager.topDownPlayer.Translation, 0.02f);
     }
   }
 }

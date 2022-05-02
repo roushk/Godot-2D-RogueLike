@@ -18,7 +18,7 @@ public class PlayerManager : Node
 
   public Inventory playerTownInventory;
   
-  public Camera2D playerCamera;
+  public Camera playerCamera;
 
   bool createPlayerAndCamera = true;
   bool selectedLevelToChangeTo = false;
@@ -37,7 +37,7 @@ public class PlayerManager : Node
 
     if(GetTree().CurrentScene.FindNode("PlayerCamera") != null)
     {
-      playerCamera = GetTree().CurrentScene.FindNode("PlayerCamera") as Camera2D;
+      playerCamera = GetTree().CurrentScene.FindNode("PlayerCamera") as Camera;
     }
   }
 
@@ -70,7 +70,7 @@ public class PlayerManager : Node
     topDownPlayer = player;
   }
 
-  public void SetPlayerCamera(ref Camera2D _playerCamera)
+  public void SetPlayerCamera(ref Camera _playerCamera)
   {
     playerCamera = _playerCamera;
   }
@@ -86,7 +86,7 @@ public class PlayerManager : Node
       selectedLevelToChangeTo = false;
 
       //Add player camera to the scene
-      playerCamera = playerCameraAndUI.Instance<Camera2D>();
+      playerCamera = playerCameraAndUI.Instance<Camera>();
       GetTree().Root.AddChild(playerCamera);
 
       //Add player to the scene
@@ -102,8 +102,8 @@ public class PlayerManager : Node
           Console.WriteLine("Cannot find node " + nodeToSpawnPlayerAt);
           throw new Exception ("Cannot find node " + nodeToSpawnPlayerAt);
         }
-        topDownPlayer.GlobalPosition = (GetNode(nodeToSpawnPlayerAt) as Node2D).GlobalPosition;
-        playerCamera.GlobalPosition = (GetNode(nodeToSpawnPlayerAt) as Node2D).GlobalPosition;
+        topDownPlayer.Translation = (GetNode(nodeToSpawnPlayerAt) as Spatial).Translation;
+        playerCamera.Translation = (GetNode(nodeToSpawnPlayerAt) as Spatial).Translation;
       }
     }
   }

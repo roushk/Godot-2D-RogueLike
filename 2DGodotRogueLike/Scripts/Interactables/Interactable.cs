@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Interactable : Node2D
+public class Interactable : Spatial
 {
 
   [Export]
@@ -19,8 +19,6 @@ public class Interactable : Node2D
   public bool toggleableInteractable = false;
   
   bool ModulateColorDebug = false;
-
-
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
@@ -53,8 +51,8 @@ public class Interactable : Node2D
     //Enable Interaction
     playerManager.topDownPlayer.interactablesInRange.Add(this);
 
-    if(ModulateColorDebug)
-      Modulate = new Color(0.5f,1,0.5f,1);
+    //if(ModulateColorDebug)
+    //  Modulate = new Color(0.5f,1,0.5f,1);
   }
 
   public void ExitedInteractionRadius()
@@ -63,8 +61,8 @@ public class Interactable : Node2D
     if(playerManager.topDownPlayer != null)
       playerManager.topDownPlayer.interactablesInRange.Remove(this);
 
-    if(ModulateColorDebug)
-      Modulate = new Color(1,1,1,1);
+    //if(ModulateColorDebug)
+    //  Modulate = new Color(1,1,1,1);
     inRange = false;
   }
 
@@ -120,7 +118,7 @@ public class Interactable : Node2D
     float distanceToPlayerSquared = float.MaxValue;
 
     if(playerManager.topDownPlayer != null)
-      distanceToPlayerSquared = playerManager.topDownPlayer.GlobalPosition.DistanceSquaredTo(GlobalPosition);
+      distanceToPlayerSquared = playerManager.topDownPlayer.Translation.DistanceSquaredTo(Translation);
 
     //If player within aggro radius
     if(distanceToPlayerSquared < interactionRadius * interactionRadius)

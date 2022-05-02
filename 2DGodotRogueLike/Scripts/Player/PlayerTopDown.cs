@@ -4,17 +4,13 @@ using System.Collections.Generic;
 
 public class PlayerTopDown : CombatCharacter
 {
-  // Declare member variables here. Examples:
-  // private int a = 2;
-  // private string b = "text";
 
-  Vector2 movingDirection = Vector2.Zero;
-	
+  // X/Z movement vector
+  Vector3 movingDirection = Vector3.Zero;
 
-	//Depricated
+	//Deprecated
   float horizontalMovementPower = 1200.0f;
   float verticalMovementPower = 1200.0f;
-
 
 	//Scaled multiplier for movespeed to make base 100 a decent speed
 	const float movespeedScalar = 25.0f;
@@ -35,30 +31,14 @@ public class PlayerTopDown : CombatCharacter
 	
 	bool finishWinding = true;
 	Timer windTimer;
-	
-	
-  FacingDir currentFacing = FacingDir.Up;
-
-  public enum FacingDir
-  {
-		Up,
-		Right,
-		Down,
-		Left,
-  }
-
-  float getDegreeFromFacing(FacingDir dir)
-  {
-		return (int)dir * 90;
-  }
 
   //todo Doesnt quite work, need better way to detect if above fallable block
   bool OnTile = false;
   // Called when the node enters the scene tree for the first time.
 
-	Area2D playerArea;
+	Area playerArea;
 	AnimationPlayer weaponAnimPlayer;
-	RayCast2D raycast2D;
+	RayCast raycast2D;
 	Sprite weaponSprite;
 	HealthBar healthBar;
 
@@ -71,6 +51,25 @@ public class PlayerTopDown : CombatCharacter
 	protected PlayerManager playerManager;
 
 	bool firstTimeInit = true;
+
+  [Export]
+	Curve weaponWindCurve = new Curve();
+
+	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
+
+	public Interactable closestInteractable = null;
+
+	//save incase the player walks away somehow
+	public Interactable currentlyInteractingWith = null;
+	
+
+	//TODO change to crafted/selected weapon
+	public Parts.PartStats weapon = new Parts.PartStats();
+
+	float playerBaseKnockBack = 100.0f;
+	float playerWeaponKnockback = 1.0f;
+
+	string nextAnim = "SlashAttack";
 
 	//overload get/set instead of function call
 	public CurrentlySelectedUI currentlySelectedUI 
@@ -104,6 +103,14 @@ public class PlayerTopDown : CombatCharacter
 		}
 	}
 
+	public enum CurrentlySelectedUI
+	{
+		None,
+		CraftingScreen,
+		InventoryScreen,
+		EndLevelUI
+	}
+
 	public override void CharacterDeadCallback(float damageTakenThatKilled)
   {
 		//Play character death animation
@@ -120,42 +127,17 @@ public class PlayerTopDown : CombatCharacter
 		
 	}
 
-	public enum CurrentlySelectedUI
-	{
-		None,
-		CraftingScreen,
-		InventoryScreen,
-		EndLevelUI
-	}
 
-	public HashSet<Interactable> interactablesInRange = new HashSet<Interactable>();
-
-	public Interactable closestInteractable = null;
-
-	//save incase the player walks away somehow
-	public Interactable currentlyInteractingWith = null;
-	
-
-	//TODO change to crafted/selected weapon
-	public Parts.PartStats weapon = new Parts.PartStats();
-
-	float playerBaseKnockBack = 100.0f;
-	float playerWeaponKnockback = 1.0f;
-
-	string nextAnim = "SlashAttack";
-
-	[Export]
-	Curve weaponWindCurve = new Curve();
-
+// Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
 		base._Ready();
-		characterType = CharacterType.Player;
+		characterType = CombatCharacter.CharacterType.Player;
 		windTimer = GetNode<Timer>("WindTimer");
-		playerArea = GetNode<Area2D>("PlayerInteractionArea");
+		playerArea = GetNode<Area>("PlayerInteractionArea3D");
 		animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
 		weaponAnimPlayer = GetNode<AnimationPlayer>("WeaponSprite/WeaponAnimPlayer");
-		raycast2D = GetNode<RayCast2D>("RayCast2D");
+		raycast2D = GetNode<RayCast>("RayCast");
 		weaponSprite = GetNode<Sprite>("WeaponSprite");
 
 		Node camera = GetNode<PlayerManager>("/root/PlayerManagerSingletonNode").playerCamera;
@@ -225,9 +207,9 @@ public class PlayerTopDown : CombatCharacter
   public void _on_SlashArea_body_entered(Node body)
   {
     CombatCharacter character = body as CombatCharacter;
-    if(character != null && character.characterType == CharacterType.Enemy)
+    if(character != null && character.characterType == CombatCharacter.CharacterType.Enemy)
     {
-			character.DamageCharacter(weapon.slashDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+			character.DamageCharacter(weapon.slashDamage, (character.GlobalTransform.origin - GlobalTransform.origin).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 
@@ -235,13 +217,13 @@ public class PlayerTopDown : CombatCharacter
   public void _on_StabArea_body_entered(Node body)
   {
     CombatCharacter character = body as CombatCharacter;
-    if(character != null && character.characterType == CharacterType.Enemy)
+    if(character != null && character.characterType == CombatCharacter.CharacterType.Enemy)
     {
-			character.DamageCharacter(weapon.stabDamage, (character.GlobalPosition - GlobalPosition).Normalized() * baseKnockBack * extraKnockback);
+			character.DamageCharacter(weapon.stabDamage, (character.GlobalTransform.origin - GlobalTransform.origin).Normalized() * baseKnockBack * extraKnockback);
     }
   }
 
-  public void _on_PlayerInteractionArea_area_entered(Area2D body)
+  public void _on_PlayerInteractionArea_area_entered(Area body)
   {
 		InventoryPickupWorldObject inv = body.GetParent() as InventoryPickupWorldObject;
 		if(inv != null)
@@ -250,16 +232,18 @@ public class PlayerTopDown : CombatCharacter
 		}
   }
 
-  public void _on_PlayerInteractionArea_area_exited(Area2D body)
+  public void _on_PlayerInteractionArea_area_exited(Area body)
   {
 
   }
 
+  /*
   public override void _Draw()
   {
-	  this.DrawLine(Position,Position + velocity,Color.Color8(1,0,0,1));
+	  this.DrawLine(Position,Position + new Vector2(velocity.x, velocity.y),Color.Color8(1,0,0,1));
 	  this.DrawLine(Position,Position + new Vector2(0,50),Color.Color8(0,1,0,1));
   }
+  */
 
 	public void onTimerWindTimeOut()
 	{
@@ -297,7 +281,7 @@ public class PlayerTopDown : CombatCharacter
 		
 		base._PhysicsProcess(delta);
 
-		movingDirection = Vector2.Zero;
+		movingDirection = Vector3.Zero;
 		//For some reason Godot's on entered func just straight up doesnt work if the bodies are moving so 
 		//we make them stop moving in their script and run this to verify we got everything and it works most of the time
 		//var bodies = playerArea.GetOverlappingBodies();
@@ -334,7 +318,7 @@ public class PlayerTopDown : CombatCharacter
 
 		foreach(var inter in interactablesInRange)
 		{
-      float distanceToPlayerSquared = GlobalPosition.DistanceSquaredTo(inter.GlobalPosition);
+      float distanceToPlayerSquared = GlobalTransform.origin.DistanceSquaredTo(inter.Translation);
 			if(distanceToPlayerSquared < closestInteractableDistance)
 			{
 				closestInteractableDistance = distanceToPlayerSquared;
@@ -348,7 +332,7 @@ public class PlayerTopDown : CombatCharacter
 
 		closestInteractable = closest;
 
-		raycast2D.CastTo = new Vector2(0,50);
+		raycast2D.CastTo = new Vector3(0,50,0);
 
 		//the raycast only collides with the second layer so only the floors
 		OnTile = raycast2D.IsColliding();
@@ -356,26 +340,22 @@ public class PlayerTopDown : CombatCharacter
 		//update player movement
 		if(Godot.Input.IsActionPressed("PlayerUp"))
 		{
-			currentFacing = FacingDir.Up;
-			movingDirection.y -= 1;
+			movingDirection.z -= 1;
 			//velocity += new Vector2(0,-verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerDown"))
 		{
-			currentFacing = FacingDir.Down;
-			movingDirection.y += 1;
+			movingDirection.z += 1;
 			//velocity += new Vector2(0,verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerRight"))
 		{
 			//Prioritize left and right attacks more than up and down
-			currentFacing = FacingDir.Right;
 			movingDirection.x += 1;
 			//velocity += new Vector2(horizontalMovementPower,0) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerLeft"))
 		{
-			currentFacing = FacingDir.Left;
 			movingDirection.x -= 1;
 			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
 		}
@@ -450,9 +430,12 @@ public class PlayerTopDown : CombatCharacter
 
 			//animatedSprite.Play("Character Attack");
 
-			Vector2 mousePos = GetGlobalMousePosition();
-			//AngleToPoint does what we need, literally dont need to do anything else, sweet
-			weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
+		  //Vector2 mousePos = GetGlobalMousePosition();
+		  //AngleToPoint does what we need, literally dont need to do anything else, sweet
+			//weaponSprite.Rotation = Position.AngleToPoint(mousePos) - Mathf.Pi/2.0f;
+			//TODO Actual raycast into the scene on ground plane to get cursor location for look at vec
+			
+			weaponSprite.Rotation = 0;
 			weaponAnimPlayer.Play("SlashWindUp");
 			weaponSprite.Scale = new Vector2(weapon.length/100.0f,weapon.length/100.0f);
 			attackingThisFrame = true;
@@ -461,7 +444,7 @@ public class PlayerTopDown : CombatCharacter
 		//Don't move while attacking or interacting with objects or in UI
 		if(attacking || attackingThisFrame || currentlyInteracting || currentlySelectedUI != CurrentlySelectedUI.None)
 		{
-			movingDirection = new Vector2(0,0);
+			movingDirection = Vector3.Zero;
 		}
 
 		velocity += movingDirection.Normalized() * movementSpeed * movespeedScalar * delta;  
