@@ -15,7 +15,7 @@ _global_script_class_icons={
 [application]
 
 config/name="2D Godot Rogue Like"
-run/main_scene="res://Scenes/Menus/MainMenuUI.tscn"
+run/main_scene="res://Scenes/TestingLevels/Test3DScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -130,10 +130,15 @@ PlayerInventory={
 [layer_names]
 
 2d_physics/layer_1="Walls"
+3d_physics/layer_1="Walls"
 2d_physics/layer_2="Enemies"
+3d_physics/layer_2="Enemies"
 2d_physics/layer_3="Interactables"
+3d_physics/layer_3="Interactables"
 2d_physics/layer_4="PlayerDealtDamage"
+3d_physics/layer_4="PlayerDealtDamage"
 2d_physics/layer_5="EnemyDealtDamage"
+3d_physics/layer_5="EnemyDealtDamage"
 
 [memory]
 
@@ -142,7 +147,6 @@ limits/message_queue/max_size_kb=2048
 [rendering]
 
 2d/options/use_nvidia_rect_flicker_workaround=true
-quality/intended_usage/framebuffer_allocation=0
-quality/intended_usage/framebuffer_allocation.mobile=0
+quality/intended_usage/framebuffer_allocation.mobile=2
 environment/default_environment="res://default_env.tres"
 quality/2d/use_pixel_snap=false

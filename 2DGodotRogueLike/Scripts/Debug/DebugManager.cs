@@ -193,21 +193,21 @@ public class DebugManager : Node2D
     playerMode = _playerMode;
     if(playerMode)
     {
-      debugCamera.Current = false;
+      //debugCamera.Current = false;
       (debugCamera as CameraMovement).movementEnabled = false;
       DebugUI.Visible = false;
       MouseInfoUI.Visible = false;
-      if(playerCamera != null)
-        playerCamera.Current = true;
+      //if(playerCamera != null)
+      //  playerCamera.Current = true;
     }
     else
     {
       (debugCamera as CameraMovement).movementEnabled = true;
-      debugCamera.Current = true;
+      //debugCamera.Current = true;
       DebugUI.Visible = true;
       MouseInfoUI.Visible = true;
-      if(playerCamera != null)
-        playerCamera.Current = false;
+      //if(playerCamera != null)
+      //  playerCamera.Current = false;
     }
   }
 

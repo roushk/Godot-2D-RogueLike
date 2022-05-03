@@ -17,11 +17,6 @@
 [node name="TestLevelGenNode" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
-initialDeadChance = 40
-deathLimit = 3
-birthLimit = 4
-maxIterations = 100
-tileMapSize = Vector2( 50, 50 )
 
 [node name="YSort" type="YSort" parent="."]
 
@@ -109,6 +104,7 @@ position = Vector2( 756.025, 584.827 )
 [node name="PlayerCamera" parent="." instance=ExtResource( 5 )]
 position = Vector2( 784.682, 678.484 )
 z_index = 10
+current = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_priority = 1
@@ -869,172 +865,78 @@ __meta__ = {
 
 [node name="Ore" parent="." instance=ExtResource( 6 )]
 position = Vector2( 720.119, 624.165 )
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore4" parent="." instance=ExtResource( 6 )]
 position = Vector2( 714.616, 630.638 )
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore5" parent="." instance=ExtResource( 6 )]
 position = Vector2( 725.617, 621.273 )
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore2" parent="." instance=ExtResource( 6 )]
-material = 4
 position = Vector2( 682.545, 650.784 )
-material = 4
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore13" parent="." instance=ExtResource( 6 )]
-material = 4
 position = Vector2( 680.161, 662.173 )
-material = 4
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore14" parent="." instance=ExtResource( 6 )]
-material = 4
 position = Vector2( 694.199, 651.048 )
-material = 4
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore3" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 659.92, 753.063 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore15" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 647.736, 744.852 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore16" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 648.531, 758.625 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore17" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 657.801, 742.998 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore18" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 658.596, 761.539 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore19" parent="." instance=ExtResource( 6 )]
-material = 5
 position = Vector2( 646.412, 751.474 )
-material = 5
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore20" parent="." instance=ExtResource( 6 )]
-material = 6
 position = Vector2( 915.414, 789.517 )
-material = 6
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore21" parent="." instance=ExtResource( 6 )]
-material = 6
 position = Vector2( 914.572, 779.976 )
-material = 6
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore22" parent="." instance=ExtResource( 6 )]
-material = 6
 position = Vector2( 900.822, 789.798 )
-material = 6
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore6" parent="." instance=ExtResource( 6 )]
-material = 1
 position = Vector2( 712.395, 785.614 )
-material = 1
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore23" parent="." instance=ExtResource( 6 )]
-material = 1
 position = Vector2( 725.303, 791.507 )
-material = 1
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore24" parent="." instance=ExtResource( 6 )]
-material = 1
 position = Vector2( 715.201, 792.91 )
-material = 1
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore25" parent="." instance=ExtResource( 6 )]
-material = 1
 position = Vector2( 710.992, 774.951 )
-material = 1
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore7" parent="." instance=ExtResource( 6 )]
-material = 2
 position = Vector2( 777.779, 820.972 )
-material = 2
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore11" parent="." instance=ExtResource( 6 )]
-material = 2
 position = Vector2( 790.779, 824.472 )
-material = 2
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore12" parent="." instance=ExtResource( 6 )]
-material = 2
 position = Vector2( 774.779, 811.472 )
-material = 2
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore8" parent="." instance=ExtResource( 6 )]
-material = 3
 position = Vector2( 871.785, 810.028 )
-material = 3
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore9" parent="." instance=ExtResource( 6 )]
-material = 3
 position = Vector2( 882.448, 815.079 )
-material = 3
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="Ore10" parent="." instance=ExtResource( 6 )]
-material = 3
 position = Vector2( 869.54, 820.411 )
-material = 3
-amountInOre = 5
-timeToMine = 0.5
 
 [node name="DownwardLadderNode" parent="." instance=ExtResource( 7 )]
 position = Vector2( 865.836, 591.79 )

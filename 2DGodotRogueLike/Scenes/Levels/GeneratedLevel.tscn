@@ -11,14 +11,6 @@
 [node name="TestLevelGenNode" type="Node2D"]
 pause_mode = 2
 script = ExtResource( 1 )
-initialDeadChance = 40
-deathLimit = 3
-birthLimit = 4
-maxIterations = 100
-NoWallTile = 3
-BackgroundMapGroundTile = 3
-tileMapSize = Vector2( 50, 50 )
-GenerateNewLevelOnStartup = true
 
 [node name="BackgroundMap" type="TileMap" parent="."]
 show_behind_parent = true

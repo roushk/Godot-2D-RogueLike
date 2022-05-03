@@ -133,38 +133,31 @@ material = SubResource( 2 )
 
 [node name="Iron Ore 2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 341.461, -135.564 )
-amountInOre = 2
 
 [node name="AnimatedSprite" parent="Iron Ore 2" index="0"]
 material = SubResource( 3 )
 
 [node name="Iron Ore 3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 473.69, -17.4769 )
-amountInOre = 2
 
 [node name="AnimatedSprite" parent="Iron Ore 3" index="0"]
 material = SubResource( 4 )
 
 [node name="Iron Ore 4" parent="." instance=ExtResource( 3 )]
 position = Vector2( 122.258, -178.697 )
-amountInOre = 3
 
 [node name="AnimatedSprite" parent="Iron Ore 4" index="0"]
 material = SubResource( 5 )
 
 [node name="Cobalt Ore 1" parent="." instance=ExtResource( 3 )]
-material = 6
 position = Vector2( -196.331, 82.3664 )
-material = 6
 
 [node name="AnimatedSprite" parent="Cobalt Ore 1" index="0"]
 material = SubResource( 6 )
 animation = "Cobalt Ores"
 
 [node name="Cobalt Ore 2" parent="." instance=ExtResource( 3 )]
-material = 6
 position = Vector2( -39.5328, 326.473 )
-material = 6
 
 [node name="AnimatedSprite" parent="Cobalt Ore 2" index="0"]
 material = SubResource( 7 )
@@ -172,18 +165,14 @@ animation = "Cobalt Ores"
 frame = 5
 
 [node name="Copper Ore 1" parent="." instance=ExtResource( 3 )]
-material = 1
 position = Vector2( 565.368, 122.656 )
-material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 1" index="0"]
 material = SubResource( 8 )
 animation = "Copper Ores"
 
 [node name="Copper Ore 2" parent="." instance=ExtResource( 3 )]
-material = 1
 position = Vector2( 509.602, 252.152 )
-material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 2" index="0"]
 material = SubResource( 9 )
@@ -191,9 +180,7 @@ animation = "Copper Ores"
 frame = 4
 
 [node name="Copper Ore 3" parent="." instance=ExtResource( 3 )]
-material = 1
 position = Vector2( -115.575, 244.986 )
-material = 1
 
 [node name="AnimatedSprite" parent="Copper Ore 3" index="0"]
 material = SubResource( 10 )
@@ -201,36 +188,28 @@ animation = "Copper Ores"
 frame = 2
 
 [node name="Silver Ore 1" parent="." instance=ExtResource( 3 )]
-material = 2
 position = Vector2( -242.985, 194.159 )
-material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 1" index="0"]
 material = SubResource( 11 )
 frame = 5
 
 [node name="Silver Ore 2" parent="." instance=ExtResource( 3 )]
-material = 2
 position = Vector2( 356.975, 254.21 )
-material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 2" index="0"]
 material = SubResource( 12 )
 frame = 6
 
 [node name="Silver Ore 3" parent="." instance=ExtResource( 3 )]
-material = 2
 position = Vector2( 337.684, 335.865 )
-material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 3" index="0"]
 material = SubResource( 13 )
 frame = 4
 
 [node name="Silver Ore 4" parent="." instance=ExtResource( 3 )]
-material = 2
 position = Vector2( -236.21, 316.336 )
-material = 2
 
 [node name="AnimatedSprite" parent="Silver Ore 4" index="0"]
 material = SubResource( 14 )
@@ -244,33 +223,22 @@ material = SubResource( 15 )
 animation = "Crystal Ores"
 
 [node name="Object" parent="." instance=ExtResource( 4 )]
-material = 1
 position = Vector2( 219.415, -36.9197 )
-material = 1
 
 [node name="Object2" parent="." instance=ExtResource( 4 )]
-material = 2
 position = Vector2( 79.4058, -55.4194 )
-material = 2
 
 [node name="Object3" parent="." instance=ExtResource( 4 )]
-material = 3
 position = Vector2( 145.416, 27.4089 )
-material = 3
 
 [node name="Object4" parent="." instance=ExtResource( 4 )]
-material = 4
 position = Vector2( 172.325, -39.0219 )
-material = 4
 
 [node name="Object5" parent="." instance=ExtResource( 4 )]
-material = 6
 position = Vector2( 274.073, -7.90874 )
-material = 6
 
 [node name="Object6" parent="." instance=ExtResource( 4 )]
 position = Vector2( 271.551, -78.1236 )
-numMaterials = 1
 
 [editable path="Iron Ore 1"]
 [editable path="Iron Ore 2"]

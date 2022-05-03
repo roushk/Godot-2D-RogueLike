@@ -4,16 +4,11 @@ using System.Collections.Generic;
 
 public class PlayerTopDown : CombatCharacter
 {
-
   // X/Z movement vector
   Vector3 movingDirection = Vector3.Zero;
 
-	//Deprecated
-  float horizontalMovementPower = 1200.0f;
-  float verticalMovementPower = 1200.0f;
-
 	//Scaled multiplier for movespeed to make base 100 a decent speed
-	const float movespeedScalar = 25.0f;
+	const float movespeedScalar = 5.0f;
 
 	float dashSpeed = 15.0f;
   
@@ -341,23 +336,19 @@ public class PlayerTopDown : CombatCharacter
 		if(Godot.Input.IsActionPressed("PlayerUp"))
 		{
 			movingDirection.z -= 1;
-			//velocity += new Vector2(0,-verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerDown"))
 		{
 			movingDirection.z += 1;
-			//velocity += new Vector2(0,verticalMovementPower) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerRight"))
 		{
 			//Prioritize left and right attacks more than up and down
 			movingDirection.x += 1;
-			//velocity += new Vector2(horizontalMovementPower,0) * delta;
 		}
 		if(Godot.Input.IsActionPressed("PlayerLeft"))
 		{
 			movingDirection.x -= 1;
-			//velocity += new Vector2(-horizontalMovementPower,0) * delta;
 		}
 
 		if(Godot.Input.IsActionJustPressed("PlayerInteract"))

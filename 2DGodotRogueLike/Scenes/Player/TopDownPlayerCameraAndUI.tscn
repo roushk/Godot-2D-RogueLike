@@ -7,12 +7,9 @@
 [ext_resource path="res://Scenes/InGameUI/PlayerUI.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/InGameUI/PlayerInventoryUI.tscn" type="PackedScene" id=7]
 
-[node name="PlayerCamera" type="Camera2D"]
+[node name="PlayerUICamera" type="Camera2D"]
 current = true
 script = ExtResource( 2 )
-movementEnabled = false
-zoomEnabled = false
-followPlayer = true
 
 [node name="PlayerInventoryUI" parent="." instance=ExtResource( 7 )]
 visible = false

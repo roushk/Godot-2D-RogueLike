@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scripts/Player/CameraMovement.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/DebugUI/CraftingSystemCheatMenuUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Menus/EndLevelUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/InGameUI/WeaponCraftingUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/InGameUI/PlayerInventoryUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/InGameUI/PlayerUI.tscn" type="PackedScene" id=6]
+
+[node name="PlayerCamera" type="Camera"]
+transform = Transform( 1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 10, 10 )
+current = true
+fov = 90.0
+script = ExtResource( 1 )
+followPlayer = true
+
+[node name="PlayerInventoryUI" parent="." instance=ExtResource( 5 )]
+visible = false
+margin_top = -0.793701
+margin_bottom = -0.793701
+mouse_filter = 1
+
+[node name="PlayerUI" parent="." instance=ExtResource( 6 )]
+visible = false
+mouse_filter = 1
+
+[node name="CraftingScreen" parent="." instance=ExtResource( 4 )]
+visible = false
+
+[node name="EndLevelUI" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[node name="CraftingSystemCheatMenuUI" parent="." instance=ExtResource( 2 )]
+visible = false

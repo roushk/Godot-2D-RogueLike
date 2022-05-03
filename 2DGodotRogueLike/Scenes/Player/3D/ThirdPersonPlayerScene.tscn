@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Shaders/FlashingDamageShader.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Art/My_Art/SpriteSheets/Basic_Animated_Sword_Slash-Sheet.png" type="Texture" id=2]
@@ -7,9 +7,6 @@
 [ext_resource path="res://Animations/SlashWindUp.tres" type="Animation" id=5]
 [ext_resource path="res://Animations/SlashWindDown.tres" type="Animation" id=6]
 [ext_resource path="res://Materials/basic_spatial_material.tres" type="Material" id=7]
-
-[sub_resource type="Curve" id=1]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.2 ), 0.208591, 0.0, 0, 0 ]
 
 [sub_resource type="CapsuleShape" id=7]
 
@@ -106,7 +103,6 @@ tracks/5/keys = {
 pause_mode = 2
 collision_mask = 23
 script = ExtResource( 3 )
-weaponWindCurve = SubResource( 1 )
 
 [node name="MovementCollider" type="RigidBody" parent="."]
 mode = 2
@@ -165,7 +161,7 @@ shape = SubResource( 4 )
 visible = false
 texture = ExtResource( 2 )
 hframes = 7
-frame = 6
+frame = 2
 
 [node name="WeaponAnimPlayer" type="AnimationPlayer" parent="WeaponSprite"]
 playback_process_mode = 0
@@ -180,7 +176,6 @@ collision_mask = 10
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WeaponSprite/SlashArea"]
 polygon = PoolVector2Array( -21.2419, 2.26004, -21.3653, -6.29518, -20.4723, -12.0495, -16.107, -17.407, -5.98731, -21.9708, 9.78749, -21.8716, 15.7402, -18.2007, 20.5024, -13.7361, 23.082, -5.69991, 23.0954, 2.4705 )
-disabled = true
 
 [node name="StabArea" type="Area2D" parent="WeaponSprite"]
 visible = false
@@ -196,12 +191,6 @@ process_mode = 0
 one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
-
-[node name="CameraSpringArm" type="SpringArm" parent="."]
-
-[node name="Camera" type="Camera" parent="CameraSpringArm"]
-transform = Transform( 1, 0, 0, 0, 0.766044, 0.642788, 0, -0.642788, 0.766044, 0, 10, 10 )
-current = true
 
 [connection signal="area_entered" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_entered"]
 [connection signal="area_exited" from="PlayerInteractionArea" to="." method="_on_PlayerInteractionArea_area_exited"]

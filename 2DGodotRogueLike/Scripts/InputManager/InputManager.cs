@@ -16,6 +16,7 @@ public class InputManager : Node
   }
 
   Dictionary<KeyList, KeyState> keys = new Dictionary<KeyList, KeyState>();
+  Dictionary<KeyList, KeyState> keysThisFrame = new Dictionary<KeyList, KeyState>();
 
   public override void _Ready()
   {
@@ -31,8 +32,6 @@ public class InputManager : Node
     return keys[key];
   }
 
-
-
   //pressed this frame
   public bool IsKeyPressed(KeyList key)
   {
@@ -40,6 +39,7 @@ public class InputManager : Node
   }
 
   //pressed this frame
+  //ONLY WORKS IN _PhysicsProcess as _Process can run multiple times before _PhysicsProcess is updated
   public bool IsKeyReleased(KeyList key)
   {
     return keys[key] == KeyState.Released;
@@ -65,21 +65,12 @@ public class InputManager : Node
       if(eventKey.Pressed)
       {
         if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.None)
-          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Pressed;
+          keysThisFrame[(Godot.KeyList)eventKey.Scancode] = KeyState.Pressed;
       }
       else if(eventKey.Echo)
       {
         if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Pressed)
-          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Held;
-      }
-      else if(eventKey.Pressed == false && eventKey.Echo == false)  //key not pressed this frame
-      {
-        if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Pressed || keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Held)
-          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.Released;
-
-        //Reset the key
-        if(keys[(Godot.KeyList)eventKey.Scancode] == KeyState.Released)
-          keys[(Godot.KeyList)eventKey.Scancode] = KeyState.None;
+          keysThisFrame[(Godot.KeyList)eventKey.Scancode] = KeyState.Held;
       }
     }
   }
@@ -87,5 +78,24 @@ public class InputManager : Node
   public override void _PhysicsProcess(float delta)
   {
 
+    //LINQ magic allowing me to edit the dictionary as we are iterating entire key list
+    foreach(var pair in keys.ToList())
+    {
+      if(pair.Value == KeyState.Pressed || pair.Value == KeyState.Held)
+        keys[pair.Key] = KeyState.Released;
+
+      //Reset the key
+      else if(pair.Value == KeyState.Released)
+        keys[pair.Key] = KeyState.None;
+    }
+
+    //Update Keys at set time
+    foreach(var pair in keysThisFrame)
+    {
+      if(pair.Value == KeyState.Pressed || pair.Value == KeyState.Held)
+        keys[pair.Key] = pair.Value;
+    }
+
+    keysThisFrame.Clear();
   }
 }

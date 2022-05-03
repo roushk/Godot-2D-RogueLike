@@ -9,25 +9,25 @@ public class DungeonEntrance : Interactable
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    base._Ready();
-    interactionRadius *= 4f;
+	base._Ready();
+	interactionRadius *= 4f;
   }
 
   public override void StartInteract()
 	{
-    base.StartInteract();
-    GetTree().ChangeSceneTo(generatedLevelScene);
+	base.StartInteract();
+	GetTree().ChangeSceneTo(generatedLevelScene);
 	}
 
 	//Called when player ends interaction with the object
 	public override void EndInteract()
 	{
-    base.EndInteract();
+	base.EndInteract();
 	}
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(float delta)
   {
-    base._PhysicsProcess(delta);
+	base._PhysicsProcess(delta);
   }
 }
