@@ -5,9 +5,6 @@ This example game is 2D Top Down RogueLike Dungeon Crawler made in Godot where t
 
 The game engine is Godot using C# scripting and I am doing everything myself besides most of the assets, which are from various licensed sources. I use this as a playground for various ideas of gameplay systems that I would like to implement.
 
-Milestone 1 is the barebones of the game, level generation, enemies, crafting, mining and the bare minimum of the core systems. 
-Milestone 1 Gameplay Video: https://www.youtube.com/watch?v=3Q63uLhpGAI
-
 ## Table of Contents
 ### [Level World Generation](#world-generation)
 #### [Level World Generation Screenshots](#level-world-generation-screenshots)
