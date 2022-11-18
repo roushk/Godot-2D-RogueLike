@@ -1,8 +1,7 @@
-![ForgeBladeTitle03_Large](https://user-images.githubusercontent.com/34784335/133919503-7d513c56-414d-4e0d-8df5-f4d6c6fc3864.png)
 
-# ForgeBlade the Godot 2D RogueLike
+# Godot 2D RogueLike
 
-ForgeBlade is a 2D Top Down RogueLike Dungeon Crawler made in Godot where the player will delve into a randomly generated dungeon to gather materials to craft their own weapons. 
+This example game is 2D Top Down RogueLike Dungeon Crawler made in Godot where the player will delve into a randomly generated dungeon to gather materials to craft their own weapons. 
 
 The game engine is Godot using C# scripting and I am doing everything myself besides most of the assets, which are from various licensed sources. I use this as a playground for various ideas of gameplay systems that I would like to implement.
 
